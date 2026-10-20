@@ -3403,6 +3403,7 @@ dependencies = [
 name = "rustyred-cli"
 version = "0.1.0-beta.2"
 dependencies = [
+ "clap",
  "rustyred",
  "serde_json",
  "tempfile",

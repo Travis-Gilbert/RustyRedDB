@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-10-20T19:44:49.670625+00:00",
-  "candidate_revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
+  "generated_at_utc": "2026-10-20T21:24:38.851917+00:00",
+  "candidate_revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
   "compiler": {
     "release": "1.96.1",
     "commit": "31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd",
@@ -12,7 +12,7 @@
   "source_baseline": {
     "plan_pin": "d6a7062c14c11c6838362bda307e267b2297c684",
     "extraction_source": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de",
-    "runtime_outcome": "pending_parent_run_98447",
+    "runtime_outcome": "completed_with_actual_core_and_integration_failures;query_passed",
     "parity_record": "docs/extraction/source-parity.json",
     "parity_record_current_file_hashes_verified": true,
     "unchanged_primitive_source_groups": {
@@ -47,63 +47,115 @@
         "matches_extraction_source": 3
       }
     },
-    "limitation": "Source byte identity and candidate-local tests do not substitute for the completed pinned-source runtime baseline. No source-versus-candidate runtime parity pass is claimed here."
+    "limitation": "The exact source baseline ran and produced the failures listed below; it is not a full-suite pass. Source-file identity alone is not runtime evidence. The source golden fixture subsequently passed on both final native CI targets. The unchanged timing ceilings are qualified under their declared historical optimization profiles.",
+    "runtime_outcomes": {
+      "core_library": {
+        "passed": 832,
+        "failed": 4,
+        "ignored": 1,
+        "runtime_seconds": 22.48,
+        "failed_tests": [
+          "browser_projection::tests::a_second_commit_extends_the_same_log_and_keeps_both_names",
+          "browser_projection::tests::the_store_initializes_a_real_object_store_facade",
+          "browser_projection::tests::a_torn_tail_is_truncated_to_the_verified_prefix",
+          "graph_store::tests::memory_document_query_latency_fixture_records_delta"
+        ],
+        "log": "/tmp/rustyred-source-pin-tests.log"
+      },
+      "consolidated_integration": {
+        "passed": 230,
+        "failed": 2,
+        "ignored": 6,
+        "runtime_seconds": 243.73,
+        "failed_tests": [
+          "hook_dispatch::coalesces_ingest_storm_into_one_call_and_writes_back",
+          "vector_index_update_acceptance::mixed_exact_and_turbovec_indexes_report_conservative_backend"
+        ],
+        "log": "/tmp/rustyred-source-pin-integration-tests.log"
+      },
+      "other_integration_failure": {
+        "target": "fold_floor_reopen",
+        "passed": 2,
+        "failed": 1,
+        "failed_test": "crash_during_batch_never_exposes_partial_state",
+        "error": "child exited before ACK marker"
+      },
+      "query_library": {
+        "passed": 81,
+        "failed": 0,
+        "runtime_seconds": 0.06,
+        "doctests": 0,
+        "log": "/tmp/rustyred-source-pin-query-tests.log"
+      }
+    },
+    "runtime_status": "completed_with_real_core_and_integration_failures; query_passed; no_source_fullpass_claim"
   },
   "source_hashes": [
     {
       "path": "crates/rustyred/src/database.rs",
       "sha256": "f066691904842bfa0499b7d31d72b231e4615a46f55934e90d9d3c3310b971e3",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "f066691904842bfa0499b7d31d72b231e4615a46f55934e90d9d3c3310b971e3"
     },
     {
       "path": "crates/rustyred/src/error.rs",
       "sha256": "a8cf8fdba1c3f7050bad39f16adad238823798a1c808583d2391bb8566ab309d",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "a8cf8fdba1c3f7050bad39f16adad238823798a1c808583d2391bb8566ab309d"
     },
     {
       "path": "crates/rustyred/tests/embedded_api.rs",
-      "sha256": "d6d7ea967dc7b2e442cb0daf6a3bd617fc03222edfe89ac04aaad44d1346dc54",
-      "identical_to_3e42e7e": true
+      "sha256": "47d38347cd9095d1925c11b36074ccdde26bc90e66d9de25796ed57bf3981eaf",
+      "identical_to_3e42e7e": false,
+      "historical_3e42e7e_sha256": "d6d7ea967dc7b2e442cb0daf6a3bd617fc03222edfe89ac04aaad44d1346dc54"
     },
     {
       "path": "crates/rustyred/tests/rr_failures.rs",
       "sha256": "6ff8cd9ad271674b51794eadaf1c989731512a58937c3d950ac1baa481e28637",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "6ff8cd9ad271674b51794eadaf1c989731512a58937c3d950ac1baa481e28637"
     },
     {
       "path": "crates/rustyred/tests/rr_roundtrip.rs",
       "sha256": "5a330919307d4a9d0551d6e844c58f318973cbff527757bf0e51f929d5296e9c",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "5a330919307d4a9d0551d6e844c58f318973cbff527757bf0e51f929d5296e9c"
     },
     {
       "path": "crates/rustyred-engine/src/journal.rs",
       "sha256": "7679feba3b0b1d6534364da8361a86b06f18579660714c8401760edfcabe9661",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "7679feba3b0b1d6534364da8361a86b06f18579660714c8401760edfcabe9661"
     },
     {
       "path": "crates/rustyred-engine/src/graph/error.rs",
       "sha256": "cd7eb37b90ce173f91d0ff6934588cb49700b65af66ebe67cbd19ce8ac8d7b61",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "cd7eb37b90ce173f91d0ff6934588cb49700b65af66ebe67cbd19ce8ac8d7b61"
     },
     {
       "path": "crates/rustyred-engine/src/graph/fold_store.rs",
       "sha256": "a025d78714aceb3cccf25f9f91160a1e5b69d3318270b8193b489f870a490600",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "a025d78714aceb3cccf25f9f91160a1e5b69d3318270b8193b489f870a490600"
     },
     {
       "path": "crates/rustyred-engine/tests/fold_commit_outcome.rs",
       "sha256": "2c75fa1954e7271d2834d87831b7342b2e859d5479887f915260e57bde3a9547",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "2c75fa1954e7271d2834d87831b7342b2e859d5479887f915260e57bde3a9547"
     },
     {
       "path": "crates/rustyred-log/src/physical.rs",
       "sha256": "47de07716b2ea5ccfad095cb630fb96ed0a39c67eee987b7a3b363809c77a610",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "47de07716b2ea5ccfad095cb630fb96ed0a39c67eee987b7a3b363809c77a610"
     },
     {
       "path": "crates/rustyred-log/src/proposal.rs",
       "sha256": "a9b8667d108a082e91706029e47b504f9578f2da59f10098f2bbb7be1eed6475",
-      "identical_to_3e42e7e": true
+      "identical_to_3e42e7e": true,
+      "historical_3e42e7e_sha256": "a9b8667d108a082e91706029e47b504f9578f2da59f10098f2bbb7be1eed6475"
     }
   ],
   "executions": [
@@ -519,12 +571,109 @@
       "revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
       "run_id": 39485418033,
       "run_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39485418033",
-      "outcome": "in_progress_at_capture",
+      "outcome": "failed_engine_consolidated_integration_after_both_unit_suites_passed",
       "targets": [
         "aarch64-apple-darwin",
         "x86_64-unknown-linux-gnu"
       ],
-      "changes": "Manifest assertion now parses the maintained fork package/version while preserving encoding version 1.0.0; test profile explicitly uses original latency oracle optimization level 1. Neither prior failure is rewritten as passing."
+      "changes": "Manifest assertion now parses the maintained fork package/version while preserving encoding version 1.0.0; test profile explicitly uses original latency oracle optimization level 1. Neither prior failure is rewritten as passing.",
+      "job_states_at_latest_capture": [
+        {
+          "name": "native (macos-14, aarch64-apple-darwin)",
+          "status": "completed",
+          "conclusion": "failure",
+          "completed_successful_steps": [
+            "Set up job",
+            "Run actions/checkout@v4",
+            "Run dtolnay/rust-toolchain@1.96.1",
+            "Assert native target and compiler floor",
+            "Public dependency boundary",
+            "Formatting for changed first-party Rust files",
+            "Embedded facade, CLI, example and failure oracles"
+          ],
+          "running_steps": []
+        },
+        {
+          "name": "native (ubuntu-24.04, x86_64-unknown-linux-gnu)",
+          "status": "completed",
+          "conclusion": "failure",
+          "completed_successful_steps": [
+            "Set up job",
+            "Run actions/checkout@v4",
+            "Run dtolnay/rust-toolchain@1.96.1",
+            "Assert native target and compiler floor",
+            "Public dependency boundary",
+            "Formatting for changed first-party Rust files",
+            "Embedded facade, CLI, example and failure oracles",
+            "Run actions/upload-artifact@v4",
+            "Post Run actions/checkout@v4",
+            "Complete job"
+          ],
+          "running_steps": []
+        },
+        {
+          "name": "clean-candidate-measurement",
+          "status": "completed",
+          "conclusion": "success",
+          "completed_successful_steps": [
+            "Set up job",
+            "Run actions/checkout@v4",
+            "Run dtolnay/rust-toolchain@1.96.1",
+            "Install isolated measurement dependency",
+            "Cold clean-pinned build and real example measurements",
+            "Run actions/upload-artifact@v4",
+            "Post Run actions/checkout@v4",
+            "Complete job"
+          ],
+          "running_steps": []
+        }
+      ],
+      "public_facade_step": "success on both supported native targets; embedded11/failure9/rr_roundtrip exit0/CLI1 unchanged source from3e42",
+      "engine_unit_results": {
+        "aarch64-apple-darwin": {
+          "passed": 852,
+          "failed": 0
+        },
+        "x86_64-unknown-linux-gnu": {
+          "passed": 851,
+          "failed": 0
+        }
+      },
+      "consolidated_it_results": {
+        "aarch64-apple-darwin": {
+          "failed": 5
+        },
+        "x86_64-unknown-linux-gnu": {
+          "passed": 233,
+          "failed": 5,
+          "ignored": 6,
+          "runtime_seconds": 32.34
+        }
+      },
+      "failure_log": "/tmp/rustyred-ci-d14-failed.log",
+      "failure_analysis": [
+        {
+          "tests": [
+            "commit_scaling::a_bounded_upsert_commit_publishes_a_delta_and_never_stages_the_store",
+            "prolly_parity_boundary::a_bounded_write_runs_no_whole_graph_parity_audit"
+          ],
+          "cause": "Consolidated tests share global counters, reset/read assertions are contaminated by concurrent test threads. Parent serializes runner, unchanged assertions."
+        },
+        {
+          "tests": [
+            "lfr_chunk_store_injection::lfr_injected_store_refuses_a_catalog_whose_state_chunk_is_missing",
+            "lfr_chunk_store_injection::lfr_injected_store_refuses_malformed_committed_state"
+          ],
+          "cause": "Old fixtures publish REDCORE-only catalog without required graph root; corrected fixture seeds actual committed graph. Missing named root is refused before publication; separate named damaged-read fixture preserves recovery refusal at named catalog validation."
+        },
+        {
+          "tests": [
+            "vector_index_update_acceptance::mixed_exact_and_turbovec_indexes_report_conservative_backend"
+          ],
+          "cause": "Theorem2105ccd1d43 introduced small-index below_acceleration_minimum receipt and changed small fixture to63 points, but retained stale904d7db6 None assertion. Test-only repair captures aggregate first, proves large and small label contracts separately, then requires aggregated fallback preserve small threshold reason."
+        }
+      ],
+      "limitation": "Both complete native jobs fail at consolidated integration binary. Query/later supporting/Clippy/package stages not reached; do not call this a complete CI pass. Measurements job separately succeeded."
     },
     {
       "id": "local-final-fold-differential",
@@ -537,18 +686,46 @@
       },
       "test_profile_opt_level": 1,
       "command": "cargo test --locked --offline -p rustyred-engine --features test-fault-injection --test fold_commit_outcome --test graphstore_fold_differential --test fold_algebra_laws --test query_extension_boundary",
-      "outcome": "running",
-      "session_id": 82744
+      "outcome": "passed",
+      "session_id": 82744,
+      "exit_code": 0,
+      "build_elapsed": "24m14s",
+      "results": {
+        "fold_algebra_laws": {
+          "passed": 3,
+          "failed": 0,
+          "runtime_seconds": 0.09
+        },
+        "fold_commit_outcome": {
+          "passed": 2,
+          "failed": 0,
+          "runtime_seconds": 0.04
+        },
+        "graphstore_fold_differential": {
+          "passed": 4,
+          "failed": 0,
+          "runtime_seconds": 3.22
+        },
+        "query_extension_boundary": {
+          "passed": 1,
+          "failed": 0,
+          "runtime_seconds": 0.0
+        }
+      },
+      "revision_caveat": "Queued atd14, four tested source files and runtime engine/fold source unchanged throughb44; profile opt1. Package compile began before later docs/test-fixture commits, not an isolated exact-b44 clean build."
     },
     {
       "id": "local-native-unknown-root-development",
-      "revision": null,
-      "revision_caveat": "Test-only working-tree addition after d14c89c; exact source hash recorded after execution. No runtime implementation change.",
+      "revision": "7140b00",
+      "revision_caveat": "Test added in8d19025; source frozen7140b00 when queued; later fixture-only integration changes do not touch this source.",
       "base_revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
       "target": "aarch64-apple-darwin",
       "command": "cargo test --locked --offline -p rustyred --features test-fault-injection --test embedded_api rr_compaction_refuses_unverified_named_root_without_changing_file",
-      "outcome": "pending_existing_cargo_lane",
-      "test_profile_opt_level": 1
+      "outcome": "cancelled_redundant_before_execution",
+      "test_profile_opt_level": 1,
+      "session_id": 24248,
+      "exit_code": 130,
+      "reason": "Exact7140 CI already executed this native test successfully on both supported targets; cancelled queued same-source local duplicate to release Cargo lane."
     },
     {
       "id": "distribution-preliminary-real-primitives",
@@ -573,6 +750,793 @@
       "artifact_path": "/Volumes/SSD Samsung/rustyred-package-rehearsal-20261020-final/os-sandbox-consumer.json",
       "network_negative_control": "Same OS profile refused socket.bind(127.0.0.1,0) with PermissionError",
       "limitation": "Archive snapshot predates final physical-log/advanced-fold/Bayes CLI repairs. Do not close final G04/G09 from this preliminary receipt. Distribution is preparing a clean final release-check snapshot."
+    },
+    {
+      "id": "local-ci-fixture-repair",
+      "revision": "b44d46ffe8ab756a64c9ae21eff15c85d80c8921",
+      "base_revision": "7140b00",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4"
+      },
+      "command": "cargo test --locked --offline -p rustyred-engine --features test-fault-injection --test it lfr_chunk_store_injection -- --test-threads=1",
+      "session_id": 23815,
+      "outcome": "passed",
+      "review": "release_review raw review approved original recovery plus distinct admission oracle; aggregate vector capture precedes component reads; no production or format changes.",
+      "source_hashes": {
+        "crates/rustyred-engine/tests/it/lfr_chunk_store_injection.rs": "6cdd2bf46fc71238fc15050d0a28f1ae82caff85a1088b0c7c336b75ffbb708c",
+        "crates/rustyred-engine/tests/it/vector_index_update_acceptance.rs": "7c5d8e34af1a7361767faf716569afc29691aebc6ea0e17557fd2b0a9409baae"
+      },
+      "exit_code": 0,
+      "results": {
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "filtered_out": 238,
+        "runtime_seconds": 0.13
+      },
+      "build_elapsed_including_queue": "8m18s"
+    },
+    {
+      "id": "local-serial-consolidated-integration",
+      "revision": "b44d46ffe8ab756a64c9ae21eff15c85d80c8921",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4"
+      },
+      "command": "cargo test --locked --offline -p rustyred-engine --features test-fault-injection --test it -- --test-threads=1",
+      "session_id": 91020,
+      "outcome": "failed",
+      "test_profile_opt_level": 1,
+      "total_tests": 247,
+      "exit_code": 101,
+      "results": {
+        "passed": 240,
+        "failed": 1,
+        "ignored": 6,
+        "runtime_seconds": 174.06
+      },
+      "failure": {
+        "test": "hook_dispatch::coalesces_ingest_storm_into_one_call_and_writes_back",
+        "location": "crates/rustyred-engine/tests/it/hook_dispatch.rs:692",
+        "actual_calls": 2,
+        "expected_calls": 1,
+        "analysis": "50 separate actual graph commits can exceed fixed80ms debounce, legitimately yielding2 coalesced batches. All five prior broken fixtures/global counter cases passed; only timing-dependent storm fixture remains."
+      }
+    },
+    {
+      "id": "candidate-ci-7140",
+      "revision": "7140b000bbbfcc3c72dc4ea4808caa5be1542b22",
+      "run_id": 39486966497,
+      "run_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39486966497",
+      "outcome": "failed",
+      "public_facade_step": {
+        "targets": {
+          "aarch64-apple-darwin": {
+            "embedded_api": {
+              "passed": 12,
+              "failed": 0,
+              "runtime_seconds": 0.14
+            },
+            "rr_failures": {
+              "passed": 9,
+              "failed": 0,
+              "runtime_seconds": 0.07
+            },
+            "cli": {
+              "passed": 1,
+              "failed": 0
+            },
+            "rr_roundtrip": {
+              "harness": "false",
+              "exit_code": 0
+            }
+          },
+          "x86_64-unknown-linux-gnu": {
+            "embedded_api": {
+              "passed": 12,
+              "failed": 0,
+              "runtime_seconds": 0.02
+            },
+            "rr_failures": {
+              "passed": 9,
+              "failed": 0,
+              "runtime_seconds": 0.02
+            },
+            "cli": {
+              "passed": 1,
+              "failed": 0
+            },
+            "rr_roundtrip": {
+              "harness": "false",
+              "exit_code": 0
+            }
+          }
+        },
+        "new_native_unknown_root_test": "rr_compaction_refuses_unverified_named_root_without_changing_file passed on both platforms"
+      },
+      "engine_unit": {
+        "aarch64-apple-darwin": {
+          "passed": 852,
+          "failed": 0,
+          "ignored": 1,
+          "runtime_seconds": 8.11
+        },
+        "x86_64-unknown-linux-gnu": {
+          "passed": 849,
+          "failed": 2,
+          "ignored": 1,
+          "runtime_seconds": 2.03,
+          "failed_tests": [
+            "versioned_graph::tests::redcore_journal_injected_incremental_divergence_fails_the_reopen_closed",
+            "graph_store::tests::redcore_journal_growth_is_subquadratic_in_commit_count"
+          ],
+          "analysis": "Global test-only FORCE_INCREMENTAL_VALIDATION_DIVERGENCE AtomicBool at versioned_graph.rs:101 is set by divergence test (7863) and consumed by any incremental write at3043; parallel growth test consumed injected stale spine (506-vs504 count) while intended divergence reopen stayed clean. b44 serial runner removes cross-test sharing, with no production change/assertion weakening."
+        }
+      },
+      "engine_consolidated_it": {
+        "aarch64-apple-darwin": {
+          "passed": 233,
+          "failed": 5,
+          "ignored": 6,
+          "runtime_seconds": 51.18,
+          "failures": "same five counter/fixture cases documented candidate-ci-d14; repaired test fixtures and serial runner in b44"
+        },
+        "x86_64-unknown-linux-gnu": {
+          "outcome": "not_reached_after_unit_failure"
+        }
+      },
+      "measurement_job": "success",
+      "limitation": "Workflow is failed, not complete acceptance. Query/supporting/later Clippy/package stages not reached after engine failure. b44 subsequent run validates corrections.",
+      "raw_status_path": "/tmp/rustyred-ci-7140-status.json",
+      "raw_log_path": "/tmp/rustyred-ci-7140.log"
+    },
+    {
+      "source_revision": "7140b000bbbfcc3c72dc4ea4808caa5be1542b22",
+      "result": "PASS",
+      "tests": 2,
+      "build_command": [
+        "cargo",
+        "+1.96.1",
+        "test",
+        "--no-run",
+        "--message-format=json"
+      ],
+      "runtime_commands": [
+        [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)(allow default)(deny network*)",
+          "/Volumes/SSD Samsung/codex-targets/rustyred-oss-distribution/debug/deps/rustyred_external_consumer-e4e8c99e9ec0efab"
+        ]
+      ],
+      "runtime_network_denial": "macOS sandbox deny network*",
+      "fresh_home": true,
+      "fresh_cargo_home": true,
+      "rustc": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2\n",
+      "consumer_source_sha256": "729abeb0997303114339445259d89c5358c696c064af372c46a285d2e5701a6b",
+      "consumer_manifest_sha256": "ed38a647105e6a6444b3b408f31c1feff3acbb36a64609b18d98200898d54197",
+      "consumer_lock_sha256": "8c3998fdc5a78e717ca13ed38d7b9f2aeae76ec155716ab88b10739534bbb2d2",
+      "binary_sha256": {
+        "/Volumes/SSD Samsung/codex-targets/rustyred-oss-distribution/debug/deps/rustyred_external_consumer-e4e8c99e9ec0efab": "4766ca8ddec8422be3f3b4c0aeb327f6ed34743805bf006277ff6fdc4599d1e0"
+      },
+      "id": "public-git-consumer-7140",
+      "target": "aarch64-apple-darwin",
+      "artifact_path": "/Volumes/SSD Samsung/rustyred-git-consumer-7140b00/result.json",
+      "runtime_log": "/Volumes/SSD Samsung/rustyred-git-consumer-7140b00/runtime.log",
+      "runtime_seconds": 0.06,
+      "oracle": "Actual supplied-vector ordering and exact payload/history/atomic edge graph API plus native FullTextIndex BM25, SpatialIndex H3 and explicit edge-time interval primitives. Outside-workspace public Git source pin; no workspace patches; runtime network denied by OS sandbox."
+    },
+    {
+      "id": "local-hook-temporal-fixture-repair",
+      "revision": null,
+      "base_revision": "b44d46ffe8ab756a64c9ae21eff15c85d80c8921",
+      "revision_caveat": "Test-only working-tree fix; parent will checkpoint. Actual store and dispatcher unchanged, all50 independent commits retained.",
+      "source_sha256": "480e641a198db2e36c51cc0ebf9d1d116899f397487789619175cdb08d8f64c9",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4"
+      },
+      "command": "cargo test --locked --offline -p rustyred-engine --features test-fault-injection --test it hook_dispatch::coalesces_ingest_storm_into_one_call_and_writes_back -- --test-threads=1",
+      "session_id": 54251,
+      "outcome": "passed",
+      "oracle": "Existing HookStoreAccess seam gates first actual primer dispatch before real store lock via mpsc. All50 independent real commits enter following batch; resume, assert one coalesced handler,all50seen,exactsummary. Channel sender binding drops before dispatcher join on unwind; disconnected receiver returnsfalse.",
+      "exit_code": 0,
+      "results": {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "filtered_out": 246,
+        "runtime_seconds": 0.51
+      },
+      "build_elapsed": "1m26s",
+      "review": "release_review raw-approved gate/delegation/primer separation and panic-drop ordering."
+    },
+    {
+      "id": "local-serial-consolidated-hookfix",
+      "revision": null,
+      "base_revision": "b44d46ffe8ab756a64c9ae21eff15c85d80c8921",
+      "revision_caveat": "Only deterministic temporal hook fixture differs from b44; parent checkpoint pending.",
+      "target": "aarch64-apple-darwin",
+      "command": "cargo test --locked --offline -p rustyred-engine --features test-fault-injection --test it -- --test-threads=1",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4"
+      },
+      "session_id": 17172,
+      "raw_log_path": "/tmp/rustyred-local-serial-it-hookfix.log",
+      "outcome": "failed",
+      "exit_code": 101,
+      "results": {
+        "passed": 240,
+        "failed": 1,
+        "ignored": 6,
+        "runtime_seconds": 141.4
+      },
+      "failure": {
+        "test": "commit_scaling::a_bounded_upsert_commit_publishes_a_delta_and_never_stages_the_store",
+        "location": "crates/rustyred-engine/tests/it/commit_scaling.rs:699",
+        "kind": "wall_clock_threshold",
+        "steady_median_ms": 17.333167,
+        "serde_pass_ms": 2.086709,
+        "ratio": 8.31,
+        "maximum_ratio": 4.0,
+        "counter_assertions": "passed (delta publications12,staged2)",
+        "note": "Same scaling and production source passed this test in prior serial91020; do not substitute that earlier pass for this failed full suite. No threshold changes."
+      }
+    },
+    {
+      "revision": "7140b000bbbfcc3c72dc4ea4808caa5be1542b22",
+      "tests": 2,
+      "result": "PASS",
+      "runtime_network_denial": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)"
+      ],
+      "id": "normalized-package-primitives-7140",
+      "target": "aarch64-apple-darwin",
+      "artifact_path": "/Volumes/SSD Samsung/rustyred-release-review-7140b00/package-evidence/consumer-runtime-passed.json",
+      "raw_log_path": "/tmp/rustyred-package-continuation-7140.log",
+      "scope": "Consumer runtime only: all15 archive SHA256s and clean7140 VCS revisions verified, freshHOME+CARGO_HOME+OS network denied.14 archive checks and CLI/example steps still pending for full G09 package pipeline."
+    },
+    {
+      "id": "local-bounded-upsert-isolated",
+      "revision": null,
+      "base_revision": "b44d46ffe8ab756a64c9ae21eff15c85d80c8921",
+      "revision_caveat": "Only unrelated temporal hook test fixture changed afterb44; exact scaling source unchanged.",
+      "target": "aarch64-apple-darwin",
+      "command": "cargo nextest run --locked --offline -p rustyred-engine --features test-fault-injection --test it -E 'test(=commit_scaling::a_bounded_upsert_commit_publishes_a_delta_and_never_stages_the_store)' --test-threads 1",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4"
+      },
+      "outcome": "failed",
+      "exit_code": 100,
+      "results": {
+        "passed": 0,
+        "failed": 1,
+        "skipped": 246,
+        "runtime_seconds": 0.807
+      },
+      "failure": {
+        "kind": "wall_clock_threshold",
+        "steady_median_ms": 12.384,
+        "serde_pass_ms": 2.985875,
+        "maximum_ratio": 4.0,
+        "count_assertions": "passed"
+      },
+      "raw_log_path": "/tmp/rustyred-bounded-upsert-isolated.log",
+      "limitation": "Focused isolation does not remove host load. Existing source-pin baseline is required for nonregression comparison. No threshold changes/no further blind retries."
+    },
+    {
+      "id": "source-plan-pin-scaling-calibration",
+      "revision": "d6a7062c",
+      "target": "aarch64-apple-darwin",
+      "outcome": "passed",
+      "results": {
+        "passed": 1,
+        "failed": 0,
+        "filtered_out": 237,
+        "runtime_seconds": 5.02
+      },
+      "steady_median_ms": 25.145417,
+      "attribution_and_serialization_ms": 43.511292,
+      "ratio": 0.58,
+      "profile": {
+        "root_opt_level": 0,
+        "dependency_opt_level": 2
+      },
+      "command": [
+        "/Volumes/SSD Samsung/codex-targets/rustyred-oss-source-pin/debug/deps/it-6f2a348f1964753a",
+        "commit_scaling::a_bounded_upsert_commit_publishes_a_delta_and_never_stages_the_store",
+        "--exact",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "raw_log_path": "/tmp/rustyred-source-pin-scaling-calibration.log",
+      "limitation": "The source integration suite failed two consolidated cases and a separate fold-floor case. This receipt establishes measured calibration only, not a passing source suite."
+    },
+    {
+      "id": "local-scaling-calibrated-dev",
+      "revision": null,
+      "target": "aarch64-apple-darwin",
+      "profile": {
+        "name": "dev",
+        "root_opt_level": 0,
+        "dependency_opt_level": 2
+      },
+      "command": "cargo test --locked --offline --profile dev -p rustyred-engine --features test-fault-injection --test it commit_scaling::a_bounded_upsert_commit_publishes_a_delta_and_never_stages_the_store -- --exact --nocapture --test-threads=1",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4"
+      },
+      "raw_log_path": "/tmp/rustyred-scaling-calibrated-dev.log",
+      "session_id": 3732,
+      "outcome": "passed",
+      "reason": "Controlled source-calibrated profile experiment, after unchanged test1 profile relative-threshold failure and exactsource0/2 pass; no assertion ceiling change.",
+      "exit_code": 0,
+      "build_elapsed": "18m10s",
+      "results": {
+        "passed": 1,
+        "failed": 0,
+        "filtered_out": 246,
+        "runtime_seconds": 8.58
+      },
+      "steady_median_ms": 97.708417,
+      "attribution_and_serialization_ms": 96.801875,
+      "ratio": 1.01,
+      "count_assertions": "passed:delta12,staged2",
+      "source_checkpoint": "e24c53b735d01e6a869016387f91da03767fe832",
+      "runtime_hash_verification": "/tmp/rustyred-e24-runtime-filehashes-after-focused.json",
+      "revision_caveat": "Command began before checkpoint during dependency compilation; all355workspace Rust/manifests byte-identical during captured interval through final execution. Independent cleanCI still provides exact isolated revision evidence."
+    },
+    {
+      "id": "local-complete-engine-integrations-calibrated",
+      "revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+      "runtime_source_checkpoint": "e24c53b735d01e6a869016387f91da03767fe832",
+      "source_identity": "All355runtime Rust/manifests unchanged from e24 to b4eb; fullcommand started after b4eb.",
+      "target": "aarch64-apple-darwin",
+      "profile": {
+        "name": "dev",
+        "root_opt_level": 0,
+        "dependency_opt_level": 2
+      },
+      "command": "cargo test --locked --offline --no-fail-fast --profile dev -p rustyred-engine --features test-fault-injection --test '*' -- --test-threads=1",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4"
+      },
+      "session_id": 12620,
+      "raw_log_path": "/tmp/rustyred-calibrated-all-engine-integration.log",
+      "outcome": "cancelled_redundant_before_execution",
+      "target_scope": "ALL26Cargo integration targets; no namefilter. Engine unitlibrary separately uses its retainedroot1latencycalibration.",
+      "exit_code": 130,
+      "reason": "Exactb4CI39493345294 successfully executed full26engine integration targets under calibrated profile on both supportednative platforms. Cancelled queued local duplicate before execution; not an oracle failure."
+    },
+    {
+      "source_revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+      "result": "PASS",
+      "tests": 2,
+      "build_command": [
+        "cargo",
+        "+1.96.1",
+        "test",
+        "--no-run",
+        "--message-format=json"
+      ],
+      "runtime_commands": [
+        [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)(allow default)(deny network*)",
+          "/Volumes/SSD Samsung/codex-targets/rustyred-oss-distribution/debug/deps/rustyred_external_consumer-fde124883c20a082"
+        ]
+      ],
+      "runtime_network_denial": "macOS sandbox deny network*",
+      "fresh_home": true,
+      "fresh_cargo_home": false,
+      "cargo_home_provenance": "Reused public-only credential-free home created for immutable 7140b00 proof; no user Cargo configuration copied.",
+      "rustc": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2\n",
+      "consumer_source_sha256": "729abeb0997303114339445259d89c5358c696c064af372c46a285d2e5701a6b",
+      "consumer_manifest_sha256": "c8a5e906d936c81f2fb9072b7c0f19293ff7f9c96720c6cef189cd48fef48924",
+      "consumer_lock_sha256": "9f67acee0e4ec850cafe2959a1ee972327a0fb33fc41a4b7dd1ba5dc9a4410f2",
+      "binary_sha256": {
+        "/Volumes/SSD Samsung/codex-targets/rustyred-oss-distribution/debug/deps/rustyred_external_consumer-fde124883c20a082": "da5b61633daac702750eaf3242496f177eb68f5579df03f01ffeee79f696ea9d"
+      },
+      "consumer_tree_sha256": "6b1e3ba71b568d17cd0865a2e1eda1888d58c69135570a472bff4c5fe00742b6",
+      "id": "public-git-consumer-final-b4",
+      "artifact_path": "/Volumes/SSD Samsung/rustyred-git-consumer-b4ebfc3/result.json",
+      "runtime_log": "/Volumes/SSD Samsung/rustyred-git-consumer-b4ebfc3/runtime.log",
+      "runtime_seconds": 0.07,
+      "scope": "Exact final public Git source and actual supplied-vector/atomic graph/payload/history/fulltext/spatial/time primitive consumer; normalized package gate remains separate."
+    },
+    {
+      "id": "candidate-ci-final-b4",
+      "revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+      "run_id": 39493345294,
+      "run_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294",
+      "outcome": "passed",
+      "status_snapshot": "/tmp/rustyred-ci-b4-status-final.json",
+      "job_states": [
+        {
+          "name": "clean-candidate-measurement",
+          "status": "completed",
+          "conclusion": "success",
+          "passed_steps": [
+            "Set up job",
+            "Run actions/checkout@v4",
+            "Run dtolnay/rust-toolchain@1.96.1",
+            "Install isolated measurement dependency",
+            "Cold clean-pinned build and real example measurements",
+            "Run actions/upload-artifact@v4",
+            "Post Run actions/checkout@v4",
+            "Complete job"
+          ]
+        },
+        {
+          "name": "native (macos-14, aarch64-apple-darwin)",
+          "status": "completed",
+          "conclusion": "success",
+          "passed_steps": [
+            "Set up job",
+            "Run actions/checkout@v4",
+            "Run dtolnay/rust-toolchain@1.96.1",
+            "Assert native target and compiler floor",
+            "Public dependency boundary",
+            "Formatting for changed first-party Rust files",
+            "Embedded facade, CLI, example and failure oracles",
+            "Engine unit suite (calibrated latency profile)",
+            "Complete engine integration target set (calibrated scaling profile)",
+            "Query suites",
+            "Known committed fold-maintenance failure oracle",
+            "Supporting crate suites",
+            "Physical log subprocess crash and mixed-version recovery",
+            "Documentation tests and examples",
+            "Clippy (default supported native closure)",
+            "Optional pure Rust feature matrix",
+            "Normalized package and outside-workspace consumer",
+            "Run actions/upload-artifact@v4",
+            "Post Run actions/checkout@v4",
+            "Complete job"
+          ]
+        },
+        {
+          "name": "native (ubuntu-24.04, x86_64-unknown-linux-gnu)",
+          "status": "completed",
+          "conclusion": "success",
+          "passed_steps": [
+            "Set up job",
+            "Run actions/checkout@v4",
+            "Run dtolnay/rust-toolchain@1.96.1",
+            "Assert native target and compiler floor",
+            "Public dependency boundary",
+            "Formatting for changed first-party Rust files",
+            "Embedded facade, CLI, example and failure oracles",
+            "Engine unit suite (calibrated latency profile)",
+            "Complete engine integration target set (calibrated scaling profile)",
+            "Query suites",
+            "Known committed fold-maintenance failure oracle",
+            "Supporting crate suites",
+            "Physical log subprocess crash and mixed-version recovery",
+            "Documentation tests and examples",
+            "Clippy (default supported native closure)",
+            "Optional pure Rust feature matrix",
+            "Normalized package and outside-workspace consumer",
+            "Run actions/upload-artifact@v4",
+            "Post Run actions/checkout@v4",
+            "Complete job"
+          ]
+        }
+      ],
+      "completed_target_receipts": {
+        "x86_64-unknown-linux-gnu": {
+          "job_result": "success",
+          "raw_log_path": "/tmp/rustyred-ci-b4-linux.log",
+          "raw_log_sha256": "7c60da143ed25a15f9d0e1c2c8dfabfaec1bc54af0c0942c465aaafb84cdfa7c",
+          "per_binary_counts_artifact": "/tmp/rustyred-ci-b4-linux-counts.json",
+          "engine_unit": {
+            "passed": 851,
+            "failed": 0,
+            "ignored": 1,
+            "runtime_seconds": 5.32
+          },
+          "complete_engine_integrations": {
+            "targets": 26,
+            "passed": 307,
+            "failed": 0,
+            "ignored": 8,
+            "it": {
+              "passed": 241,
+              "failed": 0,
+              "ignored": 6,
+              "runtime_seconds": 177.39
+            }
+          },
+          "query_library": {
+            "passed": 81,
+            "failed": 0
+          },
+          "query_source_fixture": {
+            "name": "source_fixture_preserves_records_queries_indexes_payloads_and_history",
+            "passed": 1,
+            "failed": 0,
+            "runtime_seconds": 0.01,
+            "raw_pass_line": "2026-10-20T20:51:21.0821910Z test source_fixture_preserves_records_queries_indexes_payloads_and_history ... ok"
+          },
+          "public_embedded_api": {
+            "passed": 12,
+            "failed": 0,
+            "runtime_seconds": 0.04
+          },
+          "public_rr_failures": {
+            "passed": 9,
+            "failed": 0,
+            "runtime_seconds": 0.05
+          },
+          "rr_roundtrip_harness_false": [
+            {
+              "command": "cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection",
+              "target": "tests/rr_roundtrip.rs",
+              "binary": "target/debug/deps/rr_roundtrip-ed182f4eff0ee592",
+              "exit_code": 0,
+              "qualification": "The facade command and native job succeeded. This harness=false executable performs separate-process assertions after copying only the closed .RR file."
+            }
+          ],
+          "physical_crash_matrix": {
+            "passed": 2,
+            "failed": 0,
+            "runtime_seconds": 1.01
+          },
+          "normalized_package_consumer": {
+            "passed": 2,
+            "failed": 0,
+            "runtime_seconds": 0.01
+          }
+        },
+        "aarch64-apple-darwin": {
+          "job_result": "success",
+          "raw_log_path": "/tmp/rustyred-ci-b4-macos.log",
+          "raw_log_sha256": "90ec58bc228f862322910c767fd62758f0526d83257633a2742e65b56d9b5b34",
+          "per_binary_counts_artifact": "/tmp/rustyred-ci-b4-macos-counts.json",
+          "engine_unit": {
+            "passed": 852,
+            "failed": 0,
+            "ignored": 1,
+            "runtime_seconds": 14.86
+          },
+          "complete_engine_integrations": {
+            "targets": 26,
+            "passed": 307,
+            "failed": 0,
+            "ignored": 8,
+            "it": {
+              "passed": 241,
+              "failed": 0,
+              "ignored": 6,
+              "runtime_seconds": 205.06
+            }
+          },
+          "query_library": {
+            "passed": 81,
+            "failed": 0
+          },
+          "query_source_fixture": {
+            "name": "source_fixture_preserves_records_queries_indexes_payloads_and_history",
+            "passed": 1,
+            "failed": 0,
+            "runtime_seconds": 0.08,
+            "raw_pass_line": "2026-10-20T20:53:35.5753600Z test source_fixture_preserves_records_queries_indexes_payloads_and_history ... ok"
+          },
+          "public_embedded_api": {
+            "passed": 12,
+            "failed": 0,
+            "runtime_seconds": 0.09
+          },
+          "public_rr_failures": {
+            "passed": 9,
+            "failed": 0,
+            "runtime_seconds": 0.16
+          },
+          "rr_roundtrip_harness_false": [
+            {
+              "command": "cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection",
+              "target": "tests/rr_roundtrip.rs",
+              "binary": "target/debug/deps/rr_roundtrip-4e9ee54bdd6a7075",
+              "exit_code": 0,
+              "qualification": "The facade command and native job succeeded. This harness=false executable performs separate-process assertions after copying only the closed .RR file."
+            }
+          ],
+          "physical_crash_matrix": {
+            "passed": 2,
+            "failed": 0,
+            "runtime_seconds": 0.22
+          },
+          "normalized_package_consumer": {
+            "passed": 2,
+            "failed": 0,
+            "runtime_seconds": 0.06
+          }
+        }
+      },
+      "whole_workflow_conclusion": "success",
+      "target_selection_and_profile_note": "Engine units use test root opt-level 1 with dependency opt-level 2. All 26 engine integration targets use the source-calibrated dev root opt-level 0 with dependency opt-level 2. No ceilings changed; the full suites have no target/name exclusions. Explicit fault features execute the real projection/store failure oracles. Existing ignored tests are listed in per-binary counts; no blanket ignores were added."
+    },
+    {
+      "id": "parent-local-query-parity-duplicate",
+      "source_revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+      "session_id": 20206,
+      "outcome": "cancelled_redundant_before_execution",
+      "exit_code": 130,
+      "reported_by": "parent",
+      "reason": "Exactb4query suite including new extraction_parity integration passed both supportednative CI platforms. Parent cancelled its owned Cargo54119 before tests executed; no oracle failure. Final named extraction_parity receipt will come from cleanCI logs."
+    },
+    {
+      "id": "final-normalized-archive-compilation-b4",
+      "revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+      "artifact_path": "/Volumes/SSD Samsung/rustyred-release-review-b4ebfc3/package-evidence/archive-targets-checked.json",
+      "outcome": "passed_compile_only",
+      "scope": "All14pure-Rust normalized archive packages --all-targets checks passed;15cleanb4archive hashes/filelists verified. OptionalnativeGraphBLASarchive checked separately by parent. Final normalized primitive consumer actualruntime still pending.",
+      "command": "cargo +1.96.1 check --offline --all-targets",
+      "dirty": false,
+      "checked": [
+        "rustyred",
+        "rustyred-bayes",
+        "rustyred-cli",
+        "rustyred-contracts",
+        "rustyred-datalog",
+        "rustyred-derivation",
+        "rustyred-egg",
+        "rustyred-egraph",
+        "rustyred-engine",
+        "rustyred-log",
+        "rustyred-query",
+        "rustyred-query-saturate",
+        "rustyred-scope",
+        "rustyred-turbovec"
+      ],
+      "excluded": {
+        "rustyred-graphblas": "separate native prerequisites and runtime qualification required"
+      },
+      "archives": [
+        {
+          "name": "rustyred",
+          "version": "0.1.0-beta.2",
+          "sha256": "2879ce9b4258315925ecbd55f602adf1b6ead6780d2ac3d92f3cc0e6838b7775"
+        },
+        {
+          "name": "rustyred-contracts",
+          "version": "0.1.0-beta.2",
+          "sha256": "40dd024f0e86b6203b342ff246e7b812e6ff80e765dc2d0d839114860514e83a"
+        },
+        {
+          "name": "rustyred-engine",
+          "version": "0.1.0-beta.2",
+          "sha256": "771208a9bb4c7fffc0b4bc722211998ce698f3d383471f05e1c3063014ae859d"
+        },
+        {
+          "name": "rustyred-datalog",
+          "version": "0.1.0-beta.2",
+          "sha256": "2de1604b43652bf2dd88b7bb74fba7ce70c785843396125780d9215710116379"
+        },
+        {
+          "name": "rustyred-egraph",
+          "version": "0.1.0-beta.2",
+          "sha256": "f1180903e2b4f8a92b8c136c9a8e3f8befcfddd0ff273a666e3c32f18bd4ee8d"
+        },
+        {
+          "name": "rustyred-egg",
+          "version": "0.1.0-beta.2",
+          "sha256": "7ae2b4681aec8b9364174e46749fa38c3f1a7c07c4c05160ee43a2354de20bd0"
+        },
+        {
+          "name": "rustyred-derivation",
+          "version": "0.1.0-beta.2",
+          "sha256": "174619633f504085cca9e5ef4badcd51f736932c2684f2accb146be0ef16db32"
+        },
+        {
+          "name": "rustyred-graphblas",
+          "version": "0.1.0-beta.2",
+          "sha256": "816a4edc454bb813083e4e12e032f6f22372bad694d13a7ab7d802b1106707d3"
+        },
+        {
+          "name": "rustyred-bayes",
+          "version": "0.1.0-beta.2",
+          "sha256": "d9a585ba9bd1db0336965c181ac55133de0a999921ba557897980b75e7242002"
+        },
+        {
+          "name": "rustyred-scope",
+          "version": "0.1.0-beta.2",
+          "sha256": "2ac0605bd02c49f8e3af593cd132732a0f46aba165a317802ecb56e0eef33bbb"
+        },
+        {
+          "name": "rustyred-log",
+          "version": "0.1.0-beta.2",
+          "sha256": "3dd870854d0aa5a8339a665e81b1c6d74944267e237f3ccec2af8bcbd1dcd549"
+        },
+        {
+          "name": "rustyred-turbovec",
+          "version": "0.1.0-beta.2",
+          "sha256": "37d218ec7726e111d9eab433935f0311aba9ae4014db85ac04b6171d6010e27e"
+        },
+        {
+          "name": "rustyred-query",
+          "version": "0.1.0-beta.2",
+          "sha256": "c8d6e43192fe6350e385319bcd1134251db9920b661a9d74ca4680d9276297d6"
+        },
+        {
+          "name": "rustyred-cli",
+          "version": "0.1.0-beta.2",
+          "sha256": "04f85adbc08e2a9613c83b749d8ffd443de5d8e2f49a15f1da2d1c49f285de0d"
+        },
+        {
+          "name": "rustyred-query-saturate",
+          "version": "0.1.0-beta.2",
+          "sha256": "3f3f317fb574184d955476298277ad17de5ac0208fc88648724c2fdd34b20ae8"
+        }
+      ]
+    },
+    {
+      "id": "final-normalized-native-graphblas-b4",
+      "revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+      "artifact_path": "/Volumes/SSD Samsung/rustyred-release-review-b4ebfc3/native-graphblas/result.json",
+      "outcome": "passed",
+      "scope": "Actual normalized optional native crate runtime with installed SuiteSparse GraphBLAS/LAGraph prerequisites and OS network denial. This does not qualify other platforms or the engine feature integration.",
+      "receipt": {
+        "revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+        "source_kind": "actual normalized .crate",
+        "archive_sha256": "816a4edc454bb813083e4e12e032f6f22372bad694d13a7ab7d802b1106707d3",
+        "command": [
+          "cargo",
+          "+1.96.1",
+          "test",
+          "--config",
+          "/Volumes/SSD Samsung/rustyred-release-review-b4ebfc3/package-evidence/consumer/.cargo/config.toml",
+          "--offline",
+          "--manifest-path",
+          "/Volumes/SSD Samsung/rustyred-release-review-b4ebfc3/package-evidence/directory-source/rustyred-graphblas-0.1.0-beta.2/Cargo.toml",
+          "--lib",
+          "--no-run",
+          "--message-format=json"
+        ],
+        "runtime_command": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1)(allow default)(deny network*)",
+          "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion/debug/deps/rustyred_thg_graphblas-54fa48d1bc946bd7",
+          "--test-threads=1"
+        ],
+        "runtime_exit": 0,
+        "result": "PASS",
+        "native_target": "aarch64-apple-darwin",
+        "native_prefix": "/Users/travisgilbert/.cache/rustyred-thg-graphblas/install",
+        "native_dependencies": {
+          "libgraphblas.9.4.5.dylib": "18fbc92745af6d0c93937d62d217136447527f7af4b64290588e2571bde5feac",
+          "liblagraph.1.2.1.dylib": "ad6aa0f8dee7191fb50e994eeda9346de56c758fa566c80cb1d025f2dc6a9a3a",
+          "liblagraphx.1.2.1.dylib": "5cbf8aea7f88d108b01548c426eb27dca2a0d5c875c554974a9a96094f702169"
+        },
+        "elapsed_seconds": 154.89641916699838,
+        "binary_sha256": "6a816677f5586a3becf01706fd917df125533dd2a78b437a4738b91ed9727f56",
+        "runtime_log_sha256": "66e21af9434f51649939b41eb453187897927027283dabbd30d79bd8a9c508f2",
+        "qualification": "experimental native GraphBLAS only; existing SuiteSparse9.4.5/LAGraph1.2.1 installed prefix required; no other target claim"
+      },
+      "results": {
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "runtime_seconds": 0.64
+      },
+      "raw_log_path": "/Volumes/SSD Samsung/rustyred-release-review-b4ebfc3/native-graphblas/runtime.log"
     }
   ],
   "gates": {
@@ -580,35 +1544,42 @@
       "evidence": [
         "ci-public-storage-3e42",
         "source_baseline",
-        "local-final-fold-differential"
+        "local-final-fold-differential",
+        "candidate-ci-final-b4"
       ],
-      "status": "candidate_semantic_tests_present_baseline_runtime_not_yet_complete",
-      "remaining": "Complete exact plan-pin core/query runs and final candidate suite, then compare actual fixture/oracle results; hashes alone do not establish runtime parity."
+      "status": "passed_candidate_native_core_and_complete_integration_and_query_gates_both_supported_targets; exact_source_baseline_failures_preserved",
+      "source_fixture_receipt": "The fixture captured from the actual d6a7062c source passed the named extraction_parity test on both native b4 CI targets. Original source unit/integration failures remain recorded as historical failures."
     },
     "G04": {
       "evidence": [
         "ci-public-storage-3e42",
         "source_baseline",
-        "distribution-preliminary-real-primitives"
+        "distribution-preliminary-real-primitives",
+        "public-git-consumer-7140",
+        "normalized-package-primitives-7140",
+        "public-git-consumer-final-b4",
+        "candidate-ci-final-b4"
       ],
       "public_primitive_consumer_source": "tests/external-consumer/src/lib.rs",
-      "status": "graph_vector_file_history_receipts_passed; text_spatial_time_consumer_receipt_owned_by_distribution",
-      "limitation": "planner_multimodal_acceptance.rs explicitly uses InMemoryModality, a stand-in for vector/text/spatial stores. It is a planner semantic oracle, not evidence of those real backends. The external consumer explicitly uses real FullTextIndex/BM25, SpatialIndex/H3, edge_time_interval, caller-supplied vector search, payloads and history; bind distribution execution results before closing this gate."
+      "status": "passed_actual_multimodal_source_fixture_and_public_git_and_normalized_package_consumers_final_b4_both_native_targets",
+      "limitation": "Planner InMemoryModality remains an explicitly classified stand-in. Backend evidence comes from the actual public primitive consumer and source golden fixture. Original source-suite failures remain recorded; the final G09 distribution pipeline has its own receipts."
     },
     "G05": {
       "evidence": [
         "ci-public-storage-3e42",
-        "local-public-storage-development"
+        "local-public-storage-development",
+        "candidate-ci-final-b4"
       ],
-      "status": "passed_on_both_supported_targets_at_3e42; final_d14_workflow_pending",
+      "status": "passed_final_b4_both_supported_native_targets",
       "oracle": "rr_roundtrip harness=false, separate process and fresh copy directory"
     },
     "G06": {
       "evidence": [
         "ci-public-storage-3e42",
-        "ci-engine-unit-3e42"
+        "ci-engine-unit-3e42",
+        "candidate-ci-final-b4"
       ],
-      "status": "passed_selected_boundary_oracles_on_both_supported_targets_at_3e42",
+      "status": "passed_final_b4_both_supported_native_targets",
       "oracle": "Conflicting same/cross-process writer, writable clone lifetime, Unix hard/symlink aliases, reachable read-only chunk write refusal, unchanged file bytes and no read-only sidecars."
     },
     "G07": {
@@ -616,19 +1587,22 @@
         "ci-public-storage-3e42",
         "local-physical-log-development",
         "local-physical-log-explicit-crashes-development",
-        "local-fold-outcomes-development"
+        "local-fold-outcomes-development",
+        "candidate-ci-final-b4"
       ],
-      "status": "public_RR_passed_both_targets; advanced_physical_and_fold_local_passed; final_d14_CI_pending",
+      "status": "passed_final_b4_both_supported_native_targets",
       "oracle": "Torn append and root, confirmed fsync rollback, indeterminate durable publication, corrupt committed content, postcommit pin cleanup, physical log poison/reopen/digest replay, known committed fold maintenance outcome."
     },
     "G08": {
       "evidence": [
         "ci-public-storage-3e42",
-        "ci-engine-unit-3e42"
+        "ci-engine-unit-3e42",
+        "candidate-ci-7140",
+        "candidate-ci-final-b4"
       ],
-      "status": "migration_history_payload_compaction_passed_both_targets_at_3e42; final_d14_pending",
-      "oracle": "Source bytes and roots preserved during migration; historical/current file and exact vector payload bytes survive compaction with pinned history. Passed native known-root/corrupt-root tests are included by name; unknown-root native proof remains separately identified below.",
-      "remaining_native_oracle": "Added native temporary .RR unknown named-root test rr_compaction_refuses_unverified_named_root_without_changing_file in crates/rustyred/tests/embedded_api.rs using actual JournalChunkStore catalog publication, CoreReachabilityCodec, byte-identical refusal and public read-only reopen. Execution pending the existing single Cargo lane; not yet passing evidence."
+      "status": "passed_final_b4_both_supported_native_targets",
+      "oracle": "Source bytes and roots preserved during migration; historical/current file and exact vector payload bytes survive compaction with pinned history. Actual native .RR unknown named-root refusal proved both supported targets at7140.",
+      "native_unknown_root_receipt": "Real JournalChunkStore .RR + CoreReachabilityCodec; public writable facade compaction rejects unsupported named root, exact bytes/catalog/orphan/named chunk unchanged, public read-only reopen preserves graph and opaque root."
     }
   },
   "storage_owner_audit": {
@@ -658,5 +1632,52 @@
     "source_scans": "docs/extraction/distribution-evidence/secret-scan-summary.json and associated source/history/archive reports are distribution-owned; rerun or verify checked source tree/archives match final candidate before G11. No secret-scan pass is asserted by this storage receipt.",
     "artifacts": "Normalized package archives and Git source have distinct provenance requirements; a local archive test does not establish registry installation.",
     "publication": "No release tag, registry upload or live data migration authorized by this receipt."
-  }
+  },
+  "scaling_profile_diagnosis_artifact": "/tmp/rustyred-scaling-profile-diagnosis.json",
+  "handshake_provenance": {
+    "source": "Source actual child stdout starts running1test + testname prefix then ACK on same line under RUST_TEST_THREADS1: test crash_during_batch_never_exposes_partial_state ... ACK. Parent reader requires line==ACK, so child exits before recognized ACK marker.",
+    "repair": "Parent adds newline before ACK to separate libtest prefix, preserving durable operation and crash protocol; no production changes.",
+    "focused_receipt": {
+      "session_id": 27482,
+      "raw_log_path": "/tmp/rustyred-fold-floor-handshake.log",
+      "results": {
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "runtime_seconds": 0.84
+      },
+      "tests": [
+        "acknowledged_batch_survives_abrupt_process_exit",
+        "crash_during_batch_never_exposes_partial_state",
+        "floor_format_reopens_after_overwrite_and_delete"
+      ],
+      "source_checkpoint": "e24c53b735d01e6a869016387f91da03767fe832",
+      "scope": "Focused retained native physical/fold owner real-process crash/ACK handshake; complete calibrated integration gate remains separate."
+    }
+  },
+  "profile_unit_graph_review": {
+    "artifact_path": "/tmp/rustyred-profile-unit-graph-review.json",
+    "reviewer": "release_review",
+    "tool": "Cargo nightly --unit-graph (read-only graph, no build)",
+    "result": "passed",
+    "engine_library": {
+      "root_and_engine_opt_level": 1,
+      "registry_dependencies_opt_level": 2
+    },
+    "all_engine_integration_targets": {
+      "count": 26,
+      "root_and_engine_opt_level": 0,
+      "registry_dependencies_opt_level": 2
+    },
+    "scope": "Independent proof of actual command target selection/inherited package overrides; runtime calibration and complete gates remain separate."
+  },
+  "runtime_source_hash_snapshot": {
+    "before": "/tmp/rustyred-e24-runtime-filehashes.json",
+    "after_focused": "/tmp/rustyred-e24-runtime-filehashes-after-focused.json",
+    "after_linux_ci": "/tmp/rustyred-runtime-filehashes-after-linux-ci.json",
+    "runtime_files": 355,
+    "changed_files": 0,
+    "note": "The 355 runtime Rust/manifests were unchanged from e24c53b to b4ebfc3. The final native CI and normalized b4 archives bind their actual exact revision."
+  },
+  "source_hashes_revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3"
 }

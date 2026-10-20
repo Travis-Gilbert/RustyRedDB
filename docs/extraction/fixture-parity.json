@@ -11,7 +11,24 @@
     "failed": 0,
     "runtime_seconds": 0.05
   },
-  "candidate_result": "pending",
+  "candidate_result": {
+    "revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+    "ci_run": 39493345294,
+    "targets": {
+      "aarch64-apple-darwin": {
+        "passed": 1,
+        "failed": 0,
+        "runtime_seconds": 0.08
+      },
+      "x86_64-unknown-linux-gnu": {
+        "passed": 1,
+        "failed": 0,
+        "runtime_seconds": 0.01
+      }
+    },
+    "test": "source_fixture_preserves_records_queries_indexes_payloads_and_history",
+    "scope": "Historical b4 execution; subsequent strict CLI/artifact candidate awaits separate final qualification."
+  },
   "note": "Only this new synthetic test and its include file were overlaid on the exact source archive. Source production and lockfile bytes were unchanged. The first fixture draft incorrectly compared prepared metadata with raw input and failed; corrected assertion checks historical name/version/content hash and captures actual canonical serialization.",
   "repeated_capture_byte_identical": true
 }

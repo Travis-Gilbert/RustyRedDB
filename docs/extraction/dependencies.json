@@ -53666,6 +53666,20 @@
     {
       "dependencies": [
         {
+          "features": [
+            "derive"
+          ],
+          "kind": null,
+          "name": "clap",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "=4.6.7",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
           "features": [],
           "kind": null,
           "name": "rustyred",
@@ -53714,6 +53728,7 @@
         "LICENSE",
         "NOTICE.md",
         "README.md",
+        "src/commands.rs",
         "src/main.rs",
         "src/output.rs",
         "tests/cli_contract.rs"
@@ -101080,11 +101095,22 @@
       },
       {
         "dependencies": [
+          "clap@4.6.7#registry",
           "rustyred@0.1.0-beta.2#workspace",
           "serde_json@1.0.154#registry",
           "tempfile@3.27.0#registry"
         ],
         "deps": [
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "clap",
+            "pkg": "clap@4.6.7#registry"
+          },
           {
             "dep_kinds": [
               {

@@ -1,21 +1,24 @@
 {
   "plan": "release-plan.md",
-  "candidate_revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
+  "candidate_revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
   "items": [
     {
       "id": "G01",
       "title": "Dependency independence",
-      "status": "pending",
+      "status": "verified",
       "oracle_class": "integration",
       "implementation_mode": "integration",
-      "evidence_class": "not_run",
+      "evidence_class": "integration",
       "substitution_allowed": false,
       "live_oracle_required": true,
       "live_test_command": "python3 scripts/dependency_boundary.py && python3 scripts/package_rehearsal.py --output /absolute/new-evidence",
       "validation": [
         "python3 scripts/dependency_boundary.py && python3 scripts/package_rehearsal.py --output /absolute/new-evidence"
       ],
-      "note": "Public closure and normalized archive consumer; final clean package receipt pending."
+      "note": "Exact b4 public Git consumer and normalized package consumers passed; all14 portable normalized archive target checks and actual packaged CLI installation passed in both native CI jobs. Native GraphBLAS archive separately passed15 real library tests on Mac with installed prerequisites.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294"
+      ]
     },
     {
       "id": "G02",
@@ -30,37 +33,48 @@
       "validation": [
         "cargo test --locked -p rustyred --test embedded_api new_database_has_no_application_bootstrap"
       ],
-      "note": "3e42 native CI39483629328 passed on both supported targets; storage source unchanged at d14."
+      "note": "Exact b4 native CI startup and facade checks passed on both native targets. Creation checks no application bootstrap; actual unrelated Git runtime passed with networking denied.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294"
+      ]
     },
     {
       "id": "G03",
       "title": "Query/mutation baseline parity",
-      "status": "pending",
+      "status": "verified",
       "oracle_class": "db_backed",
       "implementation_mode": "db_backed",
-      "evidence_class": "not_run",
+      "evidence_class": "db_backed",
       "substitution_allowed": false,
       "live_oracle_required": false,
-      "live_test_command": "cargo test --locked -p rustyred-engine -p rustyred-query",
+      "live_test_command": "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-query && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --lib --features test-fault-injection && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test '*' --features test-fault-injection",
       "validation": [
-        "cargo test --locked -p rustyred-engine -p rustyred-query"
+        "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-query && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --lib --features test-fault-injection && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test '*' --features test-fault-injection"
       ],
-      "note": "Exact source pin suite remains running; byte equality of parser/primitive modules is recorded separately."
+      "note": "Actual d6 plan-pin source fixture passed and repeated capture is byte-identical. Exact b4 query fixture and81 query tests,engine unit tests (Linux851/Mac852) and all26 integration targets passed on both native targets. Source baseline failures remain explicit.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294",
+        "storage-evidence.json",
+        "fixture-parity.json"
+      ]
     },
     {
       "id": "G04",
       "title": "Multimodal preservation",
-      "status": "pending",
+      "status": "verified",
       "oracle_class": "db_backed",
       "implementation_mode": "db_backed",
-      "evidence_class": "not_run",
+      "evidence_class": "db_backed",
       "substitution_allowed": false,
       "live_oracle_required": false,
       "live_test_command": "cargo test --manifest-path /absolute/outside-consumer/Cargo.toml",
       "validation": [
         "cargo test --manifest-path /absolute/outside-consumer/Cargo.toml"
       ],
-      "note": "Actual public graph/vector/time/file/history and explicit BM25/H3 primitives, pending final Git/package consumer receipts."
+      "note": "Exact b4 public Git consumer passed2 real runtime tests covering graph, supplied vectors, payloads, time/history and explicitly invoked BM25/H3 primitives. Source golden also captures these lower-level operations; no automatic indexing claim.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294"
+      ]
     },
     {
       "id": "G05",
@@ -75,7 +89,10 @@
       "validation": [
         "cargo test --locked -p rustyred --test rr_roundtrip"
       ],
-      "note": "3e42 native CI39483629328 passed both targets, copied only closed.RR; exact storage files unchanged at d14."
+      "note": "Exact b4 native facade and cross-process file copy/reopen tests passed on both supported native targets; only the closed .RR file is copied.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294"
+      ]
     },
     {
       "id": "G06",
@@ -90,52 +107,66 @@
       "validation": [
         "cargo test --locked -p rustyred --test embedded_api --test rr_roundtrip"
       ],
-      "note": "3e42 native CI39483629328 passed both targets, including clones, aliases and byte-unchanged readers."
+      "note": "Exact b4 native boundary tests passed on both supported native targets, including second writers, clones, path aliases and byte-unchanged readers.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294"
+      ]
     },
     {
       "id": "G07",
       "title": "Failure and recovery",
-      "status": "pending",
+      "status": "verified",
       "oracle_class": "db_backed",
       "implementation_mode": "db_backed",
-      "evidence_class": "not_run",
+      "evidence_class": "db_backed",
       "substitution_allowed": false,
       "live_oracle_required": false,
-      "live_test_command": "cargo test --locked -p rustyred --features test-fault-injection --test rr_failures && THEOREM_RUN_CRASH_MATRIX=1 cargo test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && cargo test --locked -p rustyred-engine --features test-fault-injection --test fold_commit_outcome",
+      "live_test_command": "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --features test-fault-injection --test rr_failures && RUST_TEST_THREADS=1 THEOREM_RUN_CRASH_MATRIX=1 cargo +1.96.1 test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome",
       "validation": [
-        "cargo test --locked -p rustyred --features test-fault-injection --test rr_failures && THEOREM_RUN_CRASH_MATRIX=1 cargo test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && cargo test --locked -p rustyred-engine --features test-fault-injection --test fold_commit_outcome"
+        "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --features test-fault-injection --test rr_failures && RUST_TEST_THREADS=1 THEOREM_RUN_CRASH_MATRIX=1 cargo +1.96.1 test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome"
       ],
-      "note": "Public facade failure tests pass both targets; final physical/fold native CI pending."
+      "note": "Exact b4 facade native injected failure/reopen, physical log subprocess crash/mixed-version matrices, and committed fold-maintenance failure tests passed on both native targets. Distinct unknown-outcome errors forbid unsafe retry.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294",
+        "storage-evidence.json"
+      ]
     },
     {
       "id": "G08",
       "title": "Maintenance compatibility",
-      "status": "pending",
+      "status": "verified",
       "oracle_class": "db_backed",
       "implementation_mode": "db_backed",
-      "evidence_class": "not_run",
+      "evidence_class": "db_backed",
       "substitution_allowed": false,
       "live_oracle_required": false,
-      "live_test_command": "cargo test --locked -p rustyred --test embedded_api && cargo test --locked -p rustyred-engine --test rr_migration",
+      "live_test_command": "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --test embedded_api && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test rr_migration",
       "validation": [
-        "cargo test --locked -p rustyred --test embedded_api && cargo test --locked -p rustyred-engine --test rr_migration"
+        "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --test embedded_api && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test rr_migration"
       ],
-      "note": "Native unknown-named-root compaction refusal oracle being added; real history/payload/migration coverage retained."
+      "note": "Exact b4 native migration, history/payload preservation and unknown named-root compaction refusal passed on both native targets. Source bytes and refused target bytes/catalog/chunks are preserved.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294",
+        "storage-evidence.json"
+      ]
     },
     {
       "id": "G09",
       "title": "External Git and package consumers",
-      "status": "pending",
+      "status": "verified",
       "oracle_class": "integration",
       "implementation_mode": "integration",
-      "evidence_class": "not_run",
+      "evidence_class": "integration",
       "substitution_allowed": false,
       "live_oracle_required": true,
       "live_test_command": "cargo test --locked --manifest-path /absolute/outside-git-consumer/Cargo.toml && python3 scripts/package_rehearsal.py --output /absolute/new-package-evidence",
       "validation": [
         "cargo test --locked --manifest-path /absolute/outside-git-consumer/Cargo.toml && python3 scripts/package_rehearsal.py --output /absolute/new-package-evidence"
       ],
-      "note": "Actual source routes required independently; path-only rehearsal cannot pass this gate."
+      "note": "Exact b4 public Git consumer passed2 runtime tests with networking denied. Actual normalized package consumer passed2 tests on both supported native targets, with isolated credential-free Cargo/HOME, outside-workspace dependency resolution, explicit package CLI installation and networking-denied runtime. Whole CI run39493345294 succeeded. Local clean artifact rehearsal also remains running.",
+      "evidence": [
+        "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294"
+      ]
     },
     {
       "id": "G10",
@@ -150,7 +181,8 @@
       "validation": [
         "python3 scripts/check-rustyred-source.py"
       ],
-      "note": "Separate integration branch; contract identity2/2 and product prior-pack pass; embedded/link/harness/server/browser/source-removal gates remain active."
+      "note": "Separate Theorem integration branch pins b4 in all16 direct manifest edges; all27 affected lock roots resolve one source/type identity. Final23-oracle native batch, embedded adapter, worker, prior-pack and source removal remain required; compilation and historical runs do not pass runtime gates.",
+      "evidence": []
     },
     {
       "id": "G11",
@@ -165,7 +197,8 @@
       "validation": [
         "scripts/release-check --output /absolute/new-review-artifacts"
       ],
-      "note": "Source/archives/licenses scanned; final clean source+binary artifact receipt and review required. No release tag/registry mutation."
+      "note": "Exact b4 source/history and all15 actual unpacked crate archives scanned with zero Gitleaks findings. Clean optimized source/binary/notice/checksum artifact run remains active. This preparation gate does not authorize release publication.",
+      "evidence": []
     },
     {
       "id": "G12",
@@ -180,7 +213,10 @@
       "validation": [
         "cargo install --locked --version =0.1.0-beta.2 rustyred-cli"
       ],
-      "note": "Requires separately authorized package publication followed by a genuinely fresh public registry install; no local substitution permitted."
+      "note": "Requires separately authorized package publication followed by actual fresh public-registry installation and CLI/example execution. No local or Git substitution allowed.",
+      "evidence": []
     }
-  ]
+  ],
+  "native_ci_run": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294",
+  "qualification_scope": "Historical b4 library/storage qualification. The subsequent strict CLI/artifact repair and Theorem repin require their own final exact-revision execution; no future commit is qualified by these rows."
 }

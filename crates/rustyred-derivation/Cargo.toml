@@ -6,6 +6,7 @@ edition = "2021"
 description = "Semiring trait, fold/why derivation machinery, and lift adapters for the Theorem Harness Experience Compiler."
 license = "MIT"
 rust-version = "1.96.1"
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"
 
 [lib]
 name = "rustyred_thg_derivation"

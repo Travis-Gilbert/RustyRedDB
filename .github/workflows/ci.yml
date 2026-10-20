@@ -12,7 +12,6 @@ env:
   CARGO_BUILD_JOBS: '3'
   CARGO_PROFILE_DEV_DEBUG: '0'
   CARGO_PROFILE_TEST_DEBUG: '0'
-  CARGO_PROFILE_TEST_OPT_LEVEL: '1'
   # Several retained structural oracles read process-wide work counters.
   # Keep their assertions isolated from other tests in the same binary.
   RUST_TEST_THREADS: '1'
@@ -68,6 +67,11 @@ jobs:
         env:
           TS_RS_EXPORT_DIR: ${{ runner.temp }}/generated-bindings
         run: cargo test --locked -p rustyred-log -p rustyred-bayes -p rustyred-contracts -p rustyred-scope -p rustyred-datalog -p rustyred-egraph -p rustyred-derivation -p rustyred-query-saturate
+      - name: Public support fork suites and doctests
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p vendor/egg-0.10.0/target
+          cargo test --locked --no-fail-fast -p rustyred-egg -p rustyred-turbovec
       - name: Physical log subprocess crash and mixed-version recovery
         if: ${{ !cancelled() }}
         env:
@@ -87,18 +91,31 @@ jobs:
           for feature in fjall-floor redis-store tantivy s2; do
             cargo check --locked -p rustyred-engine --lib --features "$feature"
           done
-      - name: Normalized package and outside-workspace consumer
+      - name: Install pinned dependency notice generator
         if: ${{ !cancelled() }}
-        run: python3 scripts/package_rehearsal.py --output '${{ runner.temp }}/rustyred-package-evidence'
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/target
+        run: cargo install --locked --version 0.9.2 cargo-about
+      - name: Prepare source and optimized CLI review artifacts
+        if: ${{ !cancelled() }}
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/target
+        run: scripts/release-check --output '${{ runner.temp }}/rustyred-release-review'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: package-evidence-${{ matrix.target }}
+          name: release-review-${{ matrix.target }}
           path: |
-            ${{ runner.temp }}/rustyred-package-evidence/evidence.json
-            ${{ runner.temp }}/rustyred-package-evidence/archive-targets-checked.json
-            ${{ runner.temp }}/rustyred-package-evidence/consumer-tree.txt
-            ${{ runner.temp }}/rustyred-package-evidence/archives/*.crate
+            ${{ runner.temp }}/rustyred-release-review/rustyred
+            ${{ runner.temp }}/rustyred-release-review/rustyred-source-*.tar.gz
+            ${{ runner.temp }}/rustyred-release-review/crates/*.crate
+            ${{ runner.temp }}/rustyred-release-review/SHA256SUMS
+            ${{ runner.temp }}/rustyred-release-review/provenance.json
+            ${{ runner.temp }}/rustyred-release-review/THIRD_PARTY_LICENSES.html
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/evidence.json
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/archive-targets-checked.json
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/consumer-tree.txt
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/archives/*.crate
 
   clean-candidate-measurement:
     runs-on: ubuntu-24.04

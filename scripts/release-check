@@ -41,6 +41,9 @@ notice_path = output / 'THIRD_PARTY_LICENSES.html'
 notice_text = notice_path.read_text()
 notice_path.write_text('\n'.join(line.rstrip(' \t') for line in notice_text.split('\n')).rstrip('\n') + '\n')
 run('cargo', '+1.96.1', 'test', '--locked', '--no-fail-fast', '--workspace', '--exclude', 'rustyred-engine', '--exclude', 'rustyred-graphblas', '--exclude', 'rustyred-egg', '--exclude', 'rustyred-turbovec', '--features', 'rustyred/test-fault-injection')
+# Retained egg tests write relative target/*.dot even with an external Cargo target.
+(root / 'vendor/egg-0.10.0/target').mkdir(exist_ok=True)
+run('cargo', '+1.96.1', 'test', '--locked', '--no-fail-fast', '-p', 'rustyred-egg', '-p', 'rustyred-turbovec')
 run('cargo', '+1.96.1', 'test', '--locked', '--no-fail-fast', '-p', 'rustyred-engine', '--lib', '--features', 'test-fault-injection')
 run('cargo', '+1.96.1', 'test', '--locked', '--no-fail-fast', '-p', 'rustyred-engine', '--profile', 'dev', '--test', '*', '--features', 'test-fault-injection')
 run('cargo', '+1.96.1', 'test', '--locked', '--doc', '-p', 'rustyred-engine')

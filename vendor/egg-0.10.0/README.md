@@ -11,7 +11,15 @@ claims require the candidate's own native receipts. Rust installation examples
 identify this named fork through the public Git snapshot instead of silently
 selecting the upstream registry implementation.
 
-From the RustyRedDB repository root: `cargo +1.96.1 test --locked -p rustyred-egg`.
+From the RustyRedDB repository root:
+
+```sh
+mkdir -p vendor/egg-0.10.0/target
+cargo +1.96.1 test --locked -p rustyred-egg
+```
+
+The ignored scratch directory holds the retained tests' DOT files; it is needed
+when Cargo builds into a workspace or external target directory.
 These support-package suites are separate from the embedded beta's engine and
 storage acceptance matrix.
 

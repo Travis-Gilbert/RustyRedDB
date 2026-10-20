@@ -1,13 +1,19 @@
 # Getting started
 
-Supported native targets for this beta, once their tests have been run on that machine: `aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`. A target that has not executed the storage tests is compile-only.
+Native storage was qualified on `aarch64-apple-darwin` and
+`x86_64-unknown-linux-gnu` at historical revision
+`b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3` in [run 39493345294](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294).
+The subsequent strict CLI/artifact candidate requires final validation against
+its own immutable SHA; an added CI job alone is not a passing receipt.
 
 ## Library
 
-Use the repaired beta.2 candidate at this immutable public revision. Do not float on a branch.
+This is the latest immutable SDK baseline tested on both native targets. It predates the strict
+CLI parser repair. The final candidate install pin and receipts will replace
+this historical baseline after its validation; do not float on a branch.
 
 ```toml
-rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "305196455c05d2a9e605d4eb6777ab9985907c14" }
+rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3" }
 ```
 
 The historical `v0.1.0-beta.1` tag remains unchanged and does not contain these candidate repairs. Registry publication is not claimed.
@@ -19,11 +25,20 @@ The historical `v0.1.0-beta.1` tag remains unchanged and does not contain these 
 From a checkout:
 
 ```text
+cargo run -p rustyred-cli -- --help
 cargo run -p rustyred-cli -- create notes.rr
 cargo run -p rustyred-cli -- inspect notes.rr --json
 ```
 
-JSON results go to stdout. A one-line diagnostic goes to stderr. Exit `0` is success, `2` is usage, `3` is open/create failure, `4` is a query error, `5` is a verify report that is not ok, and `6` is an indeterminate commit outcome requiring reopen and reconciliation before retry.
+Command results use JSON on stdout; diagnostics and usage errors go to stderr.
+Help/version print text to stdout and succeed without opening a database.
+Unknown flags, extra arguments, missing values and non-object `--params-json`
+are usage errors. Query parameters default to `{}`.
+
+Exit `0` is success, `1` is an unexpected inspection/verification failure,
+`2` is usage, `3` is open/create failure, `4` is a query error, `5` is a verify
+report that is not ok, and `6` is an indeterminate commit outcome requiring
+reopen and reconciliation before retry.
 
 ## Example
 

@@ -81,8 +81,9 @@ the revision observed at completion cannot retroactively bind that build to a
 clean candidate. No clean-candidate build/memory numbers are claimed from it.
 
 The latency regression fixture in the core suite has a separate source oracle:
-its optimized test profile is `opt-level = 1`. Unit and normalized-package consumer
-test commands preserve that profile without increasing the fixture's budget.
+its optimized source-unit test profile is `opt-level = 1`; its budget is
+unchanged. Normalized-package consumers use Cargo's default test/dev optimization
+level 0 and do not run that private engine timing fixture.
 The full engine integration target set has a separate calibrated dev profile:
 root optimization level 0 and external dependencies level 2, as recorded in the
 [baseline evidence](extraction/baseline.md). It runs with the original scaling

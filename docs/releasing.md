@@ -107,8 +107,10 @@ level 1). The complete engine integration target set runs with `--profile dev
 dependencies level 2. CI and `release-check` preserve both declared profiles and
 run every integration target with `--no-fail-fast`, without changing numerical
 ceilings. Tests that inspect process-global counters run serially. Query and
-other suites keep the normal test profile. Outside-workspace consumer tests use
-`CARGO_PROFILE_TEST_OPT_LEVEL=1`; package normalization does not inherit workspace
+other suites keep the normal test profile. Outside-workspace consumers keep
+Cargo defaults: test and dev optimization level 0, with no forwarded workspace
+optimization override. They exercise the public API and do not execute the
+engine's private timing fixtures. Package normalization does not inherit workspace
 profile tables. See [baseline evidence](extraction/baseline.md).
 
 CI also checks formatting of changed first-party Rust files with child-module
@@ -140,6 +142,16 @@ only a full SHA and runs on both native targets. Configure required reviewers
 for the `release-review` environment. Its token has read-only repository access;
 it scans source history and prepares artifacts, with no publication credentials,
 registry uploads, release creation, or tag mutation.
+
+Native CI also invokes this actual release script after its feature gates,
+reusing its workspace target directory. It uploads per-target optimized CLI,
+exact-SHA source archive, normalized crates, SHA256SUMS, provenance and notices,
+plus package evidence. Partial package evidence can survive a failed job; it
+is not a complete artifact bundle or a release approval. Support-fork tests run
+with their retained assertions; the egg DOT-writing fixtures require an ignored
+`vendor/egg-0.10.0/target` scratch directory. Final native artifact validation for
+the strict CLI candidate is pending; historical b4 CI success does not qualify
+a future commit.
 
 Review licenses and attribution, secret-scan results, source history intended
 for publication, normalized manifests, API/storage compatibility, downstream

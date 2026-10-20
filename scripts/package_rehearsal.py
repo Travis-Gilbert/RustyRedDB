@@ -126,8 +126,7 @@ def main() -> None:
     # child process and give Cargo a fresh home with no maintainer configuration.
     allowed_env = {'PATH', 'TMPDIR', 'TEMP', 'TMP', 'SYSTEMROOT', 'SDKROOT',
                    'MACOSX_DEPLOYMENT_TARGET', 'CARGO_TARGET_DIR', 'CARGO_INCREMENTAL',
-                   'CARGO_BUILD_JOBS', 'CARGO_PROFILE_DEV_DEBUG', 'CARGO_PROFILE_TEST_DEBUG',
-                   'CARGO_PROFILE_TEST_OPT_LEVEL'}
+                   'CARGO_BUILD_JOBS', 'CARGO_PROFILE_DEV_DEBUG', 'CARGO_PROFILE_TEST_DEBUG'}
     env = {key: value for key, value in os.environ.items() if key in allowed_env}
     env['RUSTUP_HOME'] = os.environ.get('RUSTUP_HOME', str(Path.home() / '.rustup'))
     env['HOME'] = str(output / 'runtime-home')
@@ -135,8 +134,10 @@ def main() -> None:
     env['XDG_CONFIG_HOME'] = str(output / 'runtime-home/.config')
     env['CARGO_HOME'] = str(output / 'cargo-home')
     env['CARGO_NET_OFFLINE'] = 'true'
-    env['CARGO_PROFILE_TEST_OPT_LEVEL'] = '1'
-    evidence['test_profile_opt_level'] = env['CARGO_PROFILE_TEST_OPT_LEVEL']
+    # Ordinary outside consumers do not run the engine's private timing fixtures.
+    # Keep Cargo's default test/dev optimization so tests, example and install
+    # share the same dependency build instead of forcing a second codegen profile.
+    evidence['consumer_profiles'] = {'test': 'Cargo default opt-level 0', 'build_install': 'Cargo default opt-level 0'}
     for name in sorted(package['name'] for package in packages if package['name'] != 'rustyred-graphblas'):
         run(*cargo, 'check', '--offline', '--all-targets', '--manifest-path', str(source / (name + '-' + version) / 'Cargo.toml'), cwd=consumer, env=env)
     (output / 'archive-targets-checked.json').write_text(json.dumps({
