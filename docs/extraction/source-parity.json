@@ -1588,6 +1588,15 @@
       "matches_extraction_source": true
     },
     {
+      "source": "rustyredcore_THG/crates/rustyred-thg-core/tests/derivation_core_store.rs",
+      "candidate": "crates/rustyred-engine/tests/derivation_core_store.rs",
+      "plan_pin": null,
+      "extraction_source": null,
+      "candidate_sha256": "ab2f86d77d278ca01180641e02c00830578c389871301b44a7066d87f2e3b56a",
+      "matches_plan": false,
+      "matches_extraction_source": false
+    },
+    {
       "source": "rustyredcore_THG/crates/rustyred-thg-core/tests/documents_fold_differential.rs",
       "candidate": "crates/rustyred-engine/tests/documents_fold_differential.rs",
       "plan_pin": "d6da5204522bebde21f9fb669384583494639a1bc357ce22be896112a9ca84f5",
@@ -2690,9 +2699,9 @@
       "candidate": "crates/rustyred-derivation/src/fold.rs",
       "plan_pin": "0417d6d0d8611218272a5dc5b44e9fdc1ed086c5b6a120980c75d6be2e1b89fa",
       "extraction_source": "0417d6d0d8611218272a5dc5b44e9fdc1ed086c5b6a120980c75d6be2e1b89fa",
-      "candidate_sha256": "0417d6d0d8611218272a5dc5b44e9fdc1ed086c5b6a120980c75d6be2e1b89fa",
-      "matches_plan": true,
-      "matches_extraction_source": true
+      "candidate_sha256": "6ad9742f54c4e0a575c09f0895c59670c36aa79d8604fc2874ae36c61f8733d7",
+      "matches_plan": false,
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-derivation/src/interpret.rs",
@@ -2744,9 +2753,9 @@
       "candidate": "crates/rustyred-derivation/src/why.rs",
       "plan_pin": "fa48bde8e97d0df2692cca23ad0137790cd941f367f9b273bc05114514ffbf5c",
       "extraction_source": "fa48bde8e97d0df2692cca23ad0137790cd941f367f9b273bc05114514ffbf5c",
-      "candidate_sha256": "fa48bde8e97d0df2692cca23ad0137790cd941f367f9b273bc05114514ffbf5c",
-      "matches_plan": true,
-      "matches_extraction_source": true
+      "candidate_sha256": "0f74fc5fc50263175f361bb122b06ec34924ad90797641519bdf2379ffe26e81",
+      "matches_plan": false,
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-derivation/tests/algebra_laws.rs",

@@ -1,0 +1,10 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "result": "PASS",
+  "target": "aarch64-apple-darwin",
+  "all15_delivered_archives_equal_clean_local_package_and_publish_prepared_archives": true,
+  "native_graphblas_runtime_archive_byte_match": true,
+  "license_html_matches_local_all_features_generation": true,
+  "license_html_sha256": "2e40cb2f9f94234d28f1e8ca937063b1ece91508524ac9688d2e691fe806b451",
+  "limits": "Native GraphBLAS runtime qualification remains experimental aarch64 macOS with explicitly recorded external native libraries."
+}

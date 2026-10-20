@@ -1,0 +1,40 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "target": "aarch64-apple-darwin",
+  "observed_utc": "2026-10-20T23:31:02.688161+00:00",
+  "binary_sha256": "e6a502d70cea56643cf966548662e2e1eba0a441d1b0d55e5fa48989d95e2d30",
+  "result": "PASS",
+  "inspection": [
+    {
+      "command": [
+        "/usr/bin/file",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "a3f7f1375aa043b6afa827c975d98b6243ee8aa2082abb8dfe9ef80f126b28f3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/llvm/bin/llvm-readobj",
+        "--file-headers",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "eefd04683dfa05b03ac5d69e861e74c94d592bd3ad9f17e1fcccd280ee9761a9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/usr/bin/otool",
+        "-L",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "6389eec8060898c3485e7ca0217f29b31cbdf40c87735daf56b4bc153d32e9c8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runtime_executed_by_this_check": false,
+  "limits": "Static header, checksum, provenance and dynamic-library listing inspection only. Linux optimized binary execution is not claimed; actual delivered macOS CLI runtime is a separate receipt."
+}

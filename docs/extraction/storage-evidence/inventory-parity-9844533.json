@@ -1,0 +1,63 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "generation_finished_utc": "2026-10-20T22:36:30.099199+00:00",
+  "state_captured_before_commands": "/tmp/rustyred-984-runtime-files-before.json",
+  "git_status_after_commands": "",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "scripts/dependency_inventory.py",
+        "--output",
+        "/tmp/rustyred-dependencies-9844533.json"
+      ],
+      "cwd": "/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB",
+      "exit": 0,
+      "packages": 519,
+      "output_sha256": "0b83a49310063479a93a66d8c1acc022954dd0d0071b06482caccfd4960180c5",
+      "log": "/tmp/rustyred-dependency-inventory-9844533.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/source_parity.py",
+        "--source-repository",
+        "/Users/travisgilbert/Tech Dev Local/Creative/Website/Theorem",
+        "--output",
+        "/tmp/rustyred-source-parity-9844533.json"
+      ],
+      "cwd": "/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB",
+      "exit": 0,
+      "comparisons": 433,
+      "output_sha256": "cdd7f2a901d44c0e16ac7da56d5766833c8ff404c43358cdca2b7d93d2865ab8",
+      "log": "/tmp/rustyred-source-parity-9844533.log"
+    }
+  ],
+  "actual_source_inputs": {
+    "mechanism": "script invokes git archive exact committed blobs; current dirty source checkout bytes are not inputs",
+    "plan_pin": "d6a7062c14c11c6838362bda307e267b2297c684",
+    "extraction_source": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de"
+  },
+  "prior_outputs_preserved": [
+    "/tmp/rustyred-pre-publication-cycle-dependencies.json",
+    "/tmp/rustyred-pre-publication-cycle-source-parity.json"
+  ],
+  "changed_or_new_candidate_hash_rows_since_previous_record": [
+    "crates/rustyred-engine/tests/derivation_core_store.rs",
+    "crates/rustyred-derivation/src/fold.rs",
+    "crates/rustyred-derivation/src/why.rs"
+  ],
+  "deliberate_test_ownership_repair": {
+    "fold_tests": 11,
+    "why_tests": 4,
+    "source_files": [
+      "crates/rustyred-derivation/src/fold.rs",
+      "crates/rustyred-derivation/src/why.rs"
+    ],
+    "destination": "crates/rustyred-engine/tests/derivation_core_store.rs",
+    "manifest_effect": "derivation dev engine edge removed; inventory confirms absence",
+    "assertion_conservation": "/tmp/rustyred-derivation-test-move-independent-review.json",
+    "runtime_claim": false
+  },
+  "caveat": "Dependency resolution, package listing and source hashes are not native runtime acceptance or a full-pass source baseline. Original actual d6 failures remain preserved."
+}

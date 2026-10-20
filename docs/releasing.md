@@ -146,29 +146,35 @@ on 2026-10-20 found the workflow unregistered and the environment absent (404);
 no protection rule is claimed. The existing registered CI workflow supports
 manual dispatch from the corrected branch with a required full reviewed SHA,
 asserts exact checkout in both native and measurement jobs, and leaves ordinary
-push/PR refs unchanged. Its token has read-only repository access;
-it scans source history and prepares artifacts, with no publication credentials,
-registry uploads, release creation, or tag mutation.
+push/PR refs unchanged. Its token has read-only repository access and it
+prepares artifacts, with no publication credentials, registry uploads, release
+creation or tag mutation. This registered CI workflow does not run Gitleaks.
+Local exact-candidate source, history and actual archive scans are retained as
+separate receipts. The prepared, currently unregistered `release.yml` includes
+a history-scan step; its presence is not an executed CI scan.
 
-Native CI also invokes this actual release script after its feature gates,
-reusing its workspace target directory. It uploads per-target optimized CLI,
-exact-SHA source archive, normalized crates, SHA256SUMS, provenance and notices,
-plus package evidence. Partial package evidence can survive a failed job; it
-is not a complete artifact bundle or a release approval. Support-fork tests run
-with their retained assertions; the egg DOT-writing fixtures require an ignored
-`vendor/egg-0.10.0/target` scratch directory. Final native artifact validation for the strict CLI candidate remains pending
-[manual run 39506823736](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736).
-The actual checked-out implementation is `06acfc450d9c56067cac68d1f0866047a81cfb45`;
-the dispatch workflow is `0bc679df1653ed85d1afb33093c830e27e634f35`. This separates
-the corrected `cargo-about --features cli` bootstrap from the immutable runtime
-source. Prior run 39504003928 passed the Linux native runtime/feature gates and
-clean measurement but refused artifact preparation because default cargo-about
-features installed no executable. It produced no complete bundle.
+Native CI invokes this actual release script after its feature gates, reusing
+its workspace target directory. It uploads each target's optimized CLI,
+exact-SHA source archive, ordinary normalized crates with generated Cargo.lock,
+SHA256SUMS, provenance, notices and package evidence. Partial package evidence
+can survive a failed job; it is not a complete bundle or release approval.
+Support-fork tests retain all assertions; egg DOT-writing fixtures require an
+ignored `vendor/egg-0.10.0/target` scratch directory. Final native artifact
+qualification for exact `984453329f99ae41a5d40e0297218b242ff5075a` passed
+[run 39509130713](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39509130713).
+Both workflow and checked-out source are that candidate. Downloaded bundles
+passed checksum, exact-source, normalized-closure, notices and secret review;
+all 15 archives equal the clean local package and actual publish-prepared
+archives. The delivered optimized Mac CLI passed nine lifecycle/strict-argument
+operations under OS network denial. The optimized Linux binary received header
+and checksum inspection; its execution is not claimed. Linux native packaged
+CLI runtime is separate evidence. See the [distribution record](extraction/distribution-review.md). Historical b4/06
+receipts remain separately identified and cannot qualify a future commit.
 
 Review licenses and attribution, secret-scan results, source history intended
 for publication, normalized manifests, API/storage compatibility, downstream
 Theorem evidence and the full G01–G12 record before requesting publication.
-A secret scanner does not establish ownership or review third-party licensing.
+A secret scanner does not establish ownership or review third-party licensing. The exact `9844533` source/history review retained seven raw heuristic matches, all public source SHA256 values in an earlier evidence document. Each value was verified against its named exact `06acfc4` Git blob. The reviewed history rerun suppresses only those exact historical commit/file/rule/line fingerprints; no broad path or hash rule is used. Actual normalized crate contents had zero findings. See the [raw counts and disposition](extraction/distribution-evidence/source-secret-scan-9844533.json) and [per-value proof](extraction/distribution-evidence/verified-source-checksum-false-positives-9844533.json). A later documentation attestation receives its own scan and cannot change the source identity of these artifacts.
 
 ## Authorized publication, later
 
@@ -182,13 +188,14 @@ cargo +1.96.1 publish --workspace --exclude parts-catalog \
   --dry-run --no-verify --locked
 ```
 
-An [isolated development snapshot](extraction/distribution-evidence/publish-dry-run-acyclic-preparation.json)
-with the retained 15 real-store tests moved to engine passed this command for
-all 15 publishable packages; every proposed
-upload was explicitly aborted by `--dry-run`. A clean final-candidate rerun is
-still required. The [historical exact06 failure](extraction/distribution-evidence/publish-dry-run-06acfc4.json)
-records why the test dependency cycle had to be removed; it is not the current
-publication-preparation result. `publish` has no `--exclude-lockfile` option.
+The clean exact `9844533` candidate passed this actual command for all 15 packages;
+every proposed upload was explicitly aborted by `--dry-run`. See the
+[clean receipt](extraction/distribution-evidence/publish-dry-run-9844533.json).
+The historical exact06 failure and acyclic development-preparation receipts
+remain separately identified; the test dependency cycle was removed while
+retaining all 15 actual CoreStore behavioral oracles in engine's integration
+suite. No production algorithm was replaced or test assertion weakened.
+`publish` has no `--exclude-lockfile` option.
 The successful dry run checks archive preparation and dependency ordering;
 `--no-verify` does not establish compilation, runtime behavior, upload rights
 or registry availability. Those have separate gates. Optional GraphBLAS must

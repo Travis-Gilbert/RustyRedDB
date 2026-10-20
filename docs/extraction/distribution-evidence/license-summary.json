@@ -6,7 +6,7 @@
   "bytes": 512593,
   "scope": "All-feature production/build dependency notice bundle; actual SPDX selection in about.toml. Includes exact crate-version source archive links. Does not establish ownership of extracted first-party code or replace source review.",
   "canonicalization": "Universal text newline decoding to LF; remove trailing spaces/tabs on lines and retain one final newline. License words and leading indentation preserved.",
-  "dependency_graph_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
-  "generated_checkout_revision": "0bc679df1653ed85d1afb33093c830e27e634f35",
-  "source_state": "Documentation-only curation in progress; every actual workspace manifest and Cargo.lock byte-identical to06. Outside consumer Git template revision is not a workspace dependency. Final CI artifact license hashes will be compared separately."
+  "dependency_graph_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "generated_checkout_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "source_state": "Generated from clean frozen984 with all-feature metadata and pinned tool; no ownership/legal approval inferred. FinalCI artifact bytes require separate binding."
 }

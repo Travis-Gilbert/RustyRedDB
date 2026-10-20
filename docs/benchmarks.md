@@ -25,27 +25,25 @@ runs this procedure on native x86-64 GNU Linux with Rust 1.96.1 and uploads
 `clean-candidate-measurement-x86_64-unknown-linux-gnu`. Retain the run URL and
 exact commit with its `measurements.json` and `build.log`.
 
-[Run 39504003928](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39504003928)
+[Run 39509130713](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39509130713)
 executed the measurement successfully on clean revision
-`06acfc450d9c56067cac68d1f0866047a81cfb45`. The
-[retained receipt](extraction/distribution-evidence/clean-measurement-06acfc4.json)
+`984453329f99ae41a5d40e0297218b242ff5075a`. The
+[retained receipt](extraction/distribution-evidence/clean-measurement-9844533.json)
 records identical clean source hashes before and after execution:
-`65886e171175a8ac1972409c45f1f4404a4ae1d2532941134b2c228e3dfc1a10`.
+`cee36fc497cd6276721538428626315de0025d9de5d34fc9ebb09354f2ee500d`.
 
 | Observation | Measured result |
 | --- | --- |
-| Cold target build, three jobs | 217.889 seconds |
-| Sampled peak sum of process-tree RSS | 3,208,904,704 bytes |
-| Largest individual child high-water RSS | 2,547,355,648 bytes |
+| Cold target build, three jobs | 193.256 seconds |
+| Sampled peak sum of process-tree RSS | 3,227,852,800 bytes |
+| Largest individual child high-water RSS | 2,560,946,176 bytes |
 | Release CLI binary | 8,722,232 bytes |
-| Create, seed and query, five runs | 33.27–61.87 ms |
-| Reopen and query, five runs | 2.75–14.19 ms |
+| Create, seed and query, five runs | 6.06–7.32 ms |
+| Reopen and query, five runs | 2.13–2.29 ms |
 
-A separate clean repeat in [manual run 39506823736](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736)
-used the same exact source hash and produced the same 8,722,232-byte CLI.
-Its cold-target build took 278.509 seconds and sampled peak summed RSS was
-3,206,426,624 bytes; the [separate repeat receipt](extraction/distribution-evidence/clean-measurement-06acfc4-manual-repeat.json)
-retains those observations without replacing the first run's table.
+Earlier clean `06acfc4` observations remain in the separately named original and manual
+repeat receipts. They describe that historical source and do not replace the
+current `9844533` measurements or establish a comparative performance ratio.
 
 Each query returned two rows. These observations describe this tiny example
 on the recorded Linux host, compiler and flags. The memory-sampling limits

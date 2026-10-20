@@ -64,12 +64,12 @@
       "notes": "The engine uses browser::OpaqueGrantTable. The small crate moved whole."
     },
     {
-      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/{article,article_links,desktop,link,link_api,sync}.rs",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/{article,article_links,desktop,link,link_api,sync,wiki}.rs",
       "destination": "crates/rustyred-contracts",
       "action": "move",
       "package": "rustyred-contracts",
       "rust_lib": "theorem_surface_contracts",
-      "notes": "Shared article/link/sync and only database writer/browser-storage contracts are canonical. Product plugin/window/workspace types remain downstream; no look-alike protocol IDs."
+      "notes": "Shared article/link/sync contracts and only database writer/browser-storage identities from desktop.rs plus the unchanged WikiRefusal enum required by link_api.rs are canonical. Product plugin/window/workspace policies, wiki requests/responses and application registries remain downstream; no look-alike protocol IDs. See storage-evidence/contracts-source-coverage-984.json and actual downstream type-identity checks."
     },
     {
       "source": "rustyredcore_THG/vendor/egg-0.10.0",

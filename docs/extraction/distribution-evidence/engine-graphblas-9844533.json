@@ -1,0 +1,38 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "dirty_before": false,
+  "dirty_after": false,
+  "result": "PASS",
+  "exit_code": 0,
+  "command": [
+    "cargo",
+    "+1.96.1",
+    "check",
+    "--locked",
+    "--offline",
+    "-p",
+    "rustyred-engine",
+    "--lib",
+    "--features",
+    "graphblas"
+  ],
+  "environment": {
+    "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement",
+    "CARGO_INCREMENTAL": "0",
+    "CARGO_BUILD_JOBS": "4",
+    "CARGO_PROFILE_DEV_DEBUG": "0",
+    "CARGO_PROFILE_TEST_DEBUG": "0",
+    "CARGO_PROFILE_TEST_OPT_LEVEL": "1",
+    "CARGO_NET_OFFLINE": "true",
+    "RUSTYRED_GRAPHBLAS_PREFIX": "/Users/travisgilbert/.cache/rustyred-thg-graphblas/install",
+    "LIBCLANG_PATH": "/opt/homebrew/opt/llvm/lib"
+  },
+  "native_dependencies": {
+    "libgraphblas.9.4.5.dylib": "18fbc92745af6d0c93937d62d217136447527f7af4b64290588e2571bde5feac",
+    "liblagraph.1.2.1.dylib": "ad6aa0f8dee7191fb50e994eeda9346de56c758fa566c80cb1d025f2dc6a9a3a",
+    "liblagraphx.1.2.1.dylib": "5cbf8aea7f88d108b01548c426eb27dca2a0d5c875c554974a9a96094f702169"
+  },
+  "build_log_sha256": "152379b88b405dff4c031269c2f4d74d1b7398ee2cfe66acf9839a071cd523b6",
+  "rustc": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2\n",
+  "qualification": "experimental aarch64-apple-darwin engine feature compile only; normalized GraphBLAS archive runtime has its own15-test receipt and native prerequisite hashes; no other target claim"
+}

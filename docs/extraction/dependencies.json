@@ -54014,19 +54014,6 @@
           "source": "registry+https://github.com/rust-lang/crates.io-index",
           "target": null,
           "uses_default_features": true
-        },
-        {
-          "features": [],
-          "kind": "dev",
-          "name": "rustyred-engine",
-          "optional": false,
-          "path": "crates/rustyred-engine",
-          "registry": null,
-          "rename": "rustyred-thg-core",
-          "req": "=0.1.0-beta.2",
-          "source": null,
-          "target": null,
-          "uses_default_features": true
         }
       ],
       "features": {},
@@ -55357,6 +55344,7 @@
         "tests/algebra_identity_interner.rs",
         "tests/algebra_token_region.rs",
         "tests/deployment_identity.rs",
+        "tests/derivation_core_store.rs",
         "tests/documents_fold_differential.rs",
         "tests/fixtures/article_fold/cluster.json",
         "tests/fixtures/legacy_graph_v1_nonempty.json",
@@ -55495,6 +55483,15 @@
             "test"
           ],
           "name": "deployment_identity"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "test"
+          ],
+          "name": "derivation_core_store"
         },
         {
           "crate_types": [
@@ -101253,7 +101250,6 @@
         "dependencies": [
           "proptest@1.12.0#registry",
           "rustyred-egraph@0.1.0-beta.2#workspace",
-          "rustyred-engine@0.1.0-beta.2#workspace",
           "serde@1.0.229#registry",
           "serde_json@1.0.154#registry",
           "thiserror@2.0.21#registry"
@@ -101278,16 +101274,6 @@
             ],
             "name": "egraph",
             "pkg": "rustyred-egraph@0.1.0-beta.2#workspace"
-          },
-          {
-            "dep_kinds": [
-              {
-                "kind": "dev",
-                "target": null
-              }
-            ],
-            "name": "rustyred_thg_core",
-            "pkg": "rustyred-engine@0.1.0-beta.2#workspace"
           },
           {
             "dep_kinds": [

@@ -1,0 +1,2335 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "captured_utc": "2026-10-20T23:32:58.154290+00:00",
+  "local_head": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "runtime_file_count": 461,
+  "canonical_runtime_drift": [],
+  "allowed_consumer_example_reference_changes": [
+    {
+      "path": "tests/external-consumer/Cargo.toml",
+      "disposition": "Exact Git-example reference06ac\u2192already actual-consumer-tested984 only; no canonical package or test-code change.",
+      "source_984_sha256": "9c619d676d9c7f829dea65ef595e0a7c84eb63be60b11895a98ee0fcb3c5ce78",
+      "current_sha256": "7930acdd97f85b89f688a87895b4824bfbfa891a287af6ed98dd287b14163b8f"
+    }
+  ],
+  "files": [
+    {
+      "path": "Cargo.lock",
+      "source_984_sha256": "9e9132dd3b7b8890cd18fbf5a5a8520b70dd5cbdedcf1c68532fbd8fca2b5d1b",
+      "current_sha256": "9e9132dd3b7b8890cd18fbf5a5a8520b70dd5cbdedcf1c68532fbd8fca2b5d1b"
+    },
+    {
+      "path": "Cargo.toml",
+      "source_984_sha256": "5d19974812a4d457e2895e24013ebd27a16b4ecad9426d445c1fd612936107cc",
+      "current_sha256": "5d19974812a4d457e2895e24013ebd27a16b4ecad9426d445c1fd612936107cc"
+    },
+    {
+      "path": "crates/rustyred-bayes/Cargo.toml",
+      "source_984_sha256": "8b32295d8e3a03f5c9ce4dcef14cc41e5b9fb1c20509b895f881fa271eb83814",
+      "current_sha256": "8b32295d8e3a03f5c9ce4dcef14cc41e5b9fb1c20509b895f881fa271eb83814"
+    },
+    {
+      "path": "crates/rustyred-bayes/src/lib.rs",
+      "source_984_sha256": "8feaa26b4e7e6edddea5a9f7ac9cbdb0517edec3b54dcd14c07ec216bfe9517f",
+      "current_sha256": "8feaa26b4e7e6edddea5a9f7ac9cbdb0517edec3b54dcd14c07ec216bfe9517f"
+    },
+    {
+      "path": "crates/rustyred-cli/Cargo.toml",
+      "source_984_sha256": "c662bfb61ca09ba20d77d67471e2689b99d045e26171d73caadb7720844410c9",
+      "current_sha256": "c662bfb61ca09ba20d77d67471e2689b99d045e26171d73caadb7720844410c9"
+    },
+    {
+      "path": "crates/rustyred-cli/src/commands.rs",
+      "source_984_sha256": "7f9d197b60587ed49d88f1f170c859b0bbf024832151d7696dce3230d9f4320f",
+      "current_sha256": "7f9d197b60587ed49d88f1f170c859b0bbf024832151d7696dce3230d9f4320f"
+    },
+    {
+      "path": "crates/rustyred-cli/src/main.rs",
+      "source_984_sha256": "82423f89368bbc66ed6a0d23c86e9960053466d23d8b9411382acce2f8f98b9d",
+      "current_sha256": "82423f89368bbc66ed6a0d23c86e9960053466d23d8b9411382acce2f8f98b9d"
+    },
+    {
+      "path": "crates/rustyred-cli/src/output.rs",
+      "source_984_sha256": "e43f1d46e8a14cb6d5297c75f8e8358473acf9f82866972bf897914ab22b0302",
+      "current_sha256": "e43f1d46e8a14cb6d5297c75f8e8358473acf9f82866972bf897914ab22b0302"
+    },
+    {
+      "path": "crates/rustyred-cli/tests/cli_contract.rs",
+      "source_984_sha256": "ecdd9ad0bb2eefac0e7f62a830d405e956db2b0d0c0a077497513dc9489f3dff",
+      "current_sha256": "ecdd9ad0bb2eefac0e7f62a830d405e956db2b0d0c0a077497513dc9489f3dff"
+    },
+    {
+      "path": "crates/rustyred-contracts/Cargo.toml",
+      "source_984_sha256": "f2ffadb6ee4e9b94064968587f3a6f5383d968dfdb9ac120bbc8e3521aaf3153",
+      "current_sha256": "f2ffadb6ee4e9b94064968587f3a6f5383d968dfdb9ac120bbc8e3521aaf3153"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/article.rs",
+      "source_984_sha256": "433ee8eca9c8f9bbb9a43445ac463ede87e384cb61a2a5230d3aa18a9b09f946",
+      "current_sha256": "433ee8eca9c8f9bbb9a43445ac463ede87e384cb61a2a5230d3aa18a9b09f946"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/article_links.rs",
+      "source_984_sha256": "4f487e8043ae1f0e1499800e1e763229b57fe63ee605b1ce5da5c38c86e43fb9",
+      "current_sha256": "4f487e8043ae1f0e1499800e1e763229b57fe63ee605b1ce5da5c38c86e43fb9"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/desktop.rs",
+      "source_984_sha256": "3ae5d25169af85e722e87a5b830eb78f2fae100e7d018010c4601325ef75d4f3",
+      "current_sha256": "3ae5d25169af85e722e87a5b830eb78f2fae100e7d018010c4601325ef75d4f3"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/lib.rs",
+      "source_984_sha256": "f7221ce58dd107ca3804e7934777c10aa9905b28252ff526778b16b547e85fd6",
+      "current_sha256": "f7221ce58dd107ca3804e7934777c10aa9905b28252ff526778b16b547e85fd6"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/link.rs",
+      "source_984_sha256": "39a7dc748d5ff720caaf6b959210f14a3818aeb71f236c94f3c1085b0dc317d5",
+      "current_sha256": "39a7dc748d5ff720caaf6b959210f14a3818aeb71f236c94f3c1085b0dc317d5"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/link_api.rs",
+      "source_984_sha256": "cd6bfc6f21dc8acbd5d8849b2047425be86d08640cca1e0d256c18df8704ea6e",
+      "current_sha256": "cd6bfc6f21dc8acbd5d8849b2047425be86d08640cca1e0d256c18df8704ea6e"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/sync.rs",
+      "source_984_sha256": "a3f74fe7b62217acbc8e6c1c9ce337b37a99c53346a625e07c76b516f0056fc8",
+      "current_sha256": "a3f74fe7b62217acbc8e6c1c9ce337b37a99c53346a625e07c76b516f0056fc8"
+    },
+    {
+      "path": "crates/rustyred-contracts/src/wiki.rs",
+      "source_984_sha256": "2308ff77c759a5f923bed7caf388509d37a9269379beed0a28f5d1cb7ce39f58",
+      "current_sha256": "2308ff77c759a5f923bed7caf388509d37a9269379beed0a28f5d1cb7ce39f58"
+    },
+    {
+      "path": "crates/rustyred-datalog/Cargo.toml",
+      "source_984_sha256": "d869eead9b9d0d1603ab93aab179e64e28b0f0425798b290f21935c48a19d464",
+      "current_sha256": "d869eead9b9d0d1603ab93aab179e64e28b0f0425798b290f21935c48a19d464"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/compiled.rs",
+      "source_984_sha256": "ad51706f81d581ebd54959159573b784e2332c7c5f9cfe6da1d20320d847ac44",
+      "current_sha256": "ad51706f81d581ebd54959159573b784e2332c7c5f9cfe6da1d20320d847ac44"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/engine.rs",
+      "source_984_sha256": "567e43579c1ca58cdc014fcb112a90d5bde9b8f800413a6becdcd4b8786c1f21",
+      "current_sha256": "567e43579c1ca58cdc014fcb112a90d5bde9b8f800413a6becdcd4b8786c1f21"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/fact_pack.rs",
+      "source_984_sha256": "c3964716573aafd8cd95fff0d819e522543d67ad2a2ef6b0eae041bdfca789ae",
+      "current_sha256": "c3964716573aafd8cd95fff0d819e522543d67ad2a2ef6b0eae041bdfca789ae"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/legacy.rs",
+      "source_984_sha256": "6a91d002b137cb186270beb49cf4f262d8d6423d1805f089c592476ce7b44763",
+      "current_sha256": "6a91d002b137cb186270beb49cf4f262d8d6423d1805f089c592476ce7b44763"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/lib.rs",
+      "source_984_sha256": "8f6af8a2c8ecd49c638d9922f34a1f5d201575696afbb0a32ea3c262b138ad8a",
+      "current_sha256": "8f6af8a2c8ecd49c638d9922f34a1f5d201575696afbb0a32ea3c262b138ad8a"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/receipt.rs",
+      "source_984_sha256": "bf14873ad325c2761be8e48831b6ba7c527052525d0da8cb7c9116144a777bd4",
+      "current_sha256": "bf14873ad325c2761be8e48831b6ba7c527052525d0da8cb7c9116144a777bd4"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/runtime.rs",
+      "source_984_sha256": "7d31e585df1c8ad84aedfff58b15ff1f3e63c19771c886011411c0a9e4b6d450",
+      "current_sha256": "7d31e585df1c8ad84aedfff58b15ff1f3e63c19771c886011411c0a9e4b6d450"
+    },
+    {
+      "path": "crates/rustyred-datalog/src/tests.rs",
+      "source_984_sha256": "a258b1aa6d46876794b6ed0a13a13f95f9f23c9987a4acc85e93450f5d47db4f",
+      "current_sha256": "a258b1aa6d46876794b6ed0a13a13f95f9f23c9987a4acc85e93450f5d47db4f"
+    },
+    {
+      "path": "crates/rustyred-datalog/tests/python_reference.rs",
+      "source_984_sha256": "136429445d071f56a4da49574fcc1f1ff686a1d4d221f209d4b2521fcf2848cc",
+      "current_sha256": "136429445d071f56a4da49574fcc1f1ff686a1d4d221f209d4b2521fcf2848cc"
+    },
+    {
+      "path": "crates/rustyred-derivation/Cargo.toml",
+      "source_984_sha256": "7c806979848e341ea5aa08e641f15223e33048d366b7ed81d6fc2ab8e406aa35",
+      "current_sha256": "7c806979848e341ea5aa08e641f15223e33048d366b7ed81d6fc2ab8e406aa35"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/algebra.rs",
+      "source_984_sha256": "892bcb592da6a3757083b4b5a4c3667ba40139e7a85e31644e637091b802f184",
+      "current_sha256": "892bcb592da6a3757083b4b5a4c3667ba40139e7a85e31644e637091b802f184"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/atms.rs",
+      "source_984_sha256": "8373c6f0eb9da5f1c9a83737bf9ffcaabd70e8e671faf73580058315a1bd47aa",
+      "current_sha256": "8373c6f0eb9da5f1c9a83737bf9ffcaabd70e8e671faf73580058315a1bd47aa"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/dual.rs",
+      "source_984_sha256": "74d176644afccc2d16c7293cbf101d419cd9e522495048184cee40504b0ae39b",
+      "current_sha256": "74d176644afccc2d16c7293cbf101d419cd9e522495048184cee40504b0ae39b"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/fold.rs",
+      "source_984_sha256": "6ad9742f54c4e0a575c09f0895c59670c36aa79d8604fc2874ae36c61f8733d7",
+      "current_sha256": "6ad9742f54c4e0a575c09f0895c59670c36aa79d8604fc2874ae36c61f8733d7"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/interpret.rs",
+      "source_984_sha256": "708a4b5ba92e73f85b93bc872c49a57da6dd485a4a6688669aac9ac3e9e93dcb",
+      "current_sha256": "708a4b5ba92e73f85b93bc872c49a57da6dd485a4a6688669aac9ac3e9e93dcb"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/lib.rs",
+      "source_984_sha256": "29c5e3fff77aa53bc8828194c7a59dc9bba04844ae2f94dc508dd7095a85f338",
+      "current_sha256": "29c5e3fff77aa53bc8828194c7a59dc9bba04844ae2f94dc508dd7095a85f338"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/ontology.rs",
+      "source_984_sha256": "7a656dfaa731988faef3871111c1d93a48097af19f739bba5b3bc5e2b5422f6f",
+      "current_sha256": "7a656dfaa731988faef3871111c1d93a48097af19f739bba5b3bc5e2b5422f6f"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/semiring.rs",
+      "source_984_sha256": "5945db1b6b2cebebd5799d254d94e8ebac1740768be6e51f442c898c7d809c9c",
+      "current_sha256": "5945db1b6b2cebebd5799d254d94e8ebac1740768be6e51f442c898c7d809c9c"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/store.rs",
+      "source_984_sha256": "391a5c5264493b02191b066a0d29ab112f0aa4fb48ec050fa9ee73f11acde660",
+      "current_sha256": "391a5c5264493b02191b066a0d29ab112f0aa4fb48ec050fa9ee73f11acde660"
+    },
+    {
+      "path": "crates/rustyred-derivation/src/why.rs",
+      "source_984_sha256": "0f74fc5fc50263175f361bb122b06ec34924ad90797641519bdf2379ffe26e81",
+      "current_sha256": "0f74fc5fc50263175f361bb122b06ec34924ad90797641519bdf2379ffe26e81"
+    },
+    {
+      "path": "crates/rustyred-derivation/tests/algebra_laws.rs",
+      "source_984_sha256": "e984e2dcff94c7d90516c2cbb31581431625ecf79c19b934baed7c4644cf9dd0",
+      "current_sha256": "e984e2dcff94c7d90516c2cbb31581431625ecf79c19b934baed7c4644cf9dd0"
+    },
+    {
+      "path": "crates/rustyred-egraph/Cargo.toml",
+      "source_984_sha256": "5a96c6349f326503eb0a1fb0dfe0e361200ecb0ef0086b886fa3c69f9cfbbd6e",
+      "current_sha256": "5a96c6349f326503eb0a1fb0dfe0e361200ecb0ef0086b886fa3c69f9cfbbd6e"
+    },
+    {
+      "path": "crates/rustyred-egraph/build.rs",
+      "source_984_sha256": "b224aaf38ae4042f37a9bc85ede4bd8f00f1e6bcc44646e118bafdfe770b467f",
+      "current_sha256": "b224aaf38ae4042f37a9bc85ede4bd8f00f1e6bcc44646e118bafdfe770b467f"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/context_pack.rs",
+      "source_984_sha256": "f6ccaa22beb6379955bcedb3d9b959cc37f795cb4918a103944ae3f117f5183b",
+      "current_sha256": "f6ccaa22beb6379955bcedb3d9b959cc37f795cb4918a103944ae3f117f5183b"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/context_pack/tests.rs",
+      "source_984_sha256": "ad748cfd5b9f967891a6ad2d277998e2378cbc3c898e4a8af1d2520f84912d4e",
+      "current_sha256": "ad748cfd5b9f967891a6ad2d277998e2378cbc3c898e4a8af1d2520f84912d4e"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/engine.rs",
+      "source_984_sha256": "e5d3953cfd662de217889b250ddec32d828c37f2438b5e7bfd69fd78984810f9",
+      "current_sha256": "e5d3953cfd662de217889b250ddec32d828c37f2438b5e7bfd69fd78984810f9"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/lib.rs",
+      "source_984_sha256": "d834b2578b17408537406346ecef99f9391dd9524531237609a902f8bd8008a0",
+      "current_sha256": "d834b2578b17408537406346ecef99f9391dd9524531237609a902f8bd8008a0"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/receipt.rs",
+      "source_984_sha256": "384e77df6c9370b777bfd84189ff1c54e0689d0544ad7a2bb257307a486c25f7",
+      "current_sha256": "384e77df6c9370b777bfd84189ff1c54e0689d0544ad7a2bb257307a486c25f7"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/relational.rs",
+      "source_984_sha256": "ae474099950a5ede892170bb54e7a034adb6f20b369edf882a2aa008fab916a2",
+      "current_sha256": "ae474099950a5ede892170bb54e7a034adb6f20b369edf882a2aa008fab916a2"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/relational/negation.rs",
+      "source_984_sha256": "79ab8c555efbf0989810f0056f551891e4cfd0c9ac636d12476a6f66ad345309",
+      "current_sha256": "79ab8c555efbf0989810f0056f551891e4cfd0c9ac636d12476a6f66ad345309"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/relational/negation_tests.rs",
+      "source_984_sha256": "b147f31e68e25cfb1d9c1ebfe21996dc80e911ee1c3d6328d7f98250ac0590ef",
+      "current_sha256": "b147f31e68e25cfb1d9c1ebfe21996dc80e911ee1c3d6328d7f98250ac0590ef"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/rule_pack.rs",
+      "source_984_sha256": "3c4c60c8f617ab74f27210a588450ced3aef94191f537a20e7e103245221f8d8",
+      "current_sha256": "3c4c60c8f617ab74f27210a588450ced3aef94191f537a20e7e103245221f8d8"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/term.rs",
+      "source_984_sha256": "3916065c893dd398c8395e66d4c89cb7c4a9da5e92af1e2a3603d3005c5cef87",
+      "current_sha256": "3916065c893dd398c8395e66d4c89cb7c4a9da5e92af1e2a3603d3005c5cef87"
+    },
+    {
+      "path": "crates/rustyred-egraph/src/tests.rs",
+      "source_984_sha256": "8d2385a1dfbf2b7dede7ab2156581ca0aa5e9f3fc06028fa80bcfdd32df83b8b",
+      "current_sha256": "8d2385a1dfbf2b7dede7ab2156581ca0aa5e9f3fc06028fa80bcfdd32df83b8b"
+    },
+    {
+      "path": "crates/rustyred-engine/Cargo.toml",
+      "source_984_sha256": "e8c044fe1e6d0288b29887b50948f6d3e6ce7b27762a9b720930bf0f1ab06e11",
+      "current_sha256": "e8c044fe1e6d0288b29887b50948f6d3e6ce7b27762a9b720930bf0f1ab06e11"
+    },
+    {
+      "path": "crates/rustyred-engine/bench/relational/Cargo.lock",
+      "source_984_sha256": "9b8c44e1d10355f2177e3295bf5cd2ec45521c7f09011e7dcea1ca8229de2472",
+      "current_sha256": "9b8c44e1d10355f2177e3295bf5cd2ec45521c7f09011e7dcea1ca8229de2472"
+    },
+    {
+      "path": "crates/rustyred-engine/bench/relational/Cargo.toml",
+      "source_984_sha256": "dd0a9cdce0fdd979f2b3145504ff667aeadf6d51d9b2d540fdfe7e3b468d2658",
+      "current_sha256": "dd0a9cdce0fdd979f2b3145504ff667aeadf6d51d9b2d540fdfe7e3b468d2658"
+    },
+    {
+      "path": "crates/rustyred-engine/bench/relational/src/main.rs",
+      "source_984_sha256": "5090b4a6368b63c0c8b97d4c1cbffc0c6334b57bb4852aa88d491da5a0429cd5",
+      "current_sha256": "5090b4a6368b63c0c8b97d4c1cbffc0c6334b57bb4852aa88d491da5a0429cd5"
+    },
+    {
+      "path": "crates/rustyred-engine/benches/fold_floor.rs",
+      "source_984_sha256": "3d9d4e1bf220db2bc58cf2e657f71a5c9ff26867396a681fab62bdfd13b65840",
+      "current_sha256": "3d9d4e1bf220db2bc58cf2e657f71a5c9ff26867396a681fab62bdfd13b65840"
+    },
+    {
+      "path": "crates/rustyred-engine/build.rs",
+      "source_984_sha256": "0ce5ada9f2a0695e0bd8cc62e3512030ca50abef9bdc7ce4e1323147f3f6feb9",
+      "current_sha256": "0ce5ada9f2a0695e0bd8cc62e3512030ca50abef9bdc7ce4e1323147f3f6feb9"
+    },
+    {
+      "path": "crates/rustyred-engine/examples/semantic_inventory.rs",
+      "source_984_sha256": "e3fd6bf966a16f443c4a391633ba889a05bad297e4a170b2d6a536728aa39a76",
+      "current_sha256": "e3fd6bf966a16f443c4a391633ba889a05bad297e4a170b2d6a536728aa39a76"
+    },
+    {
+      "path": "crates/rustyred-engine/src/abduction/mod.rs",
+      "source_984_sha256": "0ccd964dec705e9b6f60de178a87aead631955082b4bdea964112d14bc1e5129",
+      "current_sha256": "0ccd964dec705e9b6f60de178a87aead631955082b4bdea964112d14bc1e5129"
+    },
+    {
+      "path": "crates/rustyred-engine/src/abduction/retract.rs",
+      "source_984_sha256": "5f7b4afc9e5aad56a49b06038524c65b2600758797e900bf11f2b85bb33f6afa",
+      "current_sha256": "5f7b4afc9e5aad56a49b06038524c65b2600758797e900bf11f2b85bb33f6afa"
+    },
+    {
+      "path": "crates/rustyred-engine/src/access_method.rs",
+      "source_984_sha256": "30cf3ec33df106d119643d09fe05881b5eb0232db5134c55b4a740544b4a6c78",
+      "current_sha256": "30cf3ec33df106d119643d09fe05881b5eb0232db5134c55b4a740544b4a6c78"
+    },
+    {
+      "path": "crates/rustyred-engine/src/adaptive_index.rs",
+      "source_984_sha256": "44db6a2925b2123107320b94efe02db32b55cae755cdd39f7be1532f4d8a4781",
+      "current_sha256": "44db6a2925b2123107320b94efe02db32b55cae755cdd39f7be1532f4d8a4781"
+    },
+    {
+      "path": "crates/rustyred-engine/src/analogy.rs",
+      "source_984_sha256": "60129571ede971c79b9c94f8323894eaf3a60d4b5e6e16e20fb438138fabf822",
+      "current_sha256": "60129571ede971c79b9c94f8323894eaf3a60d4b5e6e16e20fb438138fabf822"
+    },
+    {
+      "path": "crates/rustyred-engine/src/analogy_pass.rs",
+      "source_984_sha256": "167973ba3075ae04f6f4648b3c792ed429b50864dd75099f446d390f40c164b1",
+      "current_sha256": "167973ba3075ae04f6f4648b3c792ed429b50864dd75099f446d390f40c164b1"
+    },
+    {
+      "path": "crates/rustyred-engine/src/analogy_thompson.rs",
+      "source_984_sha256": "4d57d4cca8032af752d753022c43349ebf8189f98a609bb9795c4caf690e8495",
+      "current_sha256": "4d57d4cca8032af752d753022c43349ebf8189f98a609bb9795c4caf690e8495"
+    },
+    {
+      "path": "crates/rustyred-engine/src/article_fold.rs",
+      "source_984_sha256": "603d1d4934837fa9031deb70bc96986ea13d3451a2b745607b02b4ff908fbe2b",
+      "current_sha256": "603d1d4934837fa9031deb70bc96986ea13d3451a2b745607b02b4ff908fbe2b"
+    },
+    {
+      "path": "crates/rustyred-engine/src/article_fold/links.rs",
+      "source_984_sha256": "27e964c5db365b5415729ca5c7b2fc3dcf1eb003f1bce03b455d9998530f3908",
+      "current_sha256": "27e964c5db365b5415729ca5c7b2fc3dcf1eb003f1bce03b455d9998530f3908"
+    },
+    {
+      "path": "crates/rustyred-engine/src/article_fold/snapshot.rs",
+      "source_984_sha256": "588212d7f3fe70df9bf65ad015bd37917664ebc2b2193ce6eed6c91d3ccaa289",
+      "current_sha256": "588212d7f3fe70df9bf65ad015bd37917664ebc2b2193ce6eed6c91d3ccaa289"
+    },
+    {
+      "path": "crates/rustyred-engine/src/article_fold/source.rs",
+      "source_984_sha256": "13b8ecf8a437a418ecc1eaaf22de56208b8d28c3eb192925b690debabd9d58a1",
+      "current_sha256": "13b8ecf8a437a418ecc1eaaf22de56208b8d28c3eb192925b690debabd9d58a1"
+    },
+    {
+      "path": "crates/rustyred-engine/src/article_fold/tests.rs",
+      "source_984_sha256": "ae52c88393f7185bde25034255993b11a9502589f41f8724025ef44f5f3d2897",
+      "current_sha256": "ae52c88393f7185bde25034255993b11a9502589f41f8724025ef44f5f3d2897"
+    },
+    {
+      "path": "crates/rustyred-engine/src/article_fold/tests/links.rs",
+      "source_984_sha256": "d150501b82d1ad0b9fedb259bf985834f6aa3714f300c648c8a20f1f044c430b",
+      "current_sha256": "d150501b82d1ad0b9fedb259bf985834f6aa3714f300c648c8a20f1f044c430b"
+    },
+    {
+      "path": "crates/rustyred-engine/src/assert_claim.rs",
+      "source_984_sha256": "002329e227a6266bf2321369eccbad103f13565df716144352d04c1687cd5747",
+      "current_sha256": "002329e227a6266bf2321369eccbad103f13565df716144352d04c1687cd5747"
+    },
+    {
+      "path": "crates/rustyred-engine/src/browser_projection.rs",
+      "source_984_sha256": "7054761b4aa61ac11ef4ee183b057026f6f5b24938a755b67e39b24b4dbd4624",
+      "current_sha256": "7054761b4aa61ac11ef4ee183b057026f6f5b24938a755b67e39b24b4dbd4624"
+    },
+    {
+      "path": "crates/rustyred-engine/src/browser_storage/mod.rs",
+      "source_984_sha256": "f95631f68dbf34978b1e6a5b7ac7554dcf0b4c10c9df485e3b3cf0497a7947ee",
+      "current_sha256": "f95631f68dbf34978b1e6a5b7ac7554dcf0b4c10c9df485e3b3cf0497a7947ee"
+    },
+    {
+      "path": "crates/rustyred-engine/src/browser_storage/model.rs",
+      "source_984_sha256": "c73cce99cc9b964c3a7a1c4b0073cb3550399d1c438a08547e09c7f8613b622e",
+      "current_sha256": "c73cce99cc9b964c3a7a1c4b0073cb3550399d1c438a08547e09c7f8613b622e"
+    },
+    {
+      "path": "crates/rustyred-engine/src/browser_storage/persistence.rs",
+      "source_984_sha256": "a82592f863a3898beb19364dbb8189a516dad82830494b88d4813179afd9512c",
+      "current_sha256": "a82592f863a3898beb19364dbb8189a516dad82830494b88d4813179afd9512c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/chunk_store.rs",
+      "source_984_sha256": "bdf22ff3a7f90e408329067562753436fc01fd097d041fc6060ec485e9d70540",
+      "current_sha256": "bdf22ff3a7f90e408329067562753436fc01fd097d041fc6060ec485e9d70540"
+    },
+    {
+      "path": "crates/rustyred-engine/src/cold_fragments.rs",
+      "source_984_sha256": "6f0f93da5ea0c59ba0e7a983d9aa1c394ce0df5392b45abe6dc8226eef67b69b",
+      "current_sha256": "6f0f93da5ea0c59ba0e7a983d9aa1c394ce0df5392b45abe6dc8226eef67b69b"
+    },
+    {
+      "path": "crates/rustyred-engine/src/cold_index.rs",
+      "source_984_sha256": "1586452de4c746fe7c2560ac66502581ee1686092c72f2febbdbf34fd62ae10f",
+      "current_sha256": "1586452de4c746fe7c2560ac66502581ee1686092c72f2febbdbf34fd62ae10f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/colt.rs",
+      "source_984_sha256": "da161f100e3bedea111a280df229df1528ff949aa9eb8c1859de7d8711bb8096",
+      "current_sha256": "da161f100e3bedea111a280df229df1528ff949aa9eb8c1859de7d8711bb8096"
+    },
+    {
+      "path": "crates/rustyred-engine/src/commands.rs",
+      "source_984_sha256": "91f81aae7345db3291e9570dcf2e46fbe2196a719c4cb6f85aded3b066ee9636",
+      "current_sha256": "91f81aae7345db3291e9570dcf2e46fbe2196a719c4cb6f85aded3b066ee9636"
+    },
+    {
+      "path": "crates/rustyred-engine/src/context_view.rs",
+      "source_984_sha256": "cfe0b2443ef1bb4eff1e19ef2bb7e4cfd4a34859905a0077660ad151c8cb199e",
+      "current_sha256": "cfe0b2443ef1bb4eff1e19ef2bb7e4cfd4a34859905a0077660ad151c8cb199e"
+    },
+    {
+      "path": "crates/rustyred-engine/src/corroboration.rs",
+      "source_984_sha256": "7d2d5f25282a685fdedb412c11d8c7266313590598149665221684519d33edd5",
+      "current_sha256": "7d2d5f25282a685fdedb412c11d8c7266313590598149665221684519d33edd5"
+    },
+    {
+      "path": "crates/rustyred-engine/src/crdt/clock.rs",
+      "source_984_sha256": "0d8d1effdc27583827343acb762005fdbafaec4dc86c6ec6a0fb867137ffae67",
+      "current_sha256": "0d8d1effdc27583827343acb762005fdbafaec4dc86c6ec6a0fb867137ffae67"
+    },
+    {
+      "path": "crates/rustyred-engine/src/crdt/merge.rs",
+      "source_984_sha256": "25288adec2b51ba085efd17e8449de2950c0ea6d8510e36ea6697170c8f55995",
+      "current_sha256": "25288adec2b51ba085efd17e8449de2950c0ea6d8510e36ea6697170c8f55995"
+    },
+    {
+      "path": "crates/rustyred-engine/src/crdt/mod.rs",
+      "source_984_sha256": "73de5a171798da0c111cad31caa4af27205ba799bc08dbedbc03617ac4257624",
+      "current_sha256": "73de5a171798da0c111cad31caa4af27205ba799bc08dbedbc03617ac4257624"
+    },
+    {
+      "path": "crates/rustyred-engine/src/data_api.rs",
+      "source_984_sha256": "3031d25185902ece84b896998b0b81cdcc6c51a2f1b8f3d31667b63f7ae6aa35",
+      "current_sha256": "3031d25185902ece84b896998b0b81cdcc6c51a2f1b8f3d31667b63f7ae6aa35"
+    },
+    {
+      "path": "crates/rustyred-engine/src/data_registry.rs",
+      "source_984_sha256": "6da79471cdcdf8ad8c4714ec953c5ace73462dc9fee1c74ec2a08758eeb443d8",
+      "current_sha256": "6da79471cdcdf8ad8c4714ec953c5ace73462dc9fee1c74ec2a08758eeb443d8"
+    },
+    {
+      "path": "crates/rustyred-engine/src/derivation.rs",
+      "source_984_sha256": "bebc413c302df0c754ad95651a10f1a600dca21566412c55efed4a5f067a9482",
+      "current_sha256": "bebc413c302df0c754ad95651a10f1a600dca21566412c55efed4a5f067a9482"
+    },
+    {
+      "path": "crates/rustyred-engine/src/derivation_bridge.rs",
+      "source_984_sha256": "95c469d8f04011ab8fea0a665ca9ac0acbaeb8016b7a32c5de1c9420cca2f38c",
+      "current_sha256": "95c469d8f04011ab8fea0a665ca9ac0acbaeb8016b7a32c5de1c9420cca2f38c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/doc_tree.rs",
+      "source_984_sha256": "c9f7120ef6adc6d531dea38d3a51e2092e23ebc38636168d668c128781dee6b0",
+      "current_sha256": "c9f7120ef6adc6d531dea38d3a51e2092e23ebc38636168d668c128781dee6b0"
+    },
+    {
+      "path": "crates/rustyred-engine/src/dynamic_ppr.rs",
+      "source_984_sha256": "5c42deddca3dda55a2e4c115410b67ca5989e578f50eca8b5bf930eacb60ec61",
+      "current_sha256": "5c42deddca3dda55a2e4c115410b67ca5989e578f50eca8b5bf930eacb60ec61"
+    },
+    {
+      "path": "crates/rustyred-engine/src/epistemic.rs",
+      "source_984_sha256": "8e69bede19b8a387d37468c41965bd664be71a8e11b6e66feb66e572686589df",
+      "current_sha256": "8e69bede19b8a387d37468c41965bd664be71a8e11b6e66feb66e572686589df"
+    },
+    {
+      "path": "crates/rustyred-engine/src/errors.rs",
+      "source_984_sha256": "bddbb4286f57cc8e95692011c80e957e00c2e26786803959de9ed5c21ec85b33",
+      "current_sha256": "bddbb4286f57cc8e95692011c80e957e00c2e26786803959de9ed5c21ec85b33"
+    },
+    {
+      "path": "crates/rustyred-engine/src/events.rs",
+      "source_984_sha256": "a8dffff08bd37a0b13f5f942be5f6012796136c5d9253770cc0ed7c4d4e4df8c",
+      "current_sha256": "a8dffff08bd37a0b13f5f942be5f6012796136c5d9253770cc0ed7c4d4e4df8c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/executor.rs",
+      "source_984_sha256": "67e4d99204ed234bb5d84004d88d037a02bf9b21a4f42f371098470c8296e84f",
+      "current_sha256": "67e4d99204ed234bb5d84004d88d037a02bf9b21a4f42f371098470c8296e84f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/feature_dsl.rs",
+      "source_984_sha256": "deb73a6c286e102072386c2903ac2cc02446be7203095209335d19cce69f3595",
+      "current_sha256": "deb73a6c286e102072386c2903ac2cc02446be7203095209335d19cce69f3595"
+    },
+    {
+      "path": "crates/rustyred-engine/src/federated_blocks.rs",
+      "source_984_sha256": "8c40383d16ed7bd736fe338fa1dfbfec21cd4f3b539eeec1bb1a74f4987a62c2",
+      "current_sha256": "8c40383d16ed7bd736fe338fa1dfbfec21cd4f3b539eeec1bb1a74f4987a62c2"
+    },
+    {
+      "path": "crates/rustyred-engine/src/file_lock.rs",
+      "source_984_sha256": "75866617a71af294749ec60bbe02ff8134615ac7a839170fdf52dfe0a652f119",
+      "current_sha256": "75866617a71af294749ec60bbe02ff8134615ac7a839170fdf52dfe0a652f119"
+    },
+    {
+      "path": "crates/rustyred-engine/src/file_payload.rs",
+      "source_984_sha256": "bcf8f64ddedacf21b71400315456e1b00914b2da178dce980d1369190425cd5f",
+      "current_sha256": "bcf8f64ddedacf21b71400315456e1b00914b2da178dce980d1369190425cd5f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold.rs",
+      "source_984_sha256": "5ccd9dd7393fce121a6caab29863194e9cc88350b255446385437b749d202d61",
+      "current_sha256": "5ccd9dd7393fce121a6caab29863194e9cc88350b255446385437b749d202d61"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold/algebra.rs",
+      "source_984_sha256": "47ce10c6ad57c7c5c2d3b9cb771511513e56e15b738b811d435bbae64b07ce71",
+      "current_sha256": "47ce10c6ad57c7c5c2d3b9cb771511513e56e15b738b811d435bbae64b07ce71"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold/documents.rs",
+      "source_984_sha256": "3f3dd5b55ff2886c2cfbccb8ae1a311d3f2acceef08cd4835f874dd16bd4f358",
+      "current_sha256": "3f3dd5b55ff2886c2cfbccb8ae1a311d3f2acceef08cd4835f874dd16bd4f358"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold/history.rs",
+      "source_984_sha256": "fff22427925e896b0737c99de6b2933a444dae6b95512fdb1f078f40b53ebba5",
+      "current_sha256": "fff22427925e896b0737c99de6b2933a444dae6b95512fdb1f078f40b53ebba5"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold_quarantine.rs",
+      "source_984_sha256": "41fcbe3e2fa76cafde0922ecee531374092b73e61c8f086daeaeb15d09b902e6",
+      "current_sha256": "41fcbe3e2fa76cafde0922ecee531374092b73e61c8f086daeaeb15d09b902e6"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold_storage.rs",
+      "source_984_sha256": "e4fe99b4045c649e8756b86c14f61316e52c50f86396e614b9fae9f3a1164acd",
+      "current_sha256": "e4fe99b4045c649e8756b86c14f61316e52c50f86396e614b9fae9f3a1164acd"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold_storage/fjall.rs",
+      "source_984_sha256": "f0b71314d68ec6f3f9da099f5d4d1c7de77c9d1bde1f67a4d766360fc7fc6dcf",
+      "current_sha256": "f0b71314d68ec6f3f9da099f5d4d1c7de77c9d1bde1f67a4d766360fc7fc6dcf"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fold_storage/redb.rs",
+      "source_984_sha256": "2da8af2c3fbac85662897b4d5a61e69ecb4c0d0d726e4d193686806044ed5ec5",
+      "current_sha256": "2da8af2c3fbac85662897b4d5a61e69ecb4c0d0d726e4d193686806044ed5ec5"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fulltext.rs",
+      "source_984_sha256": "4ee265405065af6e2abbaa8b71d28b9ac2ce4341a1ad0e7c8a50345659ba9b0a",
+      "current_sha256": "4ee265405065af6e2abbaa8b71d28b9ac2ce4341a1ad0e7c8a50345659ba9b0a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/fulltext_tantivy.rs",
+      "source_984_sha256": "680697616dc2e3f88fd9bb6279d26be3e32913ffff0cd164cd6a1ac06ec44f2a",
+      "current_sha256": "680697616dc2e3f88fd9bb6279d26be3e32913ffff0cd164cd6a1ac06ec44f2a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph.rs",
+      "source_984_sha256": "a127df8af034273ff1c206834822bc4aaa1d250a244c139f918e2cdc04e40ace",
+      "current_sha256": "a127df8af034273ff1c206834822bc4aaa1d250a244c139f918e2cdc04e40ace"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/attribution.rs",
+      "source_984_sha256": "adb1e05fd753497bf555836689c5e2e09e1f24267ad1f01b7daa1fe6d798abb8",
+      "current_sha256": "adb1e05fd753497bf555836689c5e2e09e1f24267ad1f01b7daa1fe6d798abb8"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/capability.rs",
+      "source_984_sha256": "8371dbefd41e7b7b78abf7e2bd9fce83f11f61beddfa65ccb6a5d11c78ae7de7",
+      "current_sha256": "8371dbefd41e7b7b78abf7e2bd9fce83f11f61beddfa65ccb6a5d11c78ae7de7"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/error.rs",
+      "source_984_sha256": "cd7eb37b90ce173f91d0ff6934588cb49700b65af66ebe67cbd19ce8ac8d7b61",
+      "current_sha256": "cd7eb37b90ce173f91d0ff6934588cb49700b65af66ebe67cbd19ce8ac8d7b61"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/fold_store.rs",
+      "source_984_sha256": "a025d78714aceb3cccf25f9f91160a1e5b69d3318270b8193b489f870a490600",
+      "current_sha256": "a025d78714aceb3cccf25f9f91160a1e5b69d3318270b8193b489f870a490600"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/footprint.rs",
+      "source_984_sha256": "5b7a0934d8ece4f15aff48496d7098b7fa93f1039783ab5f48471bd319142342",
+      "current_sha256": "5b7a0934d8ece4f15aff48496d7098b7fa93f1039783ab5f48471bd319142342"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/in_memory.rs",
+      "source_984_sha256": "7d9ac144025b1aadf176304b24ba2de8af14bcf8b91cb300fe1d4ede73f80c35",
+      "current_sha256": "7d9ac144025b1aadf176304b24ba2de8af14bcf8b91cb300fe1d4ede73f80c35"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/index.rs",
+      "source_984_sha256": "87e5900f902fdff8f3b563438eac7ad99004c78b68062af1ac84b9137f8f1040",
+      "current_sha256": "87e5900f902fdff8f3b563438eac7ad99004c78b68062af1ac84b9137f8f1040"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/linked_to.rs",
+      "source_984_sha256": "d513277d11799dc2cc16dd0162ee799cbeb425fcc36795f7bf148b6964eff767",
+      "current_sha256": "d513277d11799dc2cc16dd0162ee799cbeb425fcc36795f7bf148b6964eff767"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/mutation.rs",
+      "source_984_sha256": "4c3b11c67d96677a27491cf2fe3452ff1902cc0063c11c620d93170b2a3def19",
+      "current_sha256": "4c3b11c67d96677a27491cf2fe3452ff1902cc0063c11c620d93170b2a3def19"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/ontology_adapter.rs",
+      "source_984_sha256": "b1517f416f44cf9840f7cc3572e09663243183f92f09137ca415300c8ff6f291",
+      "current_sha256": "b1517f416f44cf9840f7cc3572e09663243183f92f09137ca415300c8ff6f291"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/query.rs",
+      "source_984_sha256": "d9d5b8290f58c866cad95e98aaf98b428d634b1d7b35eb390160a45542415f58",
+      "current_sha256": "d9d5b8290f58c866cad95e98aaf98b428d634b1d7b35eb390160a45542415f58"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/record.rs",
+      "source_984_sha256": "d264e2cf2c204f22c25776687f9cca9ee076f61199ad77ff976b22efb5b5de90",
+      "current_sha256": "d264e2cf2c204f22c25776687f9cca9ee076f61199ad77ff976b22efb5b5de90"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/residency.rs",
+      "source_984_sha256": "23a5da86cad42c01934355a4927675337b38aa2bdefcea5ca368a897670b81c7",
+      "current_sha256": "23a5da86cad42c01934355a4927675337b38aa2bdefcea5ca368a897670b81c7"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/snapshot.rs",
+      "source_984_sha256": "0b0d17eb77afe6370c2605ee881e71da43db165467c249951a2808d501f07b52",
+      "current_sha256": "0b0d17eb77afe6370c2605ee881e71da43db165467c249951a2808d501f07b52"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/temporal.rs",
+      "source_984_sha256": "e900e94b900a156a16e125e22e0dcf205df5bf6179a9204e883084d554e3991f",
+      "current_sha256": "e900e94b900a156a16e125e22e0dcf205df5bf6179a9204e883084d554e3991f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests.rs",
+      "source_984_sha256": "6b7d52f1492201e1c1d926c762449808cab60e5f42d06eae43756a0e1553de0a",
+      "current_sha256": "6b7d52f1492201e1c1d926c762449808cab60e5f42d06eae43756a0e1553de0a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests/browser_storage.rs",
+      "source_984_sha256": "6589a30f939106e8cc728aae11e3f6352154d03edfc2698fb690f5588c86fb4f",
+      "current_sha256": "6589a30f939106e8cc728aae11e3f6352154d03edfc2698fb690f5588c86fb4f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests/durability.rs",
+      "source_984_sha256": "06452486531a9608bd5dfb2845c1583331bb0c7d320b789199e07d6043d24059",
+      "current_sha256": "06452486531a9608bd5dfb2845c1583331bb0c7d320b789199e07d6043d24059"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests/foundation.rs",
+      "source_984_sha256": "159e0efa512c43b827b6a20e12af5d4296652e8003aff41f8126df8eb997ef8c",
+      "current_sha256": "159e0efa512c43b827b6a20e12af5d4296652e8003aff41f8126df8eb997ef8c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests/indexes_and_ttl.rs",
+      "source_984_sha256": "bf8fe25736f7b2c3f8102e75011f76823296d40e3b1213ec954293ab0a813b27",
+      "current_sha256": "bf8fe25736f7b2c3f8102e75011f76823296d40e3b1213ec954293ab0a813b27"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests/live_substrate.rs",
+      "source_984_sha256": "cdd791a63107ad7405ec42842fc2ff95e97bc4e313e16c09adb42c4c54ce5e74",
+      "current_sha256": "cdd791a63107ad7405ec42842fc2ff95e97bc4e313e16c09adb42c4c54ce5e74"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests/rr_file.rs",
+      "source_984_sha256": "2751856bc5d98e310f5ab1de7f4621aa188d1068a2f5b0d82e479ec2a3663744",
+      "current_sha256": "2751856bc5d98e310f5ab1de7f4621aa188d1068a2f5b0d82e479ec2a3663744"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/tests/rr_migration.rs",
+      "source_984_sha256": "b7a274b1477b9f0a71367e92d2f15a9d666661435bd6201c2ec441f03fe36cd3",
+      "current_sha256": "b7a274b1477b9f0a71367e92d2f15a9d666661435bd6201c2ec441f03fe36cd3"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/ttl.rs",
+      "source_984_sha256": "906803f5e2a438b4e0b85d4ec180ceaa009c543eb9c38feaca84e6f924b5ac4a",
+      "current_sha256": "906803f5e2a438b4e0b85d4ec180ceaa009c543eb9c38feaca84e6f924b5ac4a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/vector_index.rs",
+      "source_984_sha256": "3fd73d29dc558f36975f3d15835eebe6b37f33e585129d2235a7ae85d52e1288",
+      "current_sha256": "3fd73d29dc558f36975f3d15835eebe6b37f33e585129d2235a7ae85d52e1288"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/vector_pin.rs",
+      "source_984_sha256": "c318dd148420b7d92a43a9b1798bf5fbba5f1ac62fa546ea3937a7f27668e2f0",
+      "current_sha256": "c318dd148420b7d92a43a9b1798bf5fbba5f1ac62fa546ea3937a7f27668e2f0"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/verify.rs",
+      "source_984_sha256": "9ed2be759f323f45bd50a223d4184a91cc3e19db1849fe66aff5c7552924977f",
+      "current_sha256": "9ed2be759f323f45bd50a223d4184a91cc3e19db1849fe66aff5c7552924977f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_csr.rs",
+      "source_984_sha256": "6fb76dbb9263af4c5d7b172fda8edc6726f7e5f4e425b298f44a9345972297df",
+      "current_sha256": "6fb76dbb9263af4c5d7b172fda8edc6726f7e5f4e425b298f44a9345972297df"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_history.rs",
+      "source_984_sha256": "00c53c160c9c64e08852e8ef51e277164c9b57cf792e84bc86fd0ab449dcf2bf",
+      "current_sha256": "00c53c160c9c64e08852e8ef51e277164c9b57cf792e84bc86fd0ab449dcf2bf"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_history/article.rs",
+      "source_984_sha256": "32bb560e01a1ee8e10d15d2697ea852997a5f346be09bc3406cf8368d95c616b",
+      "current_sha256": "32bb560e01a1ee8e10d15d2697ea852997a5f346be09bc3406cf8368d95c616b"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_history_tests.rs",
+      "source_984_sha256": "5609ed3868028a9313765cc7843a4b5f7dd7b4203a916d4b06623fb63fa68c14",
+      "current_sha256": "5609ed3868028a9313765cc7843a4b5f7dd7b4203a916d4b06623fb63fa68c14"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_import.rs",
+      "source_984_sha256": "802d91c5183201686873d1bf5f130d1f35b2a726c9b6fa88b2fd9b54f6ab8124",
+      "current_sha256": "802d91c5183201686873d1bf5f130d1f35b2a726c9b6fa88b2fd9b54f6ab8124"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_import_tests.rs",
+      "source_984_sha256": "e675d98dc0d156e05de72b76e26959491381d84832d7b32527a84ab72e2f7d50",
+      "current_sha256": "e675d98dc0d156e05de72b76e26959491381d84832d7b32527a84ab72e2f7d50"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_preparation_tests.rs",
+      "source_984_sha256": "263546be0276dab60a5226c57ff0d378bb09c302ba79929b179ef229b6463725",
+      "current_sha256": "263546be0276dab60a5226c57ff0d378bb09c302ba79929b179ef229b6463725"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph_store.rs",
+      "source_984_sha256": "7b5d26d9739f9af2ffed6354bf8fd56131262c8a55d960b81c2da0eb0df0dd31",
+      "current_sha256": "7b5d26d9739f9af2ffed6354bf8fd56131262c8a55d960b81c2da0eb0df0dd31"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graphblas_adjacency.rs",
+      "source_984_sha256": "0f07a8bc7af32aeda60dbab1ea6a996a31090fe413d176de25e38d5fd79a1fde",
+      "current_sha256": "0f07a8bc7af32aeda60dbab1ea6a996a31090fe413d176de25e38d5fd79a1fde"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graphblas_cfl.rs",
+      "source_984_sha256": "588ceed63bec25df264f35962aeeacca399208eb8dabbdfc296507236fa859d5",
+      "current_sha256": "588ceed63bec25df264f35962aeeacca399208eb8dabbdfc296507236fa859d5"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graphblas_plan.rs",
+      "source_984_sha256": "571f78e2be956ff2359dff6f4c4c61dbb6f700afe3b200564c53426a43d87d78",
+      "current_sha256": "571f78e2be956ff2359dff6f4c4c61dbb6f700afe3b200564c53426a43d87d78"
+    },
+    {
+      "path": "crates/rustyred-engine/src/hash.rs",
+      "source_984_sha256": "ba3b20e1c54246c2c9dcd4c73780fff7726a7ab531f61fc6264623a41b919635",
+      "current_sha256": "ba3b20e1c54246c2c9dcd4c73780fff7726a7ab531f61fc6264623a41b919635"
+    },
+    {
+      "path": "crates/rustyred-engine/src/history_object_store.rs",
+      "source_984_sha256": "849b0bb0ec5e1c5f835e0b0354a81d29dc767db0aeb6f5779191b9076b031175",
+      "current_sha256": "849b0bb0ec5e1c5f835e0b0354a81d29dc767db0aeb6f5779191b9076b031175"
+    },
+    {
+      "path": "crates/rustyred-engine/src/hooks.rs",
+      "source_984_sha256": "1893b7811f5f26ed58f7fd42e7fa0136d20453395f76c8c491478acbd51832e7",
+      "current_sha256": "1893b7811f5f26ed58f7fd42e7fa0136d20453395f76c8c491478acbd51832e7"
+    },
+    {
+      "path": "crates/rustyred-engine/src/identity_index.rs",
+      "source_984_sha256": "f4c96da89137e4ea8d4181083a604320851f75312379150d123663b293b4946a",
+      "current_sha256": "f4c96da89137e4ea8d4181083a604320851f75312379150d123663b293b4946a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/incremental/bridge.rs",
+      "source_984_sha256": "9c25d63657bc8965be1b4c4943af49357ebaf880bdf185c245e8c8a671abe5bf",
+      "current_sha256": "9c25d63657bc8965be1b4c4943af49357ebaf880bdf185c245e8c8a671abe5bf"
+    },
+    {
+      "path": "crates/rustyred-engine/src/incremental/delta.rs",
+      "source_984_sha256": "e9d820171ba8977b9b595a9dff1b6eabbb0c7f8cf711cb63162c61cbe68b8d1a",
+      "current_sha256": "e9d820171ba8977b9b595a9dff1b6eabbb0c7f8cf711cb63162c61cbe68b8d1a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/incremental/mod.rs",
+      "source_984_sha256": "0d78b8bf552859fb1bcb2137029150a7b5783f0f8f55754a05228f7db73faa1e",
+      "current_sha256": "0d78b8bf552859fb1bcb2137029150a7b5783f0f8f55754a05228f7db73faa1e"
+    },
+    {
+      "path": "crates/rustyred-engine/src/incremental/rules.rs",
+      "source_984_sha256": "da3664e27e7a82c9655c2c596c7899836ff905dc31159e6bf029d23afe4de53e",
+      "current_sha256": "da3664e27e7a82c9655c2c596c7899836ff905dc31159e6bf029d23afe4de53e"
+    },
+    {
+      "path": "crates/rustyred-engine/src/incremental/support.rs",
+      "source_984_sha256": "7b92ab875fbd60bcb8f2f3b8f66980608e9e6f6b68995aada3e24273ec104d46",
+      "current_sha256": "7b92ab875fbd60bcb8f2f3b8f66980608e9e6f6b68995aada3e24273ec104d46"
+    },
+    {
+      "path": "crates/rustyred-engine/src/incremental_topology.rs",
+      "source_984_sha256": "1e3ee36c29d8bffb196f2d5d27853806d52803b8b6f9a1c6696548ff1ba2c863",
+      "current_sha256": "1e3ee36c29d8bffb196f2d5d27853806d52803b8b6f9a1c6696548ff1ba2c863"
+    },
+    {
+      "path": "crates/rustyred-engine/src/index/mod.rs",
+      "source_984_sha256": "0f358ae28638e6a12a9d9eeb089b17b4d1eacbf6aefe34640fbb42b8bc6405ea",
+      "current_sha256": "0f358ae28638e6a12a9d9eeb089b17b4d1eacbf6aefe34640fbb42b8bc6405ea"
+    },
+    {
+      "path": "crates/rustyred-engine/src/index/trigram.rs",
+      "source_984_sha256": "6ef1153bb6bdb72637a7dec074257c411e573539a6577a93a272152a4b4b9800",
+      "current_sha256": "6ef1153bb6bdb72637a7dec074257c411e573539a6577a93a272152a4b4b9800"
+    },
+    {
+      "path": "crates/rustyred-engine/src/index_advisor.rs",
+      "source_984_sha256": "d4d11778efbbb5a3bf898918bfdced559879f616339aa43e945dab19e8b685f1",
+      "current_sha256": "d4d11778efbbb5a3bf898918bfdced559879f616339aa43e945dab19e8b685f1"
+    },
+    {
+      "path": "crates/rustyred-engine/src/index_manifest.rs",
+      "source_984_sha256": "07d168b4106ae2308f7b610f79ad58f9c2656b3926e36aa69a39b5b6bff90eac",
+      "current_sha256": "07d168b4106ae2308f7b610f79ad58f9c2656b3926e36aa69a39b5b6bff90eac"
+    },
+    {
+      "path": "crates/rustyred-engine/src/index_proposal.rs",
+      "source_984_sha256": "472a0a0f49a9a725dec7b83202fde9e7a9bcf48c74ed0b1cf89b2b19a0b90339",
+      "current_sha256": "472a0a0f49a9a725dec7b83202fde9e7a9bcf48c74ed0b1cf89b2b19a0b90339"
+    },
+    {
+      "path": "crates/rustyred-engine/src/index_registry.rs",
+      "source_984_sha256": "ca52b89cd3474c8563a83bc4fdbccc6dec0389946e024d7bfcab9b3fca9dc5cb",
+      "current_sha256": "ca52b89cd3474c8563a83bc4fdbccc6dec0389946e024d7bfcab9b3fca9dc5cb"
+    },
+    {
+      "path": "crates/rustyred-engine/src/instant_kg.rs",
+      "source_984_sha256": "1bb9831332af3935059600fd8b890c470e5d0169d9888523eba0930c2f1b284a",
+      "current_sha256": "1bb9831332af3935059600fd8b890c470e5d0169d9888523eba0930c2f1b284a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/intern.rs",
+      "source_984_sha256": "167a700b16cb1551deb16b7b3d4c677187c1dfb9f79f46ed8e9ab2bce75e8ca3",
+      "current_sha256": "167a700b16cb1551deb16b7b3d4c677187c1dfb9f79f46ed8e9ab2bce75e8ca3"
+    },
+    {
+      "path": "crates/rustyred-engine/src/journal.rs",
+      "source_984_sha256": "7679feba3b0b1d6534364da8361a86b06f18579660714c8401760edfcabe9661",
+      "current_sha256": "7679feba3b0b1d6534364da8361a86b06f18579660714c8401760edfcabe9661"
+    },
+    {
+      "path": "crates/rustyred-engine/src/judgment.rs",
+      "source_984_sha256": "137f9b158384033ee3adcce890e1c8d01b8e60d73ef29def2c5333361be94897",
+      "current_sha256": "137f9b158384033ee3adcce890e1c8d01b8e60d73ef29def2c5333361be94897"
+    },
+    {
+      "path": "crates/rustyred-engine/src/labeled_training_run.rs",
+      "source_984_sha256": "1a6a0eec17a3cfa652c4091b4de85dc3528a613b206d1fb224bb61b97c659180",
+      "current_sha256": "1a6a0eec17a3cfa652c4091b4de85dc3528a613b206d1fb224bb61b97c659180"
+    },
+    {
+      "path": "crates/rustyred-engine/src/layer.rs",
+      "source_984_sha256": "c6d01dbe5257cb11a29eed2c8b1c8011eb59c5a42a4096e599522ef40b5c07af",
+      "current_sha256": "c6d01dbe5257cb11a29eed2c8b1c8011eb59c5a42a4096e599522ef40b5c07af"
+    },
+    {
+      "path": "crates/rustyred-engine/src/lib.rs",
+      "source_984_sha256": "2450e177dc304ce7cb8c9f4cfa85f76793c53f3a55371928485f721ef9d39c49",
+      "current_sha256": "2450e177dc304ce7cb8c9f4cfa85f76793c53f3a55371928485f721ef9d39c49"
+    },
+    {
+      "path": "crates/rustyred-engine/src/map_artifact.rs",
+      "source_984_sha256": "167ffb85065cfeaf219d5756721ab6eb2ef508dbc1f2bfa35f092b5c7e27ec55",
+      "current_sha256": "167ffb85065cfeaf219d5756721ab6eb2ef508dbc1f2bfa35f092b5c7e27ec55"
+    },
+    {
+      "path": "crates/rustyred-engine/src/memory_admission.rs",
+      "source_984_sha256": "a410d58f5fabe937bfda359b6a571162f6e2509c23e6ba44093c25246a3adaff",
+      "current_sha256": "a410d58f5fabe937bfda359b6a571162f6e2509c23e6ba44093c25246a3adaff"
+    },
+    {
+      "path": "crates/rustyred-engine/src/memory_document.rs",
+      "source_984_sha256": "fb6936d69e881c2d43cae153cb464eff9e90b120ee713c05767fe318d3398727",
+      "current_sha256": "fb6936d69e881c2d43cae153cb464eff9e90b120ee713c05767fe318d3398727"
+    },
+    {
+      "path": "crates/rustyred-engine/src/merge_registry.rs",
+      "source_984_sha256": "9870656787c7636a771c00cd74b2120bca4bc774d1f638b167124f00376109b1",
+      "current_sha256": "9870656787c7636a771c00cd74b2120bca4bc774d1f638b167124f00376109b1"
+    },
+    {
+      "path": "crates/rustyred-engine/src/motif.rs",
+      "source_984_sha256": "e5e32bc9214edb8a531b61ea6491fd1d93d323472985c59228a256aa88ab2e8d",
+      "current_sha256": "e5e32bc9214edb8a531b61ea6491fd1d93d323472985c59228a256aa88ab2e8d"
+    },
+    {
+      "path": "crates/rustyred-engine/src/mutation_log.rs",
+      "source_984_sha256": "ae6246048e035cb49e46eb39bda7e8bef6dde00f7cc6695c973f770a8eafe688",
+      "current_sha256": "ae6246048e035cb49e46eb39bda7e8bef6dde00f7cc6695c973f770a8eafe688"
+    },
+    {
+      "path": "crates/rustyred-engine/src/narrative.rs",
+      "source_984_sha256": "40d08d30a0a083324b7d6fa8663d6ed6febe913504093347655dac90f9801edd",
+      "current_sha256": "40d08d30a0a083324b7d6fa8663d6ed6febe913504093347655dac90f9801edd"
+    },
+    {
+      "path": "crates/rustyred-engine/src/node_state.rs",
+      "source_984_sha256": "818cc738a322cf68659d735a8562d3de3f4c2e50d08308d7a77f28a836531f73",
+      "current_sha256": "818cc738a322cf68659d735a8562d3de3f4c2e50d08308d7a77f28a836531f73"
+    },
+    {
+      "path": "crates/rustyred-engine/src/object_store.rs",
+      "source_984_sha256": "72c17e46f59973ec0298b22f8a5e6b09563bbb976412291f4ed7d00504746983",
+      "current_sha256": "72c17e46f59973ec0298b22f8a5e6b09563bbb976412291f4ed7d00504746983"
+    },
+    {
+      "path": "crates/rustyred-engine/src/ordered.rs",
+      "source_984_sha256": "77a060164efc27dcae2052f7d1fcacf61103b6ad7d515c987672bbe0d91b6308",
+      "current_sha256": "77a060164efc27dcae2052f7d1fcacf61103b6ad7d515c987672bbe0d91b6308"
+    },
+    {
+      "path": "crates/rustyred-engine/src/partial_fold.rs",
+      "source_984_sha256": "b49dac4dc716eb92a291a1bdc62019e27868cc1a856d8ae842a9fbda59feb15b",
+      "current_sha256": "b49dac4dc716eb92a291a1bdc62019e27868cc1a856d8ae842a9fbda59feb15b"
+    },
+    {
+      "path": "crates/rustyred-engine/src/planner.rs",
+      "source_984_sha256": "ccd67950c2432286759332e763b1e29e51420acf0165258b7605c076968b795c",
+      "current_sha256": "ccd67950c2432286759332e763b1e29e51420acf0165258b7605c076968b795c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/plugin.rs",
+      "source_984_sha256": "0a27ba4b83be446d08cbce744bc3ede54b1a2c6690a952c3e1a638630ea43887",
+      "current_sha256": "0a27ba4b83be446d08cbce744bc3ede54b1a2c6690a952c3e1a638630ea43887"
+    },
+    {
+      "path": "crates/rustyred-engine/src/ppr_cache.rs",
+      "source_984_sha256": "7b4b8016fcf9f5035509d968daa081f4b78305f5d8e43febbb48971e2b3b7e45",
+      "current_sha256": "7b4b8016fcf9f5035509d968daa081f4b78305f5d8e43febbb48971e2b3b7e45"
+    },
+    {
+      "path": "crates/rustyred-engine/src/provenance_semiring.rs",
+      "source_984_sha256": "a9f08a10702574cc7c3fe8995597cf8f0eafc7829a7ea99c0bfd613959438fc2",
+      "current_sha256": "a9f08a10702574cc7c3fe8995597cf8f0eafc7829a7ea99c0bfd613959438fc2"
+    },
+    {
+      "path": "crates/rustyred-engine/src/query_receipt.rs",
+      "source_984_sha256": "bdfd98e5703ae8fb3839b26549981be72d2afa3a1f7ec3baf966699a6ac817d2",
+      "current_sha256": "bdfd98e5703ae8fb3839b26549981be72d2afa3a1f7ec3baf966699a6ac817d2"
+    },
+    {
+      "path": "crates/rustyred-engine/src/ranking.rs",
+      "source_984_sha256": "b0cacbbff1e0ec2a8de7f986ef23376cc9857ff0f440d7e9bb9ac693433c8f7a",
+      "current_sha256": "b0cacbbff1e0ec2a8de7f986ef23376cc9857ff0f440d7e9bb9ac693433c8f7a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/reachability.rs",
+      "source_984_sha256": "312e11fc362c467638af4a74a823ad864a30bd0626d0b20c1db1eceb925e3004",
+      "current_sha256": "312e11fc362c467638af4a74a823ad864a30bd0626d0b20c1db1eceb925e3004"
+    },
+    {
+      "path": "crates/rustyred-engine/src/read_model_index.rs",
+      "source_984_sha256": "5911820db1ce78ba1709c9c362e42deafe0a2e86078ec4057ae5de0b94b2de1e",
+      "current_sha256": "5911820db1ce78ba1709c9c362e42deafe0a2e86078ec4057ae5de0b94b2de1e"
+    },
+    {
+      "path": "crates/rustyred-engine/src/recovery_profile.rs",
+      "source_984_sha256": "ad6cc3829b7f7995c9cc78ae8eccfeda44d7c8dfc9be716e5fc6676e5e80897f",
+      "current_sha256": "ad6cc3829b7f7995c9cc78ae8eccfeda44d7c8dfc9be716e5fc6676e5e80897f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/refinery.rs",
+      "source_984_sha256": "a064ce5fe54aac95a069a49e333eb732ebab7a86c7b7afc851358df534f6e95f",
+      "current_sha256": "a064ce5fe54aac95a069a49e333eb732ebab7a86c7b7afc851358df534f6e95f"
+    },
+    {
+      "path": "crates/rustyred-engine/src/relational.rs",
+      "source_984_sha256": "056ed365e26c5d34de857a91f519e2bf9951b982095fb1fc4293a79bdfe5912c",
+      "current_sha256": "056ed365e26c5d34de857a91f519e2bf9951b982095fb1fc4293a79bdfe5912c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/resolved_row.rs",
+      "source_984_sha256": "725c477de2a2e279f8d2810031b1430dff396f2eb3b1859df5e5f88afbbbd21a",
+      "current_sha256": "725c477de2a2e279f8d2810031b1430dff396f2eb3b1859df5e5f88afbbbd21a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/revisable.rs",
+      "source_984_sha256": "562f765cddde43e7015bbc2959aea0a7740a206a276b8b9479b9a5544967f1cc",
+      "current_sha256": "562f765cddde43e7015bbc2959aea0a7740a206a276b8b9479b9a5544967f1cc"
+    },
+    {
+      "path": "crates/rustyred-engine/src/rr_file/header.rs",
+      "source_984_sha256": "77f519e856f18aea050edac06e5d05346caed86a4adc9efad53e487620dafe41",
+      "current_sha256": "77f519e856f18aea050edac06e5d05346caed86a4adc9efad53e487620dafe41"
+    },
+    {
+      "path": "crates/rustyred-engine/src/rr_file/lock.rs",
+      "source_984_sha256": "a0738cf876fc5bdcbbd36641bc8bd7482598115185d1c7318e69ca91caa942e3",
+      "current_sha256": "a0738cf876fc5bdcbbd36641bc8bd7482598115185d1c7318e69ca91caa942e3"
+    },
+    {
+      "path": "crates/rustyred-engine/src/rr_file/mod.rs",
+      "source_984_sha256": "549418ffa0b28135aba4f0576c42fd4ad765c2a41e9062a0a4a604bcdcef6cca",
+      "current_sha256": "549418ffa0b28135aba4f0576c42fd4ad765c2a41e9062a0a4a604bcdcef6cca"
+    },
+    {
+      "path": "crates/rustyred-engine/src/rr_migrate/mod.rs",
+      "source_984_sha256": "2db6de87443e020b47c86d6d510328025b844e49982dd9fc7c6c6b6b4b0f602c",
+      "current_sha256": "2db6de87443e020b47c86d6d510328025b844e49982dd9fc7c6c6b6b4b0f602c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/saturation.rs",
+      "source_984_sha256": "72e40f50a0b9d8af60bfad6de1abc5f5a40c6b4e0cfb54bbc70c9f0405457828",
+      "current_sha256": "72e40f50a0b9d8af60bfad6de1abc5f5a40c6b4e0cfb54bbc70c9f0405457828"
+    },
+    {
+      "path": "crates/rustyred-engine/src/saturation_engine.rs",
+      "source_984_sha256": "6b573309f8612619bc1b1f9587cea1c09778f5c420fca76dc73d1038d3075197",
+      "current_sha256": "6b573309f8612619bc1b1f9587cea1c09778f5c420fca76dc73d1038d3075197"
+    },
+    {
+      "path": "crates/rustyred-engine/src/semantic_inventory.rs",
+      "source_984_sha256": "d2d8e529aa419f33ee7fce04d7232cdf06f8c2710c79a7399df223ec973d2c09",
+      "current_sha256": "d2d8e529aa419f33ee7fce04d7232cdf06f8c2710c79a7399df223ec973d2c09"
+    },
+    {
+      "path": "crates/rustyred-engine/src/spatial.rs",
+      "source_984_sha256": "d5349c5ae15bcd151a1a0462c42dc86382ffaa51cb9fac3707a537bd4f428dfc",
+      "current_sha256": "d5349c5ae15bcd151a1a0462c42dc86382ffaa51cb9fac3707a537bd4f428dfc"
+    },
+    {
+      "path": "crates/rustyred-engine/src/spatial_s2.rs",
+      "source_984_sha256": "5c47b722081de01cc11784d70f395af3cbbfb91df78fbb1f848fd730aad2e2f9",
+      "current_sha256": "5c47b722081de01cc11784d70f395af3cbbfb91df78fbb1f848fd730aad2e2f9"
+    },
+    {
+      "path": "crates/rustyred-engine/src/standing.rs",
+      "source_984_sha256": "3aa5156419dde893778a5c4e77511832ae4d07b8b1abc2eea2709c0aef47e529",
+      "current_sha256": "3aa5156419dde893778a5c4e77511832ae4d07b8b1abc2eea2709c0aef47e529"
+    },
+    {
+      "path": "crates/rustyred-engine/src/state.rs",
+      "source_984_sha256": "eba26d5c26ad88fd34473112fd96396c503a4d3303476daa0a845434cdfd47ba",
+      "current_sha256": "eba26d5c26ad88fd34473112fd96396c503a4d3303476daa0a845434cdfd47ba"
+    },
+    {
+      "path": "crates/rustyred-engine/src/statement.rs",
+      "source_984_sha256": "12ddd35b8162b1b673a0b461879e5f94f5b44a87f6df6e955b48633e7ab6b6f3",
+      "current_sha256": "12ddd35b8162b1b673a0b461879e5f94f5b44a87f6df6e955b48633e7ab6b6f3"
+    },
+    {
+      "path": "crates/rustyred-engine/src/store.rs",
+      "source_984_sha256": "1808b8152a222b348e8ee292ca168048d15d464ac7ec593541aedda77200d619",
+      "current_sha256": "1808b8152a222b348e8ee292ca168048d15d464ac7ec593541aedda77200d619"
+    },
+    {
+      "path": "crates/rustyred-engine/src/stream.rs",
+      "source_984_sha256": "6307187d81665906466d9a61be80e4cb032882d76b1d91c9b75a6d86bda19130",
+      "current_sha256": "6307187d81665906466d9a61be80e4cb032882d76b1d91c9b75a6d86bda19130"
+    },
+    {
+      "path": "crates/rustyred-engine/src/symbolic.rs",
+      "source_984_sha256": "57d967cdb0898eb521121cdacb5f6d99251afcb4ff8cbd61d7b0dd56c17da907",
+      "current_sha256": "57d967cdb0898eb521121cdacb5f6d99251afcb4ff8cbd61d7b0dd56c17da907"
+    },
+    {
+      "path": "crates/rustyred-engine/src/symbolic/graph.rs",
+      "source_984_sha256": "afb244e2c9598f9e56a563c554de7c4fad2a32a9a024b67e0c8fcebbfffeb79a",
+      "current_sha256": "afb244e2c9598f9e56a563c554de7c4fad2a32a9a024b67e0c8fcebbfffeb79a"
+    },
+    {
+      "path": "crates/rustyred-engine/src/symbolic/graph_tests.rs",
+      "source_984_sha256": "901147bba08caa760ff245f97f2f6f1d09aca42189863f91f366be94be4c475c",
+      "current_sha256": "901147bba08caa760ff245f97f2f6f1d09aca42189863f91f366be94be4c475c"
+    },
+    {
+      "path": "crates/rustyred-engine/src/sync_merge.rs",
+      "source_984_sha256": "345cb828d38d1c7eb2a87a4452d2880962c4cadcd4016cdd209635fdece1b6a3",
+      "current_sha256": "345cb828d38d1c7eb2a87a4452d2880962c4cadcd4016cdd209635fdece1b6a3"
+    },
+    {
+      "path": "crates/rustyred-engine/src/sync_scope.rs",
+      "source_984_sha256": "cf4349a66cdf5684b683c05ad3cd2dca23d0efed0af641804586114a51709326",
+      "current_sha256": "cf4349a66cdf5684b683c05ad3cd2dca23d0efed0af641804586114a51709326"
+    },
+    {
+      "path": "crates/rustyred-engine/src/tensor_derivation.rs",
+      "source_984_sha256": "b9cd7300946b47c610abdc3d49796cabd4ddb31450222fe3aafc8bc947f4a819",
+      "current_sha256": "b9cd7300946b47c610abdc3d49796cabd4ddb31450222fe3aafc8bc947f4a819"
+    },
+    {
+      "path": "crates/rustyred-engine/src/token_encoder.rs",
+      "source_984_sha256": "1bcc0d061b5ab549781324fd74617b2fda4b7b8e9843d690cdbd2e2b03b70881",
+      "current_sha256": "1bcc0d061b5ab549781324fd74617b2fda4b7b8e9843d690cdbd2e2b03b70881"
+    },
+    {
+      "path": "crates/rustyred-engine/src/training_export.rs",
+      "source_984_sha256": "8fc3e637a92324ae5f500315ffdc566d8a05f2dff2b2d1e98a2c76a624969a8d",
+      "current_sha256": "8fc3e637a92324ae5f500315ffdc566d8a05f2dff2b2d1e98a2c76a624969a8d"
+    },
+    {
+      "path": "crates/rustyred-engine/src/vector_batch.rs",
+      "source_984_sha256": "9a8208edea6e4689cdf5bed1f774f21ed8abf88b0324f037b41fd93fe431b7d1",
+      "current_sha256": "9a8208edea6e4689cdf5bed1f774f21ed8abf88b0324f037b41fd93fe431b7d1"
+    },
+    {
+      "path": "crates/rustyred-engine/src/vector_eval.rs",
+      "source_984_sha256": "df366077a37dc2c65ebc0cc0a5312e9c6a426cf88379d8a15a74fdc2ef274988",
+      "current_sha256": "df366077a37dc2c65ebc0cc0a5312e9c6a426cf88379d8a15a74fdc2ef274988"
+    },
+    {
+      "path": "crates/rustyred-engine/src/vector_payload.rs",
+      "source_984_sha256": "319f37c5fcf6dda13df81577acf697090daeb9dcc21c0b2a8bdd16664a6e6536",
+      "current_sha256": "319f37c5fcf6dda13df81577acf697090daeb9dcc21c0b2a8bdd16664a6e6536"
+    },
+    {
+      "path": "crates/rustyred-engine/src/versioned_graph.rs",
+      "source_984_sha256": "0091bb9018b754e8c9d1ce0d75bf23ef4844e35d8eb97fa8f0ce3385b066a4b0",
+      "current_sha256": "0091bb9018b754e8c9d1ce0d75bf23ef4844e35d8eb97fa8f0ce3385b066a4b0"
+    },
+    {
+      "path": "crates/rustyred-engine/src/working_log.rs",
+      "source_984_sha256": "32567caa73fe66765c9b0f5a78211bc3adfe2541adaa4786ad803b09bde01258",
+      "current_sha256": "32567caa73fe66765c9b0f5a78211bc3adfe2541adaa4786ad803b09bde01258"
+    },
+    {
+      "path": "crates/rustyred-engine/src/zerocopy.rs",
+      "source_984_sha256": "c0fbd27c570b0146ee082c7d7de016abe58a0268ee26ff79cb68df89888a8fc1",
+      "current_sha256": "c0fbd27c570b0146ee082c7d7de016abe58a0268ee26ff79cb68df89888a8fc1"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/algebra_fold_differential.rs",
+      "source_984_sha256": "91df26e9c5ca9b9cf00c34f60edecb2d1a61580cd3b932d40c2d48decce2bd73",
+      "current_sha256": "91df26e9c5ca9b9cf00c34f60edecb2d1a61580cd3b932d40c2d48decce2bd73"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/algebra_fold_repairs.rs",
+      "source_984_sha256": "700f3aba315357dfba7200f54c1461e0cc09337d9538dba0e81e6ce3018cfa53",
+      "current_sha256": "700f3aba315357dfba7200f54c1461e0cc09337d9538dba0e81e6ce3018cfa53"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/algebra_fold_rss.rs",
+      "source_984_sha256": "aefbd1b6d4c7aa7a0e233cb135f10af31cf55ac9d302352753a18d0be0d29bd7",
+      "current_sha256": "aefbd1b6d4c7aa7a0e233cb135f10af31cf55ac9d302352753a18d0be0d29bd7"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/algebra_identity_interner.rs",
+      "source_984_sha256": "f96fe3a0ddf89dc4ec4f5c7c680325f34ad9d15157cae2269a68e945cbf84cfa",
+      "current_sha256": "f96fe3a0ddf89dc4ec4f5c7c680325f34ad9d15157cae2269a68e945cbf84cfa"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/algebra_token_region.rs",
+      "source_984_sha256": "df2a5da33ff43ad9441e6ee9a28fd60357b9fd91356c7d201d9567277a392851",
+      "current_sha256": "df2a5da33ff43ad9441e6ee9a28fd60357b9fd91356c7d201d9567277a392851"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/deployment_identity.rs",
+      "source_984_sha256": "38f4965872db1780bd19abc92280c0c0e5daceb1953df4ae964d959fbb830833",
+      "current_sha256": "38f4965872db1780bd19abc92280c0c0e5daceb1953df4ae964d959fbb830833"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/derivation_core_store.rs",
+      "source_984_sha256": "ab2f86d77d278ca01180641e02c00830578c389871301b44a7066d87f2e3b56a",
+      "current_sha256": "ab2f86d77d278ca01180641e02c00830578c389871301b44a7066d87f2e3b56a"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/documents_fold_differential.rs",
+      "source_984_sha256": "d6da5204522bebde21f9fb669384583494639a1bc357ce22be896112a9ca84f5",
+      "current_sha256": "d6da5204522bebde21f9fb669384583494639a1bc357ce22be896112a9ca84f5"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_algebra_laws.rs",
+      "source_984_sha256": "bdee85f0feddcb35b174ca6e37f8b43cf5b51d4f64f716303a09fc72e909146a",
+      "current_sha256": "bdee85f0feddcb35b174ca6e37f8b43cf5b51d4f64f716303a09fc72e909146a"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_commit_outcome.rs",
+      "source_984_sha256": "2c75fa1954e7271d2834d87831b7342b2e859d5479887f915260e57bde3a9547",
+      "current_sha256": "2c75fa1954e7271d2834d87831b7342b2e859d5479887f915260e57bde3a9547"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_floor_reopen.rs",
+      "source_984_sha256": "ba6f169d46af02891f71c2891298f680a55a3a839feeaf5cc8891911685113d7",
+      "current_sha256": "ba6f169d46af02891f71c2891298f680a55a3a839feeaf5cc8891911685113d7"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_replay_differential.rs",
+      "source_984_sha256": "2ef188336370321fc8106bf304a370459109535bb29bddfbbaba2bfcb9ba299c",
+      "current_sha256": "2ef188336370321fc8106bf304a370459109535bb29bddfbbaba2bfcb9ba299c"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_retraction_differential.rs",
+      "source_984_sha256": "6d2c7aa1016cf22cb6b1dcb6698714324949438ffb99d58a127858fc0bedc1ad",
+      "current_sha256": "6d2c7aa1016cf22cb6b1dcb6698714324949438ffb99d58a127858fc0bedc1ad"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_storage_differential.rs",
+      "source_984_sha256": "66294221e16cb2549bd5a5070a03ada9644751ab4e4954ab18123d00810f6df5",
+      "current_sha256": "66294221e16cb2549bd5a5070a03ada9644751ab4e4954ab18123d00810f6df5"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/graphstore_fold_differential.rs",
+      "source_984_sha256": "70e1169cce6496898d6d27dda5df2a2c34584482aad9d4ee908d07d94fa85a27",
+      "current_sha256": "70e1169cce6496898d6d27dda5df2a2c34584482aad9d4ee908d07d94fa85a27"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/history_fold_differential.rs",
+      "source_984_sha256": "79423655ca761722bde0e336d1ede3e37f9bed0b005ca03288bc92b3d1e790dd",
+      "current_sha256": "79423655ca761722bde0e336d1ede3e37f9bed0b005ca03288bc92b3d1e790dd"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/history_tigris_live.rs",
+      "source_984_sha256": "026dfde4c539ab5d659d6b4952a9600cafa4f52b5549561ff5596f330fea0959",
+      "current_sha256": "026dfde4c539ab5d659d6b4952a9600cafa4f52b5549561ff5596f330fea0959"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/identity_interner_churn.rs",
+      "source_984_sha256": "612046912742826c78e85f46177c31cafc8b3627eeb6a7d44542f8a3eaf1d244",
+      "current_sha256": "612046912742826c78e85f46177c31cafc8b3627eeb6a7d44542f8a3eaf1d244"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/incremental_integration_acceptance.rs",
+      "source_984_sha256": "3edeccb88127cd223aaf9d586e36ab8d676380caa3146d467456a8cd45666acd",
+      "current_sha256": "3edeccb88127cd223aaf9d586e36ab8d676380caa3146d467456a8cd45666acd"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/accounting_scaling.rs",
+      "source_984_sha256": "97181fe27257594101762706f0d37d38aa5c2050e00897c0ecdd58e01f7043dc",
+      "current_sha256": "97181fe27257594101762706f0d37d38aa5c2050e00897c0ecdd58e01f7043dc"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/adaptive_index_phase6_tests.rs",
+      "source_984_sha256": "6fdfee3d4735be711501807e057b3c8114fd3b54124317cd5cc1c94bcc0af655",
+      "current_sha256": "6fdfee3d4735be711501807e057b3c8114fd3b54124317cd5cc1c94bcc0af655"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/aof_checksum_compat.rs",
+      "source_984_sha256": "4ddadfb12ccec7503e4e7608616025c6ee3d7e0df8fb8bcb44df75ccc1bbcd5d",
+      "current_sha256": "4ddadfb12ccec7503e4e7608616025c6ee3d7e0df8fb8bcb44df75ccc1bbcd5d"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/assert_claim_acceptance.rs",
+      "source_984_sha256": "6568851ae0b446e9c2fda69052cb8a63ea9b7f63f67ab6ac3cd3633deff2bf62",
+      "current_sha256": "6568851ae0b446e9c2fda69052cb8a63ea9b7f63f67ab6ac3cd3633deff2bf62"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/commit_scaling.rs",
+      "source_984_sha256": "705c265dfefabe8581b870c140aaf10c50d2f3af6428e160660b5a669e94af7e",
+      "current_sha256": "705c265dfefabe8581b870c140aaf10c50d2f3af6428e160660b5a669e94af7e"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/composite_partial_covering_tests.rs",
+      "source_984_sha256": "81a4c7e295162c067b7daa743bb78d3377e8ee370df1db8f528e3020758a281f",
+      "current_sha256": "81a4c7e295162c067b7daa743bb78d3377e8ee370df1db8f528e3020758a281f"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/context_training_view_tests.rs",
+      "source_984_sha256": "4ad3419d07572affdf79f9e316b0da0e38c07d7fe35bcdee8db196a57906a862",
+      "current_sha256": "4ad3419d07572affdf79f9e316b0da0e38c07d7fe35bcdee8db196a57906a862"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/derivation_acceptance.rs",
+      "source_984_sha256": "5261f5f309607309fbcbc21d39d709e06a50e2542386cf7ca8c6b93feb89dcbf",
+      "current_sha256": "5261f5f309607309fbcbc21d39d709e06a50e2542386cf7ca8c6b93feb89dcbf"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/document_tier_acceptance.rs",
+      "source_984_sha256": "64a1935dc51851edb671f5b4be4233a4c4a5046ace8ffb995bdbf25ed7e66ad9",
+      "current_sha256": "64a1935dc51851edb671f5b4be4233a4c4a5046ace8ffb995bdbf25ed7e66ad9"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/epistemic_acceptance.rs",
+      "source_984_sha256": "c90d441569b5bdf22356835cc43f230993b92fd4b52be881758fe901d6704de9",
+      "current_sha256": "c90d441569b5bdf22356835cc43f230993b92fd4b52be881758fe901d6704de9"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/epistemic_columnar_acceptance.rs",
+      "source_984_sha256": "40aa95c1978c37c900bde055d936b376d911ad5db58a0acfac49599a00d6373f",
+      "current_sha256": "40aa95c1978c37c900bde055d936b376d911ad5db58a0acfac49599a00d6373f"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/fulltext_phase3_tests.rs",
+      "source_984_sha256": "381748b1b3a92eed2ece198dc994f046ca0232cf1caf51cc7403f6e3745e49fb",
+      "current_sha256": "381748b1b3a92eed2ece198dc994f046ca0232cf1caf51cc7403f6e3745e49fb"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/graph_decomposition_acceptance.rs",
+      "source_984_sha256": "e720669793d71d31d4f280fadec3e68a052ce3d192ed4166b4b133da7dcd6f06",
+      "current_sha256": "e720669793d71d31d4f280fadec3e68a052ce3d192ed4166b4b133da7dcd6f06"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/hook_dispatch.rs",
+      "source_984_sha256": "480e641a198db2e36c51cc0ebf9d1d116899f397487789619175cdb08d8f64c9",
+      "current_sha256": "480e641a198db2e36c51cc0ebf9d1d116899f397487789619175cdb08d8f64c9"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/identity_index_tests.rs",
+      "source_984_sha256": "4a4e22bcb855eac0b241ecea48228f2fd3536f813b2e3f12ad67cf3404fe5c78",
+      "current_sha256": "4a4e22bcb855eac0b241ecea48228f2fd3536f813b2e3f12ad67cf3404fe5c78"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/improvement_plan_acceptance.rs",
+      "source_984_sha256": "65fe26aaa4d592295f6108f836db463fa41f8b7da593066b8431918d7f732240",
+      "current_sha256": "65fe26aaa4d592295f6108f836db463fa41f8b7da593066b8431918d7f732240"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/incremental_derivation_acceptance.rs",
+      "source_984_sha256": "4232e583e3c4658fd1b24c1f0e33059b826cb45e9683790a6bb1c4b924d0eb42",
+      "current_sha256": "4232e583e3c4658fd1b24c1f0e33059b826cb45e9683790a6bb1c4b924d0eb42"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/index_manifest_tests.rs",
+      "source_984_sha256": "02459c91fc14a4734c9a17a175d028156e2fd01f04c661d5f132c3d6a73a91e1",
+      "current_sha256": "02459c91fc14a4734c9a17a175d028156e2fd01f04c661d5f132c3d6a73a91e1"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/lfr_chunk_store_injection.rs",
+      "source_984_sha256": "6cdd2bf46fc71238fc15050d0a28f1ae82caff85a1088b0c7c336b75ffbb708c",
+      "current_sha256": "6cdd2bf46fc71238fc15050d0a28f1ae82caff85a1088b0c7c336b75ffbb708c"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/main.rs",
+      "source_984_sha256": "1e80c74f251dd9027fe4dfd3a71c50a35aebf9274d64bcaa5732bc1b70eee903",
+      "current_sha256": "1e80c74f251dd9027fe4dfd3a71c50a35aebf9274d64bcaa5732bc1b70eee903"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/map_artifact_phase8_tests.rs",
+      "source_984_sha256": "acfef72d19e8d0a40b5d140d3ddf70a2fcc94a435efae9110af53996597febb0",
+      "current_sha256": "acfef72d19e8d0a40b5d140d3ddf70a2fcc94a435efae9110af53996597febb0"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/multiplex_layers.rs",
+      "source_984_sha256": "bb720e4b519f09d14adaefaa0ee876a9fdc9506fccccc88f068397e851296286",
+      "current_sha256": "bb720e4b519f09d14adaefaa0ee876a9fdc9506fccccc88f068397e851296286"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/ordered_index_acceptance.rs",
+      "source_984_sha256": "810bf4ff861495a1d33967454d708dd14244b2d055e432df02ead2a52171d882",
+      "current_sha256": "810bf4ff861495a1d33967454d708dd14244b2d055e432df02ead2a52171d882"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/planner_multimodal_acceptance.rs",
+      "source_984_sha256": "2f0006f10db2544215a0044721badd2fdac0b7b29fbdd1e5976f9741c954dd1a",
+      "current_sha256": "2f0006f10db2544215a0044721badd2fdac0b7b29fbdd1e5976f9741c954dd1a"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/ppr_csr_acceptance.rs",
+      "source_984_sha256": "1f5d6d0f7d444d395ad77e1298ef173a61d108968060301b7e312e5b43c8631f",
+      "current_sha256": "1f5d6d0f7d444d395ad77e1298ef173a61d108968060301b7e312e5b43c8631f"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/prolly_incremental_commit.rs",
+      "source_984_sha256": "1f99e82071f809f51cfe2262189e25345947a3ddac4d866f6020f25729b6c825",
+      "current_sha256": "1f99e82071f809f51cfe2262189e25345947a3ddac4d866f6020f25729b6c825"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/prolly_parity_boundary.rs",
+      "source_984_sha256": "34af940cf524f47923621842af1a9c30494fede13bdc3904f74f77d280327317",
+      "current_sha256": "34af940cf524f47923621842af1a9c30494fede13bdc3904f74f77d280327317"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/query_receipt_tests.rs",
+      "source_984_sha256": "afe906c3353a0bffd1c53a99d5f53115384233c3940816a838d074dfabe256d9",
+      "current_sha256": "afe906c3353a0bffd1c53a99d5f53115384233c3940816a838d074dfabe256d9"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/redcore_snapshot_replay_parity.rs",
+      "source_984_sha256": "f63702e83ffc54a71fc004201d9c567778839834d69566728c863cd2c6bde512",
+      "current_sha256": "f63702e83ffc54a71fc004201d9c567778839834d69566728c863cd2c6bde512"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/relational_copy_gate.rs",
+      "source_984_sha256": "3cda563d3dd191cb859147bf7233cee20300958bdc54581ee6be52b1f08bd3fc",
+      "current_sha256": "3cda563d3dd191cb859147bf7233cee20300958bdc54581ee6be52b1f08bd3fc"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/relational_core_acceptance.rs",
+      "source_984_sha256": "2c6eaaf452825680c61ac3d807d3ae0779e816e320641115ad7042fbba4b0b4b",
+      "current_sha256": "2c6eaaf452825680c61ac3d807d3ae0779e816e320641115ad7042fbba4b0b4b"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/relational_lens_acceptance.rs",
+      "source_984_sha256": "5e5309c4cbe5c8fc6f3ab324207993746f00a81d91ba86752c7af2cd20baadae",
+      "current_sha256": "5e5309c4cbe5c8fc6f3ab324207993746f00a81d91ba86752c7af2cd20baadae"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/saturation_acceptance.rs",
+      "source_984_sha256": "85afc92a617200e16c964bbd3a23785eba1acf25a43b4faf9d49f28b534c00c5",
+      "current_sha256": "85afc92a617200e16c964bbd3a23785eba1acf25a43b4faf9d49f28b534c00c5"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/scoped_ordered_index_tests.rs",
+      "source_984_sha256": "5a1092f1a243063cbc48cbcf2fe545140a64364e7f8efee958952be84556474b",
+      "current_sha256": "5a1092f1a243063cbc48cbcf2fe545140a64364e7f8efee958952be84556474b"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/semiring_annotated_joins_acceptance.rs",
+      "source_984_sha256": "d918ee85adea2af619d0671e71fcd09dfba8817bdeb2aeff71fdfcf2802b0198",
+      "current_sha256": "d918ee85adea2af619d0671e71fcd09dfba8817bdeb2aeff71fdfcf2802b0198"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/statement_acceptance.rs",
+      "source_984_sha256": "1170040373d2a6cd68b4648932c150e081dd34918741c117a9d032b8cbf2daf1",
+      "current_sha256": "1170040373d2a6cd68b4648932c150e081dd34918741c117a9d032b8cbf2daf1"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/tensor_derivation_acceptance.rs",
+      "source_984_sha256": "21bb49fba341fa9a957155c59f53cb69ea3c86531abb08f8eb077feeae18ab0c",
+      "current_sha256": "21bb49fba341fa9a957155c59f53cb69ea3c86531abb08f8eb077feeae18ab0c"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/ua15_connection_native.rs",
+      "source_984_sha256": "9b2eea9f69c18ad3ace8d4ebeadba3a9472bf1c71f4e6996c881416f9fb1a074",
+      "current_sha256": "9b2eea9f69c18ad3ace8d4ebeadba3a9472bf1c71f4e6996c881416f9fb1a074"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/vector_index_update_acceptance.rs",
+      "source_984_sha256": "7c5d8e34af1a7361767faf716569afc29691aebc6ea0e17557fd2b0a9409baae",
+      "current_sha256": "7c5d8e34af1a7361767faf716569afc29691aebc6ea0e17557fd2b0a9409baae"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/it/vector_phase4_tests.rs",
+      "source_984_sha256": "f1f30d5cea35c29665ffc68b6c77c29147a50a7a40b6ffbb88c5f469fda7a006",
+      "current_sha256": "f1f30d5cea35c29665ffc68b6c77c29147a50a7a40b6ffbb88c5f469fda7a006"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/logfold_client_abi.rs",
+      "source_984_sha256": "fb63cc16a82b9837d55feb3da06a2ab43e660b5904deaeb4b2c00e3e355fa021",
+      "current_sha256": "fb63cc16a82b9837d55feb3da06a2ab43e660b5904deaeb4b2c00e3e355fa021"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/overlap_consumers.rs",
+      "source_984_sha256": "51ee64754d6e7d72a7ebc602b40f7cbfeaa7fb378a3b3aeef8cc5cda530d7878",
+      "current_sha256": "51ee64754d6e7d72a7ebc602b40f7cbfeaa7fb378a3b3aeef8cc5cda530d7878"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/partial_fold_differential.rs",
+      "source_984_sha256": "4edde7c608832e6ece06a4493126ff865e941fe3ce912054ee795322d4f7382f",
+      "current_sha256": "4edde7c608832e6ece06a4493126ff865e941fe3ce912054ee795322d4f7382f"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/partial_fold_races.rs",
+      "source_984_sha256": "9562f81539d742065898277c3da9a6639a20edf8b070752bca61b9c2db22cb26",
+      "current_sha256": "9562f81539d742065898277c3da9a6639a20edf8b070752bca61b9c2db22cb26"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/partial_fold_soak.rs",
+      "source_984_sha256": "1d74f47f7636b2f8b7a03ed3eccc89292c7f05b7f4cf384954bdd248e30b5751",
+      "current_sha256": "1d74f47f7636b2f8b7a03ed3eccc89292c7f05b7f4cf384954bdd248e30b5751"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/point_read_no_interpreter.rs",
+      "source_984_sha256": "8c7edad5490c30c6f789849ce062cf917f31be6daae82171c45217fb2df4a221",
+      "current_sha256": "8c7edad5490c30c6f789849ce062cf917f31be6daae82171c45217fb2df4a221"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/query_extension_boundary.rs",
+      "source_984_sha256": "3d87fc5b46339157241b45c4a27b3b33886b60d50b213d254722e3e9dc8ff2a6",
+      "current_sha256": "3d87fc5b46339157241b45c4a27b3b33886b60d50b213d254722e3e9dc8ff2a6"
+    },
+    {
+      "path": "crates/rustyred-graphblas/Cargo.toml",
+      "source_984_sha256": "2110de23cadba1200ee7d65ed3f8af1a150ef088ffc7a75c6356fe886528ac54",
+      "current_sha256": "2110de23cadba1200ee7d65ed3f8af1a150ef088ffc7a75c6356fe886528ac54"
+    },
+    {
+      "path": "crates/rustyred-graphblas/build.rs",
+      "source_984_sha256": "f80e132df033df8a910fe924b48f5b12d886aa31201521e84c16310dcfaa4ad2",
+      "current_sha256": "f80e132df033df8a910fe924b48f5b12d886aa31201521e84c16310dcfaa4ad2"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/context.rs",
+      "source_984_sha256": "eaf42aa790047109fd69553397d2850387f50f41af742e5af424d28defbb7f9f",
+      "current_sha256": "eaf42aa790047109fd69553397d2850387f50f41af742e5af424d28defbb7f9f"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/error.rs",
+      "source_984_sha256": "39d8d5d0a0803aff34445ddcd5c0ff4504937a9f5b043b58749eba1ecc3acbef",
+      "current_sha256": "39d8d5d0a0803aff34445ddcd5c0ff4504937a9f5b043b58749eba1ecc3acbef"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/lagraph.rs",
+      "source_984_sha256": "c5836f0d3198c1377900c8c8ea7178e49e3a91164a8b544b1917c56520b44962",
+      "current_sha256": "c5836f0d3198c1377900c8c8ea7178e49e3a91164a8b544b1917c56520b44962"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/lib.rs",
+      "source_984_sha256": "bf3fd995189238a6c33fcef96be71b0ae05c2ff02f0a5b2f4125f4bbf175ec2c",
+      "current_sha256": "bf3fd995189238a6c33fcef96be71b0ae05c2ff02f0a5b2f4125f4bbf175ec2c"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/matrix.rs",
+      "source_984_sha256": "73db76fbed315c17f085c7355113d4b806e3d998ad2205c32915a4ac9b308ac4",
+      "current_sha256": "73db76fbed315c17f085c7355113d4b806e3d998ad2205c32915a4ac9b308ac4"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/ops.rs",
+      "source_984_sha256": "98edafeefd3b6c6be37d34cb3893c0d600eeb5a6dd8318070fabdcfa3c91e4f8",
+      "current_sha256": "98edafeefd3b6c6be37d34cb3893c0d600eeb5a6dd8318070fabdcfa3c91e4f8"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/traversal.rs",
+      "source_984_sha256": "04f65c0e57fc6487f230ec702d247688278420eee0ead94281299bd3dc14a8a4",
+      "current_sha256": "04f65c0e57fc6487f230ec702d247688278420eee0ead94281299bd3dc14a8a4"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/types.rs",
+      "source_984_sha256": "a639051556d25e6d078ce693e4a79b9d199accd6f98723084eff5024e0902ada",
+      "current_sha256": "a639051556d25e6d078ce693e4a79b9d199accd6f98723084eff5024e0902ada"
+    },
+    {
+      "path": "crates/rustyred-graphblas/src/vector.rs",
+      "source_984_sha256": "d23170c5e0d33cab36092ab5000c171343fd809cccc5e37ddff4136e61d1e588",
+      "current_sha256": "d23170c5e0d33cab36092ab5000c171343fd809cccc5e37ddff4136e61d1e588"
+    },
+    {
+      "path": "crates/rustyred-log/Cargo.toml",
+      "source_984_sha256": "da42dd843fd9636a0616458b0e03c7f778991f26094d718e5a34bdc3616245dd",
+      "current_sha256": "da42dd843fd9636a0616458b0e03c7f778991f26094d718e5a34bdc3616245dd"
+    },
+    {
+      "path": "crates/rustyred-log/src/format.rs",
+      "source_984_sha256": "2b2428308608332ae0b075990430d6bcbcb169e13de7862a55bc423b017e3b17",
+      "current_sha256": "2b2428308608332ae0b075990430d6bcbcb169e13de7862a55bc423b017e3b17"
+    },
+    {
+      "path": "crates/rustyred-log/src/opfs.rs",
+      "source_984_sha256": "4856d61d7082274ec009c5508a1c0d53f8dfca1de3fc07472c4464a3edce54ca",
+      "current_sha256": "4856d61d7082274ec009c5508a1c0d53f8dfca1de3fc07472c4464a3edce54ca"
+    },
+    {
+      "path": "crates/rustyred-log/src/overlap.rs",
+      "source_984_sha256": "751ad0dc8f2c31c60df1f20b25405d2ab32538d588534e356678ec2ceae04f3b",
+      "current_sha256": "751ad0dc8f2c31c60df1f20b25405d2ab32538d588534e356678ec2ceae04f3b"
+    },
+    {
+      "path": "crates/rustyred-log/src/physical.rs",
+      "source_984_sha256": "47de07716b2ea5ccfad095cb630fb96ed0a39c67eee987b7a3b363809c77a610",
+      "current_sha256": "47de07716b2ea5ccfad095cb630fb96ed0a39c67eee987b7a3b363809c77a610"
+    },
+    {
+      "path": "crates/rustyred-log/src/physical_lib.rs",
+      "source_984_sha256": "95e6f36e363e5295469fa8b04055f1c5dde27a94de142de095545a265d803945",
+      "current_sha256": "95e6f36e363e5295469fa8b04055f1c5dde27a94de142de095545a265d803945"
+    },
+    {
+      "path": "crates/rustyred-log/src/proposal.rs",
+      "source_984_sha256": "a9b8667d108a082e91706029e47b504f9578f2da59f10098f2bbb7be1eed6475",
+      "current_sha256": "a9b8667d108a082e91706029e47b504f9578f2da59f10098f2bbb7be1eed6475"
+    },
+    {
+      "path": "crates/rustyred-log/src/provenance.rs",
+      "source_984_sha256": "499ac1370f4d8524c0dbc0bebd5057be9e91dbcbad34f7a3648bdea4ffb70c41",
+      "current_sha256": "499ac1370f4d8524c0dbc0bebd5057be9e91dbcbad34f7a3648bdea4ffb70c41"
+    },
+    {
+      "path": "crates/rustyred-log/src/schedule.rs",
+      "source_984_sha256": "b3ff94d151871389545a6fa0c473aca3a902c4dd1cff6f5e834ed3d8bde67611",
+      "current_sha256": "b3ff94d151871389545a6fa0c473aca3a902c4dd1cff6f5e834ed3d8bde67611"
+    },
+    {
+      "path": "crates/rustyred-log/src/storage.rs",
+      "source_984_sha256": "e0cb216ccb200c966f7e3028da96dbf428e5bb331c84fb5f25a50b10faa94eae",
+      "current_sha256": "e0cb216ccb200c966f7e3028da96dbf428e5bb331c84fb5f25a50b10faa94eae"
+    },
+    {
+      "path": "crates/rustyred-log/tests/crash_reopen.rs",
+      "source_984_sha256": "56c125f857f01a7f630f9e71707e5251d6df6de13608d25f1c6744eaa24053f4",
+      "current_sha256": "56c125f857f01a7f630f9e71707e5251d6df6de13608d25f1c6744eaa24053f4"
+    },
+    {
+      "path": "crates/rustyred-log/tests/fsync_append.rs",
+      "source_984_sha256": "151c512be2d1b5b70f3bc6547985fba48fdda213592d2f73b9830c43c4ee6702",
+      "current_sha256": "151c512be2d1b5b70f3bc6547985fba48fdda213592d2f73b9830c43c4ee6702"
+    },
+    {
+      "path": "crates/rustyred-log/tests/overlap_differential.rs",
+      "source_984_sha256": "18bf77f83539a8eb84e18972350d69c3673feb803d64739efd65c5c561cffb48",
+      "current_sha256": "18bf77f83539a8eb84e18972350d69c3673feb803d64739efd65c5c561cffb48"
+    },
+    {
+      "path": "crates/rustyred-log/tests/proposal_commit.rs",
+      "source_984_sha256": "77441ba8e094ba6691d34e7fe7084174ca9d95cfc15d9504e0f68b1faa887ab2",
+      "current_sha256": "77441ba8e094ba6691d34e7fe7084174ca9d95cfc15d9504e0f68b1faa887ab2"
+    },
+    {
+      "path": "crates/rustyred-log/tests/provenance_commit.rs",
+      "source_984_sha256": "6b7e93e2935d711b0648a2eb41f0769c19386b959e3f13747bd956fe1eee9fc1",
+      "current_sha256": "6b7e93e2935d711b0648a2eb41f0769c19386b959e3f13747bd956fe1eee9fc1"
+    },
+    {
+      "path": "crates/rustyred-log/tests/provenance_wire.rs",
+      "source_984_sha256": "f3b146877077f89bad67ce4ec6391971535231adda031462bafd62b03c75fa5c",
+      "current_sha256": "f3b146877077f89bad67ce4ec6391971535231adda031462bafd62b03c75fa5c"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/Cargo.toml",
+      "source_984_sha256": "3e1bb12dee7cb4bfd9ca2c4eddfefb512d0f2b989ab27f77a00b67d9544afc27",
+      "current_sha256": "3e1bb12dee7cb4bfd9ca2c4eddfefb512d0f2b989ab27f77a00b67d9544afc27"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/cost.rs",
+      "source_984_sha256": "43cb8cdaf2137d3a2f392f571d94f8c436807e175711c472802303d694373337",
+      "current_sha256": "43cb8cdaf2137d3a2f392f571d94f8c436807e175711c472802303d694373337"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/cypher/ast.rs",
+      "source_984_sha256": "67871e6062e971adc593168eeb31f7c64f71e17d498bf65f369e75846b59f64b",
+      "current_sha256": "67871e6062e971adc593168eeb31f7c64f71e17d498bf65f369e75846b59f64b"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/cypher/mod.rs",
+      "source_984_sha256": "893eff120fa4f7893ca2a0aeb117a0cf8bec26f92ba4f608bef61dde7f840e6e",
+      "current_sha256": "893eff120fa4f7893ca2a0aeb117a0cf8bec26f92ba4f608bef61dde7f840e6e"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/cypher/parse.rs",
+      "source_984_sha256": "87014c0d5b74232633e7ec14d410bcb11c517ff1c92090a6b960958df1d83119",
+      "current_sha256": "87014c0d5b74232633e7ec14d410bcb11c517ff1c92090a6b960958df1d83119"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/desugar.rs",
+      "source_984_sha256": "fbbd19f9a9ad3351713a30e82ada208808d693dd2fbd4ef0a0749e003f0ce965",
+      "current_sha256": "fbbd19f9a9ad3351713a30e82ada208808d693dd2fbd4ef0a0749e003f0ce965"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/lang.rs",
+      "source_984_sha256": "750bf3195a4a7e0fd2d5838864cd65f3d63364c8cce9e4e905a3492b451cd3d7",
+      "current_sha256": "750bf3195a4a7e0fd2d5838864cd65f3d63364c8cce9e4e905a3492b451cd3d7"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/lib.rs",
+      "source_984_sha256": "b2a9da949dfb0c8b70842a681fa713f503b15c86cc3d2eada1fd83344585066d",
+      "current_sha256": "b2a9da949dfb0c8b70842a681fa713f503b15c86cc3d2eada1fd83344585066d"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/proof.rs",
+      "source_984_sha256": "57e8560b728a387f1bc7d16b8ab30adbb203b1715cb9f4e88df482ce9bfb4096",
+      "current_sha256": "57e8560b728a387f1bc7d16b8ab30adbb203b1715cb9f4e88df482ce9bfb4096"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/rules.rs",
+      "source_984_sha256": "cbc80dbf3dc03104db8f1f90982bf13994f40a7984ec45fce4f55fc3d424081c",
+      "current_sha256": "cbc80dbf3dc03104db8f1f90982bf13994f40a7984ec45fce4f55fc3d424081c"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/src/structured.rs",
+      "source_984_sha256": "b951d31549276c39cda71a92ab20df7d57f9a307ee0095c8772d1ad3003230ae",
+      "current_sha256": "b951d31549276c39cda71a92ab20df7d57f9a307ee0095c8772d1ad3003230ae"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/tests/differential.rs",
+      "source_984_sha256": "38581ed5b87d578f5f1ce987a9db0ffc23f8158892941f684b9513cf9e4a1e32",
+      "current_sha256": "38581ed5b87d578f5f1ce987a9db0ffc23f8158892941f684b9513cf9e4a1e32"
+    },
+    {
+      "path": "crates/rustyred-query-saturate/tests/gates.rs",
+      "source_984_sha256": "59ce2a0981a908de8f03100d52fc2dc15abe62af17eae4894ea41572dc4d2d36",
+      "current_sha256": "59ce2a0981a908de8f03100d52fc2dc15abe62af17eae4894ea41572dc4d2d36"
+    },
+    {
+      "path": "crates/rustyred-query/Cargo.toml",
+      "source_984_sha256": "6809799010c343b26ec327ef0e09abbe6046d46376f8f57b6005c5803ae2fe38",
+      "current_sha256": "6809799010c343b26ec327ef0e09abbe6046d46376f8f57b6005c5803ae2fe38"
+    },
+    {
+      "path": "crates/rustyred-query/src/ast_hash.rs",
+      "source_984_sha256": "7a957f71f884ec23b38147b02de45b48757594a80330d8c2a593d291f6bfd0fd",
+      "current_sha256": "7a957f71f884ec23b38147b02de45b48757594a80330d8c2a593d291f6bfd0fd"
+    },
+    {
+      "path": "crates/rustyred-query/src/cypher/ast.rs",
+      "source_984_sha256": "999608abd491f9dfd3034aecf2bc63b498ea09af2d538916f08a826c6bb021b4",
+      "current_sha256": "999608abd491f9dfd3034aecf2bc63b498ea09af2d538916f08a826c6bb021b4"
+    },
+    {
+      "path": "crates/rustyred-query/src/cypher/compile.rs",
+      "source_984_sha256": "c05966f3c4a1168aad2f05fc8d8edfec6d6977b68df9a272b026e60ec2812bba",
+      "current_sha256": "c05966f3c4a1168aad2f05fc8d8edfec6d6977b68df9a272b026e60ec2812bba"
+    },
+    {
+      "path": "crates/rustyred-query/src/cypher/mod.rs",
+      "source_984_sha256": "3d6cbe2a7fd9af6469ec5079c8e1acb2b069d1cfe60b272fd07722e7b9979430",
+      "current_sha256": "3d6cbe2a7fd9af6469ec5079c8e1acb2b069d1cfe60b272fd07722e7b9979430"
+    },
+    {
+      "path": "crates/rustyred-query/src/cypher/parse.rs",
+      "source_984_sha256": "5d9bdaff9e1bc9b89056ebe9078e476a91c116dcbb42a8a43b2ed8c154d95f80",
+      "current_sha256": "5d9bdaff9e1bc9b89056ebe9078e476a91c116dcbb42a8a43b2ed8c154d95f80"
+    },
+    {
+      "path": "crates/rustyred-query/src/cypher/planner.rs",
+      "source_984_sha256": "bc6f575e2275d8eb997fd9905cc5bf19d01a9e145bfef2d1bc721053ddb060e7",
+      "current_sha256": "bc6f575e2275d8eb997fd9905cc5bf19d01a9e145bfef2d1bc721053ddb060e7"
+    },
+    {
+      "path": "crates/rustyred-query/src/dialect.rs",
+      "source_984_sha256": "4a3b15d9464dd84d65811a7e0b082c8edd95357c27dd144cc3f4b88e13b7d833",
+      "current_sha256": "4a3b15d9464dd84d65811a7e0b082c8edd95357c27dd144cc3f4b88e13b7d833"
+    },
+    {
+      "path": "crates/rustyred-query/src/error.rs",
+      "source_984_sha256": "2f1d7d48675ea3c4bb1c1e41b1f516d50e8015ba30f876f65f0bcd6414ece1aa",
+      "current_sha256": "2f1d7d48675ea3c4bb1c1e41b1f516d50e8015ba30f876f65f0bcd6414ece1aa"
+    },
+    {
+      "path": "crates/rustyred-query/src/execute.rs",
+      "source_984_sha256": "4592b83d6cb7354a7119d51059f5f96e165aa2fc22797ba1f5981c1c7225e4d6",
+      "current_sha256": "4592b83d6cb7354a7119d51059f5f96e165aa2fc22797ba1f5981c1c7225e4d6"
+    },
+    {
+      "path": "crates/rustyred-query/src/lib.rs",
+      "source_984_sha256": "93e97a296f970d98062a6d42f3fe8e6bb319220673c7c935d09c8596cea1be05",
+      "current_sha256": "93e97a296f970d98062a6d42f3fe8e6bb319220673c7c935d09c8596cea1be05"
+    },
+    {
+      "path": "crates/rustyred-query/src/read_gate.rs",
+      "source_984_sha256": "1982e9dcd79bbc7e820ad6ccb019c724ec1642df2d7094bcc40056b59494d95d",
+      "current_sha256": "1982e9dcd79bbc7e820ad6ccb019c724ec1642df2d7094bcc40056b59494d95d"
+    },
+    {
+      "path": "crates/rustyred-query/src/receipt.rs",
+      "source_984_sha256": "eeb29dde1172e92ea1c38d01bd9e28670b8cee8dc1392898631032178b5b9818",
+      "current_sha256": "eeb29dde1172e92ea1c38d01bd9e28670b8cee8dc1392898631032178b5b9818"
+    },
+    {
+      "path": "crates/rustyred-query/tests/extraction_parity.rs",
+      "source_984_sha256": "beb405f839b7d4dfdac1da59765704ad381d148b1eaa5e9e52390a011eefc8ac",
+      "current_sha256": "beb405f839b7d4dfdac1da59765704ad381d148b1eaa5e9e52390a011eefc8ac"
+    },
+    {
+      "path": "crates/rustyred-scope/Cargo.toml",
+      "source_984_sha256": "978617062abe3b173a51ba27de89bd1402a80405e259e81778a9183eb4674daf",
+      "current_sha256": "978617062abe3b173a51ba27de89bd1402a80405e259e81778a9183eb4674daf"
+    },
+    {
+      "path": "crates/rustyred-scope/src/browser.rs",
+      "source_984_sha256": "37fef5e5b26e5da51fdf69cd588c86b4db343591a81c287c5008a736f6e86b6c",
+      "current_sha256": "37fef5e5b26e5da51fdf69cd588c86b4db343591a81c287c5008a736f6e86b6c"
+    },
+    {
+      "path": "crates/rustyred-scope/src/lib.rs",
+      "source_984_sha256": "5fb3340598c09b28d0e8f6ef03089f16f272867e7202946fa8020c756d268148",
+      "current_sha256": "5fb3340598c09b28d0e8f6ef03089f16f272867e7202946fa8020c756d268148"
+    },
+    {
+      "path": "crates/rustyred/Cargo.toml",
+      "source_984_sha256": "d0c35383aa5a48d58f895f3347d4a607b3452788c78bdcec8850903c6731816f",
+      "current_sha256": "d0c35383aa5a48d58f895f3347d4a607b3452788c78bdcec8850903c6731816f"
+    },
+    {
+      "path": "crates/rustyred/src/database.rs",
+      "source_984_sha256": "f066691904842bfa0499b7d31d72b231e4615a46f55934e90d9d3c3310b971e3",
+      "current_sha256": "f066691904842bfa0499b7d31d72b231e4615a46f55934e90d9d3c3310b971e3"
+    },
+    {
+      "path": "crates/rustyred/src/error.rs",
+      "source_984_sha256": "a8cf8fdba1c3f7050bad39f16adad238823798a1c808583d2391bb8566ab309d",
+      "current_sha256": "a8cf8fdba1c3f7050bad39f16adad238823798a1c808583d2391bb8566ab309d"
+    },
+    {
+      "path": "crates/rustyred/src/lib.rs",
+      "source_984_sha256": "87552b66459b8cab9e52e2d172fbf0483ca8e765d697db8279f5d26f755e445c",
+      "current_sha256": "87552b66459b8cab9e52e2d172fbf0483ca8e765d697db8279f5d26f755e445c"
+    },
+    {
+      "path": "crates/rustyred/src/options.rs",
+      "source_984_sha256": "806d53de29d33b38c8403cebc5cc2f656fb7de8ba3eaff68c91620c3b22411de",
+      "current_sha256": "806d53de29d33b38c8403cebc5cc2f656fb7de8ba3eaff68c91620c3b22411de"
+    },
+    {
+      "path": "crates/rustyred/src/query.rs",
+      "source_984_sha256": "c0c56c5bbe231b57a4ebd27ae3f995860d477aa1f73fe9e4b5322287f34f490a",
+      "current_sha256": "c0c56c5bbe231b57a4ebd27ae3f995860d477aa1f73fe9e4b5322287f34f490a"
+    },
+    {
+      "path": "crates/rustyred/tests/embedded_api.rs",
+      "source_984_sha256": "47d38347cd9095d1925c11b36074ccdde26bc90e66d9de25796ed57bf3981eaf",
+      "current_sha256": "47d38347cd9095d1925c11b36074ccdde26bc90e66d9de25796ed57bf3981eaf"
+    },
+    {
+      "path": "crates/rustyred/tests/rr_failures.rs",
+      "source_984_sha256": "6ff8cd9ad271674b51794eadaf1c989731512a58937c3d950ac1baa481e28637",
+      "current_sha256": "6ff8cd9ad271674b51794eadaf1c989731512a58937c3d950ac1baa481e28637"
+    },
+    {
+      "path": "crates/rustyred/tests/rr_roundtrip.rs",
+      "source_984_sha256": "5a330919307d4a9d0551d6e844c58f318973cbff527757bf0e51f929d5296e9c",
+      "current_sha256": "5a330919307d4a9d0551d6e844c58f318973cbff527757bf0e51f929d5296e9c"
+    },
+    {
+      "path": "examples/parts-catalog/Cargo.toml",
+      "source_984_sha256": "155ff8db57f9a1d793c71a4f110aa938d65bad218b179134d419c469717a1dd1",
+      "current_sha256": "155ff8db57f9a1d793c71a4f110aa938d65bad218b179134d419c469717a1dd1"
+    },
+    {
+      "path": "examples/parts-catalog/src/main.rs",
+      "source_984_sha256": "f6b74a44f9e480479dba7f4bd1307f63ac24eb0640645a746ddf09559c69e26d",
+      "current_sha256": "f6b74a44f9e480479dba7f4bd1307f63ac24eb0640645a746ddf09559c69e26d"
+    },
+    {
+      "path": "tests/external-consumer/Cargo.toml",
+      "source_984_sha256": "9c619d676d9c7f829dea65ef595e0a7c84eb63be60b11895a98ee0fcb3c5ce78",
+      "current_sha256": "7930acdd97f85b89f688a87895b4824bfbfa891a287af6ed98dd287b14163b8f"
+    },
+    {
+      "path": "tests/external-consumer/src/lib.rs",
+      "source_984_sha256": "729abeb0997303114339445259d89c5358c696c064af372c46a285d2e5701a6b",
+      "current_sha256": "729abeb0997303114339445259d89c5358c696c064af372c46a285d2e5701a6b"
+    },
+    {
+      "path": "vendor/egg-0.10.0/Cargo.toml",
+      "source_984_sha256": "80952c0b5387fca8fd14038c275eb7bca18128b04cb4ab23084774baf4ae5020",
+      "current_sha256": "80952c0b5387fca8fd14038c275eb7bca18128b04cb4ab23084774baf4ae5020"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/dot.rs",
+      "source_984_sha256": "377d6ab55a0f5998cf3de6a0e1e9e6bb6abedcab96de49ca49206cd7f3a8dfcd",
+      "current_sha256": "377d6ab55a0f5998cf3de6a0e1e9e6bb6abedcab96de49ca49206cd7f3a8dfcd"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/eclass.rs",
+      "source_984_sha256": "4d8cfed32d7481677473af01ef118d951d4f618893fb1fe246eee09b50c30b0e",
+      "current_sha256": "4d8cfed32d7481677473af01ef118d951d4f618893fb1fe246eee09b50c30b0e"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/egraph.rs",
+      "source_984_sha256": "55a6e2b0a2f9c0295e930cb78147070f8d169ee4aa16de26fec73d090e132a5b",
+      "current_sha256": "55a6e2b0a2f9c0295e930cb78147070f8d169ee4aa16de26fec73d090e132a5b"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/explain.rs",
+      "source_984_sha256": "4b67bfeec200564e5c18499612081ddd851c08eee525d9c1841c5f9b20fd9b3c",
+      "current_sha256": "4b67bfeec200564e5c18499612081ddd851c08eee525d9c1841c5f9b20fd9b3c"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/extract.rs",
+      "source_984_sha256": "fbb0d1c9e9c2ce6a04a8554befd50e8ceaf429cac7fac7312765bfb921b7065c",
+      "current_sha256": "fbb0d1c9e9c2ce6a04a8554befd50e8ceaf429cac7fac7312765bfb921b7065c"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/language.rs",
+      "source_984_sha256": "5f7a7caff9fc9797676f4d0b20bd369adce6a5bd0e865f0b890cd3318ff70be6",
+      "current_sha256": "5f7a7caff9fc9797676f4d0b20bd369adce6a5bd0e865f0b890cd3318ff70be6"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/lib.rs",
+      "source_984_sha256": "12354b02c55b6b7d63d849025d93c91073487ab8c3fc2eab4bd3580a0e140567",
+      "current_sha256": "12354b02c55b6b7d63d849025d93c91073487ab8c3fc2eab4bd3580a0e140567"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/lp_extract.rs",
+      "source_984_sha256": "85e6949d1d054e431e9ceac3ab7ef08b14e4f1a289bee5fb0b615b84ed3c05e7",
+      "current_sha256": "85e6949d1d054e431e9ceac3ab7ef08b14e4f1a289bee5fb0b615b84ed3c05e7"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/machine.rs",
+      "source_984_sha256": "6346c48956b9a394378fb4cc870267b102fc5a55968816ee61f96ac74d51cf4e",
+      "current_sha256": "6346c48956b9a394378fb4cc870267b102fc5a55968816ee61f96ac74d51cf4e"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/macros.rs",
+      "source_984_sha256": "4c8cf193a0346739a9027a4d9fcee035f8f52d28e539c46344fcccf44ba63b81",
+      "current_sha256": "4c8cf193a0346739a9027a4d9fcee035f8f52d28e539c46344fcccf44ba63b81"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/multipattern.rs",
+      "source_984_sha256": "22a9a2c70cddff5ab55c9ae128077b5e269aea95a2b6463bcaf909047e3451a3",
+      "current_sha256": "22a9a2c70cddff5ab55c9ae128077b5e269aea95a2b6463bcaf909047e3451a3"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/pattern.rs",
+      "source_984_sha256": "930e4e1ce5fecb379af4ccb9ee2ec3e11211ed5088f19a86dfd6239b47b2c3f2",
+      "current_sha256": "930e4e1ce5fecb379af4ccb9ee2ec3e11211ed5088f19a86dfd6239b47b2c3f2"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/rewrite.rs",
+      "source_984_sha256": "3bc1e0c6246520feab000b732004a358147a501cc9c9b3b47c8c782386bf21ea",
+      "current_sha256": "3bc1e0c6246520feab000b732004a358147a501cc9c9b3b47c8c782386bf21ea"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/run.rs",
+      "source_984_sha256": "53d28dc9f95debe595de5c06ced942cfd5504c3406f7e48945b8ff73692210a4",
+      "current_sha256": "53d28dc9f95debe595de5c06ced942cfd5504c3406f7e48945b8ff73692210a4"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/subst.rs",
+      "source_984_sha256": "b3cc228f3ed39081692ae1362fd2d31b3736ebab954838f87b49a698adcef58f",
+      "current_sha256": "b3cc228f3ed39081692ae1362fd2d31b3736ebab954838f87b49a698adcef58f"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/test.rs",
+      "source_984_sha256": "eb6d011038b08c50dbe8bcf118147047459a0622199740d878e53dcac8dea9ea",
+      "current_sha256": "eb6d011038b08c50dbe8bcf118147047459a0622199740d878e53dcac8dea9ea"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/tutorials/_01_background.rs",
+      "source_984_sha256": "43fdc1f0a06f66c57c3ec0aa6bbc078f9fe951de65aa3aa44f4c9061b41c1a3c",
+      "current_sha256": "43fdc1f0a06f66c57c3ec0aa6bbc078f9fe951de65aa3aa44f4c9061b41c1a3c"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/tutorials/_02_getting_started.rs",
+      "source_984_sha256": "3584dd9a4a8ea11923b285b6fed571417dc0adfb45b58c2d8e5d331f70e3239a",
+      "current_sha256": "3584dd9a4a8ea11923b285b6fed571417dc0adfb45b58c2d8e5d331f70e3239a"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/tutorials/_03_explanations.rs",
+      "source_984_sha256": "fd99b82b4766e7584c1ada8d0008cb8caf69640a24301d17bbc46f1bdfecfa69",
+      "current_sha256": "fd99b82b4766e7584c1ada8d0008cb8caf69640a24301d17bbc46f1bdfecfa69"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/tutorials/mod.rs",
+      "source_984_sha256": "a1bc64c9a40f0fb6b3bc557f637630fbe947f574ff4dca82f4e8513259b6b688",
+      "current_sha256": "a1bc64c9a40f0fb6b3bc557f637630fbe947f574ff4dca82f4e8513259b6b688"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/unionfind.rs",
+      "source_984_sha256": "8ae62769f014233bb8020f411d3e5790f277f61360b0b709de92d66c9f4f32b5",
+      "current_sha256": "8ae62769f014233bb8020f411d3e5790f277f61360b0b709de92d66c9f4f32b5"
+    },
+    {
+      "path": "vendor/egg-0.10.0/src/util.rs",
+      "source_984_sha256": "ad91e864fb61fb8a53fde37e268b21e7326db3468aab35652fc26e4afc616208",
+      "current_sha256": "ad91e864fb61fb8a53fde37e268b21e7326db3468aab35652fc26e4afc616208"
+    },
+    {
+      "path": "vendor/egg-0.10.0/tests/datalog.rs",
+      "source_984_sha256": "f1b713549aa4bf48908507a474d7468fe0b7a2b5a3734513a8eab8626138e8f3",
+      "current_sha256": "f1b713549aa4bf48908507a474d7468fe0b7a2b5a3734513a8eab8626138e8f3"
+    },
+    {
+      "path": "vendor/egg-0.10.0/tests/lambda.rs",
+      "source_984_sha256": "ad1fea672a57b58905f878b1e4d6b553f88919feb9ab0436ec9ebfcdd25cc2b5",
+      "current_sha256": "ad1fea672a57b58905f878b1e4d6b553f88919feb9ab0436ec9ebfcdd25cc2b5"
+    },
+    {
+      "path": "vendor/egg-0.10.0/tests/math.rs",
+      "source_984_sha256": "7c1037ad426fd65ddb171f7b1a329d1656503bee27c44a76a61bf691b0b09845",
+      "current_sha256": "7c1037ad426fd65ddb171f7b1a329d1656503bee27c44a76a61bf691b0b09845"
+    },
+    {
+      "path": "vendor/egg-0.10.0/tests/prop.rs",
+      "source_984_sha256": "f72f4d706e61387f0d43264086aa4f04019ba49061d0d656025f5b047ea7376b",
+      "current_sha256": "f72f4d706e61387f0d43264086aa4f04019ba49061d0d656025f5b047ea7376b"
+    },
+    {
+      "path": "vendor/egg-0.10.0/tests/simple.rs",
+      "source_984_sha256": "b7c7fd026e45cfe9da570fc45059762c685d1ad10d9411a74c1f4fb9b7e097b0",
+      "current_sha256": "b7c7fd026e45cfe9da570fc45059762c685d1ad10d9411a74c1f4fb9b7e097b0"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/Cargo.toml",
+      "source_984_sha256": "e75d75a8ff54ffa2b08c1a421c0e9f17ca5bdb76c35ba5aa2e07b8b65ef5d74d",
+      "current_sha256": "e75d75a8ff54ffa2b08c1a421c0e9f17ca5bdb76c35ba5aa2e07b8b65ef5d74d"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/convert.rs",
+      "source_984_sha256": "d95c3140d6c1c57a58d9abe8be340d0d5f585d3188dde001a7170cfdc99d2cf3",
+      "current_sha256": "d95c3140d6c1c57a58d9abe8be340d0d5f585d3188dde001a7170cfdc99d2cf3"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/encode_hash.rs",
+      "source_984_sha256": "9c1bfd902f676515abba596d31f7e3e18c8e9bfb1bdeca04fcc8ab2584f48594",
+      "current_sha256": "9c1bfd902f676515abba596d31f7e3e18c8e9bfb1bdeca04fcc8ab2584f48594"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/insert_bench.rs",
+      "source_984_sha256": "1d70577172bb171d7bb53e838c3df05297e340a6a8f22cbc46693b29a0ee47e2",
+      "current_sha256": "1d70577172bb171d7bb53e838c3df05297e340a6a8f22cbc46693b29a0ee47e2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/kernel_roofline.rs",
+      "source_984_sha256": "a32ba937fb2cdc7524d60e72bdfffa34f92401a08ac79b0745eaa7a1aec1f5b1",
+      "current_sha256": "a32ba937fb2cdc7524d60e72bdfffa34f92401a08ac79b0745eaa7a1aec1f5b1"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/kernel_roofline_neon.rs",
+      "source_984_sha256": "f3334a7f843661ed51fa4af038745e1e54d8d8418e3ce4a95ac193e395efe9ea",
+      "current_sha256": "f3334a7f843661ed51fa4af038745e1e54d8d8418e3ce4a95ac193e395efe9ea"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/kernel_xtest.rs",
+      "source_984_sha256": "7e53ad0cca1215f12723e203d50eec7b5a84975c9cb33d188fb34d96cdab82b8",
+      "current_sha256": "7e53ad0cca1215f12723e203d50eec7b5a84975c9cb33d188fb34d96cdab82b8"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/load_bench_v7.rs",
+      "source_984_sha256": "e89345c1c065189e76acb0515f3751bbb01bf0bd8b210b4931a085d42ef25d3b",
+      "current_sha256": "e89345c1c065189e76acb0515f3751bbb01bf0bd8b210b4931a085d42ef25d3b"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/probe_2bit_lutstream.rs",
+      "source_984_sha256": "027710b8307f2fb46c521e31c33d70deb458adb8c59e8bbd4e9e05aa3155db8d",
+      "current_sha256": "027710b8307f2fb46c521e31c33d70deb458adb8c59e8bbd4e9e05aa3155db8d"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/probe_2bit_sdot.rs",
+      "source_984_sha256": "c3eac51af58a764662143d3b51da30b8ba4f199ebc220271c344586eff3d2a4e",
+      "current_sha256": "c3eac51af58a764662143d3b51da30b8ba4f199ebc220271c344586eff3d2a4e"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/probe_2bit_vnni.rs",
+      "source_984_sha256": "07e9ee19d9c9cf8c45032133a6a5a916111a077b99d8af7c40943a4a206cc522",
+      "current_sha256": "07e9ee19d9c9cf8c45032133a6a5a916111a077b99d8af7c40943a4a206cc522"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/stream_bw.rs",
+      "source_984_sha256": "ae649205f85a0a1cf5a9b1c20484b8d5f315c942e0fc2522e543adbe84556200",
+      "current_sha256": "ae649205f85a0a1cf5a9b1c20484b8d5f315c942e0fc2522e543adbe84556200"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/sve_tbl_probe.rs",
+      "source_984_sha256": "8ac3384d72dd42bf6dd22cb28664b68bb55d50e0323f965978848dc652a63607",
+      "current_sha256": "8ac3384d72dd42bf6dd22cb28664b68bb55d50e0323f965978848dc652a63607"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/sync_bench_v7.rs",
+      "source_984_sha256": "3e15ff0e7ebed5c99e2365204a3938efceb5435c8a08c5e4f8759554d07454e1",
+      "current_sha256": "3e15ff0e7ebed5c99e2365204a3938efceb5435c8a08c5e4f8759554d07454e1"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/vector_major_check.rs",
+      "source_984_sha256": "7b6e03dd90678623f0e19fc9ece6cef31a1e403e3c3146743994b58ec7f83bb2",
+      "current_sha256": "7b6e03dd90678623f0e19fc9ece6cef31a1e403e3c3146743994b58ec7f83bb2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/vnni_fullscan.rs",
+      "source_984_sha256": "0049edae3e0fde45cb6e993e4982649bc8d930b954799fa81249796766e80506",
+      "current_sha256": "0049edae3e0fde45cb6e993e4982649bc8d930b954799fa81249796766e80506"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/vnni_probe.rs",
+      "source_984_sha256": "f2d7a91bbfbbcab6fc242822ffa0477123bc22195455a8de10e5d50a586af9b7",
+      "current_sha256": "f2d7a91bbfbbcab6fc242822ffa0477123bc22195455a8de10e5d50a586af9b7"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/examples/x86_permute_dot.rs",
+      "source_984_sha256": "dcdd1b812a9ab67ff493ea10492ff4efc548a76894c533ec7ccd771b56cb6c75",
+      "current_sha256": "dcdd1b812a9ab67ff493ea10492ff4efc548a76894c533ec7ccd771b56cb6c75"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/codebook.rs",
+      "source_984_sha256": "d5b8fa3d79a19b14585c50f77bf999442d1071b57679d679a52e81013ea826d7",
+      "current_sha256": "d5b8fa3d79a19b14585c50f77bf999442d1071b57679d679a52e81013ea826d7"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/convert.rs",
+      "source_984_sha256": "aabea8ee1fa579cff1c3ac70df5021c15a48d7c8b3bac668d511a00f53a65622",
+      "current_sha256": "aabea8ee1fa579cff1c3ac70df5021c15a48d7c8b3bac668d511a00f53a65622"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/encode.rs",
+      "source_984_sha256": "1fd965b213461a3e0fe1f3682220f9e74c679b9ae95e1df15e26fc4020874dce",
+      "current_sha256": "1fd965b213461a3e0fe1f3682220f9e74c679b9ae95e1df15e26fc4020874dce"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/error.rs",
+      "source_984_sha256": "0f148ebcc3a4e7419291fa390e1a6a67709b37752cca74cc9468ba465ee7ebd9",
+      "current_sha256": "0f148ebcc3a4e7419291fa390e1a6a67709b37752cca74cc9468ba465ee7ebd9"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/id_map.rs",
+      "source_984_sha256": "42db30ca55d0d6070e9cdd8639d41457d45991edba2cfab44996ec2e0d084f14",
+      "current_sha256": "42db30ca55d0d6070e9cdd8639d41457d45991edba2cfab44996ec2e0d084f14"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/io.rs",
+      "source_984_sha256": "bf7bfad63e00559d22694238cae10c167b5d24b58c6f6fc5d2ecbc2a00c02a0e",
+      "current_sha256": "bf7bfad63e00559d22694238cae10c167b5d24b58c6f6fc5d2ecbc2a00c02a0e"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/io_v7.rs",
+      "source_984_sha256": "eb8dd92c10f965de9e4c19f7c5ff8ca512446ce8b93420ec065ebd40078396fb",
+      "current_sha256": "eb8dd92c10f965de9e4c19f7c5ff8ca512446ce8b93420ec065ebd40078396fb"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/kernel_tests.rs",
+      "source_984_sha256": "3fa7851e0a2b9b50c2084f6f791a0f397e41ee99b54758f1f6186a0b6c2909a5",
+      "current_sha256": "3fa7851e0a2b9b50c2084f6f791a0f397e41ee99b54758f1f6186a0b6c2909a5"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/lib.rs",
+      "source_984_sha256": "be16b98036ed2be829e14488cad1ba9384eef92e9fc56b3e18632e36fbc5940d",
+      "current_sha256": "be16b98036ed2be829e14488cad1ba9384eef92e9fc56b3e18632e36fbc5940d"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/pack.rs",
+      "source_984_sha256": "13a862867a3b1a6f50e096d674a5fc832341506ea081a085cc254dcb4021f153",
+      "current_sha256": "13a862867a3b1a6f50e096d674a5fc832341506ea081a085cc254dcb4021f153"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/rotation.rs",
+      "source_984_sha256": "f096925ed78f762ba20f642268fa454c566f7dc5c529a0aac9e1f2bb8d9247e2",
+      "current_sha256": "f096925ed78f762ba20f642268fa454c566f7dc5c529a0aac9e1f2bb8d9247e2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/search.rs",
+      "source_984_sha256": "669f042efef68e5fa7423b1cd6ec971e79f09392529e48b38c4d77a9be84211a",
+      "current_sha256": "669f042efef68e5fa7423b1cd6ec971e79f09392529e48b38c4d77a9be84211a"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/src/warning.rs",
+      "source_984_sha256": "b0b178b2621447f803c39a180e8e1eaeceb2001fc85efb47921f9050fc6efa25",
+      "current_sha256": "b0b178b2621447f803c39a180e8e1eaeceb2001fc85efb47921f9050fc6efa25"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/adversarial_durability.rs",
+      "source_984_sha256": "bcb37ceb95a58ae67f969d73b1b9abab677c7b5ba724ee04cb751a4d12a19bf0",
+      "current_sha256": "bcb37ceb95a58ae67f969d73b1b9abab677c7b5ba724ee04cb751a4d12a19bf0"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/adversarial_durability_edges.rs",
+      "source_984_sha256": "abc42c874fa185451c0422aa90f78674afc6263ebc91426a9d6532fc9b0952fe",
+      "current_sha256": "abc42c874fa185451c0422aa90f78674afc6263ebc91426a9d6532fc9b0952fe"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/adversarial_durability_fuzz.rs",
+      "source_984_sha256": "bb37db45bb7b7f9bac40c12b1b93d156d5043c2d505c292b971a6a04ccab9ff9",
+      "current_sha256": "bb37db45bb7b7f9bac40c12b1b93d156d5043c2d505c292b971a6a04ccab9ff9"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/adversarial_durability_round2.rs",
+      "source_984_sha256": "91a2ec11f15678f58015c307685935116e5bea1f3b1f5e6961289a5a159ed8c2",
+      "current_sha256": "91a2ec11f15678f58015c307685935116e5bea1f3b1f5e6961289a5a159ed8c2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/adversarial_gen_reuse.rs",
+      "source_984_sha256": "238be848b2eb87decaa16b6f5afe3082f28a93af21324c5783e35403b2fb5ece",
+      "current_sha256": "238be848b2eb87decaa16b6f5afe3082f28a93af21324c5783e35403b2fb5ece"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/adversarial_load_memory.rs",
+      "source_984_sha256": "5839a5b8eae0bdb69648ad618576b639c9da36e1a43876e2dab79ab6a0c1b9a2",
+      "current_sha256": "5839a5b8eae0bdb69648ad618576b639c9da36e1a43876e2dab79ab6a0c1b9a2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/allocation_hot_paths.rs",
+      "source_984_sha256": "7517849cf4197d879a9e22139eb0532863786aa4c4d2466755b63b577e028d68",
+      "current_sha256": "7517849cf4197d879a9e22139eb0532863786aa4c4d2466755b63b577e028d68"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/avx512_tail_simulation.rs",
+      "source_984_sha256": "74458e7e9c864f7392d5efc9a609a3f1ca025f39cee63d56e81e83e1cac079dd",
+      "current_sha256": "74458e7e9c864f7392d5efc9a609a3f1ca025f39cee63d56e81e83e1cac079dd"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/batch_matches_single.rs",
+      "source_984_sha256": "d762f28d1b0b2ea23caddc6c1380eb0e9dd18f09507856ef7ef304869d0572b8",
+      "current_sha256": "d762f28d1b0b2ea23caddc6c1380eb0e9dd18f09507856ef7ef304869d0572b8"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/bytes_io.rs",
+      "source_984_sha256": "e33bf61065c2c87408c239cdaf43f867d5a730c246dda790263264c3d6fbf6f2",
+      "current_sha256": "e33bf61065c2c87408c239cdaf43f867d5a730c246dda790263264c3d6fbf6f2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/calibration_bounds.rs",
+      "source_984_sha256": "98b481199392c732fe609724cc524a784369f88274fdc8a0ee20be8c1fb55ff5",
+      "current_sha256": "98b481199392c732fe609724cc524a784369f88274fdc8a0ee20be8c1fb55ff5"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/codebook_determinism.rs",
+      "source_984_sha256": "2ff20443043a4956d9ae5cd9e891f3eaf99753cc3751a5c5006ac315737b250d",
+      "current_sha256": "2ff20443043a4956d9ae5cd9e891f3eaf99753cc3751a5c5006ac315737b250d"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/common/fingerprint.rs",
+      "source_984_sha256": "3316bcfaa1ce4b47d2d3c239db2b6124ddbf146ad4c8d6676671fd6fa43b2824",
+      "current_sha256": "3316bcfaa1ce4b47d2d3c239db2b6124ddbf146ad4c8d6676671fd6fa43b2824"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/concurrent_search.rs",
+      "source_984_sha256": "f882c0265b96ab451898f93acee96a01618134cf9c195bba666d752b7c2a4a25",
+      "current_sha256": "f882c0265b96ab451898f93acee96a01618134cf9c195bba666d752b7c2a4a25"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/convert_versions.rs",
+      "source_984_sha256": "a7ef471736ee62da6240b4cc7e94995d65934a71a5781affa7a4a733c6fb268e",
+      "current_sha256": "a7ef471736ee62da6240b4cc7e94995d65934a71a5781affa7a4a733c6fb268e"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/crate_api.rs",
+      "source_984_sha256": "3e7e88e37a02c7292e05ac1cb1b5728e34a7db6a5e74e8d08e2a996865abb142",
+      "current_sha256": "3e7e88e37a02c7292e05ac1cb1b5728e34a7db6a5e74e8d08e2a996865abb142"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/encode_fingerprint.rs",
+      "source_984_sha256": "757534553d4f623d7bac3a50791391c801316d333f5c56c8027f1acc094825e3",
+      "current_sha256": "757534553d4f623d7bac3a50791391c801316d333f5c56c8027f1acc094825e3"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/explicit_calibration.rs",
+      "source_984_sha256": "15ed305f5b2a0d5e5ecf4128b4372267e3cce21333968240f0598438a3ba0890",
+      "current_sha256": "15ed305f5b2a0d5e5ecf4128b4372267e3cce21333968240f0598438a3ba0890"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/filtering.rs",
+      "source_984_sha256": "edf9533a540a5f0094d3f36dcb4e68b97f8c76877162dd21133c736b2af54629",
+      "current_sha256": "edf9533a540a5f0094d3f36dcb4e68b97f8c76877162dd21133c736b2af54629"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/from_parts.rs",
+      "source_984_sha256": "11d57d149d73cbf7ed53ca1d6e8576b881a4dfc3a2868a05ca4f14e3f436431f",
+      "current_sha256": "11d57d149d73cbf7ed53ca1d6e8576b881a4dfc3a2868a05ca4f14e3f436431f"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/id_map.rs",
+      "source_984_sha256": "42253082d15ae3dcda713a92953f399e677f3298acbd21c8992ad8c49629f2cf",
+      "current_sha256": "42253082d15ae3dcda713a92953f399e677f3298acbd21c8992ad8c49629f2cf"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/input_validation.rs",
+      "source_984_sha256": "25dc6da6c55cbc3583c3d25cfee6573ce256f85c696106d79530862468be1caa",
+      "current_sha256": "25dc6da6c55cbc3583c3d25cfee6573ce256f85c696106d79530862468be1caa"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/input_validation_reporting.rs",
+      "source_984_sha256": "317936d9e02f90dc8a1061c2e0e8d5c9dd6a9673d97db9c1bc46abd376724947",
+      "current_sha256": "317936d9e02f90dc8a1061c2e0e8d5c9dd6a9673d97db9c1bc46abd376724947"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/kernel_correctness.rs",
+      "source_984_sha256": "ac34a5ef27b36cc112c137260cd5ebfa53ad387aab349e6564055e3a76f4cdfd",
+      "current_sha256": "ac34a5ef27b36cc112c137260cd5ebfa53ad387aab349e6564055e3a76f4cdfd"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/lazy_init.rs",
+      "source_984_sha256": "5f9c052a57e32e736dad700a071c3964dfd9c1daf4e3bb2e1544ff2227bfe6bd",
+      "current_sha256": "5f9c052a57e32e736dad700a071c3964dfd9c1daf4e3bb2e1544ff2227bfe6bd"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/query_scale_invariance.rs",
+      "source_984_sha256": "34c32a2b48b179d390ef2861385e1b36d92a3a431fa3ec3a62e7d3c72591941e",
+      "current_sha256": "34c32a2b48b179d390ef2861385e1b36d92a3a431fa3ec3a62e7d3c72591941e"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/recall_sanity.rs",
+      "source_984_sha256": "a2c401d761ae9806d1a04e66b9325911f0358dbb343ccd64ef43bcce0e804a04",
+      "current_sha256": "a2c401d761ae9806d1a04e66b9325911f0358dbb343ccd64ef43bcce0e804a04"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/rotation.rs",
+      "source_984_sha256": "fc85a00a7d999d9096a206e501d4eba575ca8e1574f7faa8fb6b52ccc561d70a",
+      "current_sha256": "fc85a00a7d999d9096a206e501d4eba575ca8e1574f7faa8fb6b52ccc561d70a"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/rotation_determinism.rs",
+      "source_984_sha256": "be42abbc1299b83c5ecc482a09507c1db8d86fcc204d1560557d1e7aeea3ab7e",
+      "current_sha256": "be42abbc1299b83c5ecc482a09507c1db8d86fcc204d1560557d1e7aeea3ab7e"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/state_sequences.rs",
+      "source_984_sha256": "fa58bc186a040cf82d1d044453b1f8a21ba9bb49a9bf122673c04cf4671ddd1c",
+      "current_sha256": "fa58bc186a040cf82d1d044453b1f8a21ba9bb49a9bf122673c04cf4671ddd1c"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/swap_remove.rs",
+      "source_984_sha256": "6f84650bf473afdb839b13904f52845fdd14900eb8325c7ee07ef93eefec3b55",
+      "current_sha256": "6f84650bf473afdb839b13904f52845fdd14900eb8325c7ee07ef93eefec3b55"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/sync_v7.rs",
+      "source_984_sha256": "9d893c973f9126107c0655f1139aa3d74b20edff1338c43992e835461282d450",
+      "current_sha256": "9d893c973f9126107c0655f1139aa3d74b20edff1338c43992e835461282d450"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/sync_v7_idmap.rs",
+      "source_984_sha256": "90175b19018e294d1eecb2e92daed06e0cea66d0875b2e67073b65fbbd84c0c6",
+      "current_sha256": "90175b19018e294d1eecb2e92daed06e0cea66d0875b2e67073b65fbbd84c0c6"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/tmp_sweep.rs",
+      "source_984_sha256": "dc91e73e356548be4ed21580f4788c215b856d0fcdbbf3321003159cdbff9635",
+      "current_sha256": "dc91e73e356548be4ed21580f4788c215b856d0fcdbbf3321003159cdbff9635"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/tqplus_calibration.rs",
+      "source_984_sha256": "f95ea449da81ba4c279fd139ab1e995a03bcaf1b6275832248095740841278c2",
+      "current_sha256": "f95ea449da81ba4c279fd139ab1e995a03bcaf1b6275832248095740841278c2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/v7_bytes_entry_points.rs",
+      "source_984_sha256": "cd92a21d56421ac4e4bb7489039b06e2511a2ec2822c31025134274f73feae8b",
+      "current_sha256": "cd92a21d56421ac4e4bb7489039b06e2511a2ec2822c31025134274f73feae8b"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/v7_only.rs",
+      "source_984_sha256": "dc93144d5a9f3bc1c6e463f95e6a7013add75ebd2a99c403048f6a4abc0e97b2",
+      "current_sha256": "dc93144d5a9f3bc1c6e463f95e6a7013add75ebd2a99c403048f6a4abc0e97b2"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/warning_hook.rs",
+      "source_984_sha256": "2fbf15b462c8c77d15549b3fde26ffaf5630bf96e132de4f2f8a7b22435c1669",
+      "current_sha256": "2fbf15b462c8c77d15549b3fde26ffaf5630bf96e132de4f2f8a7b22435c1669"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/wasm32_parity.rs",
+      "source_984_sha256": "22fab70dafe6ad4225b446f535bb4680132b09503ee11722281bec2cf445b380",
+      "current_sha256": "22fab70dafe6ad4225b446f535bb4680132b09503ee11722281bec2cf445b380"
+    },
+    {
+      "path": "vendor/turbovec-1.0.0-wasm32/tests/write_path.rs",
+      "source_984_sha256": "d7c86d671c16bc65c0f0548af0c42c220e0189955906c5deca753f367ff77e6e",
+      "current_sha256": "d7c86d671c16bc65c0f0548af0c42c220e0189955906c5deca753f367ff77e6e"
+    }
+  ],
+  "representation": "Structured file paths and SHA256 content digests; these are source provenance, never credentials.",
+  "independent_storage_review_revalidation": {
+    "original_review_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+    "files": 12,
+    "mismatches": [],
+    "scope": "Exact unchanged storage source reviewed independently at06; publication test ownership repair reviewed separately. Hash revalidation is not a claim that implementer performed independent review."
+  },
+  "whole_ci_result": {
+    "run_id": 39509130713,
+    "conclusion": "success",
+    "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a"
+  },
+  "scope": "Canonical Rust/API/tests/manifests/build/workflow remain at reviewed984; documentation/evidence curation is separate. One external consumer example reference may deliberately refresh to tested984."
+}

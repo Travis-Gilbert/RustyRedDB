@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-10-20T22:30:16.740258+00:00",
-  "candidate_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "generated_at_utc": "2026-10-20T23:32:58.154290+00:00",
+  "candidate_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
   "compiler": {
     "release": "1.96.1",
     "commit": "31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd",
     "host": "aarch64-apple-darwin",
     "llvm": "22.1.2"
   },
-  "scope": "Historical06ac storage/CLI/query/fork qualification only. Independent native gates passed; initial artifact bootstrap failed, corrected manual06 artifact run remains pending. A subsequent publication-cycle test-ownership repair requires a new packaging candidate and new consumer proof. This does not declare all release gates passed.",
+  "scope": "Final984 actual native storage/CLI/query/fork qualification and normalized runtime evidence on both supported targets. Historical d6/b4/06 failures and cancellations remain explicit. This storage ledger does not substitute for Theorem product or post-publication registry acceptance.",
   "source_baseline": {
     "plan_pin": "d6a7062c14c11c6838362bda307e267b2297c684",
     "extraction_source": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de",
@@ -1802,9 +1802,9 @@
       "workflow_revision": "0bc679df1653ed85d1afb33093c830e27e634f35",
       "run_id": 39506823736,
       "url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736",
-      "outcome": "in_progress;no_final_artifact_pass_claim",
+      "outcome": "cancelled_as_superseded_by_publication_cycle_repair;no_artifact_pass_claim",
       "source_binding": "Actual checkout full06ac SHA asserted separately from workflow head0bc679df; artifact provenance remains to be verified.",
-      "measurement": "Completed success; actual checkout/log and source_at_build_start06ac dirty=false verified. Native final artifacts remain pending."
+      "measurement": "Passed exact06 clean measurement before parent cancellation; runtime steps completed before cancellation are historical, not final984 acceptance."
     },
     {
       "id": "public-git-consumer-final-06ac",
@@ -1845,6 +1845,116 @@
         "consumer_tree_sha256": "1621e096ced6cde04694ad2b905fd0a887956146133420fb7a8af4e79416c74e"
       },
       "qualification": "Actual outside-workspace public Git consumer;2 tests, default opt0 consumer profiles, fresh runtime HOME, public-only credential-free reused Cargo cache, macOS deny-network runtime. Normalized final artifacts are a separate pending proof."
+    },
+    {
+      "id": "candidate-ci-final-984",
+      "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+      "workflow_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+      "run_id": 39509130713,
+      "url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39509130713",
+      "outcome": "whole_run_success_both_native_jobs_and_clean_measurement",
+      "oracle_class": "actual_native_runtime",
+      "implementation_mode": "real_embedded_engine_native_files_explicit_deterministic_fault_seams",
+      "evidence_class": "actual_native_runtime",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "results": {
+        "x86_64-unknown-linux-gnu": {
+          "job_id": 118925444721,
+          "job_conclusion": "success",
+          "receipt": "docs/extraction/storage-evidence/ci-39509130713-linux.json",
+          "engine_integrations": {
+            "targets": 27,
+            "passed": 322,
+            "failed": 0,
+            "ignored": 8
+          },
+          "relocated_derivation_real_store_tests": 15,
+          "cli_contract": 4,
+          "embedded_api": 12,
+          "rr_failures": 9,
+          "query_units": 81,
+          "source_fixture": 1,
+          "supporting": {
+            "passed": 282,
+            "failed": 0,
+            "ignored": 4
+          },
+          "artifact_direct_consumer": {
+            "passed": 2,
+            "failed": 0
+          },
+          "artifact_provenance_source": "984453329f99ae41a5d40e0297218b242ff5075a"
+        },
+        "aarch64-apple-darwin": {
+          "job_id": 118925445187,
+          "job_conclusion": "success",
+          "receipt": "docs/extraction/storage-evidence/ci-39509130713-macos.json",
+          "engine_integrations": {
+            "targets": 27,
+            "passed": 322,
+            "failed": 0,
+            "ignored": 8
+          },
+          "relocated_derivation_real_store_tests": 15,
+          "cli_contract": 4,
+          "embedded_api": 12,
+          "rr_failures": 9,
+          "query_units": 81,
+          "source_fixture": 1,
+          "supporting": {
+            "passed": 282,
+            "failed": 0,
+            "ignored": 4
+          },
+          "artifact_direct_consumer": {
+            "passed": 2,
+            "failed": 0
+          },
+          "artifact_provenance_source": "984453329f99ae41a5d40e0297218b242ff5075a"
+        }
+      },
+      "aggregation_policy": "Normal qualification is separate from113 Cargo-header-bearing artifact repetitions and direct packaged consumer. No duplicate suites or historical runs aggregated."
+    },
+    {
+      "id": "public-git-consumer-final-984",
+      "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+      "outcome": "passed",
+      "artifact_path": "docs/extraction/distribution-evidence/public-git-consumer-9844533.json",
+      "receipt": {
+        "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+        "result": "PASS",
+        "tests": 2,
+        "build_command": [
+          "cargo",
+          "+1.96.1",
+          "test",
+          "--no-run",
+          "--message-format=json"
+        ],
+        "runtime_commands": [
+          [
+            "/usr/bin/sandbox-exec",
+            "-p",
+            "(version 1)(allow default)(deny network*)",
+            "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement/debug/deps/rustyred_external_consumer-fbf4dce5f82ac8c9"
+          ]
+        ],
+        "runtime_network_denial": "macOS sandbox deny network*",
+        "fresh_home": true,
+        "fresh_cargo_home": false,
+        "consumer_profiles": "Cargo defaults test/dev opt-level0",
+        "cargo_home_provenance": "Reused public-only credential-free home created for immutable 7140b00 proof; no user Cargo configuration copied.",
+        "rustc": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2\n",
+        "consumer_source_sha256": "729abeb0997303114339445259d89c5358c696c064af372c46a285d2e5701a6b",
+        "consumer_manifest_sha256": "7930acdd97f85b89f688a87895b4824bfbfa891a287af6ed98dd287b14163b8f",
+        "consumer_lock_sha256": "b414df8404101d77d720362627869aaf34fa33d05c5ce8bddf7722c594bf14d4",
+        "binary_sha256": {
+          "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement/debug/deps/rustyred_external_consumer-fbf4dce5f82ac8c9": "5e53caf615570df48416baac808869af6e107e3e46cebc7d9faf4d508bc7773f"
+        },
+        "consumer_tree_sha256": "c5b801e36cbad470cc3c8b090f1af7cbd1b22f6daa88397fcdf8f2f6aa2ab39f"
+      },
+      "scope": "Actual2-test outside-workspace public Git consumer; default opt0, fresh runtime HOME, reused disclosed public-only Cargo cache, OS deny-network runtime."
     }
   ],
   "gates": {
@@ -1854,10 +1964,11 @@
         "source_baseline",
         "local-final-fold-differential",
         "candidate-ci-final-b4",
-        "candidate-ci-independent-06ac"
+        "candidate-ci-independent-06ac",
+        "candidate-ci-final-984"
       ],
-      "status": "passed_06ac_independent_native_core_complete_integrations_and_query_both_targets;source_baseline_failures_preserved",
-      "source_fixture_receipt": "Named source_fixture_preserves_records_queries_indexes_payloads_and_history from actual d6 source capture passed final06ac Linux22:04:01Z and macOS22:14:27Z. Source baseline failures remain historical failures."
+      "status": "passed_final984_native_core_all27integrations_and_query_both_targets;source_baseline_failures_preserved",
+      "source_fixture_receipt": "Actual d6 source golden fixture passes final984 named extraction_parity target both native platforms; preserved d6 core/integration failures are not rewritten as passes."
     },
     "G04": {
       "evidence": [
@@ -1869,20 +1980,23 @@
         "public-git-consumer-final-b4",
         "candidate-ci-final-b4",
         "candidate-ci-independent-06ac",
-        "public-git-consumer-final-06ac"
+        "public-git-consumer-final-06ac",
+        "candidate-ci-final-984",
+        "public-git-consumer-final-984"
       ],
       "public_primitive_consumer_source": "tests/external-consumer/src/lib.rs",
-      "status": "passed_06ac_actual_native_multimodal_fixture_and_public_git_consumer;final_normalized_artifact_runtime_pending",
-      "limitation": "Actual primitives and source golden fixture are backend evidence; InMemoryModality is an explicitly classified stand-in. Historical b4 normalized proof is not relabeled06ac. Final manual artifact run remains pending."
+      "status": "passed_final984_actual_native_fixture_public_git_and_normalized_package_consumers_both_targets",
+      "limitation": "Planner InMemoryModality is explicitly a stand-in. Backend evidence comes from actual public primitive consumers/source golden fixture; archive/publication provenance is separately bound."
     },
     "G05": {
       "evidence": [
         "ci-public-storage-3e42",
         "local-public-storage-development",
         "candidate-ci-final-b4",
-        "candidate-ci-independent-06ac"
+        "candidate-ci-independent-06ac",
+        "candidate-ci-final-984"
       ],
-      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
+      "status": "passed_final984_both_supported_native_targets",
       "oracle": "rr_roundtrip harness=false, separate process and fresh copy directory"
     },
     "G06": {
@@ -1890,9 +2004,10 @@
         "ci-public-storage-3e42",
         "ci-engine-unit-3e42",
         "candidate-ci-final-b4",
-        "candidate-ci-independent-06ac"
+        "candidate-ci-independent-06ac",
+        "candidate-ci-final-984"
       ],
-      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
+      "status": "passed_final984_both_supported_native_targets",
       "oracle": "Conflicting same/cross-process writer, writable clone lifetime, Unix hard/symlink aliases, reachable read-only chunk write refusal, unchanged file bytes and no read-only sidecars."
     },
     "G07": {
@@ -1902,9 +2017,10 @@
         "local-physical-log-explicit-crashes-development",
         "local-fold-outcomes-development",
         "candidate-ci-final-b4",
-        "candidate-ci-independent-06ac"
+        "candidate-ci-independent-06ac",
+        "candidate-ci-final-984"
       ],
-      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
+      "status": "passed_final984_both_supported_native_targets",
       "oracle": "Torn append and root, confirmed fsync rollback, indeterminate durable publication, corrupt committed content, postcommit pin cleanup, physical log poison/reopen/digest replay, known committed fold maintenance outcome."
     },
     "G08": {
@@ -1913,9 +2029,10 @@
         "ci-engine-unit-3e42",
         "candidate-ci-7140",
         "candidate-ci-final-b4",
-        "candidate-ci-independent-06ac"
+        "candidate-ci-independent-06ac",
+        "candidate-ci-final-984"
       ],
-      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
+      "status": "passed_final984_both_supported_native_targets",
       "oracle": "Source bytes and roots preserved during migration; historical/current file and exact vector payload bytes survive compaction with pinned history. Actual native .RR unknown named-root refusal proved both supported targets at7140.",
       "native_unknown_root_receipt": "Real JournalChunkStore .RR + CoreReachabilityCodec; public writable facade compaction rejects unsupported named root, exact bytes/catalog/orphan/named chunk unchanged, public read-only reopen preserves graph and opaque root."
     }
@@ -1986,8 +2103,8 @@
     },
     "scope": "Independent proof of actual command target selection/inherited package overrides; runtime calibration and complete gates remain separate."
   },
-  "runtime_source_hash_snapshot": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
-  "source_hashes_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "runtime_source_hash_snapshot": "docs/extraction/storage-evidence/runtime-source-9844533.json",
+  "source_hashes_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
   "independent_raw_review": {
     "receipt": "docs/extraction/storage-evidence/independent-review-06acfc4.json",
     "review_kind": "independent_raw_source_and_failure_oracle_review",
@@ -1997,14 +2114,26 @@
     "reviewed_file_hashes": 12,
     "resolved_findings": 7,
     "new_blocking_source_findings": [],
-    "distinction": "This direct source/failure-oracle review is separate from implementer reinspection, actual CI execution and PR bots. Bots are not used to infer substantive approval."
+    "distinction": "This direct source/failure-oracle review is separate from implementer reinspection, actual CI execution and PR bots. Bots are not used to infer substantive approval.",
+    "revalidated_for_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+    "unchanged_review_file_hashes": 11,
+    "new_publication_test_move_review": "docs/extraction/storage-evidence/derivation-test-move-review.json"
   },
-  "candidate_artifact_status": "Initial06ac push run failed only artifact bootstrap; corrected manual39506823736 workflow0bc679df/source06ac remains in progress. Do not mark all-CI-green or final normalized-package proof from this ledger yet.",
+  "candidate_artifact_status": "Final984 whole CI39509130713 SUCCESS both native jobs + clean measurement; actual normalized2-test consumer both network-denied targets, clean provenance984. Earlier06 bootstrap failures/cancellation remain historical.",
   "next_candidate_publication_fix": {
-    "status": "source_reviewed_runtime_and_publication_proof_pending",
-    "reason": "Actual Cargo1.96 workspace publication dry-run exposed derivation dev-dependency on engine as a publication-lock cycle.",
-    "source_change": "Move only final cfg(test) real-store11fold+4why tests into engine integration target; remove derivation dev engine manifest/lock edge.",
+    "status": "implemented_independently_reviewed_and_runtime_passed_in984",
+    "reason": "Derivation dev engine publication-lock cycle removed by moving11fold+4why real-store tests into engine integration target.",
     "independent_review": "docs/extraction/storage-evidence/derivation-test-move-review.json",
-    "claim_boundary": "Production algorithms remain byte-identical; raw Rust/test ownership and canonical manifests deliberately change, so06 consumer/CI evidence is historical and cannot qualify the new packaging candidate."
-  }
+    "runtime": "derivation_core_store15 passed on both final984 native targets; no assertions/helpers or production prefixes changed.",
+    "scope": "Publication dry-run/default-lock receipts are distribution evidence; no actual registry publication claimed."
+  },
+  "reverse_source_coverage": {
+    "candidate_side_comparisons": 433,
+    "candidate_side_receipt": "docs/extraction/source-parity.json",
+    "direction_limit": "Candidate iteration alone cannot detect omitted source files.",
+    "reverse_receipt": "docs/extraction/storage-evidence/reverse-source-coverage-984.json",
+    "contracts_partial_selection_receipt": "docs/extraction/storage-evidence/contracts-source-coverage-984.json",
+    "disposition": "Only two downstream-only owners absent from whole-directory maps at each source pin; contracts8-file partial boundary is separately explicit."
+  },
+  "inventory_parity_attestation": "docs/extraction/storage-evidence/inventory-parity-9844533.json"
 }

@@ -1,0 +1,70 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "run": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39509130713",
+  "run_result": "SUCCESS; both native jobs and clean measurement",
+  "artifacts": [
+    {
+      "id": 12307865214,
+      "name": "release-review-x86_64-unknown-linux-gnu",
+      "digest": "sha256:05e35bce9a146b78e7a3d6fc630fa00c894a6ba19de52d206fbdb8c4f8e724f0",
+      "size_in_bytes": 10205844,
+      "created_at": "2026-10-20T23:22:57Z"
+    },
+    {
+      "id": 12306817881,
+      "name": "release-review-aarch64-apple-darwin",
+      "digest": "sha256:8a9ae0ea7e4be0977fdd2068295e1c3b46bbf3ef393f4fc78425f46dfc6f5b4a",
+      "size_in_bytes": 9273746,
+      "created_at": "2026-10-20T23:29:24Z"
+    },
+    {
+      "id": 12305765100,
+      "name": "clean-candidate-measurement-x86_64-unknown-linux-gnu",
+      "digest": "sha256:cbbe4be5c6fc3ee58d7fee03f982e55845b4d3770c703cc343a548de6a9b0ec2",
+      "size_in_bytes": 7544,
+      "created_at": "2026-10-20T22:38:09Z"
+    }
+  ],
+  "package_evidence_files": {
+    "macos": {
+      "package-evidence/archive-targets-checked.json": "e12a28fd8a0b40183fcd46acb2ef0837120865b7817c1acb142ddfe4382bf21d",
+      "package-evidence/archives/rustyred-0.1.0-beta.2.crate": "def00dcdcd8ff3f9eeb80987bb7c347458163fd5f3f6c005fcdf40b0db44b6e7",
+      "package-evidence/archives/rustyred-bayes-0.1.0-beta.2.crate": "0530c71de68cfe07dd0e82f66c00ef30e3ff6365bbd299ecb135f865a612877f",
+      "package-evidence/archives/rustyred-cli-0.1.0-beta.2.crate": "361f2aed4634070e91b3fb4ee777e4e3f4aa966d8ced6d604c8c7f4db6d3cc98",
+      "package-evidence/archives/rustyred-contracts-0.1.0-beta.2.crate": "e96f54f710fcd553767d63fd4e48121d8d3a18a463919ae2f464772169f966e6",
+      "package-evidence/archives/rustyred-datalog-0.1.0-beta.2.crate": "c678d919507139481edb013398eb7d73fb17796d855d7e40e8abb45460089bab",
+      "package-evidence/archives/rustyred-derivation-0.1.0-beta.2.crate": "f6a41f2ea08b6196eb39ff8429c7a9813f2477e151ff7f5e661381ae9bf83d46",
+      "package-evidence/archives/rustyred-egg-0.1.0-beta.2.crate": "b411430430ea225baadf9e8906dfebe5c565af62ce5f5d9ece17c8a83fe520b5",
+      "package-evidence/archives/rustyred-egraph-0.1.0-beta.2.crate": "8cf01d23f685e3f90a9667f7fe55e8544b1d80843d56785b2ebd4629d25f9df4",
+      "package-evidence/archives/rustyred-engine-0.1.0-beta.2.crate": "d890b812c8f3ab4effcf1ff1530d13dd4b24e182dda1c8767f4e4a628bc986ec",
+      "package-evidence/archives/rustyred-graphblas-0.1.0-beta.2.crate": "886eec3e55e711032ddd2a48b7d7cc3dcfbcb8bb112d3a20e96050931b595dad",
+      "package-evidence/archives/rustyred-log-0.1.0-beta.2.crate": "0e26396f4c31e0782e5ed9c91578568a9d69e3d2603b1e8dec83c9661d6593fa",
+      "package-evidence/archives/rustyred-query-0.1.0-beta.2.crate": "3e9fef073258ef70bc0cb06b51da6f51c68bb2102985e1fbff8f2eb401e053bb",
+      "package-evidence/archives/rustyred-query-saturate-0.1.0-beta.2.crate": "f47a35a3d7d8bf6cb3d470a2648724e0302d5bb73533267bd5f06f9132669256",
+      "package-evidence/archives/rustyred-scope-0.1.0-beta.2.crate": "f41ba27d7c6f896ce2756007b5cc83bd063fbf541c94be5376c60f2ce7770b3c",
+      "package-evidence/archives/rustyred-turbovec-0.1.0-beta.2.crate": "368de0ca89fad5e972ec346f4255cb238a12ee3ce370589f7d67de45d461def0",
+      "package-evidence/consumer-tree.txt": "9682b0d46c7e36129b9e66f5a5a642963db27b4bfca84b3116b0d49d8544ecbf",
+      "package-evidence/evidence.json": "350f52f2aa78a183de81d979a6d1c573ce18efe16df0e65ae2e2e70517d60a4e"
+    },
+    "linux": {
+      "package-evidence/archive-targets-checked.json": "e12a28fd8a0b40183fcd46acb2ef0837120865b7817c1acb142ddfe4382bf21d",
+      "package-evidence/archives/rustyred-0.1.0-beta.2.crate": "def00dcdcd8ff3f9eeb80987bb7c347458163fd5f3f6c005fcdf40b0db44b6e7",
+      "package-evidence/archives/rustyred-bayes-0.1.0-beta.2.crate": "0530c71de68cfe07dd0e82f66c00ef30e3ff6365bbd299ecb135f865a612877f",
+      "package-evidence/archives/rustyred-cli-0.1.0-beta.2.crate": "361f2aed4634070e91b3fb4ee777e4e3f4aa966d8ced6d604c8c7f4db6d3cc98",
+      "package-evidence/archives/rustyred-contracts-0.1.0-beta.2.crate": "e96f54f710fcd553767d63fd4e48121d8d3a18a463919ae2f464772169f966e6",
+      "package-evidence/archives/rustyred-datalog-0.1.0-beta.2.crate": "c678d919507139481edb013398eb7d73fb17796d855d7e40e8abb45460089bab",
+      "package-evidence/archives/rustyred-derivation-0.1.0-beta.2.crate": "f6a41f2ea08b6196eb39ff8429c7a9813f2477e151ff7f5e661381ae9bf83d46",
+      "package-evidence/archives/rustyred-egg-0.1.0-beta.2.crate": "b411430430ea225baadf9e8906dfebe5c565af62ce5f5d9ece17c8a83fe520b5",
+      "package-evidence/archives/rustyred-egraph-0.1.0-beta.2.crate": "8cf01d23f685e3f90a9667f7fe55e8544b1d80843d56785b2ebd4629d25f9df4",
+      "package-evidence/archives/rustyred-engine-0.1.0-beta.2.crate": "d890b812c8f3ab4effcf1ff1530d13dd4b24e182dda1c8767f4e4a628bc986ec",
+      "package-evidence/archives/rustyred-graphblas-0.1.0-beta.2.crate": "886eec3e55e711032ddd2a48b7d7cc3dcfbcb8bb112d3a20e96050931b595dad",
+      "package-evidence/archives/rustyred-log-0.1.0-beta.2.crate": "0e26396f4c31e0782e5ed9c91578568a9d69e3d2603b1e8dec83c9661d6593fa",
+      "package-evidence/archives/rustyred-query-0.1.0-beta.2.crate": "3e9fef073258ef70bc0cb06b51da6f51c68bb2102985e1fbff8f2eb401e053bb",
+      "package-evidence/archives/rustyred-query-saturate-0.1.0-beta.2.crate": "f47a35a3d7d8bf6cb3d470a2648724e0302d5bb73533267bd5f06f9132669256",
+      "package-evidence/archives/rustyred-scope-0.1.0-beta.2.crate": "f41ba27d7c6f896ce2756007b5cc83bd063fbf541c94be5376c60f2ce7770b3c",
+      "package-evidence/archives/rustyred-turbovec-0.1.0-beta.2.crate": "368de0ca89fad5e972ec346f4255cb238a12ee3ce370589f7d67de45d461def0",
+      "package-evidence/consumer-tree.txt": "9856aeab4e5a10358a241c77aad9d78f11916b9f8c0093c6f8741d1cdcfe4ee7",
+      "package-evidence/evidence.json": "8ad8d589b277dd9325dc1ec2613cbd4763a45daca7bce552c2aba22d28727842"
+    }
+  }
+}

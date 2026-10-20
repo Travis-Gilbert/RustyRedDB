@@ -1,20 +1,23 @@
 # Getting started
 
 The immutable implementation candidate is
-`06acfc450d9c56067cac68d1f0866047a81cfb45`. A fresh outside-workspace public Git
+`984453329f99ae41a5d40e0297218b242ff5075a`. A fresh outside-workspace public Git
 consumer passed both graph/vector/payload/history and explicit full-text/spatial
-runtime tests under OS network denial; see the [receipt](extraction/distribution-evidence/public-git-consumer-06acfc4.json).
-Native artifact qualification on macOS arm64 and GNU Linux x86-64 is running in
-[manual run 39506823736](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736).
-It uses reviewed source `06acfc4` with corrected release-tool bootstrap workflow
-`0bc679d`; a started artifact job is not a passing receipt.
+runtime tests under OS network denial; see the [receipt](extraction/distribution-evidence/public-git-consumer-9844533.json).
+Native macOS arm64 and GNU Linux x86-64 qualification, complete release bundles
+and clean measurement passed in
+[run 39509130713](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39509130713).
+Downloaded bundles were verified against that exact clean source. The delivered
+optimized Mac CLI also passed its real lifecycle and strict-argument checks
+under OS network denial; Linux optimized binary inspection and native packaged
+CLI runtime are separate receipts. See the [distribution record](extraction/distribution-review.md).
 
 ## Library
 
 Use the immutable tested implementation pin rather than a moving branch:
 
 ```toml
-rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "06acfc450d9c56067cac68d1f0866047a81cfb45" }
+rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "984453329f99ae41a5d40e0297218b242ff5075a" }
 ```
 
 The historical `v0.1.0-beta.1` tag remains unchanged and does not contain these candidate repairs. Registry publication is not claimed.

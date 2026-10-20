@@ -1,33 +1,51 @@
 # OSS implementation completion record
 
-Governing contract: [release-plan.md](release-plan.md), requirements R01-R10 and gates G01-G12. The existing immutable `v0.1.0-beta.1` tag is preserved. Repairs target `0.1.0-beta.2`; this record does not authorize a new public release or registry upload.
+Contract: [release-plan.md](release-plan.md), requirements R01-R10 and gates G01-G12. The original `v0.1.0-beta.1` tag is unchanged. Repairs prepare unpublished `0.1.0-beta.2`; publication and landing the separate Theorem branch require authorization.
 
-## Provenance
+## Source and review boundary
 
-Plan source: Theorem `d6a7062c14c11c6838362bda307e267b2297c684`. Cursor extracted `1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de`, a different lineage, into library commit `bdc5c749ac29639e4b0427e161db8afd6af9beb1`; the existing release points to `f3003dcc81dfac3eddae40e124301f35402a0384`. The repair preserves subsequent generic storage work rather than reverting it. Source baseline runs and module comparisons must distinguish those revisions.
+The immutable implementation candidate is `984453329f99ae41a5d40e0297218b242ff5075a`. [PR #1](https://github.com/Travis-Gilbert/RustyRedDB/pull/1) carries the OSS repairs; [Theorem PR #865](https://github.com/Travis-Gilbert/Theorem/pull/865) carries the canonical-source cutover. The candidate includes the corrected notice-generator bootstrap and removes the development-only derivation-to-engine publication cycle. All 15 real-store derivation tests move to an engine integration target with their assertions and adapters preserved. Earlier `06acfc4` runtime results and the `0bc679d` workflow bootstrap are historical evidence; they do not substitute for final candidate execution.
 
-## Implemented repairs and qualification checkpoint
+The plan pin is Theorem `d6a7062c14c11c6838362bda307e267b2297c684`. Cursor extracted `1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de` into `bdc5c749ac29639e4b0427e161db8afd6af9beb1`; beta.1 resolves to `f3003dcc81dfac3eddae40e124301f35402a0384`. The repair retains subsequent generic storage work and compares it with the actual plan pin. It does not silently substitute the later lineage as the baseline.
 
-The exact plan baseline completed with its original failures recorded in [baseline.md](baseline.md). Source-versus-candidate synthetic fixture parity ran on the actual plan pin. The dependency/resource inventory covers 519 packages; source comparisons cover 432 files and resources.
+## Response to the supplied review
 
-Historical implementation `b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3` passed [native CI run 39493345294](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294) on macOS aarch64 and Linux x86_64, including complete engine integrations, query/source fixture, native storage/failure/crash, Clippy, features and normalized package consumers. Full public support-fork suites and the actual normalized native GraphBLAS crate also passed separately. These receipts qualify that revision; they do not qualify later code automatically.
+| Finding | Implementation and evidence | Result |
+| --- | --- | --- |
+| SR-001, public dependency closure | Explicit public support forks, transitive dependency boundary checks and normalized archive compilation. No consumer root patch is required. | Verified G01 |
+| SR-002, preserved generic modules | Graph, query, vectors, binary payloads, history, physical log, optional GraphBLAS and query saturation retained. Source-map and module parity identify ownership changes. | Verified G03 |
+| SR-003, query dialect | Existing parser/read gate/executor and typed writes retained; dialect and structured refusal documented. | Verified G03 |
+| SR-004, generic startup | Public creation oracle checks storage metadata only; independent runtime executes with networking denied. | Verified G02 |
+| SR-005, storage ownership | Facade injects the existing `.RR` chunk owner into RedCore. Physical log/fold topology is preserved explicitly; it was never the RedCore journal. | Verified G05 |
+| SR-006, cross-process `.RR` | Only the closed file is copied; another process verifies graph, relationships, supplied vectors, exact binary payloads and versioned history. | Verified G05 |
+| SR-007, directory persistence | Existing create/open directory path retained and exercised. | Verified G05 |
+| SR-008, isolation | Same/other-process writer refusal, writable-clone lifetime, path aliases and byte-unchanged read-only opens exercised. | Verified G06 |
+| SR-009, honest recovery | Rejection, unknown publication and known committed maintenance failure have distinct outcomes. Public reopen, native injected failures, physical log rollback and subprocess crash tests exercise them. | Verified G07 |
+| SR-010, file identity | `THEORRDB`, format 1 and 4096-byte header unchanged. | Verified G08 |
+| SR-011, maintenance | Migration preserves source bytes; compaction refuses unknown named-root reachability before writing and preserves acknowledged content/history. | Verified G08 |
+| SR-012, one Theorem source | Sixteen direct manifest edges pin the same implementation revision; dynamic inventory checks 27 affected Cargo lock roots and shared Rust type identity. Generic bodies are removed only after consumer execution passes. | Pending final Theorem consumer execution |
+| SR-013, target claims | Storage/runtime gates run on aarch64 macOS and x86_64 Linux. Browser worker compilation and experimental native GraphBLAS qualification are separately scoped. | Verified both native targets |
+| SR-014, publication safety | Original tag preserved, source/history/archives scanned, package licenses and attribution prepared, no live migration. Exact clean source/binary/crate artifacts carry checksums and provenance. | Verified release preparation G11 |
+| SR-015, actual source baseline | Exact plan-pin suites executed. Failures and the pre-compilation embedded lock portability refusal remain recorded; successful baseline evidence is not fabricated. | Verified baseline capture |
+| SR-016, dependency inventory | Cargo inventory covers 519 packages, normal/build/dev/optional/target dependencies, build scripts and resources; 433 candidate comparisons plus reverse source-coverage and separate contract-selection audits include the explicit test-ownership repair. | Verified inventory |
+| SR-017, retained harness assertion | Original `feature_config_delta_can_be_rejected_by_substrate_gate` moved downstream, using canonical DynamicFeature and the real harness validator. Generic memory admission retains captured goldens. | Pending final Theorem consumer execution |
+| SR-018, `LINKED_TO` enforcement | Generic implementation retained; downstream validator and authenticated graph-edit admission checks exercise product protection. | Pending final Theorem consumer execution |
+| SR-019, unrelated consumers | Exact pinned Git and actual normalized packaged consumers execute separately, without private code or root patches. | Verified G09 |
+| SR-020, distribution gates | Rust 1.96.1 is the verified floor. CI, Clippy, feature matrix, measured clean build/example behavior, artifact preparation and an env-gated actual-registry smoke are implemented. Standard workspace publication dry run prepares all 15 packages without uploads; public support-fork suites remain enforced. | Verified release preparation G11 |
+| SR-021, registry installation | Requires actual publication and then a fresh credential-free public-registry installation; Git/package rehearsal cannot substitute. | Awaiting publication authorization |
 
-The subsequent CLI review found that the manual parser could silently accept unknown flags. The current repair uses the already-locked Clap library and the spec-named `commands.rs`, preserving thin facade calls and stable result/error exits. New contract tests require help/version success and argument/JSON rejection before storage. Their final runtime execution is pending. CI now executes the actual clean artifact script and support-fork suites; outside consumers use Cargo defaults without imposing the engine's private timing profile.
+## Test interpretation
 
-Theorem integration remains isolated on `Travis-Gilbert/rustyred-oss-cutover`. Sixteen direct declarations and 27 affected Cargo lock roots are inventoried. Exact-pin native consumers, embedded adapter, browser worker, product command, product ledger and removal of the old generic bodies are still acceptance gates. Earlier 3e42/b44 checks and superseded b4 compilations are historical, never final runtime passes.
+The source baseline is not all green. The source core unit run passed 832 with four failures and one inherited ignored test; query passed 81. Integration failures exposed pre-existing ACK framing, hook dispatch scheduling and an outdated aggregate-vector assertion. The candidate repairs those test boundaries while preserving the assertions and production storage semantics. See [baseline](baseline.md) and [storage receipts](storage-evidence.json).
 
-The new CLI/artifact revision requires one clean qualification and a corresponding Theorem repin. Exact source identities, final measurements and per-target artifacts are recorded only after execution. The gate ledger at this checkpoint is explicitly historical b4 storage/library evidence; publication remains disabled.
+Final candidate CI passed on both supported native targets, including actual package consumers and artifact preparation. Linux's full integration set passed 322 tests across 27 targets, with eight declared ignored tests; all 15 relocated derivation tests passed. Exact per-target counts, command scopes and ignored-test dispositions live in the storage receipt. Delivered source/CLI/crate bundles were independently verified; the optimized Mac CLI ran under network denial. Linux optimized-binary evidence is checksum/header inspection, separate from its native packaged-CLI runtime proof.
 
-## Authority and external gates
+The source-versus-candidate fixture captures mutation serialization, persisted node versions and content hashes, relationships, vectors, binary CAS payloads, history, query AST/parameters/results, and explicit BM25/H3 primitives. It was executed on the actual plan-pin source, then executed unchanged against the candidate. This is distinct from source-file comparison. Historical development runs and cancelled duplicate local compilations are retained as historical evidence, never counted as final execution.
 
-No live database migration is needed or authorized. Existing directory/log deployments retain their storage topology. Public registry uploads and new release tags remain separate actions after review. G12 requires an actual registry installation after publication and cannot be satisfied by local packaging.
+Timing tests retain their ceilings. Their actual source profile was recovered before calibration: latency unit checks use test root opt-level 1, and the complete integration set uses dev root opt-level 0 with dependency opt-level 2. Serial execution prevents tests from stealing process-global counters or injected faults. Native failure injection wraps real file operations; explicitly named synthetic helper stores cover only unit error paths.
 
-The Harness GraphQL/recall tools are not exposed in this session. Local source, this durable record, and exact validation logs serve as the degraded coordination path; no Harness persistence success is claimed.
+## Remaining authority
 
-## Evidence and review
+No production database migration, main-branch merge, new release tag or registry upload was performed. G12 stays unsatisfied until separately authorized publication and post-publication installation. The public beta must not be announced as complete before that gate.
 
-[Gate ledger](gates.json) records G01–G12 with oracle/evidence classes and no allowed substitution. [Storage receipts](storage-evidence.json) distinguish development snapshots, exact native CI commits and completed source-baseline and fixture parity. [Distribution evidence](distribution-evidence/) contains scans, licenses and clean measurement data. [PR #1](https://github.com/Travis-Gilbert/RustyRedDB/pull/1) is the review boundary.
-
-Earlier native run failures are retained: an obsolete upstream vendor manifest assertion, and an unoptimized timing run. The assertion now separately freezes encoding 1.0.0 and checks the maintained fork's release pin; the timing profile restores the original opt-level 1 without increasing the threshold. Actual normalized CLI installation also exposed Cargo's install-config discovery rule, repaired with an explicit isolated config path.
-
-An optional Linux Sprite lane was stopped before tests: its Python pyenv shim blocked before the dependency-boundary command. No Linux pass is inferred from that runner. Native GitHub Actions is the Linux execution oracle; its logs and job outcomes remain authoritative.
+Harness GraphQL/recall tools were unavailable in this session. These durable source/evidence records are the degraded coordination path; no Harness persistence is claimed. External PR comments did not provide a substantive review; the PRs remain the review boundary.
