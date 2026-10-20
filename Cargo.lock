@@ -3435,7 +3435,6 @@ version = "0.1.0-beta.2"
 dependencies = [
  "proptest",
  "rustyred-egraph",
- "rustyred-engine",
  "serde",
  "serde_json",
  "thiserror 2.0.21",

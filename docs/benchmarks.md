@@ -25,21 +25,27 @@ runs this procedure on native x86-64 GNU Linux with Rust 1.96.1 and uploads
 `clean-candidate-measurement-x86_64-unknown-linux-gnu`. Retain the run URL and
 exact commit with its `measurements.json` and `build.log`.
 
-[Run 39485418033](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39485418033)
+[Run 39504003928](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39504003928)
 executed the measurement successfully on clean revision
-`d14c89c7c88f728b7b71b1bcf69a84095832404c`. The
-[retained receipt](extraction/distribution-evidence/clean-measurement-d14.json)
+`06acfc450d9c56067cac68d1f0866047a81cfb45`. The
+[retained receipt](extraction/distribution-evidence/clean-measurement-06acfc4.json)
 records identical clean source hashes before and after execution:
-`24af970a3a5afb4988b39f3c5c81d19d9e1b438200fc1170bda38b47ac257039`.
+`65886e171175a8ac1972409c45f1f4404a4ae1d2532941134b2c228e3dfc1a10`.
 
 | Observation | Measured result |
 | --- | --- |
-| Cold target build, three jobs | 287.019 seconds |
-| Sampled peak sum of process-tree RSS | 3,381,043,200 bytes |
-| Largest individual child high-water RSS | 2,663,911,424 bytes |
-| Release CLI binary | 8,149,152 bytes |
-| Create, seed and query, five runs | 8.53–11.81 ms |
-| Reopen and query, five runs | 2.94–3.10 ms |
+| Cold target build, three jobs | 217.889 seconds |
+| Sampled peak sum of process-tree RSS | 3,208,904,704 bytes |
+| Largest individual child high-water RSS | 2,547,355,648 bytes |
+| Release CLI binary | 8,722,232 bytes |
+| Create, seed and query, five runs | 33.27–61.87 ms |
+| Reopen and query, five runs | 2.75–14.19 ms |
+
+A separate clean repeat in [manual run 39506823736](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736)
+used the same exact source hash and produced the same 8,722,232-byte CLI.
+Its cold-target build took 278.509 seconds and sampled peak summed RSS was
+3,206,426,624 bytes; the [separate repeat receipt](extraction/distribution-evidence/clean-measurement-06acfc4-manual-repeat.json)
+retains those observations without replacing the first run's table.
 
 Each query returned two rows. These observations describe this tiny example
 on the recorded Linux host, compiler and flags. The memory-sampling limits

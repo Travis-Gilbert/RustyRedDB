@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-10-20T21:24:38.851917+00:00",
-  "candidate_revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+  "generated_at_utc": "2026-10-20T22:30:16.740258+00:00",
+  "candidate_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
   "compiler": {
     "release": "1.96.1",
     "commit": "31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd",
     "host": "aarch64-apple-darwin",
     "llvm": "22.1.2"
   },
-  "scope": "Storage specialist receipts only; this is not a declaration that all release gates passed.",
+  "scope": "Historical06ac storage/CLI/query/fork qualification only. Independent native gates passed; initial artifact bootstrap failed, corrected manual06 artifact run remains pending. A subsequent publication-cycle test-ownership repair requires a new packaging candidate and new consumer proof. This does not declare all release gates passed.",
   "source_baseline": {
     "plan_pin": "d6a7062c14c11c6838362bda307e267b2297c684",
     "extraction_source": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de",
@@ -1537,6 +1537,314 @@
         "runtime_seconds": 0.64
       },
       "raw_log_path": "/Volumes/SSD Samsung/rustyred-release-review-b4ebfc3/native-graphblas/runtime.log"
+    },
+    {
+      "id": "candidate-ci-independent-06ac",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "workflow_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "run_id": 39504003928,
+      "outcome": "independent_native_steps7_through17_passed_both_targets;overall_jobs_failed_artifact_preflight",
+      "oracle_class": "actual_native_runtime",
+      "implementation_mode": "real_engine_and_native_files_with_explicit_deterministic_fault_seams",
+      "evidence_class": "actual_native_runtime",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "results": {
+        "x86_64-unknown-linux-gnu": {
+          "job_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39504003928/job/118908238037",
+          "job_conclusion": "failure",
+          "steps": {
+            "Embedded facade, CLI, example and failure oracles": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 7,
+              "passed": 25,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [
+                {
+                  "target": "tests/rr_roundtrip.rs",
+                  "binary": "target/debug/deps/rr_roundtrip-ed182f4eff0ee592",
+                  "result": "process completed successfully as part of successful Cargo step",
+                  "libtest_count": null,
+                  "log_line": "2026-10-20T21:58:10.1770475Z      Running tests/rr_roundtrip.rs (target/debug/deps/rr_roundtrip-ed182f4eff0ee592)"
+                }
+              ],
+              "source_fixture_lines": []
+            },
+            "Engine unit suite (calibrated latency profile)": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 1,
+              "passed": 851,
+              "failed": 0,
+              "ignored": 1,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Complete engine integration target set (calibrated scaling profile)": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 26,
+              "passed": 307,
+              "failed": 0,
+              "ignored": 8,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Query suites": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 3,
+              "passed": 82,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": [
+                "2026-10-20T22:04:01.1243884Z test source_fixture_preserves_records_queries_indexes_payloads_and_history ... ok"
+              ]
+            },
+            "Known committed fold-maintenance failure oracle": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 1,
+              "passed": 2,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Supporting crate suites": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 26,
+              "passed": 297,
+              "failed": 0,
+              "ignored": 4,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Public support fork suites and doctests": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 48,
+              "passed": 592,
+              "failed": 0,
+              "ignored": 1,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Physical log subprocess crash and mixed-version recovery": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 1,
+              "passed": 2,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Documentation tests and examples": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 5,
+              "passed": 1,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Clippy (default supported native closure)": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 0,
+              "passed": 0,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Optional pure Rust feature matrix": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 0,
+              "passed": 0,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            }
+          },
+          "receipt": "docs/extraction/storage-evidence/ci-39504003928-linux.json"
+        },
+        "aarch64-apple-darwin": {
+          "job_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39504003928/job/118908238393",
+          "job_conclusion": "failure",
+          "steps": {
+            "Embedded facade, CLI, example and failure oracles": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 7,
+              "passed": 25,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [
+                {
+                  "target": "tests/rr_roundtrip.rs",
+                  "binary": "target/debug/deps/rr_roundtrip-4e9ee54bdd6a7075",
+                  "result": "process completed successfully as part of successful Cargo step",
+                  "libtest_count": null,
+                  "log_line": "2026-10-20T22:01:45.7507100Z      Running tests/rr_roundtrip.rs (target/debug/deps/rr_roundtrip-4e9ee54bdd6a7075)"
+                }
+              ],
+              "source_fixture_lines": []
+            },
+            "Engine unit suite (calibrated latency profile)": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 1,
+              "passed": 852,
+              "failed": 0,
+              "ignored": 1,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Complete engine integration target set (calibrated scaling profile)": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 26,
+              "passed": 307,
+              "failed": 0,
+              "ignored": 8,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Query suites": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 3,
+              "passed": 82,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": [
+                "2026-10-20T22:14:27.9875110Z test source_fixture_preserves_records_queries_indexes_payloads_and_history ... ok"
+              ]
+            },
+            "Known committed fold-maintenance failure oracle": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 1,
+              "passed": 2,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Supporting crate suites": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 26,
+              "passed": 297,
+              "failed": 0,
+              "ignored": 4,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Public support fork suites and doctests": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 48,
+              "passed": 588,
+              "failed": 0,
+              "ignored": 1,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Physical log subprocess crash and mixed-version recovery": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 1,
+              "passed": 2,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Documentation tests and examples": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 5,
+              "passed": 1,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Clippy (default supported native closure)": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 0,
+              "passed": 0,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            },
+            "Optional pure Rust feature matrix": {
+              "conclusion": "success",
+              "binaries_with_libtest_summaries": 0,
+              "passed": 0,
+              "failed": 0,
+              "ignored": 0,
+              "harness_free_processes": [],
+              "source_fixture_lines": []
+            }
+          },
+          "receipt": "docs/extraction/storage-evidence/ci-39504003928-macos.json"
+        }
+      },
+      "aggregation_policy": "Normal named qualification commands are separate from script repetitions and from historical b4 runs. No duplicate suites are aggregated; rr_roundtrip is a successful harness=false process without a libtest count."
+    },
+    {
+      "id": "candidate-artifact-bootstrap-failure-06ac",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "workflow_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "run_id": 39504003928,
+      "outcome": "failed_both_native_artifact_steps_before_artifact_generation",
+      "cause": "cargo install --locked --version0.9.2 cargo-about exits0 without installing a binary because bin cargo-about requires feature cli; release-check then exits1 at required-tool preflight.",
+      "failure_preserved": true,
+      "fix_scope": "Separate workflow/tooling revision0bc679df enables --features cli and asserts installed cargo-about version before dispatching exact reviewed source06ac. No runtime or canonical manifest change.",
+      "not_a_storage_or_CLI_runtime_failure": true
+    },
+    {
+      "id": "candidate-manual-artifacts-06ac",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "workflow_revision": "0bc679df1653ed85d1afb33093c830e27e634f35",
+      "run_id": 39506823736,
+      "url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736",
+      "outcome": "in_progress;no_final_artifact_pass_claim",
+      "source_binding": "Actual checkout full06ac SHA asserted separately from workflow head0bc679df; artifact provenance remains to be verified.",
+      "measurement": "Completed success; actual checkout/log and source_at_build_start06ac dirty=false verified. Native final artifacts remain pending."
+    },
+    {
+      "id": "public-git-consumer-final-06ac",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "outcome": "passed",
+      "artifact_path": "docs/extraction/distribution-evidence/public-git-consumer-06acfc4.json",
+      "receipt": {
+        "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+        "result": "PASS",
+        "tests": 2,
+        "build_command": [
+          "cargo",
+          "+1.96.1",
+          "test",
+          "--no-run",
+          "--message-format=json"
+        ],
+        "runtime_commands": [
+          [
+            "/usr/bin/sandbox-exec",
+            "-p",
+            "(version 1)(allow default)(deny network*)",
+            "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement/debug/deps/rustyred_external_consumer-1698b8f26af6fd93"
+          ]
+        ],
+        "runtime_network_denial": "macOS sandbox deny network*",
+        "fresh_home": true,
+        "fresh_cargo_home": false,
+        "consumer_profiles": "Cargo defaults test/dev opt-level0",
+        "cargo_home_provenance": "Reused public-only credential-free home created for immutable 7140b00 proof; no user Cargo configuration copied.",
+        "rustc": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2\n",
+        "consumer_source_sha256": "729abeb0997303114339445259d89c5358c696c064af372c46a285d2e5701a6b",
+        "consumer_manifest_sha256": "9c619d676d9c7f829dea65ef595e0a7c84eb63be60b11895a98ee0fcb3c5ce78",
+        "consumer_lock_sha256": "8728a43809d00447bb4aadca93e4ed84c8835ffd5e7c45c1fb435ce6deac4f64",
+        "binary_sha256": {
+          "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement/debug/deps/rustyred_external_consumer-1698b8f26af6fd93": "4a5ff5ffbe484dbf1f2a7938bc296d1addfad33739cf161a229bf02c7f9bc5c5"
+        },
+        "consumer_tree_sha256": "1621e096ced6cde04694ad2b905fd0a887956146133420fb7a8af4e79416c74e"
+      },
+      "qualification": "Actual outside-workspace public Git consumer;2 tests, default opt0 consumer profiles, fresh runtime HOME, public-only credential-free reused Cargo cache, macOS deny-network runtime. Normalized final artifacts are a separate pending proof."
     }
   ],
   "gates": {
@@ -1545,10 +1853,11 @@
         "ci-public-storage-3e42",
         "source_baseline",
         "local-final-fold-differential",
-        "candidate-ci-final-b4"
+        "candidate-ci-final-b4",
+        "candidate-ci-independent-06ac"
       ],
-      "status": "passed_candidate_native_core_and_complete_integration_and_query_gates_both_supported_targets; exact_source_baseline_failures_preserved",
-      "source_fixture_receipt": "The fixture captured from the actual d6a7062c source passed the named extraction_parity test on both native b4 CI targets. Original source unit/integration failures remain recorded as historical failures."
+      "status": "passed_06ac_independent_native_core_complete_integrations_and_query_both_targets;source_baseline_failures_preserved",
+      "source_fixture_receipt": "Named source_fixture_preserves_records_queries_indexes_payloads_and_history from actual d6 source capture passed final06ac Linux22:04:01Z and macOS22:14:27Z. Source baseline failures remain historical failures."
     },
     "G04": {
       "evidence": [
@@ -1558,28 +1867,32 @@
         "public-git-consumer-7140",
         "normalized-package-primitives-7140",
         "public-git-consumer-final-b4",
-        "candidate-ci-final-b4"
+        "candidate-ci-final-b4",
+        "candidate-ci-independent-06ac",
+        "public-git-consumer-final-06ac"
       ],
       "public_primitive_consumer_source": "tests/external-consumer/src/lib.rs",
-      "status": "passed_actual_multimodal_source_fixture_and_public_git_and_normalized_package_consumers_final_b4_both_native_targets",
-      "limitation": "Planner InMemoryModality remains an explicitly classified stand-in. Backend evidence comes from the actual public primitive consumer and source golden fixture. Original source-suite failures remain recorded; the final G09 distribution pipeline has its own receipts."
+      "status": "passed_06ac_actual_native_multimodal_fixture_and_public_git_consumer;final_normalized_artifact_runtime_pending",
+      "limitation": "Actual primitives and source golden fixture are backend evidence; InMemoryModality is an explicitly classified stand-in. Historical b4 normalized proof is not relabeled06ac. Final manual artifact run remains pending."
     },
     "G05": {
       "evidence": [
         "ci-public-storage-3e42",
         "local-public-storage-development",
-        "candidate-ci-final-b4"
+        "candidate-ci-final-b4",
+        "candidate-ci-independent-06ac"
       ],
-      "status": "passed_final_b4_both_supported_native_targets",
+      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
       "oracle": "rr_roundtrip harness=false, separate process and fresh copy directory"
     },
     "G06": {
       "evidence": [
         "ci-public-storage-3e42",
         "ci-engine-unit-3e42",
-        "candidate-ci-final-b4"
+        "candidate-ci-final-b4",
+        "candidate-ci-independent-06ac"
       ],
-      "status": "passed_final_b4_both_supported_native_targets",
+      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
       "oracle": "Conflicting same/cross-process writer, writable clone lifetime, Unix hard/symlink aliases, reachable read-only chunk write refusal, unchanged file bytes and no read-only sidecars."
     },
     "G07": {
@@ -1588,9 +1901,10 @@
         "local-physical-log-development",
         "local-physical-log-explicit-crashes-development",
         "local-fold-outcomes-development",
-        "candidate-ci-final-b4"
+        "candidate-ci-final-b4",
+        "candidate-ci-independent-06ac"
       ],
-      "status": "passed_final_b4_both_supported_native_targets",
+      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
       "oracle": "Torn append and root, confirmed fsync rollback, indeterminate durable publication, corrupt committed content, postcommit pin cleanup, physical log poison/reopen/digest replay, known committed fold maintenance outcome."
     },
     "G08": {
@@ -1598,9 +1912,10 @@
         "ci-public-storage-3e42",
         "ci-engine-unit-3e42",
         "candidate-ci-7140",
-        "candidate-ci-final-b4"
+        "candidate-ci-final-b4",
+        "candidate-ci-independent-06ac"
       ],
-      "status": "passed_final_b4_both_supported_native_targets",
+      "status": "passed_06ac_independent_native_oracles_both_supported_targets;final_artifact_pipeline_separate_pending",
       "oracle": "Source bytes and roots preserved during migration; historical/current file and exact vector payload bytes survive compaction with pinned history. Actual native .RR unknown named-root refusal proved both supported targets at7140.",
       "native_unknown_root_receipt": "Real JournalChunkStore .RR + CoreReachabilityCodec; public writable facade compaction rejects unsupported named root, exact bytes/catalog/orphan/named chunk unchanged, public read-only reopen preserves graph and opaque root."
     }
@@ -1671,13 +1986,25 @@
     },
     "scope": "Independent proof of actual command target selection/inherited package overrides; runtime calibration and complete gates remain separate."
   },
-  "runtime_source_hash_snapshot": {
-    "before": "/tmp/rustyred-e24-runtime-filehashes.json",
-    "after_focused": "/tmp/rustyred-e24-runtime-filehashes-after-focused.json",
-    "after_linux_ci": "/tmp/rustyred-runtime-filehashes-after-linux-ci.json",
-    "runtime_files": 355,
-    "changed_files": 0,
-    "note": "The 355 runtime Rust/manifests were unchanged from e24c53b to b4ebfc3. The final native CI and normalized b4 archives bind their actual exact revision."
+  "runtime_source_hash_snapshot": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+  "source_hashes_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "independent_raw_review": {
+    "receipt": "docs/extraction/storage-evidence/independent-review-06acfc4.json",
+    "review_kind": "independent_raw_source_and_failure_oracle_review",
+    "reviewer": "/root/release_review",
+    "implementation_author": "/root/storage_oracles",
+    "reviewed_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+    "reviewed_file_hashes": 12,
+    "resolved_findings": 7,
+    "new_blocking_source_findings": [],
+    "distinction": "This direct source/failure-oracle review is separate from implementer reinspection, actual CI execution and PR bots. Bots are not used to infer substantive approval."
   },
-  "source_hashes_revision": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3"
+  "candidate_artifact_status": "Initial06ac push run failed only artifact bootstrap; corrected manual39506823736 workflow0bc679df/source06ac remains in progress. Do not mark all-CI-green or final normalized-package proof from this ledger yet.",
+  "next_candidate_publication_fix": {
+    "status": "source_reviewed_runtime_and_publication_proof_pending",
+    "reason": "Actual Cargo1.96 workspace publication dry-run exposed derivation dev-dependency on engine as a publication-lock cycle.",
+    "source_change": "Move only final cfg(test) real-store11fold+4why tests into engine integration target; remove derivation dev engine manifest/lock edge.",
+    "independent_review": "docs/extraction/storage-evidence/derivation-test-move-review.json",
+    "claim_boundary": "Production algorithms remain byte-identical; raw Rust/test ownership and canonical manifests deliberately change, so06 consumer/CI evidence is historical and cannot qualify the new packaging candidate."
+  }
 }

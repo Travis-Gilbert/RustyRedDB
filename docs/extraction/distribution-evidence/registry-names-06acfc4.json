@@ -1,0 +1,108 @@
+{
+  "observed_utc": "2026-10-20T22:06:22.137014+00:00",
+  "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "packages": [
+    {
+      "package": "rustyred",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-bayes",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-bayes",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-cli",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-cli",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-contracts",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-contracts",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-datalog",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-datalog",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-derivation",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-derivation",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-egg",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-egg",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-egraph",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-egraph",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-engine",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-engine",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-graphblas",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-graphblas",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-log",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-log",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-query",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-query",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-query-saturate",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-query-saturate",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-scope",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-scope",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    },
+    {
+      "package": "rustyred-turbovec",
+      "sparse_index_url": "https://index.crates.io/ru/st/rustyred-turbovec",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    }
+  ],
+  "publication_authorized": false,
+  "ownership_verified": false,
+  "limits": "Sparse availability is transient and does not prove upload rights or reserve names. Before publication, authorized owner must authenticate with cargo login secure credential storage, confirm owners for existing names, validate all 15 names and ordered dry-runs; no credentials or owner mutation used here.",
+  "non_published_workspace_examples": [
+    {
+      "package": "parts-catalog",
+      "sparse_index_url": "https://index.crates.io/pa/rt/parts-catalog",
+      "http_status": 404,
+      "interpretation": "Not present in sparse index at observation; not reserved or ownership-verified"
+    }
+  ],
+  "publishable_package_count": 15
+}

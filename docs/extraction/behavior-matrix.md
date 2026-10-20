@@ -20,7 +20,7 @@ This records what the beta keeps, what it refuses, and what was not brought acro
 | In memory | `Database::in_memory` | No files. |
 | Read Cypher | `Database::query` | Parser, read gate, `execute_read`. Parameters are bound values. |
 | Write Cypher | refused | `cypher_write_unsupported`. Writes go through `mutate`. |
-| Typed write | `mutate`, `upsert_node` | Pre-commit refusal is `Err`. A hook or pin cleanup after publication stays `Ok`. The facade does not retry. |
+| Typed write | `mutate`, `upsert_node` | Confirmed precommit refusal is `Err`; indeterminate durability returns `CommitOutcomeUnknown` / `chunk_store_journal_poisoned` and requires close/reopen/reconciliation. Known committed hook/pin cleanup does not turn publication into failure. The facade never retries. Advanced fold commits return a durable transaction with `maintenance_failure` after postappend materialization failure; trait adapters retain `committed_fold_maintenance_failed`, distinct from `fold_commit_outcome_unknown`. See [API contract](../api-contract.md). |
 | Vector | `designate_vector` | Wrong length: `dimension_mismatch`. Create does not designate `File.embedding`. A designated value is stored as a content-addressed payload (`content_id` and `dimension`). |
 | Control events | engine write path | Each created record also stores a `ControlEvent` node. A fresh database has none. |
 | File payload | `put_file_node`, `read_file_node` | Caller bytes, content-addressed manifest. |

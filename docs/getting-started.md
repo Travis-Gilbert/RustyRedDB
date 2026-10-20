@@ -1,19 +1,20 @@
 # Getting started
 
-Native storage was qualified on `aarch64-apple-darwin` and
-`x86_64-unknown-linux-gnu` at historical revision
-`b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3` in [run 39493345294](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39493345294).
-The subsequent strict CLI/artifact candidate requires final validation against
-its own immutable SHA; an added CI job alone is not a passing receipt.
+The immutable implementation candidate is
+`06acfc450d9c56067cac68d1f0866047a81cfb45`. A fresh outside-workspace public Git
+consumer passed both graph/vector/payload/history and explicit full-text/spatial
+runtime tests under OS network denial; see the [receipt](extraction/distribution-evidence/public-git-consumer-06acfc4.json).
+Native artifact qualification on macOS arm64 and GNU Linux x86-64 is running in
+[manual run 39506823736](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736).
+It uses reviewed source `06acfc4` with corrected release-tool bootstrap workflow
+`0bc679d`; a started artifact job is not a passing receipt.
 
 ## Library
 
-This is the latest immutable SDK baseline tested on both native targets. It predates the strict
-CLI parser repair. The final candidate install pin and receipts will replace
-this historical baseline after its validation; do not float on a branch.
+Use the immutable tested implementation pin rather than a moving branch:
 
 ```toml
-rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3" }
+rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "06acfc450d9c56067cac68d1f0866047a81cfb45" }
 ```
 
 The historical `v0.1.0-beta.1` tag remains unchanged and does not contain these candidate repairs. Registry publication is not claimed.

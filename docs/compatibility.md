@@ -12,3 +12,10 @@
 The default facade uses the RedCore graph journal. Physical operation logs and their fold APIs remain explicit directory-backed advanced APIs, matching their existing deployment topology; they are not migrated or replaced by graph snapshots. See [storage owners](extraction/storage-owners.md).
 
 The beta.2 contract crate owns only shared database/browser-storage identities. Theorem keeps product window, plugin, workspace and shell policies and reexports the shared storage types. Identical serde shapes alone are not treated as proof of Rust type identity.
+
+The reviewed implementation pin is `06acfc450d9c56067cac68d1f0866047a81cfb45`.
+The public Git consumer has an actual two-test runtime receipt at that pin.
+Complete normalized archive/optimized CLI bundles are still pending the
+[exact-source manual qualification](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736);
+the workflow bootstrap revision is `0bc679df1653ed85d1afb33093c830e27e634f35`.
+Workflow/doc attestation revisions do not change the library implementation pin.

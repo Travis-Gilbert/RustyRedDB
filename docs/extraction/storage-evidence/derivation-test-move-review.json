@@ -1,0 +1,97 @@
+{
+  "reviewer": "/root/storage_oracles",
+  "implementation_author": "/root",
+  "review_kind": "independent_test_conservation_and_publication_dependency_review",
+  "base_source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "modules": [
+    {
+      "module": "fold",
+      "test_count": 11,
+      "tests": [
+        "fold_boolean_three_layer",
+        "fold_counting_three_layer",
+        "fold_probability_three_layer",
+        "fold_tropical_three_layer",
+        "fold_assumption_returns_one",
+        "fold_missing_node_returns_zero",
+        "fold_probability_diamond",
+        "fold_counting_diamond",
+        "fold_tropical_diamond",
+        "code_symbol_fold_mints_inbound_call_edge_variables",
+        "code_symbol_fold_refuses_an_unclassified_inbound_edge"
+      ],
+      "exact_test_names_preserved": true,
+      "entire_helpers_and_test_bodies_preserved_after_qualification_and_formatting": true,
+      "remaining_source_equals_original_prefix_except_final_newline": true,
+      "prefix_sha256_ignoring_final_whitespace": "83d0d87ad6dc33b51b0d5ade1feb08135ed9504b700030edb748635e0d86af06",
+      "canonical_engine_implementation": "actual InMemoryGraphStore through same local CoreStore adapter; no fake introduced",
+      "comparison_method": "Mechanically qualify crate:: paths in actual06 original block, rustfmt --edition2021, then compare entire CoreStore/helpers/tests body byte-for-byte; imports reviewed separately."
+    },
+    {
+      "module": "why",
+      "test_count": 4,
+      "tests": [
+        "why_three_layer_chain",
+        "why_assumption_is_leaf",
+        "why_missing_node_is_none",
+        "why_code_fact_returns_examined_ids_and_ontology_classes"
+      ],
+      "exact_test_names_preserved": true,
+      "entire_helpers_and_test_bodies_preserved_after_qualification_and_formatting": true,
+      "remaining_source_equals_original_prefix_except_final_newline": true,
+      "prefix_sha256_ignoring_final_whitespace": "545874689c0904c8746ef5769487deb30b8cc1e86ae4a8693f84885e86a96134",
+      "canonical_engine_implementation": "actual InMemoryGraphStore through same local CoreStore adapter; no fake introduced",
+      "comparison_method": "Mechanically qualify crate:: paths in actual06 original block, rustfmt --edition2021, then compare entire CoreStore/helpers/tests body byte-for-byte; imports reviewed separately."
+    }
+  ],
+  "runtime_pass_claim": false,
+  "all_first_party_manifest_edges_including_dev_build_target": {
+    "rustyred": [
+      "rustyred-contracts",
+      "rustyred-engine",
+      "rustyred-query"
+    ],
+    "rustyred-cli": [
+      "rustyred"
+    ],
+    "rustyred-engine": [
+      "rustyred-bayes",
+      "rustyred-contracts",
+      "rustyred-datalog",
+      "rustyred-derivation",
+      "rustyred-egg",
+      "rustyred-egraph",
+      "rustyred-graphblas",
+      "rustyred-log",
+      "rustyred-scope",
+      "rustyred-turbovec"
+    ],
+    "rustyred-query": [
+      "rustyred-engine"
+    ],
+    "rustyred-log": [],
+    "rustyred-bayes": [],
+    "rustyred-datalog": [
+      "rustyred-egraph"
+    ],
+    "rustyred-egraph": [],
+    "rustyred-derivation": [
+      "rustyred-egraph"
+    ],
+    "rustyred-contracts": [],
+    "rustyred-scope": [],
+    "rustyred-query-saturate": [
+      "rustyred-egg",
+      "rustyred-engine"
+    ],
+    "rustyred-graphblas": [],
+    "parts-catalog": [
+      "rustyred"
+    ],
+    "rustyred-egg": [],
+    "rustyred-turbovec": []
+  },
+  "detected_cycles": [],
+  "dev_dependency_removed_exactly": "derivation dev-dep rustyred-engine and its single lock edge only",
+  "new_blocking_source_findings": []
+}

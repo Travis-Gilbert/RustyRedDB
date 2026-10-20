@@ -1,0 +1,26 @@
+{
+  "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "command": [
+    "cargo",
+    "+1.96.1",
+    "publish",
+    "--workspace",
+    "--exclude",
+    "parts-catalog",
+    "--dry-run",
+    "--no-verify",
+    "--locked"
+  ],
+  "exit_code": 101,
+  "duration_seconds": 4.6998653750015364,
+  "uploads": "none; dry-run only",
+  "limits": "Packaging/publish preparation result only, no owner permission proof or actual registry publication/installation.",
+  "observation": "Workspace publication preparation refuses unpublished rustyred-engine while generating derivation package lockfile; derivation dev->engine closes a cycle with production engine->derivation. --no-verify does not skip lockfile preparation. cargo publish has no --exclude-lockfile option.",
+  "cargo": "cargo 1.96.1 (356927216 2026-06-26)\nrelease: 1.96.1\ncommit-hash: 356927216a2d746168cf76e5e88cc3f4b58e029d\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nlibgit2: 1.9.2 (sys:0.20.4 vendored)\nlibcurl: 8.7.1 (sys:0.4.87+curl-8.19.0 system ssl:(SecureTransport) LibreSSL/3.3.6)\nssl: OpenSSL 3.5.4 30 Sep 2025\nos: Mac OS 27.0.1 [64-bit]\n",
+  "source_materialization": "Exact06 git archive outside checkout; no repository mutation",
+  "authentication": "Fresh HOME and public-only Cargo home; no registry token",
+  "output_log_sha256": "b609bd7d1ef2da60ada021a9dbaa5692e8aa7a2dc4dd2c4d62e841258607361c",
+  "status": "TECHNICAL BLOCKER before publication, no uploads attempted",
+  "official_documentation": "https://doc.rust-lang.org/cargo/commands/cargo-publish.html",
+  "pinned_source_lookup": "Official Cargo commit source URL returned404; no claim that master source is exact1.96.1. Installed exact CLI/help and real dry-run are the oracle."
+}

@@ -2,8 +2,11 @@
   "tool": "cargo-about 0.9.2",
   "command": "cargo about generate --locked --offline --workspace --all-features --fail about.hbs --output-file THIRD_PARTY_LICENSES.html",
   "output": "third-party-licenses.html",
-  "sha256": "a3351621763313dfb60a7fe3b1c4494ab4e86e978df2e623603388ae5aea21e1",
-  "bytes": 510201,
+  "sha256": "2e40cb2f9f94234d28f1e8ca937063b1ece91508524ac9688d2e691fe806b451",
+  "bytes": 512593,
   "scope": "All-feature production/build dependency notice bundle; actual SPDX selection in about.toml. Includes exact crate-version source archive links. Does not establish ownership of extracted first-party code or replace source review.",
-  "canonicalization": "Universal text newline decoding to LF; remove trailing spaces/tabs on lines and retain one final newline. License words and leading indentation preserved."
+  "canonicalization": "Universal text newline decoding to LF; remove trailing spaces/tabs on lines and retain one final newline. License words and leading indentation preserved.",
+  "dependency_graph_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "generated_checkout_revision": "0bc679df1653ed85d1afb33093c830e27e634f35",
+  "source_state": "Documentation-only curation in progress; every actual workspace manifest and Cargo.lock byte-identical to06. Outside consumer Git template revision is not a workspace dependency. Final CI artifact license hashes will be compared separately."
 }

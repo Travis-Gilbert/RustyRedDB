@@ -1,0 +1,84 @@
+{
+  "result": "PASS",
+  "source_class": "Isolated dirty acyclic workingtree snapshot; clean candidate rerun pending",
+  "source_snapshot_sha256": "466f5f545e6c1fb0e9c45400d14429fac243d72ef875d91f997d7009ab5f4499",
+  "command": "cargo +1.96.1 package --workspace --locked --no-verify --exclude parts-catalog",
+  "packages": [
+    {
+      "archive": "rustyred-0.1.0-beta.2.crate",
+      "sha256": "10320f680758ab1b6f69d51f032e30f01dffe70190b535b35b04e632039b28d6",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-bayes-0.1.0-beta.2.crate",
+      "sha256": "53cd72b9f5a2bf450aef86f245b487af54e9ddc77faff614d2bf31e108eb283d",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-cli-0.1.0-beta.2.crate",
+      "sha256": "5e38ae2b64741d201c2cadc4c4514928ec1193515f45fc1bdb21f39a003385d3",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-contracts-0.1.0-beta.2.crate",
+      "sha256": "3b18cdad014b78eba63c66ec3d730f10173bd3fcde933ad89f5880245c5838fc",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-datalog-0.1.0-beta.2.crate",
+      "sha256": "9f9d44d0f30a3bea581684410242e7f69a07ba087e9ee97dc7e258c0511b7db3",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-derivation-0.1.0-beta.2.crate",
+      "sha256": "681fe8c921ab2d5797f9ded8d8fc15e2b92def550be82c27fd3420594d861ccd",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-egg-0.1.0-beta.2.crate",
+      "sha256": "240cb792de11b0374dd0dead784157a9a09327e2601e59d32113a4bc4933440a",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-egraph-0.1.0-beta.2.crate",
+      "sha256": "3e150bb3d20fb68ae5c35c9eb5d79528ada2b792fa8aa6d1a1fd75799820bb62",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-engine-0.1.0-beta.2.crate",
+      "sha256": "ac66dfcd830a4fec0f6fa2ca98b23a9a2009327ba80d81392b4003aeeecc5a94",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-graphblas-0.1.0-beta.2.crate",
+      "sha256": "440ab26a4019bd97398504f08a296adfe2ef7f92520497ee88b7b32cd6971b12",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-log-0.1.0-beta.2.crate",
+      "sha256": "6234615285b97ad0df638d86dcf5265b3e24a9b9b6b55a30d18e082959039bfc",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-query-0.1.0-beta.2.crate",
+      "sha256": "ade1c3f9568efa287a2668d7e5f577e59d332c6043f7d9aa3d6f897bcab86c4e",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-query-saturate-0.1.0-beta.2.crate",
+      "sha256": "54889dc8eecff5ec57a943a9e10fd1d50d504e61a0bd65bf81a314865248015b",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-scope-0.1.0-beta.2.crate",
+      "sha256": "7cc89b7c555585956e304ac89c7c0e21e8fa06ed62bafbc06f1d257ede9374d9",
+      "includes_Cargo_lock": true
+    },
+    {
+      "archive": "rustyred-turbovec-0.1.0-beta.2.crate",
+      "sha256": "5f5a9ebfce53df69acd9b9839c74a98ce49a2823365289196d82a362f86e2ec2",
+      "includes_Cargo_lock": true
+    }
+  ],
+  "limits": "Ordinary lock-containing archive preparation only, not independent alltargets/runtime verification or final clean candidate attribution."
+}

@@ -69,7 +69,7 @@ def main() -> None:
     metadata = json.loads(subprocess.check_output(cargo + ['metadata', '--format-version', '1', '--no-deps'], cwd=root, text=True))
     packages = [p for p in metadata['packages'] if p.get('publish') != []]
     excluded = [p['name'] for p in metadata['packages'] if p.get('publish') == []]
-    command = cargo + ['package', '--workspace', '--locked', '--exclude-lockfile', '--no-verify']
+    command = cargo + ['package', '--workspace', '--locked', '--no-verify']
     for name in excluded:
         command += ['--exclude', name]
     if args.allow_dirty:

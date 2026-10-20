@@ -7,6 +7,8 @@
 - Use typed Clap subcommands in `commands.rs`, with help/version output and rejection of unknown flags, missing values and invalid parameter objects before database access.
 - Preserve indeterminate graph/vector and physical-log commit outcomes, refuse writes through poisoned handles, and distinguish already-durable fold commits from subsequent maintenance failures.
 - Add native CI with read-only repository permissions, a Rust 1.96.1 compiler floor, default-profile outside consumers, dependency/license inventories, cold-target measurement tooling and publication-disabled source/optimized-CLI artifact preparation.
+- Remove the publication-only derivation test cycle by retaining its 15 real graph-store tests in the engine integration suite; ordinary workspace package and publication dry runs now prepare all crates with their lockfiles.
+- Prepare an opt-in registry-only post-publication consumer, example and CLI smoke check; its live result stays unverified until actual publication.
 - Review the Theorem cutover separately against one immutable public implementation pin; no live database migration is part of this candidate.
 
 The `.RR` format remains `THEORRDB`, version 1, with a 4096-byte header. Beta.1 history and its tag remain unchanged. This entry records implementation changes, not successful qualification of a future SHA. Final candidate receipts and its install pin follow validation; crates.io publication and registry-install gate G12 remain pending explicit authorization.

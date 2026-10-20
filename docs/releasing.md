@@ -62,13 +62,15 @@ CARGO_TARGET_DIR=/absolute/disposable-target CARGO_INCREMENTAL=0 \
   --output /absolute/new-package-rehearsal
 ```
 
-The script uses stable Cargo 1.96.1 `package --workspace --exclude-lockfile
---no-verify` to create actual normalized `.crate` archives. The lockfile is
-omitted because the derivation crate's test dependency on its engine consumer
-forms a development-only cycle: packaging a per-crate lockfile otherwise asks
-the public registry for an as-yet unpublished engine. No test or behavior is
-removed. The complete committed workspace lock remains the release-suite pin;
-package consumers generate a lock from the normalized public dependency graph.
+The script uses stable Cargo 1.96.1 `package --workspace --locked --no-verify`
+with Cargo's ordinary generated package lockfiles. The original derivation
+unit-test dependency on engine made per-package lock generation cyclic. All
+15 real-engine fold/why behavioral tests now live in engine's integration suite,
+with their actual CoreStore adapters and assertions retained; derivation no
+longer depends upward on engine for tests. No production algorithm changed.
+This permits ordinary package preparation and Cargo workspace publish dry-run
+without excluding lockfiles. Build/runtime qualification still runs separately;
+`--no-verify` skips Cargo's duplicate implicit package build only.
 
 `cargo vendor --locked --versioned-dirs` captures the external closure. The
 normalized archives are unpacked into a documented Cargo directory source,
@@ -138,8 +140,13 @@ bundle beside the CLI binary. It includes selected license texts and exact
 crate source-archive links, including the retained MPL-2.0 dependency source.
 The SPDX branch list in `about.toml` is a notice-generation selection; it does
 not establish ownership of extracted code. The manually dispatched `prepare-reviewed-release` workflow accepts
-only a full SHA and runs on both native targets. Configure required reviewers
-for the `release-review` environment. Its token has read-only repository access;
+only a full SHA and runs on both native targets. Before using that workflow, register it on the default branch and configure
+required reviewers for the `release-review` environment. Read-only inspection
+on 2026-10-20 found the workflow unregistered and the environment absent (404);
+no protection rule is claimed. The existing registered CI workflow supports
+manual dispatch from the corrected branch with a required full reviewed SHA,
+asserts exact checkout in both native and measurement jobs, and leaves ordinary
+push/PR refs unchanged. Its token has read-only repository access;
 it scans source history and prepares artifacts, with no publication credentials,
 registry uploads, release creation, or tag mutation.
 
@@ -149,9 +156,14 @@ exact-SHA source archive, normalized crates, SHA256SUMS, provenance and notices,
 plus package evidence. Partial package evidence can survive a failed job; it
 is not a complete artifact bundle or a release approval. Support-fork tests run
 with their retained assertions; the egg DOT-writing fixtures require an ignored
-`vendor/egg-0.10.0/target` scratch directory. Final native artifact validation for
-the strict CLI candidate is pending; historical b4 CI success does not qualify
-a future commit.
+`vendor/egg-0.10.0/target` scratch directory. Final native artifact validation for the strict CLI candidate remains pending
+[manual run 39506823736](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39506823736).
+The actual checked-out implementation is `06acfc450d9c56067cac68d1f0866047a81cfb45`;
+the dispatch workflow is `0bc679df1653ed85d1afb33093c830e27e634f35`. This separates
+the corrected `cargo-about --features cli` bootstrap from the immutable runtime
+source. Prior run 39504003928 passed the Linux native runtime/feature gates and
+clean measurement but refused artifact preparation because default cargo-about
+features installed no executable. It produced no complete bundle.
 
 Review licenses and attribution, secret-scan results, source history intended
 for publication, normalized manifests, API/storage compatibility, downstream
@@ -162,12 +174,27 @@ A secret scanner does not establish ownership or review third-party licensing.
 
 Publication is a separate explicit action. Verify ownership/availability of
 every crate name, including the support forks, immediately before publication.
-Publish in Cargo's dependency order: leaf support/contracts/scope/Bayes/log/
-egraph and GraphBLAS crates, then Datalog/derivation, engine, query/saturation,
-facade, CLI. Even an optional GraphBLAS dependency must be registry-resolvable
-before publishing the engine.
-The derivation-to-engine edge is test-only; it does not reverse the production
-order. Optional extension order must follow the recorded dependency inventory.
+Cargo 1.96.1 supports workspace publication in dependency order. Before any
+separately authorized upload, run its actual nonuploading preparation:
+
+```sh
+cargo +1.96.1 publish --workspace --exclude parts-catalog \
+  --dry-run --no-verify --locked
+```
+
+An [isolated development snapshot](extraction/distribution-evidence/publish-dry-run-acyclic-preparation.json)
+with the retained 15 real-store tests moved to engine passed this command for
+all 15 publishable packages; every proposed
+upload was explicitly aborted by `--dry-run`. A clean final-candidate rerun is
+still required. The [historical exact06 failure](extraction/distribution-evidence/publish-dry-run-06acfc4.json)
+records why the test dependency cycle had to be removed; it is not the current
+publication-preparation result. `publish` has no `--exclude-lockfile` option.
+The successful dry run checks archive preparation and dependency ordering;
+`--no-verify` does not establish compilation, runtime behavior, upload rights
+or registry availability. Those have separate gates. Optional GraphBLAS must
+also become registry-resolvable before engine; Cargo orchestrates dependent
+uploads and waits for availability. Keep actual source/package checksums and
+stop if any stage fails.
 
 Record each successful upload, version and package checksum. Wait for actual
 registry availability between dependents. A partial upload is partial publication.
@@ -175,3 +202,36 @@ Install the real version from crates.io in a clean credential-free environment,
 run the external example and CLI, then bind the immutable release tag to that
 verified commit. Never move beta.1 or any published tag, overwrite a version,
 or migrate live databases as part of this process.
+
+
+## Actual post-publication registry smoke (G12)
+
+This live gate is **NOT RUN** until an authorized release is actually available
+on crates.io. The helper never publishes, uploads a package, creates a tag or
+changes ownership:
+
+```sh
+RUSTYRED_RUN_REGISTRY_SMOKE=1 python3 scripts/registry_smoke.py \
+  --version 0.1.0-beta.2 --output /absolute/new-registry-smoke-evidence
+```
+
+Use source fixtures matching that published version. The new output directory
+must be outside the checkout and have no ancestor Cargo configuration. The
+helper uses fresh credential-free `HOME` and `CARGO_HOME`, an allowlisted
+environment, the installed Rust 1.96.1 toolchain and an exact crates.io version
+dependency for the unrelated consumer. It rejects nonregistry dependencies,
+runs the full consumer test binary, and executes the actual parts example twice
+to test reopen. It then uses `cargo install --locked --registry crates-io --version
+=0.1.0-beta.2 rustyred-cli` into its isolated installation root, runs help/version (asserting the exact requested version),
+create/inspect/verify/query on that delivered executable and checks read-only
+operations preserve database bytes. All finished executables run under macOS
+`sandbox-exec` network denial or Linux `sudo -n unshare --net`; Linux therefore
+requires the same noninteractive namespace privilege as native CI.
+
+Downloads/builds use the public registry; runtime network access is denied.
+Actual package sources, command outputs/statuses, lock/binary/fixture hashes
+and an `evidence.json` are retained. An unset opt-in variable refuses before
+creating an output directory or contacting the registry. That refusal and
+Python syntax were checked locally; they do not satisfy G12. Archive and Git
+proofs cannot substitute for this actual registry gate. The actual registry dependency resolution and installed binary hashes are retained;
+this gate uses the real install rather than substituting the directory-source rehearsal.

@@ -1,0 +1,158 @@
+{
+  "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "dirty": false,
+  "route": "cargo +1.96.1 package --workspace --locked --exclude-lockfile --no-verify --exclude parts-catalog",
+  "archives": [
+    {
+      "archive": "rustyred-0.1.0-beta.2.crate",
+      "sha256": "f04f1fe909b6dce7ccf551a273a590c643a36f6f2572f40162f59b991b353644",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred"
+      }
+    },
+    {
+      "archive": "rustyred-bayes-0.1.0-beta.2.crate",
+      "sha256": "525c04e335b1d96d7f8c64435872bb17b9fa015b3bef7ed905b3043c96a962ea",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-bayes"
+      }
+    },
+    {
+      "archive": "rustyred-cli-0.1.0-beta.2.crate",
+      "sha256": "f49fc7673e5af8737586a5a3fbac1c4a2ffb67f495c78ea800d6f4166d481a06",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-cli"
+      }
+    },
+    {
+      "archive": "rustyred-contracts-0.1.0-beta.2.crate",
+      "sha256": "69efa925e9cf5ab06ba845010d99ef6724ffda66b35a7d3b5b9713f84b412a5b",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-contracts"
+      }
+    },
+    {
+      "archive": "rustyred-datalog-0.1.0-beta.2.crate",
+      "sha256": "3da2eed36e31d05d1d8eee815a6e88ac738bb69d5f498da2729c2eaa8800e80b",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-datalog"
+      }
+    },
+    {
+      "archive": "rustyred-derivation-0.1.0-beta.2.crate",
+      "sha256": "48f5c1a7f1a1ba2899837cd57d71ddd48116e869dbfa4cdba0710faa3b8393cf",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-derivation"
+      }
+    },
+    {
+      "archive": "rustyred-egg-0.1.0-beta.2.crate",
+      "sha256": "b39e90d797f7510a8f559b99f5af124c20cd5f75180880983c77db98767164ae",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "vendor/egg-0.10.0"
+      }
+    },
+    {
+      "archive": "rustyred-egraph-0.1.0-beta.2.crate",
+      "sha256": "9a41987f7efd8bbeaddf6cee13731f467947735d5e8b4b0d47734f68197e02a4",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-egraph"
+      }
+    },
+    {
+      "archive": "rustyred-engine-0.1.0-beta.2.crate",
+      "sha256": "b17bd015f15fb0a15284824f97782787c90eac2352a22bc01084451867905002",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-engine"
+      }
+    },
+    {
+      "archive": "rustyred-graphblas-0.1.0-beta.2.crate",
+      "sha256": "477609278d602bc0e7b353b8520a1fe8e9c7a8c1e812842c7904e897f84d3461",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-graphblas"
+      }
+    },
+    {
+      "archive": "rustyred-log-0.1.0-beta.2.crate",
+      "sha256": "37689973bc5dffc82f5574cb98f9a64240de16eaca782f21003af2d5fb698327",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-log"
+      }
+    },
+    {
+      "archive": "rustyred-query-0.1.0-beta.2.crate",
+      "sha256": "3879111b873fefd13f4fe24d682fc65eee99411bb48c2c84f1908591eb9632eb",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-query"
+      }
+    },
+    {
+      "archive": "rustyred-query-saturate-0.1.0-beta.2.crate",
+      "sha256": "f72daf6d2a7dd3a8e6ba00d31d81f1de61122b9fbd65f1538ff3577b8e8e76cb",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-query-saturate"
+      }
+    },
+    {
+      "archive": "rustyred-scope-0.1.0-beta.2.crate",
+      "sha256": "eaa3481186222ddcbb04e7b132e7c493074391a022bda0f7bdb7afd0fe19f1df",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "crates/rustyred-scope"
+      }
+    },
+    {
+      "archive": "rustyred-turbovec-0.1.0-beta.2.crate",
+      "sha256": "713839d969433aaa60aea194ee3a08975a426fd569709ad83a74870fd4236f8c",
+      "vcs": {
+        "git": {
+          "sha1": "06acfc450d9c56067cac68d1f0866047a81cfb45"
+        },
+        "path_in_vcs": "vendor/turbovec-1.0.0-wasm32"
+      }
+    }
+  ],
+  "limits": "Local clean06 archive snapshots; final native CI artifact hashes must be compared before attributing runtime proof to delivered archive bytes."
+}
