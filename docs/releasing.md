@@ -69,12 +69,11 @@ normalized archives are unpacked into a documented Cargo directory source,
 with their Cargo checksum metadata. In a new outside-workspace crate, ordinary
 version dependencies resolve through that source. The script removes credential
 environment variables, gives Cargo a fresh home, disables Cargo downloads, runs
-the external graph/vector/payload/history/index consumer, compile-checks every
-archived engine/query test target, runs the parts-catalog example twice,
+the external graph/vector/payload/history/index consumer, compile-checks all targets in every
+archive except the separately qualified native GraphBLAS extension, runs the parts-catalog example twice,
 installs the packaged CLI in the debug profile with the directory-source
 configuration supplied explicitly (`cargo install` ignores project-local
-configuration discovery), and
-runs create, inspect, verify and query. There are no consumer `[patch]` entries,
+configuration discovery), and runs create, inspect, verify and query. There are no consumer `[patch]` entries,
 path dependencies, sibling source dependencies, or registry uploads. Finished
 test/example/CLI executables run with OS-level network denial: `sandbox-exec`
 on macOS and a fresh `sudo unshare --net` network namespace on Linux. A
