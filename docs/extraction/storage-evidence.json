@@ -1,0 +1,662 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-20T19:44:49.670625+00:00",
+  "candidate_revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
+  "compiler": {
+    "release": "1.96.1",
+    "commit": "31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd",
+    "host": "aarch64-apple-darwin",
+    "llvm": "22.1.2"
+  },
+  "scope": "Storage specialist receipts only; this is not a declaration that all release gates passed.",
+  "source_baseline": {
+    "plan_pin": "d6a7062c14c11c6838362bda307e267b2297c684",
+    "extraction_source": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de",
+    "runtime_outcome": "pending_parent_run_98447",
+    "parity_record": "docs/extraction/source-parity.json",
+    "parity_record_current_file_hashes_verified": true,
+    "unchanged_primitive_source_groups": {
+      "crates/rustyred-query/src/": {
+        "files": 13,
+        "matches_plan_pin": 13,
+        "matches_extraction_source": 13
+      },
+      "crates/rustyred-engine/src/fulltext": {
+        "files": 2,
+        "matches_plan_pin": 2,
+        "matches_extraction_source": 2
+      },
+      "crates/rustyred-engine/src/spatial": {
+        "files": 2,
+        "matches_plan_pin": 2,
+        "matches_extraction_source": 2
+      },
+      "crates/rustyred-engine/src/hash": {
+        "files": 1,
+        "matches_plan_pin": 1,
+        "matches_extraction_source": 1
+      },
+      "crates/rustyred-engine/src/vector_payload": {
+        "files": 1,
+        "matches_plan_pin": 1,
+        "matches_extraction_source": 1
+      },
+      "crates/rustyred-engine/src/graph_history": {
+        "files": 3,
+        "matches_plan_pin": 3,
+        "matches_extraction_source": 3
+      }
+    },
+    "limitation": "Source byte identity and candidate-local tests do not substitute for the completed pinned-source runtime baseline. No source-versus-candidate runtime parity pass is claimed here."
+  },
+  "source_hashes": [
+    {
+      "path": "crates/rustyred/src/database.rs",
+      "sha256": "f066691904842bfa0499b7d31d72b231e4615a46f55934e90d9d3c3310b971e3",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred/src/error.rs",
+      "sha256": "a8cf8fdba1c3f7050bad39f16adad238823798a1c808583d2391bb8566ab309d",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred/tests/embedded_api.rs",
+      "sha256": "d6d7ea967dc7b2e442cb0daf6a3bd617fc03222edfe89ac04aaad44d1346dc54",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred/tests/rr_failures.rs",
+      "sha256": "6ff8cd9ad271674b51794eadaf1c989731512a58937c3d950ac1baa481e28637",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred/tests/rr_roundtrip.rs",
+      "sha256": "5a330919307d4a9d0551d6e844c58f318973cbff527757bf0e51f929d5296e9c",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred-engine/src/journal.rs",
+      "sha256": "7679feba3b0b1d6534364da8361a86b06f18579660714c8401760edfcabe9661",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/error.rs",
+      "sha256": "cd7eb37b90ce173f91d0ff6934588cb49700b65af66ebe67cbd19ce8ac8d7b61",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/fold_store.rs",
+      "sha256": "a025d78714aceb3cccf25f9f91160a1e5b69d3318270b8193b489f870a490600",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_commit_outcome.rs",
+      "sha256": "2c75fa1954e7271d2834d87831b7342b2e859d5479887f915260e57bde3a9547",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred-log/src/physical.rs",
+      "sha256": "47de07716b2ea5ccfad095cb630fb96ed0a39c67eee987b7a3b363809c77a610",
+      "identical_to_3e42e7e": true
+    },
+    {
+      "path": "crates/rustyred-log/src/proposal.rs",
+      "sha256": "a9b8667d108a082e91706029e47b504f9578f2da59f10098f2bbb7be1eed6475",
+      "identical_to_3e42e7e": true
+    }
+  ],
+  "executions": [
+    {
+      "id": "local-public-storage-development",
+      "revision": null,
+      "revision_caveat": "Executed on an uncommitted development snapshot before 3e42e7e; no exact development tree hash was captured. Do not describe it as an exact-commit run. The named storage source files were subsequently committed and are identical at 3e42e7e and d14c89c as recorded below.",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4",
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion"
+      },
+      "test_profile_opt_level": 0,
+      "command": "cargo test --locked --offline -p rustyred --features test-fault-injection --test embedded_api --test rr_failures --test rr_roundtrip",
+      "outcome": "passed",
+      "exit_code": 0,
+      "results": {
+        "embedded_api": {
+          "passed": 11,
+          "failed": 0,
+          "runtime_seconds": 0.22
+        },
+        "rr_failures": {
+          "passed": 9,
+          "failed": 0,
+          "runtime_seconds": 0.27
+        },
+        "rr_roundtrip": {
+          "harness": false,
+          "exit_code": 0,
+          "assertions": "Separate child opens a closed .RR copied alone into a fresh directory; exact binary bytes, edges, actual vector search ordering, historical/current revisions and no reader writes/sidecars."
+        }
+      },
+      "build_seconds": 653
+    },
+    {
+      "id": "local-physical-log-development",
+      "revision": null,
+      "revision_caveat": "Executed on an uncommitted development snapshot before 3e42e7e; no exact development tree hash was captured. Do not describe it as an exact-commit run. The named storage source files were subsequently committed and are identical at 3e42e7e and d14c89c as recorded below.",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-log-outcomes",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4",
+        "CARGO_PROFILE_DEV_DEBUG": "0"
+      },
+      "test_profile_opt_level": 0,
+      "command": "cargo test --locked --offline -p rustyred-log",
+      "outcome": "passed",
+      "exit_code": 0,
+      "results": {
+        "unit": 10,
+        "fsync_abrupt_exit": 1,
+        "overlap_differential": 4,
+        "proposal_commit": 8,
+        "provenance_commit": 5,
+        "provenance_wire": 5,
+        "total_passed": 33,
+        "ignored_crash_tests": 4,
+        "doctests": 0
+      },
+      "new_failure_oracles": "Two unit tests parameterize partial length/payload/checksum, pre/post-real-sync failures, truncate/rollback-sync refusal, poisoned append/proposal/verify refusal, independent public reopen and exact candidate digest reconciliation/replay. FaultInjectingLogFile wraps the actual locked NativeLogFile, not memory storage."
+    },
+    {
+      "id": "local-physical-log-explicit-crashes-development",
+      "revision": null,
+      "revision_caveat": "Executed on an uncommitted development snapshot before 3e42e7e; no exact development tree hash was captured. Do not describe it as an exact-commit run. The named storage source files were subsequently committed and are identical at 3e42e7e and d14c89c as recorded below.",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "THEOREM_RUN_CRASH_MATRIX": "1",
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-log-outcomes",
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4",
+        "CARGO_PROFILE_DEV_DEBUG": "0"
+      },
+      "command": "cargo test --locked --offline -p rustyred-log --test crash_reopen crash_matrix -- --ignored --test-threads=1",
+      "outcome": "passed",
+      "exit_code": 0,
+      "results": {
+        "passed_matrix_tests": 2,
+        "failed": 0,
+        "real_aborted_children": 10,
+        "runtime_seconds": 1.69,
+        "formats": [
+          "current-v3",
+          "retained-v2-prefix-with-v3-tail"
+        ]
+      }
+    },
+    {
+      "id": "local-fold-outcomes-development",
+      "revision": null,
+      "revision_caveat": "Executed on an uncommitted development snapshot before 3e42e7e; no exact development tree hash was captured. Do not describe it as an exact-commit run. The named storage source files were subsequently committed and are identical at 3e42e7e and d14c89c as recorded below.",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4",
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion"
+      },
+      "test_profile_opt_level": 0,
+      "command": "cargo test --locked --offline -p rustyred-engine --features test-fault-injection --test fold_commit_outcome",
+      "outcome": "passed",
+      "exit_code": 0,
+      "results": {
+        "passed": 2,
+        "failed": 0,
+        "runtime_seconds": 0.05
+      },
+      "assertions": "Actual PhysicalLog commit before injected derived-fold maintenance interruption; known committed position/cause, GraphWrite/GraphAtomic adapter classification, checked view/new mutation refusal, GraphVerify not-ok, accurate graph watermark and independent reopen recovery."
+    },
+    {
+      "id": "ci-public-storage-3e42",
+      "revision": "3e42e7e0b8d770ac8c72e7db536b1b09dfdabbfb",
+      "toolchain": "1.96.1",
+      "run_id": 39483629328,
+      "run_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39483629328",
+      "step": "Embedded facade, CLI, example and failure oracles",
+      "targets": [
+        "aarch64-apple-darwin",
+        "x86_64-unknown-linux-gnu"
+      ],
+      "command": "cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection",
+      "outcome": "step_passed_on_both_targets",
+      "results_per_target": {
+        "embedded_api_passed": 11,
+        "rr_failures_passed": 9,
+        "rr_roundtrip_harness_false_exit_code": 0,
+        "cli_tests_passed": 1
+      },
+      "whole_workflow_outcome": "failed_later_engine_tests; this successful step is not a whole-CI pass"
+    },
+    {
+      "id": "ci-engine-unit-3e42",
+      "revision": "3e42e7e0b8d770ac8c72e7db536b1b09dfdabbfb",
+      "run_id": 39483629328,
+      "command": "cargo test --locked -p rustyred-engine -p rustyred-query",
+      "outcome": "failed",
+      "results": {
+        "aarch64-apple-darwin": {
+          "passed": 850,
+          "failed": 2,
+          "ignored": 1,
+          "timing_ns_per_query": 200296
+        },
+        "x86_64-unknown-linux-gnu": {
+          "passed": 849,
+          "failed": 2,
+          "ignored": 1,
+          "timing_ns_per_query": 423086
+        }
+      },
+      "failed_tests": [
+        "graph_store::tests::memory_document_query_latency_fixture_records_delta",
+        "turbovec_pin_tests::turbovec_encode_version_matches_cargo_toml_pin"
+      ],
+      "timing_ceiling_ns": 191312,
+      "passed_storage_test_names_by_job": {
+        "native (macos-14, aarch64-apple-darwin)": [
+          "chunk_store::tests::chunk_store_compaction_refuses_current_catalog_or_named_root_omission",
+          "chunk_store::tests::mem_chunk_store_compaction_honors_keyed_ref_counted_in_flight_pins",
+          "graph::mutation::tests::conditional_preparation_preserves_the_frozen_merge_shape",
+          "graph_store::graph_history_tests::graph_commit_observer_covers_generic_attributed_rewired_and_cascade_writes_without_dispatcher",
+          "graph_store::graph_history_tests::graph_commit_observer_emits_only_after_real_journal_publication_and_contains_panics",
+          "graph_store::graph_history_tests::graph_history_article_clock_and_metadata_are_explicit",
+          "graph_store::graph_history_tests::graph_history_attributed_guarded_mutations_preserve_cas_quota_and_version_boundaries",
+          "graph_store::graph_history_tests::graph_history_changed_keys_track_final_payload_and_rejected_roots",
+          "graph_store::graph_history_tests::graph_history_checked_attribution_checks_synthesized_replacements_before_publication",
+          "graph_store::graph_history_tests::graph_history_deleted_node_covers_cascaded_edges_and_surviving_endpoint",
+          "graph_store::graph_history_tests::graph_history_failed_publication_has_no_phantom_header",
+          "graph_store::graph_history_tests::graph_history_forged_header_is_an_integrity_error",
+          "graph_store::graph_history_tests::graph_history_full_header_survives_reopen",
+          "graph_store::graph_history_tests::graph_history_gc_budget_refuses_before_deleting",
+          "graph_store::graph_history_tests::graph_history_forward_catchup_is_ordered_bounded_and_pinned",
+          "graph_store::graph_history_tests::graph_history_gc_uses_the_revisions_removed_vector_designation",
+          "graph_store::graph_history_tests::graph_history_multiple_designations_survive_reopen",
+          "graph_store::graph_history_tests::graph_history_pinned_point_reads_match_authoritative_hydration",
+          "graph_store::graph_history_tests::graph_history_prefix_pages_are_bounded_isolated_and_pinned",
+          "graph_store::graph_history_tests::graph_history_removed_edge_is_latest_endpoint_revision",
+          "graph_store::graph_history_tests::graph_history_v4_boundary_never_invents_a_header",
+          "graph_store::tests::redcore_historical_registry_is_exact_across_v2_migration_compaction_and_reopen",
+          "graph_store::tests::redcore_publication_window_survives_old_root_compaction_interleaving",
+          "graph_store::tests::rr_compaction_reclaims_unreachable_objects_and_keeps_identity_roots_and_files",
+          "graph_store::tests::rr_compaction_refuses_a_corrupt_reachable_object_and_keeps_the_source",
+          "graph_store::tests::rr_compaction_sync_failure_in_the_replacement_window_leaves_the_rr_recoverable",
+          "graph_store::tests::rr_file_a_clean_close_leaves_no_lock_file_behind",
+          "graph_store::tests::rr_file_a_cloned_store_keeps_the_write_claim_alive",
+          "graph_store::tests::rr_file_a_create_that_fails_after_the_claim_leaves_the_path_creatable",
+          "graph_store::tests::rr_file_a_hard_link_is_the_same_database_and_the_second_writer_is_refused",
+          "graph_store::tests::rr_file_a_publish_that_cannot_land_leaves_the_claim_on_the_live_database",
+          "graph_store::tests::rr_file_a_refused_open_leaves_no_lock_file_behind",
+          "graph_store::tests::rr_file_a_rename_under_a_live_writer_moves_the_file_not_the_claim",
+          "graph_store::tests::rr_file_a_symlink_is_the_same_database_and_the_second_writer_is_refused",
+          "graph_store::tests::rr_file_an_owner_record_carries_a_name_a_person_would_choose",
+          "graph_store::tests::rr_file_compaction_does_not_hand_the_claim_to_the_next_writer",
+          "graph_store::tests::rr_file_compaction_rewrites_the_body_and_keeps_the_identity_block",
+          "graph_store::tests::rr_file_corrupt_digest_is_reported_before_any_version_field",
+          "graph_store::tests::rr_file_crash_after_a_root_keeps_the_root_and_drops_the_torn_tail",
+          "graph_store::tests::rr_file_crash_before_the_first_root_leaves_the_identity_block_intact",
+          "graph_store::tests::rr_file_create_refuses_to_overwrite_an_existing_database",
+          "graph_store::tests::rr_file_create_then_reopen_carries_one_identity_through_a_rename",
+          "graph_store::tests::rr_file_extension_spoofing_cannot_bypass_header_validation",
+          "graph_store::tests::rr_file_header_encodes_to_one_fixed_block_and_decodes_back",
+          "graph_store::tests::rr_file_header_refuses_an_identity_it_cannot_carry",
+          "graph_store::tests::rr_file_lock_path_appends_rather_than_replacing_the_extension",
+          "graph_store::tests::rr_file_owner_record_names_the_live_writer_and_never_guesses",
+          "graph_store::tests::rr_file_read_only_open_reads_a_torn_tail_without_repairing_it",
+          "graph_store::tests::rr_file_second_process_writer_child",
+          "graph_store::tests::rr_file_second_process_writer_is_refused_by_device_name",
+          "graph_store::tests::rr_file_second_writable_open_in_this_process_is_refused_by_name",
+          "graph_store::tests::rr_file_the_owner_record_is_never_written_through_a_symlink",
+          "graph_store::tests::rr_file_truncated_header_is_refused_at_every_boundary",
+          "graph_store::tests::rr_file_unsupported_body_format_is_refused",
+          "graph_store::tests::rr_file_unsupported_capability_refuses_the_writer_and_admits_the_reader",
+          "graph_store::tests::rr_file_unsupported_format_version_is_refused_outright",
+          "graph_store::tests::rr_migration_accepts_a_redcore_store_and_preserves_graph_files_roots_and_identity",
+          "graph_store::tests::rr_migration_and_compaction_traverse_the_root_catalog_browser_root",
+          "graph_store::tests::rr_migration_migrates_a_torn_source_and_leaves_it_byte_identical",
+          "graph_store::tests::rr_migration_refuses_a_corrupt_reachable_object_and_leaves_no_target",
+          "journal::tests::chunk_store_journal_append_failure_after_catalog_chunk_rolls_back_all",
+          "journal::tests::chunk_store_journal_bad_crc_before_intact_uncommitted_tail_recovers_prior_root",
+          "journal::tests::chunk_store_journal_bad_crc_before_later_lineage_root_is_fatal",
+          "journal::tests::chunk_store_journal_batch_is_all_or_nothing_on_validation",
+          "journal::tests::chunk_store_journal_catalog_root_chunk_is_addressable_after_commit",
+          "journal::tests::chunk_store_journal_catalog_updates_merge_under_one_lock",
+          "journal::tests::chunk_store_journal_compaction_honors_keyed_ref_counted_in_flight_pins",
+          "journal::tests::chunk_store_journal_compaction_preserves_catalog_and_named_roots",
+          "journal::tests::chunk_store_journal_compaction_refuses_stale_root_set",
+          "journal::tests::chunk_store_journal_compaction_rewrites_only_reachable_chunks",
+          "journal::tests::chunk_store_journal_compaction_sync_failure_preserves_old_handle",
+          "journal::tests::chunk_store_journal_compresses_large_payloads",
+          "journal::tests::chunk_store_journal_concurrent_catalog_updates_preserve_parent_chain",
+          "journal::tests::chunk_store_journal_concurrent_writes_share_one_index",
+          "journal::tests::chunk_store_journal_corruption_under_a_live_handle_is_caught_at_the_boundary",
+          "journal::tests::chunk_store_journal_exact_tail_bad_crc_is_truncated",
+          "journal::tests::chunk_store_journal_failed_append_recovers_or_poison_refuses",
+          "journal::tests::chunk_store_journal_failed_rollback_poisons_store",
+          "journal::tests::chunk_store_journal_grouped_commit_failure_refuses_entire_batch",
+          "journal::tests::chunk_store_journal_grouped_commit_shares_one_sync_barrier",
+          "journal::tests::chunk_store_journal_grouped_runtime_stops_with_last_clone",
+          "journal::tests::chunk_store_journal_injected_append_failure_rolls_back",
+          "journal::tests::chunk_store_journal_length_corruption_before_committed_root_and_orphan_is_fatal",
+          "journal::tests::chunk_store_journal_length_corruption_before_later_root_chain_is_fatal",
+          "journal::tests::chunk_store_journal_lock_is_exclusive",
+          "journal::tests::chunk_store_journal_mid_length_corruption_consuming_exact_eof_is_fatal",
+          "journal::tests::chunk_store_journal_mid_log_corruption_is_fatal",
+          "journal::tests::chunk_store_journal_mid_log_length_corruption_cannot_masquerade_as_tail",
+          "journal::tests::chunk_store_journal_multi_commit_compaction_reopens_from_checkpoint",
+          "journal::tests::chunk_store_journal_partial_catalog_rolls_back_before_later_commit",
+          "journal::tests::chunk_store_journal_partial_chunk_batch_rolls_back_before_later_commit",
+          "graph_store::graph_history_tests::graph_history_pinned_indexes_and_payloads_survive_270_commits_and_gc",
+          "journal::tests::chunk_store_journal_refuses_root_with_missing_named_entry",
+          "journal::tests::chunk_store_journal_rejects_hash_mismatch_before_append",
+          "journal::tests::chunk_store_journal_rollback_sync_failure_poisons_store",
+          "journal::tests::chunk_store_journal_round_trip_and_reopen",
+          "journal::tests::chunk_store_journal_sync_failure_does_not_publish_root",
+          "journal::tests::chunk_store_journal_torn_compressed_tail_recovers",
+          "journal::tests::chunk_store_journal_torn_tail_ignores_nested_chunk_frame_bytes",
+          "journal::tests::chunk_store_journal_torn_tail_is_truncated",
+          "journal::tests::chunk_store_journal_torn_tail_respects_outer_frame_over_nested_valid_root",
+          "journal::tests::chunk_store_journal_unsupported_encoding_is_fatal",
+          "journal::tests::chunk_store_journal_zero_hole_before_intact_uncommitted_tail_recovers_prior_root",
+          "journal::tests::chunk_store_journal_zero_hole_before_later_lineage_root_is_fatal",
+          "journal::tests::chunk_store_journal_zstd_length_cannot_swallow_later_root_and_orphan",
+          "object_store::unified_tests::blake3_alias_publication_pins_survive_old_root_compaction",
+          "object_store::unified_tests::indexed_payload_publication_pins_survive_old_root_compaction",
+          "object_store::unified_tests::staged_raw_payload_pin_spans_compaction_and_releases_without_leaking",
+          "reachability::tests::compaction_policy_rejects_zero_growth_threshold",
+          "reachability::tests::compaction_policy_skips_without_walking_below_growth_or_cadence_thresholds",
+          "reachability::tests::compaction_policy_threshold_crossing_compacts_and_reports",
+          "reachability::tests::parked_pack_vector_and_file_payloads_survive_compaction_and_unpark",
+          "reachability::tests::vector_payload_pin_closes_publication_vs_compaction_window",
+          "rr_file::lock::tests::a_preopened_superseded_inode_cannot_claim_the_replacement_path",
+          "rr_file::lock::tests::a_publish_that_did_not_land_gives_the_claim_back_its_original_file",
+          "rr_file::lock::tests::a_publish_that_landed_releases_the_file_the_rename_replaced",
+          "rr_file::lock::tests::an_adopted_replacement_does_not_release_the_file_the_path_still_names",
+          "rr_migrate::tests::rr_migration_refuses_an_existing_target_and_leaves_it_alone",
+          "rr_migrate::tests::rr_migration_refuses_an_untyped_graph_root_and_leaves_nothing_behind",
+          "rr_migrate::tests::rr_migration_removes_a_partial_target_when_the_source_is_uncommitted",
+          "journal::tests::chunk_store_journal_payload_bound_is_enforced",
+          "versioned_graph::tests::versioned_graph_v1_empty_leaf_hash_is_frozen",
+          "versioned_graph::tests::versioned_graph_v2_canonical_preimages_and_hashes_are_frozen"
+        ],
+        "native (ubuntu-24.04, x86_64-unknown-linux-gnu)": [
+          "chunk_store::tests::chunk_store_compaction_refuses_current_catalog_or_named_root_omission",
+          "chunk_store::tests::mem_chunk_store_compaction_honors_keyed_ref_counted_in_flight_pins",
+          "graph::mutation::tests::conditional_preparation_preserves_the_frozen_merge_shape",
+          "graph_store::graph_history_tests::graph_commit_observer_covers_generic_attributed_rewired_and_cascade_writes_without_dispatcher",
+          "graph_store::graph_history_tests::graph_history_article_clock_and_metadata_are_explicit",
+          "graph_store::graph_history_tests::graph_commit_observer_emits_only_after_real_journal_publication_and_contains_panics",
+          "graph_store::graph_history_tests::graph_history_attributed_guarded_mutations_preserve_cas_quota_and_version_boundaries",
+          "graph_store::graph_history_tests::graph_history_changed_keys_track_final_payload_and_rejected_roots",
+          "graph_store::graph_history_tests::graph_history_checked_attribution_checks_synthesized_replacements_before_publication",
+          "graph_store::graph_history_tests::graph_history_deleted_node_covers_cascaded_edges_and_surviving_endpoint",
+          "graph_store::graph_history_tests::graph_history_forged_header_is_an_integrity_error",
+          "graph_store::graph_history_tests::graph_history_failed_publication_has_no_phantom_header",
+          "graph_store::graph_history_tests::graph_history_full_header_survives_reopen",
+          "graph_store::graph_history_tests::graph_history_gc_budget_refuses_before_deleting",
+          "graph_store::graph_history_tests::graph_history_gc_uses_the_revisions_removed_vector_designation",
+          "graph_store::graph_history_tests::graph_history_forward_catchup_is_ordered_bounded_and_pinned",
+          "graph_store::graph_history_tests::graph_history_pinned_point_reads_match_authoritative_hydration",
+          "graph_store::graph_history_tests::graph_history_prefix_pages_are_bounded_isolated_and_pinned",
+          "graph_store::graph_history_tests::graph_history_removed_edge_is_latest_endpoint_revision",
+          "graph_store::graph_history_tests::graph_history_v4_boundary_never_invents_a_header",
+          "graph_store::graph_history_tests::graph_history_multiple_designations_survive_reopen",
+          "graph_store::tests::redcore_historical_registry_is_exact_across_v2_migration_compaction_and_reopen",
+          "graph_store::tests::redcore_publication_window_survives_old_root_compaction_interleaving",
+          "graph_store::tests::rr_compaction_reclaims_unreachable_objects_and_keeps_identity_roots_and_files",
+          "graph_store::tests::rr_compaction_refuses_a_corrupt_reachable_object_and_keeps_the_source",
+          "graph_store::tests::rr_compaction_sync_failure_in_the_replacement_window_leaves_the_rr_recoverable",
+          "graph_store::tests::rr_file_a_clean_close_leaves_no_lock_file_behind",
+          "graph_store::tests::rr_file_a_cloned_store_keeps_the_write_claim_alive",
+          "graph_store::tests::rr_file_a_create_that_fails_after_the_claim_leaves_the_path_creatable",
+          "graph_store::tests::rr_file_a_hard_link_is_the_same_database_and_the_second_writer_is_refused",
+          "graph_store::tests::rr_file_a_refused_open_leaves_no_lock_file_behind",
+          "graph_store::tests::rr_file_a_rename_under_a_live_writer_moves_the_file_not_the_claim",
+          "graph_store::tests::rr_file_a_symlink_is_the_same_database_and_the_second_writer_is_refused",
+          "graph_store::tests::rr_file_an_owner_record_carries_a_name_a_person_would_choose",
+          "graph_store::tests::rr_file_compaction_does_not_hand_the_claim_to_the_next_writer",
+          "graph_store::tests::rr_file_compaction_rewrites_the_body_and_keeps_the_identity_block",
+          "graph_store::tests::rr_file_corrupt_digest_is_reported_before_any_version_field",
+          "graph_store::tests::rr_file_crash_after_a_root_keeps_the_root_and_drops_the_torn_tail",
+          "graph_store::tests::rr_file_crash_before_the_first_root_leaves_the_identity_block_intact",
+          "graph_store::tests::rr_file_create_refuses_to_overwrite_an_existing_database",
+          "graph_store::tests::rr_file_create_then_reopen_carries_one_identity_through_a_rename",
+          "graph_store::tests::rr_file_extension_spoofing_cannot_bypass_header_validation",
+          "graph_store::tests::rr_file_header_encodes_to_one_fixed_block_and_decodes_back",
+          "graph_store::tests::rr_file_header_refuses_an_identity_it_cannot_carry",
+          "graph_store::tests::rr_file_lock_path_appends_rather_than_replacing_the_extension",
+          "graph_store::tests::rr_file_owner_record_names_the_live_writer_and_never_guesses",
+          "graph_store::tests::rr_file_read_only_open_reads_a_torn_tail_without_repairing_it",
+          "graph_store::tests::rr_file_second_process_writer_child",
+          "graph_store::tests::rr_file_second_process_writer_is_refused_by_device_name",
+          "graph_store::tests::rr_file_second_writable_open_in_this_process_is_refused_by_name",
+          "graph_store::tests::rr_file_the_owner_record_is_never_written_through_a_symlink",
+          "graph_store::tests::rr_file_truncated_header_is_refused_at_every_boundary",
+          "graph_store::tests::rr_file_unsupported_body_format_is_refused",
+          "graph_store::tests::rr_file_unsupported_capability_refuses_the_writer_and_admits_the_reader",
+          "graph_store::tests::rr_file_unsupported_format_version_is_refused_outright",
+          "graph_store::tests::rr_migration_accepts_a_redcore_store_and_preserves_graph_files_roots_and_identity",
+          "graph_store::tests::rr_migration_and_compaction_traverse_the_root_catalog_browser_root",
+          "graph_store::tests::rr_migration_refuses_a_corrupt_reachable_object_and_leaves_no_target",
+          "graph_store::tests::rr_migration_migrates_a_torn_source_and_leaves_it_byte_identical",
+          "journal::tests::chunk_store_journal_append_failure_after_catalog_chunk_rolls_back_all",
+          "journal::tests::chunk_store_journal_bad_crc_before_intact_uncommitted_tail_recovers_prior_root",
+          "journal::tests::chunk_store_journal_bad_crc_before_later_lineage_root_is_fatal",
+          "journal::tests::chunk_store_journal_batch_is_all_or_nothing_on_validation",
+          "journal::tests::chunk_store_journal_catalog_root_chunk_is_addressable_after_commit",
+          "journal::tests::chunk_store_journal_catalog_updates_merge_under_one_lock",
+          "journal::tests::chunk_store_journal_compaction_honors_keyed_ref_counted_in_flight_pins",
+          "journal::tests::chunk_store_journal_compaction_preserves_catalog_and_named_roots",
+          "journal::tests::chunk_store_journal_compaction_refuses_stale_root_set",
+          "journal::tests::chunk_store_journal_compaction_rewrites_only_reachable_chunks",
+          "journal::tests::chunk_store_journal_compaction_sync_failure_preserves_old_handle",
+          "journal::tests::chunk_store_journal_concurrent_catalog_updates_preserve_parent_chain",
+          "journal::tests::chunk_store_journal_concurrent_writes_share_one_index",
+          "journal::tests::chunk_store_journal_corruption_under_a_live_handle_is_caught_at_the_boundary",
+          "journal::tests::chunk_store_journal_exact_tail_bad_crc_is_truncated",
+          "journal::tests::chunk_store_journal_failed_append_recovers_or_poison_refuses",
+          "journal::tests::chunk_store_journal_failed_rollback_poisons_store",
+          "journal::tests::chunk_store_journal_compresses_large_payloads",
+          "journal::tests::chunk_store_journal_grouped_commit_failure_refuses_entire_batch",
+          "journal::tests::chunk_store_journal_grouped_runtime_stops_with_last_clone",
+          "journal::tests::chunk_store_journal_injected_append_failure_rolls_back",
+          "journal::tests::chunk_store_journal_length_corruption_before_committed_root_and_orphan_is_fatal",
+          "journal::tests::chunk_store_journal_length_corruption_before_later_root_chain_is_fatal",
+          "journal::tests::chunk_store_journal_lock_is_exclusive",
+          "journal::tests::chunk_store_journal_mid_length_corruption_consuming_exact_eof_is_fatal",
+          "journal::tests::chunk_store_journal_mid_log_corruption_is_fatal",
+          "journal::tests::chunk_store_journal_mid_log_length_corruption_cannot_masquerade_as_tail",
+          "journal::tests::chunk_store_journal_multi_commit_compaction_reopens_from_checkpoint",
+          "journal::tests::chunk_store_journal_partial_catalog_rolls_back_before_later_commit",
+          "journal::tests::chunk_store_journal_partial_chunk_batch_rolls_back_before_later_commit",
+          "journal::tests::chunk_store_journal_grouped_commit_shares_one_sync_barrier",
+          "journal::tests::chunk_store_journal_refuses_root_with_missing_named_entry",
+          "journal::tests::chunk_store_journal_rejects_hash_mismatch_before_append",
+          "journal::tests::chunk_store_journal_rollback_sync_failure_poisons_store",
+          "journal::tests::chunk_store_journal_round_trip_and_reopen",
+          "journal::tests::chunk_store_journal_sync_failure_does_not_publish_root",
+          "journal::tests::chunk_store_journal_torn_compressed_tail_recovers",
+          "journal::tests::chunk_store_journal_torn_tail_ignores_nested_chunk_frame_bytes",
+          "journal::tests::chunk_store_journal_torn_tail_is_truncated",
+          "journal::tests::chunk_store_journal_torn_tail_respects_outer_frame_over_nested_valid_root",
+          "journal::tests::chunk_store_journal_unsupported_encoding_is_fatal",
+          "journal::tests::chunk_store_journal_zero_hole_before_intact_uncommitted_tail_recovers_prior_root",
+          "journal::tests::chunk_store_journal_zero_hole_before_later_lineage_root_is_fatal",
+          "journal::tests::chunk_store_journal_zstd_length_cannot_swallow_later_root_and_orphan",
+          "object_store::unified_tests::blake3_alias_publication_pins_survive_old_root_compaction",
+          "object_store::unified_tests::indexed_payload_publication_pins_survive_old_root_compaction",
+          "object_store::unified_tests::staged_raw_payload_pin_spans_compaction_and_releases_without_leaking",
+          "reachability::tests::compaction_policy_rejects_zero_growth_threshold",
+          "reachability::tests::compaction_policy_skips_without_walking_below_growth_or_cadence_thresholds",
+          "reachability::tests::compaction_policy_threshold_crossing_compacts_and_reports",
+          "reachability::tests::parked_pack_vector_and_file_payloads_survive_compaction_and_unpark",
+          "reachability::tests::vector_payload_pin_closes_publication_vs_compaction_window",
+          "rr_file::lock::tests::a_preopened_superseded_inode_cannot_claim_the_replacement_path",
+          "rr_file::lock::tests::a_publish_that_did_not_land_gives_the_claim_back_its_original_file",
+          "rr_file::lock::tests::a_publish_that_landed_releases_the_file_the_rename_replaced",
+          "rr_file::lock::tests::an_adopted_replacement_does_not_release_the_file_the_path_still_names",
+          "rr_migrate::tests::rr_migration_refuses_an_existing_target_and_leaves_it_alone",
+          "rr_migrate::tests::rr_migration_refuses_an_untyped_graph_root_and_leaves_nothing_behind",
+          "rr_migrate::tests::rr_migration_removes_a_partial_target_when_the_source_is_uncommitted",
+          "versioned_graph::tests::versioned_graph_v1_empty_leaf_hash_is_frozen",
+          "versioned_graph::tests::versioned_graph_v2_canonical_preimages_and_hashes_are_frozen",
+          "journal::tests::chunk_store_journal_payload_bound_is_enforced",
+          "graph_store::graph_history_tests::graph_history_pinned_indexes_and_payloads_survive_270_commits_and_gc"
+        ]
+      },
+      "limitation": "Cargo stopped after failed engine unit binary; later engine integration/query/supporting/Clippy/package steps were not run in this workflow."
+    },
+    {
+      "id": "candidate-ci-d14",
+      "revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
+      "run_id": 39485418033,
+      "run_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39485418033",
+      "outcome": "in_progress_at_capture",
+      "targets": [
+        "aarch64-apple-darwin",
+        "x86_64-unknown-linux-gnu"
+      ],
+      "changes": "Manifest assertion now parses the maintained fork package/version while preserving encoding version 1.0.0; test profile explicitly uses original latency oracle optimization level 1. Neither prior failure is rewritten as passing."
+    },
+    {
+      "id": "local-final-fold-differential",
+      "revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
+      "target": "aarch64-apple-darwin",
+      "environment": {
+        "CARGO_INCREMENTAL": "0",
+        "CARGO_BUILD_JOBS": "4",
+        "CARGO_TARGET_DIR": "/Volumes/SSD Samsung/codex-targets/rustyred-oss-completion"
+      },
+      "test_profile_opt_level": 1,
+      "command": "cargo test --locked --offline -p rustyred-engine --features test-fault-injection --test fold_commit_outcome --test graphstore_fold_differential --test fold_algebra_laws --test query_extension_boundary",
+      "outcome": "running",
+      "session_id": 82744
+    },
+    {
+      "id": "local-native-unknown-root-development",
+      "revision": null,
+      "revision_caveat": "Test-only working-tree addition after d14c89c; exact source hash recorded after execution. No runtime implementation change.",
+      "base_revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
+      "target": "aarch64-apple-darwin",
+      "command": "cargo test --locked --offline -p rustyred --features test-fault-injection --test embedded_api rr_compaction_refuses_unverified_named_root_without_changing_file",
+      "outcome": "pending_existing_cargo_lane",
+      "test_profile_opt_level": 1
+    },
+    {
+      "id": "distribution-preliminary-real-primitives",
+      "revision": null,
+      "revision_caveat": "Normalized 15-package archive snapshot before final physical-log/advanced-fold/Bayes-CLI-removal changes; final refresh still required.",
+      "target": "aarch64-apple-darwin",
+      "build_command": "python3 scripts/package_rehearsal.py --allow-dirty --output /Volumes/SSD Samsung/rustyred-package-rehearsal-20261020-final",
+      "replay_command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/codex-targets/rustyred-oss-distribution/debug/deps/rustyred_packaged_consumer-153593e5cf10a6be",
+        "--test-threads=1"
+      ],
+      "outcome": "preliminary_snapshot_passed_final_refresh_pending",
+      "results": {
+        "passed": 2,
+        "failed": 0,
+        "exit_code": 0
+      },
+      "binary_sha256": "4e8cf912731e56286eb6ab86b104fbbcd40e41ce6cf9404c1d5ffddf0f3dcff2",
+      "artifact_path": "/Volumes/SSD Samsung/rustyred-package-rehearsal-20261020-final/os-sandbox-consumer.json",
+      "network_negative_control": "Same OS profile refused socket.bind(127.0.0.1,0) with PermissionError",
+      "limitation": "Archive snapshot predates final physical-log/advanced-fold/Bayes CLI repairs. Do not close final G04/G09 from this preliminary receipt. Distribution is preparing a clean final release-check snapshot."
+    }
+  ],
+  "gates": {
+    "G03": {
+      "evidence": [
+        "ci-public-storage-3e42",
+        "source_baseline",
+        "local-final-fold-differential"
+      ],
+      "status": "candidate_semantic_tests_present_baseline_runtime_not_yet_complete",
+      "remaining": "Complete exact plan-pin core/query runs and final candidate suite, then compare actual fixture/oracle results; hashes alone do not establish runtime parity."
+    },
+    "G04": {
+      "evidence": [
+        "ci-public-storage-3e42",
+        "source_baseline",
+        "distribution-preliminary-real-primitives"
+      ],
+      "public_primitive_consumer_source": "tests/external-consumer/src/lib.rs",
+      "status": "graph_vector_file_history_receipts_passed; text_spatial_time_consumer_receipt_owned_by_distribution",
+      "limitation": "planner_multimodal_acceptance.rs explicitly uses InMemoryModality, a stand-in for vector/text/spatial stores. It is a planner semantic oracle, not evidence of those real backends. The external consumer explicitly uses real FullTextIndex/BM25, SpatialIndex/H3, edge_time_interval, caller-supplied vector search, payloads and history; bind distribution execution results before closing this gate."
+    },
+    "G05": {
+      "evidence": [
+        "ci-public-storage-3e42",
+        "local-public-storage-development"
+      ],
+      "status": "passed_on_both_supported_targets_at_3e42; final_d14_workflow_pending",
+      "oracle": "rr_roundtrip harness=false, separate process and fresh copy directory"
+    },
+    "G06": {
+      "evidence": [
+        "ci-public-storage-3e42",
+        "ci-engine-unit-3e42"
+      ],
+      "status": "passed_selected_boundary_oracles_on_both_supported_targets_at_3e42",
+      "oracle": "Conflicting same/cross-process writer, writable clone lifetime, Unix hard/symlink aliases, reachable read-only chunk write refusal, unchanged file bytes and no read-only sidecars."
+    },
+    "G07": {
+      "evidence": [
+        "ci-public-storage-3e42",
+        "local-physical-log-development",
+        "local-physical-log-explicit-crashes-development",
+        "local-fold-outcomes-development"
+      ],
+      "status": "public_RR_passed_both_targets; advanced_physical_and_fold_local_passed; final_d14_CI_pending",
+      "oracle": "Torn append and root, confirmed fsync rollback, indeterminate durable publication, corrupt committed content, postcommit pin cleanup, physical log poison/reopen/digest replay, known committed fold maintenance outcome."
+    },
+    "G08": {
+      "evidence": [
+        "ci-public-storage-3e42",
+        "ci-engine-unit-3e42"
+      ],
+      "status": "migration_history_payload_compaction_passed_both_targets_at_3e42; final_d14_pending",
+      "oracle": "Source bytes and roots preserved during migration; historical/current file and exact vector payload bytes survive compaction with pinned history. Passed native known-root/corrupt-root tests are included by name; unknown-root native proof remains separately identified below.",
+      "remaining_native_oracle": "Added native temporary .RR unknown named-root test rr_compaction_refuses_unverified_named_root_without_changing_file in crates/rustyred/tests/embedded_api.rs using actual JournalChunkStore catalog publication, CoreReachabilityCodec, byte-identical refusal and public read-only reopen. Execution pending the existing single Cargo lane; not yet passing evidence."
+    }
+  },
+  "storage_owner_audit": {
+    "document": "docs/extraction/storage-owners.md",
+    "conclusion": "Two existing owners remain distinct: Database/RedCoreGraphStore over directory journal or native RR chunk catalog; explicit PhysicalLog/ProposalCommitter/FoldGraphStore over physical operation-log directory. Native RR does not advertise single-file transport of the separate physical log. No second physical-log adapter was added. The source baseline embedded Engine did not route through PhysicalLog.",
+    "known_vs_unknown": "Known durable log commit plus fold maintenance failure returns a receipt with maintenance_failure and position; unconfirmed rollback returns typed CommitOutcomeUnknown and requires independent reopen/digest reconciliation. These states are not equivalent.",
+    "authoritative_source_readback": {
+      "plan_embedded_engine": {
+        "revision": "d6a7062c14c11c6838362bda307e267b2297c684",
+        "path": "apps/rustyred-embedded/src/lib.rs",
+        "store_field_line": 343,
+        "constructor_line": 366,
+        "result": "SharedStore<RedCoreGraphStore>; constructor calls RedCoreGraphStore::open. No PhysicalLog or FoldGraphStore occurrence in this file."
+      },
+      "historical_fold_source_hash": {
+        "sha256": "0c629089762672a7062ce58584b055b4f017fe2ef613529ab600194d1d5993b3",
+        "observed_identical_at": [
+          "Theorem d6a7062c14c11c6838362bda307e267b2297c684:rustyredcore_THG/crates/rustyred-thg-core/src/graph/fold_store.rs",
+          "Theorem 1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de:rustyredcore_THG/crates/rustyred-thg-core/src/graph/fold_store.rs",
+          "RustyRedDB bdc5c749ac29639e4b0427e161db8afd6af9beb1:crates/rustyred-engine/src/graph/fold_store.rs"
+        ],
+        "limitation": "Historical source continuity, not a claim that repaired fold_store.rs remains byte-identical or that runtime suites passed."
+      }
+    }
+  },
+  "publication_source_scan_obligations": {
+    "source_scans": "docs/extraction/distribution-evidence/secret-scan-summary.json and associated source/history/archive reports are distribution-owned; rerun or verify checked source tree/archives match final candidate before G11. No secret-scan pass is asserted by this storage receipt.",
+    "artifacts": "Normalized package archives and Git source have distinct provenance requirements; a local archive test does not establish registry installation.",
+    "publication": "No release tag, registry upload or live data migration authorized by this receipt."
+  }
+}

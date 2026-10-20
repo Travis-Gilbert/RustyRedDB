@@ -1,0 +1,186 @@
+{
+  "plan": "release-plan.md",
+  "candidate_revision": "d14c89c7c88f728b7b71b1bcf69a84095832404c",
+  "items": [
+    {
+      "id": "G01",
+      "title": "Dependency independence",
+      "status": "pending",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "python3 scripts/dependency_boundary.py && python3 scripts/package_rehearsal.py --output /absolute/new-evidence",
+      "validation": [
+        "python3 scripts/dependency_boundary.py && python3 scripts/package_rehearsal.py --output /absolute/new-evidence"
+      ],
+      "note": "Public closure and normalized archive consumer; final clean package receipt pending."
+    },
+    {
+      "id": "G02",
+      "title": "Generic startup",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --test embedded_api new_database_has_no_application_bootstrap",
+      "validation": [
+        "cargo test --locked -p rustyred --test embedded_api new_database_has_no_application_bootstrap"
+      ],
+      "note": "3e42 native CI39483629328 passed on both supported targets; storage source unchanged at d14."
+    },
+    {
+      "id": "G03",
+      "title": "Query/mutation baseline parity",
+      "status": "pending",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred-engine -p rustyred-query",
+      "validation": [
+        "cargo test --locked -p rustyred-engine -p rustyred-query"
+      ],
+      "note": "Exact source pin suite remains running; byte equality of parser/primitive modules is recorded separately."
+    },
+    {
+      "id": "G04",
+      "title": "Multimodal preservation",
+      "status": "pending",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --manifest-path /absolute/outside-consumer/Cargo.toml",
+      "validation": [
+        "cargo test --manifest-path /absolute/outside-consumer/Cargo.toml"
+      ],
+      "note": "Actual public graph/vector/time/file/history and explicit BM25/H3 primitives, pending final Git/package consumer receipts."
+    },
+    {
+      "id": "G05",
+      "title": "Durable single-file copy/reopen",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --test rr_roundtrip",
+      "validation": [
+        "cargo test --locked -p rustyred --test rr_roundtrip"
+      ],
+      "note": "3e42 native CI39483629328 passed both targets, copied only closed.RR; exact storage files unchanged at d14."
+    },
+    {
+      "id": "G06",
+      "title": "Writer/read-only boundaries",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --test embedded_api --test rr_roundtrip",
+      "validation": [
+        "cargo test --locked -p rustyred --test embedded_api --test rr_roundtrip"
+      ],
+      "note": "3e42 native CI39483629328 passed both targets, including clones, aliases and byte-unchanged readers."
+    },
+    {
+      "id": "G07",
+      "title": "Failure and recovery",
+      "status": "pending",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --features test-fault-injection --test rr_failures && THEOREM_RUN_CRASH_MATRIX=1 cargo test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && cargo test --locked -p rustyred-engine --features test-fault-injection --test fold_commit_outcome",
+      "validation": [
+        "cargo test --locked -p rustyred --features test-fault-injection --test rr_failures && THEOREM_RUN_CRASH_MATRIX=1 cargo test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && cargo test --locked -p rustyred-engine --features test-fault-injection --test fold_commit_outcome"
+      ],
+      "note": "Public facade failure tests pass both targets; final physical/fold native CI pending."
+    },
+    {
+      "id": "G08",
+      "title": "Maintenance compatibility",
+      "status": "pending",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --test embedded_api && cargo test --locked -p rustyred-engine --test rr_migration",
+      "validation": [
+        "cargo test --locked -p rustyred --test embedded_api && cargo test --locked -p rustyred-engine --test rr_migration"
+      ],
+      "note": "Native unknown-named-root compaction refusal oracle being added; real history/payload/migration coverage retained."
+    },
+    {
+      "id": "G09",
+      "title": "External Git and package consumers",
+      "status": "pending",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "cargo test --locked --manifest-path /absolute/outside-git-consumer/Cargo.toml && python3 scripts/package_rehearsal.py --output /absolute/new-package-evidence",
+      "validation": [
+        "cargo test --locked --manifest-path /absolute/outside-git-consumer/Cargo.toml && python3 scripts/package_rehearsal.py --output /absolute/new-package-evidence"
+      ],
+      "note": "Actual source routes required independently; path-only rehearsal cannot pass this gate."
+    },
+    {
+      "id": "G10",
+      "title": "Theorem canonical source cutover",
+      "status": "pending",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "python3 scripts/check-rustyred-source.py",
+      "validation": [
+        "python3 scripts/check-rustyred-source.py"
+      ],
+      "note": "Separate integration branch; contract identity2/2 and product prior-pack pass; embedded/link/harness/server/browser/source-removal gates remain active."
+    },
+    {
+      "id": "G11",
+      "title": "Publication safety",
+      "status": "pending",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "scripts/release-check --output /absolute/new-review-artifacts",
+      "validation": [
+        "scripts/release-check --output /absolute/new-review-artifacts"
+      ],
+      "note": "Source/archives/licenses scanned; final clean source+binary artifact receipt and review required. No release tag/registry mutation."
+    },
+    {
+      "id": "G12",
+      "title": "Public registry installation",
+      "status": "awaiting_publication_authorization",
+      "oracle_class": "production",
+      "implementation_mode": "production",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "cargo install --locked --version =0.1.0-beta.2 rustyred-cli",
+      "validation": [
+        "cargo install --locked --version =0.1.0-beta.2 rustyred-cli"
+      ],
+      "note": "Requires separately authorized package publication followed by a genuinely fresh public registry install; no local substitution permitted."
+    }
+  ]
+}

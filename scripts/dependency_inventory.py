@@ -33,7 +33,7 @@ output = {'schema': 2, 'command': 'cargo +1.96.1 metadata --locked --all-feature
           'note': 'All declared normal, build, dev, optional and target-conditioned edges; Cargo resolution is not evidence that optional native features execute.',
           'toolchain': subprocess.check_output(['rustc', '+1.96.1', '-Vv'], cwd=root, text=True).strip(),
           'packages': packages, 'resolve': metadata['resolve'],
-          'source_resource_markers': subprocess.run(['rg', '--line-number', '(include_str!|include_bytes!|#\\[path|env!|option_env!)', 'crates', 'vendor'], cwd=root, text=True, capture_output=True, check=False).stdout.splitlines()}
+          'source_resource_markers': sorted(subprocess.run(['rg', '--line-number', '(include_str!|include_bytes!|#\\[path|env!|option_env!)', 'crates', 'vendor'], cwd=root, text=True, capture_output=True, check=False).stdout.splitlines())}
 # Cargo local package IDs contain machine paths. Replace only IDs with stable name/version keys.
 id_map = {p['id']: p['name'] + '@' + p['version'] + ('#registry' if p['source'] else '#workspace') for p in metadata['packages']}
 output['resolve'] = {'root': id_map.get(metadata['resolve']['root']), 'nodes': [dict(node, id=id_map[node['id']], dependencies=[id_map[item] for item in node['dependencies']], deps=[dict(dep, pkg=id_map[dep['pkg']]) for dep in node['deps']]) for node in metadata['resolve']['nodes']]}

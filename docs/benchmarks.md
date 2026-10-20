@@ -23,9 +23,27 @@ build.
 The `clean-candidate-measurement` job in [CI](https://github.com/Travis-Gilbert/RustyRedDB/actions/workflows/ci.yml)
 runs this procedure on native x86-64 GNU Linux with Rust 1.96.1 and uploads
 `clean-candidate-measurement-x86_64-unknown-linux-gnu`. Retain the run URL and
-exact commit with its `measurements.json` and `build.log`. Adding that job does
-not itself establish a passing measurement; qualification requires the artifact
-from an executed run.
+exact commit with its `measurements.json` and `build.log`.
+
+[Run 39485418033](https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39485418033)
+executed the measurement successfully on clean revision
+`d14c89c7c88f728b7b71b1bcf69a84095832404c`. The
+[retained receipt](extraction/distribution-evidence/clean-measurement-d14.json)
+records identical clean source hashes before and after execution:
+`24af970a3a5afb4988b39f3c5c81d19d9e1b438200fc1170bda38b47ac257039`.
+
+| Observation | Measured result |
+| --- | --- |
+| Cold target build, three jobs | 287.019 seconds |
+| Sampled peak sum of process-tree RSS | 3,381,043,200 bytes |
+| Largest individual child high-water RSS | 2,663,911,424 bytes |
+| Release CLI binary | 8,149,152 bytes |
+| Create, seed and query, five runs | 8.53–11.81 ms |
+| Reopen and query, five runs | 2.94–3.10 ms |
+
+Each query returned two rows. These observations describe this tiny example
+on the recorded Linux host, compiler and flags. The memory-sampling limits
+below apply; this is not a capacity or maximum-memory guarantee.
 
 The script hashes all tracked and nonignored source files and records the Git
 revision and dirty state before and after the build/example executions. Clean

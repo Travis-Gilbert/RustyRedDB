@@ -1,25 +1,28 @@
-# theorem-oplog
+# rustyred-log
 
-Typed append-only operation ledger and deterministic folds for Theorem.
+The retained physical append-only operation log, imported as `theorem_oplog`.
+Its crate root is `src/physical_lib.rs`. It owns typed records, digest-indexed
+append/replay, positions, pinned prefixes, verification, provenance, proposal
+commit decisions, overlap and scheduling primitives. The source includes the
+v2 compatibility fixture and preserves the physical protocol version identities.
 
-## What it is
+This package does not contain the old graph-backed application `TheoremOp`
+projection or a Harness runtime. The engine's explicit `FoldGraphStore` composes
+this physical owner with its derived folds. The `Database` facade's graph/chunk
+catalog and native `.RR` file are a separate documented storage boundary; see
+[storage ownership](../../docs/extraction/storage-owners.md).
 
-Typed, append-only operation ledger for Theorem.
+An append error is precommit only after confirmed durable rollback. An
+unconfirmed result poisons the handle and requires reopen/reconciliation;
+replayed committed digests retain their original positions. See the public
+[API failure contract](../../docs/api-contract.md) for the typed outcomes.
 
-Operations are the durable source. Receipts, timelines, actor diffs, and
-HunkSets are deterministic projections over an [`OpRange`]. The mutable
-lane-tip node is only a repairable acceleration structure, following the
-existing Harness event-journal pattern.
+From the public RustyRedDB repository root:
 
-This journal extends the graph substrate; it does not replace the Harness
-run-transition ledger. Harness transitions remain the lifecycle authority
-for runs, while `TheoremOp` records typed user, model, and tool effects that
-can be folded across run boundaries into review surfaces.
-
-## Build and test
-
-```bash
-cd rustyredcore_THG && cargo test -p theorem-oplog
+```sh
+cargo +1.96.1 test --locked -p rustyred-log
 ```
 
-Part of the `rustyredcore_THG` Cargo workspace. See the crate table in [CLAUDE.md](../../../CLAUDE.md) for how this fits the substrate. This README is generated from the crate's `Cargo.toml` description and `//!` module docs; edit those and regenerate with `scripts/gen-crate-readmes.sh`.
+Native storage is the default. The wasm-only `browser-opfs` feature retains the
+OPFS storage seam; it is an explicit integration and has a separate browser
+acceptance requirement, not a native `.RR` implementation.

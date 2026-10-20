@@ -1,4 +1,21 @@
-# <img src="doc/egg.svg" alt="egg logo" height="40" align="left"> egg: egraphs good
+# rustyred-egg
+
+Explicit Rusty Red support fork of egg 0.10.0, with Rust library name `egg`.
+The extracted fixes and original notices are described in `THEOREM-PATCH.md`
+and `LICENSE`. Its beta.2 package version is separate from upstream algorithm
+and encoding versions. This family is not yet uploaded to crates.io.
+
+The upstream README below is retained for attribution and API context. Upstream
+badges and benchmark figures describe upstream results; Rusty Red support
+claims require the candidate's own native receipts. Rust installation examples
+identify this named fork through the public Git snapshot instead of silently
+selecting the upstream registry implementation.
+
+From the RustyRedDB repository root: `cargo +1.96.1 test --locked -p rustyred-egg`.
+These support-package suites are separate from the embedded beta's engine and
+storage acceptance matrix.
+
+# egg: egraphs good
 
 [![Crates.io](https://img.shields.io/crates/v/egg.svg)](https://crates.io/crates/egg)
 [![Released Docs.rs](https://img.shields.io/crates/v/egg?color=blue&label=docs)](https://docs.rs/egg/)
@@ -46,7 +63,7 @@ Check out the [egg web demo](https://egraphs-good.github.io/egg-web-demo) for so
 Add `egg` to your `Cargo.toml` like this:
 ```toml
 [dependencies]
-egg = "0.10.0"
+egg = { package = "rustyred-egg", git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "d14c89c7c88f728b7b71b1bcf69a84095832404c" }
 ```
 
 Make sure to compile with `--release` if you are measuring performance!

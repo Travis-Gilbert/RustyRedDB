@@ -380,3 +380,89 @@ fn path_aliases_do_not_acquire_a_second_writer() {
             .ok
     );
 }
+
+#[cfg(feature = "test-fault-injection")]
+#[test]
+fn rr_compaction_refuses_unverified_named_root_without_changing_file() {
+    use rustyred_thg_core::chunk_store::{
+        validate_catalog_root, ChunkStore, ChunkStoreCatalog, CommitMeta,
+    };
+    use rustyred_thg_core::hash::Hash;
+    use rustyred_thg_core::reachability::{compact_committed_reachable, CoreReachabilityCodec};
+
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("unknown-root.rr");
+    let mut db = Database::create(&path).unwrap();
+    db.upsert_node(NodeRecord::new(
+        "retained",
+        ["Record"],
+        json!({"value": 42}),
+    ))
+    .unwrap();
+    let opaque = b"future subsystem root with unverified reachability";
+    let opaque_address = Hash::of(opaque);
+    let orphan = b"must survive when native compaction is refused";
+    let orphan_address = Hash::of(orphan);
+    let journal = db.journal_for_test();
+    journal
+        .write(&[(opaque_address, opaque), (orphan_address, orphan)])
+        .unwrap();
+    let publication = journal
+        .commit_catalog_updates(
+            &BTreeMap::from([("future-subsystem".to_string(), Some(opaque_address))]),
+            CommitMeta {
+                parents: vec![],
+                author: "storage-oracle".to_string(),
+                message: "publish a synthetic future subsystem root".to_string(),
+                timestamp_unix_ms: 1,
+                graph_version: db.stats().unwrap().version,
+            },
+        )
+        .unwrap();
+    let before = std::fs::read(&path).unwrap();
+    let entries_before = std::fs::read_dir(dir.path())
+        .unwrap()
+        .map(|entry| entry.unwrap().file_name())
+        .collect::<std::collections::BTreeSet<_>>();
+
+    let error = compact_committed_reachable(journal, &CoreReachabilityCodec).unwrap_err();
+    assert_eq!(error.code, "reachability_catalog_name_unsupported");
+    assert_eq!(std::fs::read(&path).unwrap(), before);
+    assert_eq!(journal.read_root().unwrap(), Some(publication.catalog_root));
+    assert_eq!(
+        journal.get(opaque_address).unwrap().unwrap().as_ref(),
+        opaque
+    );
+    assert_eq!(
+        journal.get(orphan_address).unwrap().unwrap().as_ref(),
+        orphan
+    );
+    assert_eq!(
+        std::fs::read_dir(dir.path())
+            .unwrap()
+            .map(|entry| entry.unwrap().file_name())
+            .collect::<std::collections::BTreeSet<_>>(),
+        entries_before,
+        "a refused compaction must not leave replacement files"
+    );
+    drop(db);
+
+    let reader = Database::open_read_only(&path).unwrap();
+    let store = reader.engine().unified_chunk_store();
+    assert_eq!(store.read_root().unwrap(), Some(publication.catalog_root));
+    let catalog = validate_catalog_root(store.as_chunk_store(), publication.catalog_root).unwrap();
+    assert_eq!(catalog.get("future-subsystem"), Some(opaque_address));
+    assert_eq!(store.get(opaque_address).unwrap().unwrap().as_ref(), opaque);
+    assert_eq!(store.get(orphan_address).unwrap().unwrap().as_ref(), orphan);
+    assert_eq!(
+        reader
+            .engine()
+            .get_node("retained")
+            .unwrap()
+            .unwrap()
+            .properties["value"],
+        42
+    );
+    assert!(reader.verify().unwrap().ok);
+    assert_eq!(std::fs::read(&path).unwrap(), before);
+}

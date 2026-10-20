@@ -1,6 +1,6 @@
-# rustyred-thg-core
+# rustyred-engine
 
-The substrate engine: a multimodal, in-process, graph-native database with no Django, Python, network-server, or tokio dependency. Every Theorem surface (the PyO3 module, the product server, the Postgres-wire server, direct Rust callers) executes this crate.
+The Rusty Red graph/storage engine, imported as `rustyred_thg_core` for source compatibility. Embedded operations require no account, Django/Python runtime, model provider, Redis server, or network listener. Most applications use the `rustyred::Database` facade; advanced callers can use these retained engine APIs directly.
 
 It is a property-graph core plus one durable content-addressed chunk store, a graph-native File/Directory namespace, a native relational/SQL planner with pluggable access methods and rank fusion, exact vector search, BM25 full-text and H3 spatial primitives, temporal/TTL facilities, git-style versioned-graph commits, post-commit reactive hooks, a CRDT layer, stream logs, and a family of symbolic engines.
 
@@ -23,7 +23,7 @@ UFCS gotcha: `RedCoreGraphStore` and `RedisGraphStore` define inherent `get_node
 ## Modalities and key API
 
 - Graph: `NodeRecord`, `EdgeRecord` (`confidence`, `epistemic_type`, `provenance`, `content_hash`, `parent_hashes`), `NeighborQuery`, `NodeQuery`, `GraphStats`. Algorithms (`graph.rs`): `pagerank`, `personalized_pagerank`, `connected_components`, `label_propagation_communities`, `expand_bounded[_weighted]`, `paths_shortest[_weighted]`. Cached PPR in `ppr_cache.rs` (`cached_personalized_pagerank`, keyed on `stats().version`). CSR adjacency in `graph_csr.rs`.
-- Vector: `designate_vector_property(label, property, dimension)`, `vector_search(label, property, query, k)`, `hybrid_search` / `hybrid_search_with_config` (`HybridScoringConfig`). Default is exact normalized cosine. TurboVec 1.0.0 is unconditional: a resident `IdMapIndex` is built once a designation holds 64 points, then updated incrementally and re-ranked by exact cosine. This is not HNSW.
+- Vector: `designate_vector_property(label, property, dimension)`, `vector_search(label, property, query, k)`, `hybrid_search` / `hybrid_search_with_config` (`HybridScoringConfig`). Default is exact normalized cosine. The unconditional `rustyred-turbovec` support fork retains TurboVec 1.0.0 encoding semantics: a resident `IdMapIndex` is built once a designation holds 64 points, then updated incrementally and re-ranked by exact cosine. This is not HNSW.
 - Relational / SQL: `relational.rs` (`RelationalLens<G>`, `RelationDefinition`, `RelationSource`, `ResolvedRow`, graph-backed `NativeCatalog`), `access_method.rs` (`AccessMethod`, `AccessMethodRegistry::with_native_defaults`, `Predicate`, `ModalityResolver`), `planner.rs` (`QueryIr`, `execute_query`, `execute_query_with_resolver`, `compile_graphql_selection`, `FusionPolicy::{Rrf, Weighted, Cascade}`), `ranking.rs` (`RankingRule`, `apply_cascade`, `EpistemicGate`). The lens stores no rows or property values; it resolves them from its graph handle.
 - Full-text: `fulltext.rs` (`FullTextIndex` wrapping the upstream `bm25` crate; `make_fulltext_backend`). A standalone primitive reached via `ModalityResolver`, not a store method. Optional `tantivy` backend.
 - Spatial: `spatial.rs` (`SpatialIndex` over h3o, `radius_search`/`bbox_search`). Standalone primitive via `ModalityResolver`. Optional `s2` backend.
@@ -48,15 +48,15 @@ UFCS gotcha: `RedCoreGraphStore` and `RedisGraphStore` define inherent `get_node
 
 ## Features
 
-`default = ["redb-floor"]`. `redis-store` (Redis backend; `redis 0.27`), `tantivy` (alternative full-text), `s2` (alternative spatial). TurboVec `=1.0.0` is an unconditional dependency. Always-on deps include `bm25`, `egg`, `h3o`, `imbl`, `roaring`, `sha2`, `zstd`, `fs2`.
+`default = ["redb-floor"]`. `redis-store` (Redis backend; `redis 0.27`), `tantivy` (alternative full-text), `s2` (alternative spatial). `rustyred-turbovec` is an unconditional support-package dependency (library `turbovec`); its package version follows the beta family while its encoding version stays 1.0.0. Always-on deps include `bm25`, `egg`, `h3o`, `imbl`, `roaring`, `sha2`, `zstd`, `fs2`.
 
 ## Build and test
 
 ```bash
-cd rustyredcore_THG && cargo test -p rustyred-thg-core
-cargo test --no-run -p rustyred-thg-core   # compile-only coherence
+cargo +1.96.1 test --locked -p rustyred-engine
+cargo +1.96.1 test --locked --no-run -p rustyred-engine   # compile-only coherence
 ```
 
-Large offline test suite across `src/` unit modules and `tests/` (`document_tier_acceptance`, `epistemic_acceptance`, `hook_dispatch`, `planner_multimodal_acceptance`, `prolly_incremental_commit`, `redcore_snapshot_replay_parity`, `relational_core_acceptance`, and others). No `#[ignore]` or live/network tests.
+Large offline test suite across `src/` unit modules and `tests/` (`document_tier_acceptance`, `epistemic_acceptance`, `hook_dispatch`, `planner_multimodal_acceptance`, `prolly_incremental_commit`, `redcore_snapshot_replay_parity`, `relational_core_acceptance`, and others). Explicitly ignored or environment-gated live tests retain their separate prerequisites; source compilation does not qualify those services.
 
-Part of the `rustyredcore_THG` workspace. See [the workspace README](../../README.md) for the crate map.
+Run these commands from the public RustyRedDB repository root. See [release preparation](../../docs/releasing.md) for the supported native/optional feature matrix and [storage ownership](../../docs/extraction/storage-owners.md) for the graph and physical-log boundaries.

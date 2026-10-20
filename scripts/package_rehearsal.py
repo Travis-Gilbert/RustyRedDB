@@ -141,7 +141,7 @@ def main() -> None:
     for binary in executable_from_messages(messages, name='rustyred_packaged_consumer', test=True):
         run(*network_denied([binary]), cwd=consumer, env=env)
     evidence['runtime_network_denial'] = network_denied(['<executable>'])[:-1]
-    for name in ['rustyred-engine', 'rustyred-query', 'rustyred-query-saturate']:
+    for name in sorted(package['name'] for package in packages if package['name'] != 'rustyred-graphblas'):
         run(*cargo, 'check', '--offline', '--all-targets', '--manifest-path', str(source / (name + '-' + version) / 'Cargo.toml'), cwd=consumer, env=env)
     messages = run(*cargo, 'build', '--offline', '--bin', 'parts-catalog', '--message-format=json', cwd=consumer, env=env)
     example = executable_from_messages(messages, name='parts-catalog', test=False)[0]
@@ -149,7 +149,7 @@ def main() -> None:
         run(*network_denied([example, str(output / 'parts.rr')]), cwd=consumer, env=env)
     tree = run(*cargo, 'tree', '--offline', '--prefix', 'none', cwd=consumer, env=env)
     (output / 'consumer-tree.txt').write_text(tree)
-    run(*cargo, 'install', '--debug', '--offline', '--version', '=' + version, '--root', str(output / 'installed'), 'rustyred-cli', cwd=consumer, env=env)
+    run(*cargo, 'install', '--config', str(consumer / '.cargo/config.toml'), '--debug', '--offline', '--version', '=' + version, '--root', str(output / 'installed'), 'rustyred-cli', cwd=consumer, env=env)
     cli = output / 'installed/bin/rustyred'
     db = output / 'cli.rr'
     for arguments in [('create', str(db)), ('inspect', str(db)), ('verify', str(db)), ('query', str(db), '--cypher', 'MATCH (n) RETURN n')]:

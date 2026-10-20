@@ -1,33 +1,12 @@
-# theorem-capability-scope
+# rustyred-scope
 
-`CapabilityScope`: the subset of affordances one agent, or one turn, is primed
-for. Serde and four string lists, nothing else.
+`CapabilityScope` is a dependency-light intersection over four string allowlists.
+The Rust import remains `theorem_capability_scope`; its serialized fields stay
+unchanged. The crate only depends on serde and does not load a graph, provider,
+application, or agent runtime.
 
-## Why it is its own crate
-
-The type used to live in `rustyred-thg-affordances`, which reaches the graph
-store, the plugin host, and the harness kernel.
-
-`SPEC-THEOREMWEB-COMPOSER-1.0` ADDENDUM-2 (A9/D10) binds the composer's
-capability dial to *this* type — "re-exported, not mirrored" — so that a dial
-entry and a run's affordance gate cannot drift into two vocabularies. But
-`theorem-surface-contracts` compiles into a `wasm32-unknown-unknown` leaf and
-is dependency-light on purpose, so it cannot take an edge to the affordance
-crate. Mirroring the type is what the addendum forbids.
-
-So the charter moved down to a leaf that only ever needed `serde`, and both
-sides re-export it:
-
-```
-theorem-surface-contracts ─┐
-                           ├─→ theorem-capability-scope
-rustyred-thg-affordances ──┘
-```
-
-Every existing `rustyred_thg_affordances::CapabilityScope` path still resolves,
-and every existing `scope.admits(&affordance)` call still compiles, because
-`admits` is an inherent method generic over the local `Admissible` trait rather
-than a trait method callers would have to import.
+From the public RustyRedDB repository root, run
+`cargo +1.96.1 test --locked -p rustyred-scope`.
 
 ## The inversion worth knowing
 

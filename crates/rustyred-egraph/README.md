@@ -1,6 +1,6 @@
-# theorem-egraph
+# rustyred-egraph
 
-Theorem's pure symbolic engine, imported as `egraph`. It owns the pinned
+The pure symbolic engine, imported as `egraph`. It owns the pinned
 `egglog = 2.0.0` dependency and has no graph-store or product dependencies.
 
 `Engine` loads a content-addressed `RulePack`, executes facts, runs a bounded
@@ -57,6 +57,6 @@ assert_eq!(term.expression, "(Num 7)");
 # Ok::<(), egraph::Error>(())
 ```
 
-Validate with `cargo test -p theorem-egraph`. The native tests compare extraction
+Validate with `cargo +1.96.1 test --locked -p rustyred-egraph`. The native tests compare extraction
 and counters with the pinned engine directly, exercise real relational witness
 proofs, and verify refusal, invocation isolation, and iteration limits.

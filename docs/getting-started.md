@@ -4,11 +4,13 @@ Supported native targets for this beta, once their tests have been run on that m
 
 ## Library
 
-Add this git dependency. Do not float on a branch.
+Use the repaired beta.2 candidate at this immutable public revision. Do not float on a branch.
 
 ```toml
-rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", tag = "v0.1.0-beta.1" }
+rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "d14c89c7c88f728b7b71b1bcf69a84095832404c" }
 ```
+
+The historical `v0.1.0-beta.1` tag remains unchanged and does not contain these candidate repairs. Registry publication is not claimed.
 
 `Database::create` makes a `.RR` file. `Database::open` requires the file to exist. `Database::open_read_only` takes no writer lock. `Database::in_memory` is process-local. `Database::create_directory` is the older directory layout (`redcore.journal` inside a folder) and is not a single file.
 

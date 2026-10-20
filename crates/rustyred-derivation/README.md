@@ -1,4 +1,4 @@
-# rustyred-thg-derivation
+# rustyred-derivation
 
 Semiring trait, fold/why derivation machinery, and lift adapters for the Theorem Harness Experience Compiler.
 
@@ -19,7 +19,9 @@ Provides:
 ## Build and test
 
 ```bash
-cd rustyredcore_THG && cargo test -p rustyred-thg-derivation
+cargo +1.96.1 test --locked -p rustyred-derivation
 ```
 
-Part of the `rustyredcore_THG` Cargo workspace. See the crate table in [CLAUDE.md](../../../CLAUDE.md) for how this fits the substrate. This README is generated from the crate's `Cargo.toml` description and `//!` module docs; edit those and regenerate with `scripts/gen-crate-readmes.sh`.
+Part of the public RustyRedDB workspace. Run the command above from the repository root. The Rust library import remains `rustyred_thg_derivation`.
+
+This beta.2 family is a release candidate; see [release preparation](../../docs/releasing.md) for the Git/package route and supported matrix.

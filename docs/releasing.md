@@ -71,7 +71,9 @@ version dependencies resolve through that source. The script removes credential
 environment variables, gives Cargo a fresh home, disables Cargo downloads, runs
 the external graph/vector/payload/history/index consumer, compile-checks every
 archived engine/query test target, runs the parts-catalog example twice,
-installs the packaged CLI in the debug profile, and
+installs the packaged CLI in the debug profile with the directory-source
+configuration supplied explicitly (`cargo install` ignores project-local
+configuration discovery), and
 runs create, inspect, verify and query. There are no consumer `[patch]` entries,
 path dependencies, sibling source dependencies, or registry uploads. Finished
 test/example/CLI executables run with OS-level network denial: `sandbox-exec`
