@@ -1061,7 +1061,7 @@
       "candidate": "crates/rustyred-engine/src/lib.rs",
       "plan_pin": "4677ecb636622946a68ababe3ff01dcf650d78e5f6d66c033a38cd530f179bcf",
       "extraction_source": "25c3677e0b346f3c39c1aab0c23a82046525ed07f83ccf39536ea1b55506c735",
-      "candidate_sha256": "4b561448a90d05c67f5e99e0721dfde8520ed41322ef01e3b5c6b630e57f24d9",
+      "candidate_sha256": "2450e177dc304ce7cb8c9f4cfa85f76793c53f3a55371928485f721ef9d39c49",
       "matches_plan": false,
       "matches_extraction_source": false
     },
@@ -2135,6 +2135,15 @@
       "candidate_sha256": "8c7edad5490c30c6f789849ce062cf917f31be6daae82171c45217fb2df4a221",
       "matches_plan": true,
       "matches_extraction_source": true
+    },
+    {
+      "source": "rustyredcore_THG/crates/rustyred-thg-core/tests/query_extension_boundary.rs",
+      "candidate": "crates/rustyred-engine/tests/query_extension_boundary.rs",
+      "plan_pin": null,
+      "extraction_source": null,
+      "candidate_sha256": "3d87fc5b46339157241b45c4a27b3b33886b60d50b213d254722e3e9dc8ff2a6",
+      "matches_plan": false,
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-query/src/ast_hash.rs",
@@ -3851,7 +3860,7 @@
       "candidate": "crates/rustyred-query-saturate/tests/gates.rs",
       "plan_pin": "dfc6db0bcbb5a234a0cfb69371e1398dcf263b0574397b966a92cefebb08d512",
       "extraction_source": "dfc6db0bcbb5a234a0cfb69371e1398dcf263b0574397b966a92cefebb08d512",
-      "candidate_sha256": "8d7b78e78899b84ebe0d4f316bd3167f9a2b4dd7b6a16323fac1e8457b918dca",
+      "candidate_sha256": "59ce2a0981a908de8f03100d52fc2dc15abe62af17eae4894ea41572dc4d2d36",
       "matches_plan": false,
       "matches_extraction_source": false
     }

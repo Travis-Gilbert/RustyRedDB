@@ -55027,6 +55027,18 @@
           "uses_default_features": true
         },
         {
+          "features": [],
+          "kind": "dev",
+          "name": "toml",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.8",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
           "features": [
             "js"
           ],
@@ -55365,7 +55377,8 @@
         "tests/partial_fold_differential.rs",
         "tests/partial_fold_races.rs",
         "tests/partial_fold_soak.rs",
-        "tests/point_read_no_interpreter.rs"
+        "tests/point_read_no_interpreter.rs",
+        "tests/query_extension_boundary.rs"
       ],
       "rust_version": "1.96.1",
       "source": "standalone-workspace",
@@ -55612,6 +55625,15 @@
             "test"
           ],
           "name": "point_read_no_interpreter"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "test"
+          ],
+          "name": "query_extension_boundary"
         },
         {
           "crate_types": [
@@ -58523,6 +58545,81 @@
         }
       ],
       "version": "1.0.154"
+    },
+    {
+      "dependencies": [
+        {
+          "features": [],
+          "kind": null,
+          "name": "serde",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.145",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "serde",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "serde-untagged",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.1",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "serde_derive",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        }
+      ],
+      "features": {
+        "serde": [
+          "dep:serde"
+        ]
+      },
+      "license": "MIT OR Apache-2.0",
+      "manifest": null,
+      "name": "serde_spanned",
+      "package_files": null,
+      "rust_version": "1.66",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "serde_spanned"
+        }
+      ],
+      "version": "0.6.9"
     },
     {
       "dependencies": [
@@ -69285,6 +69382,283 @@
         {
           "features": [],
           "kind": null,
+          "name": "indexmap",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^2.0.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "serde",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.145",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "serde"
+          ],
+          "kind": null,
+          "name": "serde_spanned",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.9",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "serde"
+          ],
+          "kind": null,
+          "name": "toml_datetime",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.11",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "serde"
+          ],
+          "kind": null,
+          "name": "toml_edit",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^0.22.27",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": false
+        },
+        {
+          "features": [
+            "derive"
+          ],
+          "kind": "dev",
+          "name": "serde",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.199",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "serde_json",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.116",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "snapbox",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "toml-test-data",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^2.3.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "snapshot"
+          ],
+          "kind": "dev",
+          "name": "toml-test-harness",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.3.2",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "walkdir",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^2.5.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        }
+      ],
+      "features": {
+        "default": [
+          "parse",
+          "display"
+        ],
+        "display": [
+          "dep:toml_edit",
+          "toml_edit?/display"
+        ],
+        "indexmap": [
+          "dep:indexmap"
+        ],
+        "parse": [
+          "dep:toml_edit",
+          "toml_edit?/parse"
+        ],
+        "preserve_order": [
+          "indexmap"
+        ],
+        "unbounded": [
+          "toml_edit?/unbounded"
+        ]
+      },
+      "license": "MIT OR Apache-2.0",
+      "manifest": null,
+      "name": "toml",
+      "package_files": null,
+      "rust_version": "1.66",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "toml"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "decode",
+          "required-features": [
+            "parse",
+            "display"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "enum_external",
+          "required-features": [
+            "parse",
+            "display"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "toml2json",
+          "required-features": [
+            "parse",
+            "display"
+          ]
+        }
+      ],
+      "version": "0.8.23"
+    },
+    {
+      "dependencies": [
+        {
+          "features": [],
+          "kind": null,
+          "name": "serde",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.145",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "snapbox",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.21",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        }
+      ],
+      "features": {
+        "serde": [
+          "dep:serde"
+        ]
+      },
+      "license": "MIT OR Apache-2.0",
+      "manifest": null,
+      "name": "toml_datetime",
+      "package_files": null,
+      "rust_version": "1.66",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "toml_datetime"
+        }
+      ],
+      "version": "0.6.11"
+    },
+    {
+      "dependencies": [
+        {
+          "features": [],
+          "kind": null,
           "name": "serde_core",
           "optional": true,
           "registry": null,
@@ -69340,6 +69714,243 @@
         }
       ],
       "version": "1.1.2+spec-1.1.0"
+    },
+    {
+      "dependencies": [
+        {
+          "features": [
+            "std"
+          ],
+          "kind": null,
+          "name": "indexmap",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^2.3.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "max_inline"
+          ],
+          "kind": null,
+          "name": "kstring",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^2.0.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "serde",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.145",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "serde"
+          ],
+          "kind": null,
+          "name": "serde_spanned",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.9",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "toml_datetime",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.11",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "toml_write",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^0.1.2",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "winnow",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^0.7.10",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "proptest",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.5.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "derive"
+          ],
+          "kind": "dev",
+          "name": "serde",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.199",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "serde_json",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.116",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "snapbox",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "toml-test-data",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^2.3.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "snapshot"
+          ],
+          "kind": "dev",
+          "name": "toml-test-harness",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.3.2",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "walkdir",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^2.5.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        }
+      ],
+      "features": {
+        "default": [
+          "parse",
+          "display"
+        ],
+        "display": [
+          "dep:toml_write"
+        ],
+        "parse": [
+          "dep:winnow"
+        ],
+        "perf": [
+          "dep:kstring"
+        ],
+        "serde": [
+          "dep:serde",
+          "toml_datetime/serde",
+          "dep:serde_spanned"
+        ],
+        "unbounded": [],
+        "unstable-debug": [
+          "winnow?/debug"
+        ]
+      },
+      "license": "MIT OR Apache-2.0",
+      "manifest": null,
+      "name": "toml_edit",
+      "package_files": null,
+      "rust_version": "1.66",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "toml_edit"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "visit",
+          "required-features": [
+            "parse",
+            "display"
+          ]
+        }
+      ],
+      "version": "0.22.27"
     },
     {
       "dependencies": [
@@ -69714,6 +70325,73 @@
         }
       ],
       "version": "1.1.5+spec-1.1.0"
+    },
+    {
+      "dependencies": [
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "proptest",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.6.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "snapbox",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "toml",
+          "optional": false,
+          "registry": null,
+          "rename": "toml_old",
+          "req": "^0.5.10",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        }
+      ],
+      "features": {
+        "alloc": [],
+        "default": [
+          "std"
+        ],
+        "std": [
+          "alloc"
+        ]
+      },
+      "license": "MIT OR Apache-2.0",
+      "manifest": null,
+      "name": "toml_write",
+      "package_files": null,
+      "rust_version": "1.66",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "toml_write"
+        }
+      ],
+      "version": "0.1.2"
     },
     {
       "dependencies": [
@@ -82403,6 +83081,438 @@
         }
       ],
       "version": "0.52.6"
+    },
+    {
+      "dependencies": [
+        {
+          "features": [],
+          "kind": null,
+          "name": "anstream",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.15",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "anstyle",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.8",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "is_terminal_polyfill",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^1.48.1",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "memchr",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^2.7",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": false
+        },
+        {
+          "features": [],
+          "kind": null,
+          "name": "terminal_size",
+          "optional": true,
+          "registry": null,
+          "rename": null,
+          "req": "^0.4.3",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "annotate-snippets",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.11.4",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "anyhow",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.100",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "automod",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.0.15",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "circular",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.3.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "criterion",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.5.1",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "lexopt",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.3.1",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "proptest",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^1.6.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "rustc-hash",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^2.1.1",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [
+            "examples"
+          ],
+          "kind": "dev",
+          "name": "snapbox",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.6.21",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        },
+        {
+          "features": [],
+          "kind": "dev",
+          "name": "term-transcript",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^0.2.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
+        }
+      ],
+      "features": {
+        "alloc": [],
+        "debug": [
+          "std",
+          "dep:anstream",
+          "dep:anstyle",
+          "dep:is_terminal_polyfill",
+          "dep:terminal_size"
+        ],
+        "default": [
+          "std"
+        ],
+        "simd": [
+          "dep:memchr"
+        ],
+        "std": [
+          "alloc",
+          "memchr?/std"
+        ],
+        "unstable-doc": [
+          "alloc",
+          "std",
+          "simd",
+          "unstable-recover"
+        ],
+        "unstable-recover": []
+      },
+      "license": "MIT",
+      "manifest": null,
+      "name": "winnow",
+      "package_files": null,
+      "rust_version": "1.65.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "targets": [
+        {
+          "crate_types": [
+            "lib"
+          ],
+          "kind": [
+            "lib"
+          ],
+          "name": "winnow"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "arithmetic",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "c_expression",
+          "required-features": [
+            "std"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "css",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "custom_error",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "http",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "ini",
+          "required-features": [
+            "std"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "iterator"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "json",
+          "required-features": [
+            "std"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "json_iterator",
+          "required-features": [
+            "std"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "ndjson",
+          "required-features": [
+            "std"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "s_expression",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "example"
+          ],
+          "name": "string",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "bench"
+          ],
+          "name": "arithmetic",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "bench"
+          ],
+          "name": "c_expression",
+          "required-features": [
+            "std"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "bench"
+          ],
+          "name": "http",
+          "required-features": [
+            "alloc"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "bench"
+          ],
+          "name": "ini",
+          "required-features": [
+            "std"
+          ]
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "bench"
+          ],
+          "name": "json",
+          "required-features": [
+            "std"
+          ]
+        }
+      ],
+      "version": "0.7.15"
     },
     {
       "dependencies": [
@@ -100474,6 +101584,7 @@
           "tempfile@3.27.0#registry",
           "thiserror@2.0.21#registry",
           "tokio@1.54.0#registry",
+          "toml@0.8.23#registry",
           "web-time@1.1.0#registry",
           "zstd@0.13.3#registry"
         ],
@@ -100901,6 +102012,16 @@
             ],
             "name": "tokio",
             "pkg": "tokio@1.54.0#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": "dev",
+                "target": null
+              }
+            ],
+            "name": "toml",
+            "pkg": "toml@0.8.23#registry"
           },
           {
             "dep_kinds": [
@@ -101804,6 +102925,27 @@
           "std"
         ],
         "id": "serde_json@1.0.154#registry"
+      },
+      {
+        "dependencies": [
+          "serde@1.0.229#registry"
+        ],
+        "deps": [
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "serde",
+            "pkg": "serde@1.0.229#registry"
+          }
+        ],
+        "features": [
+          "serde"
+        ],
+        "id": "serde_spanned@0.6.9#registry"
       },
       {
         "dependencies": [
@@ -104328,6 +105470,83 @@
       },
       {
         "dependencies": [
+          "serde@1.0.229#registry",
+          "serde_spanned@0.6.9#registry",
+          "toml_datetime@0.6.11#registry",
+          "toml_edit@0.22.27#registry"
+        ],
+        "deps": [
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "serde",
+            "pkg": "serde@1.0.229#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "serde_spanned",
+            "pkg": "serde_spanned@0.6.9#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "toml_datetime",
+            "pkg": "toml_datetime@0.6.11#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "toml_edit",
+            "pkg": "toml_edit@0.22.27#registry"
+          }
+        ],
+        "features": [
+          "default",
+          "display",
+          "parse"
+        ],
+        "id": "toml@0.8.23#registry"
+      },
+      {
+        "dependencies": [
+          "serde@1.0.229#registry"
+        ],
+        "deps": [
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "serde",
+            "pkg": "serde@1.0.229#registry"
+          }
+        ],
+        "features": [
+          "serde"
+        ],
+        "id": "toml_datetime@0.6.11#registry"
+      },
+      {
+        "dependencies": [
           "serde_core@1.0.229#registry"
         ],
         "deps": [
@@ -104348,6 +105567,84 @@
           "std"
         ],
         "id": "toml_datetime@1.1.2+spec-1.1.0#registry"
+      },
+      {
+        "dependencies": [
+          "indexmap@2.14.2#registry",
+          "serde@1.0.229#registry",
+          "serde_spanned@0.6.9#registry",
+          "toml_datetime@0.6.11#registry",
+          "toml_write@0.1.2#registry",
+          "winnow@0.7.15#registry"
+        ],
+        "deps": [
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "indexmap",
+            "pkg": "indexmap@2.14.2#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "serde",
+            "pkg": "serde@1.0.229#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "serde_spanned",
+            "pkg": "serde_spanned@0.6.9#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "toml_datetime",
+            "pkg": "toml_datetime@0.6.11#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "toml_write",
+            "pkg": "toml_write@0.1.2#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "winnow",
+            "pkg": "winnow@0.7.15#registry"
+          }
+        ],
+        "features": [
+          "display",
+          "parse",
+          "serde"
+        ],
+        "id": "toml_edit@0.22.27#registry"
       },
       {
         "dependencies": [
@@ -104425,6 +105722,16 @@
           "std"
         ],
         "id": "toml_parser@1.1.5+spec-1.1.0#registry"
+      },
+      {
+        "dependencies": [],
+        "deps": [],
+        "features": [
+          "alloc",
+          "default",
+          "std"
+        ],
+        "id": "toml_write@0.1.2#registry"
       },
       {
         "dependencies": [
@@ -106304,6 +107611,29 @@
         ],
         "features": [
           "alloc",
+          "default",
+          "std"
+        ],
+        "id": "winnow@0.7.15#registry"
+      },
+      {
+        "dependencies": [
+          "memchr@2.8.3#registry"
+        ],
+        "deps": [
+          {
+            "dep_kinds": [
+              {
+                "kind": null,
+                "target": null
+              }
+            ],
+            "name": "memchr",
+            "pkg": "memchr@2.8.3#registry"
+          }
+        ],
+        "features": [
+          "alloc",
           "ascii",
           "binary",
           "default",
@@ -106803,41 +108133,42 @@
   },
   "schema": 2,
   "source_resource_markers": [
-    "crates/rustyred-query-saturate/tests/gates.rs:97:        include_str!(\"../golden/multi_predicate.term\").trim()",
-    "crates/rustyred-query-saturate/tests/gates.rs:104:    let term: RecExpr<QueryLang> = include_str!(\"../golden/multi_predicate.term\")",
-    "crates/rustyred-query-saturate/tests/gates.rs:722:    let manifest = include_str!(\"../../rustyred-engine/Cargo.toml\");",
-    "vendor/turbovec-1.0.0-wasm32/tests/encode_fingerprint.rs:73:#[path = \"common/fingerprint.rs\"]",
-    "vendor/turbovec-1.0.0-wasm32/examples/encode_hash.rs:41:#[path = \"../tests/common/fingerprint.rs\"]",
-    "crates/rustyred-cli/tests/cli_contract.rs:4:    Command::new(env!(\"CARGO_BIN_EXE_rustyred\"))",
-    "crates/rustyred-datalog/src/lib.rs:1:#![doc = include_str!(\"../README.md\")]",
     "crates/rustyred-log/tests/provenance_commit.rs:17:const V2_FIXTURE: &str = include_str!(\"fixtures/physical-log-v2/record.json\");",
-    "crates/rustyred-datalog/tests/python_reference.rs:6:        serde_json::from_str(include_str!(\"../fixtures/python_reference.json\")).unwrap();",
     "crates/rustyred-log/tests/crash_reopen.rs:14:const V2_FIXTURE: &str = include_str!(\"fixtures/physical-log-v2/record.json\");",
-    "crates/rustyred-datalog/src/compiled.rs:33:                include_str!(\"legacy.rs\"),",
-    "vendor/egg-0.10.0/src/lib.rs:30:#![doc = include_str!(\"../tests/simple.rs\")]",
-    "crates/rustyred-engine/src/article_fold/tests.rs:113:    let json: Value = serde_json::from_str(include_str!(",
-    "crates/rustyred-engine/tests/logfold_client_abi.rs:90:    let fold_source = include_str!(\"../src/fold.rs\");",
+    "vendor/turbovec-1.0.0-wasm32/tests/encode_fingerprint.rs:73:#[path = \"common/fingerprint.rs\"]",
+    "crates/rustyred-graphblas/src/lib.rs:24:    include!(concat!(env!(\"OUT_DIR\"), \"/bindings.rs\"));",
     "crates/rustyred-egraph/src/lib.rs:5:#![doc = include_str!(\"../README.md\")]",
+    "crates/rustyred-query-saturate/tests/gates.rs:96:        include_str!(\"../golden/multi_predicate.term\").trim()",
+    "crates/rustyred-query-saturate/tests/gates.rs:103:    let term: RecExpr<QueryLang> = include_str!(\"../golden/multi_predicate.term\")",
     "crates/rustyred-egraph/src/context_pack/tests.rs:5:    let fixtures: Vec<Value> = serde_json::from_str(include_str!(\"python-fixtures.json\")).unwrap();",
     "crates/rustyred-egraph/src/context_pack/tests.rs:146:        serde_json::from_str(include_str!(\"legacy-native-fixtures.json\")).unwrap();",
     "vendor/turbovec-1.0.0-wasm32/tests/common/fingerprint.rs:21://! a `#[path]` module.",
-    "crates/rustyred-engine/tests/point_read_no_interpreter.rs:85:    let source = include_str!(\"../src/graph/fold_store.rs\");",
-    "crates/rustyred-engine/tests/point_read_no_interpreter.rs:128:    let manifest = include_str!(\"../Cargo.toml\");",
-    "crates/rustyred-engine/tests/point_read_no_interpreter.rs:129:    let source = include_str!(\"../src/graph/fold_store.rs\");",
-    "crates/rustyred-engine/bench/relational/src/main.rs:248:        let out_dir = PathBuf::from(env!(\"CARGO_MANIFEST_DIR\")).join(\"out\");",
-    "crates/rustyred-bayes/src/lib.rs:1374:        let fixture: Value = serde_json::from_str(include_str!(",
-    "crates/rustyred-graphblas/src/lib.rs:24:    include!(concat!(env!(\"OUT_DIR\"), \"/bindings.rs\"));",
     "crates/rustyred-graphblas/build.rs:88:        let script = PathBuf::from(env!(\"CARGO_MANIFEST_DIR\")).join(\"graphblas.sh\");",
-    "crates/rustyred-engine/tests/it/redcore_snapshot_replay_parity.rs:45:    let src = PathBuf::from(env!(\"CARGO_MANIFEST_DIR\")).join(\"tests/fixtures/redcore-v1\");",
-    "crates/rustyred-engine/tests/it/relational_copy_gate.rs:3:const RELATIONAL_SOURCE: &str = include_str!(\"../../src/relational.rs\");",
-    "crates/rustyred-engine/src/lib.rs:643:        let manifest = include_str!(concat!(env!(\"CARGO_MANIFEST_DIR\"), \"/Cargo.toml\"));",
-    "crates/rustyred-engine/src/graph/tests/durability.rs:1528:    let fixture_dir = std::path::PathBuf::from(env!(\"CARGO_MANIFEST_DIR\"))",
+    "vendor/turbovec-1.0.0-wasm32/examples/encode_hash.rs:41:#[path = \"../tests/common/fingerprint.rs\"]",
+    "crates/rustyred-cli/tests/cli_contract.rs:4:    Command::new(env!(\"CARGO_BIN_EXE_rustyred\"))",
+    "vendor/egg-0.10.0/src/lib.rs:30:#![doc = include_str!(\"../tests/simple.rs\")]",
+    "crates/rustyred-engine/src/article_fold/tests.rs:113:    let json: Value = serde_json::from_str(include_str!(",
+    "crates/rustyred-datalog/src/compiled.rs:33:                include_str!(\"legacy.rs\"),",
+    "crates/rustyred-datalog/tests/python_reference.rs:6:        serde_json::from_str(include_str!(\"../fixtures/python_reference.json\")).unwrap();",
+    "crates/rustyred-engine/bench/relational/src/main.rs:248:        let out_dir = PathBuf::from(env!(\"CARGO_MANIFEST_DIR\")).join(\"out\");",
+    "crates/rustyred-engine/src/corroboration.rs:599:        let out = PathBuf::from(env!(\"CARGO_MANIFEST_DIR\"))",
     "crates/rustyred-engine/src/graph_import.rs:1170:#[path = \"graph_import_tests.rs\"]",
     "crates/rustyred-engine/src/graph_store.rs:7452:#[path = \"graph/tests.rs\"]",
     "crates/rustyred-engine/src/graph_store.rs:7456:#[path = \"graph_history_tests.rs\"]",
     "crates/rustyred-engine/src/graph_store.rs:7460:#[path = \"graph_preparation_tests.rs\"]",
-    "crates/rustyred-engine/src/corroboration.rs:599:        let out = PathBuf::from(env!(\"CARGO_MANIFEST_DIR\"))",
-    "crates/rustyred-engine/src/versioned_graph.rs:8160:            include_bytes!(\"../tests/fixtures/legacy_graph_v1_nonempty.json\")"
+    "crates/rustyred-engine/src/versioned_graph.rs:8160:            include_bytes!(\"../tests/fixtures/legacy_graph_v1_nonempty.json\")",
+    "crates/rustyred-datalog/src/lib.rs:1:#![doc = include_str!(\"../README.md\")]",
+    "crates/rustyred-engine/tests/it/relational_copy_gate.rs:3:const RELATIONAL_SOURCE: &str = include_str!(\"../../src/relational.rs\");",
+    "crates/rustyred-engine/tests/point_read_no_interpreter.rs:85:    let source = include_str!(\"../src/graph/fold_store.rs\");",
+    "crates/rustyred-engine/tests/point_read_no_interpreter.rs:128:    let manifest = include_str!(\"../Cargo.toml\");",
+    "crates/rustyred-engine/tests/point_read_no_interpreter.rs:129:    let source = include_str!(\"../src/graph/fold_store.rs\");",
+    "crates/rustyred-engine/tests/it/redcore_snapshot_replay_parity.rs:45:    let src = PathBuf::from(env!(\"CARGO_MANIFEST_DIR\")).join(\"tests/fixtures/redcore-v1\");",
+    "crates/rustyred-engine/tests/logfold_client_abi.rs:90:    let fold_source = include_str!(\"../src/fold.rs\");",
+    "crates/rustyred-engine/src/lib.rs:643:        let manifest = include_str!(concat!(env!(\"CARGO_MANIFEST_DIR\"), \"/Cargo.toml\"));",
+    "crates/rustyred-engine/src/lib.rs:647:        let expected_version = format!(\"={}\", env!(\"CARGO_PKG_VERSION\"));",
+    "crates/rustyred-engine/src/graph/tests/durability.rs:1528:    let fixture_dir = std::path::PathBuf::from(env!(\"CARGO_MANIFEST_DIR\"))",
+    "crates/rustyred-engine/tests/query_extension_boundary.rs:5:    let manifest = include_str!(\"../Cargo.toml\");",
+    "crates/rustyred-bayes/src/lib.rs:1374:        let fixture: Value = serde_json::from_str(include_str!("
   ],
   "toolchain": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2"
 }

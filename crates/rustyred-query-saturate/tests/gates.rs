@@ -4,8 +4,7 @@ use egg::{Extractor, RecExpr, Runner, StopReason};
 use proptest::prelude::*;
 use rustyred_thg_core::{
     execute_query, AccessMethodRegistry, LayerId, LayerRegistry, Predicate, PredicateMode, QueryIr,
-    QueryRelation, RankingRegistry, RegionRef, RelationalLens, ResolvedRow, ScalarBound,
-    ScalarValue,
+    QueryRelation, RegionRef, RelationalLens, ResolvedRow, ScalarBound, ScalarValue,
 };
 use rustyred_thg_query_saturate::cost::{
     ensure_snapshot_current, predicate_cost_key, rank_node_layer_cardinality, CostSnapshot,
@@ -715,12 +714,4 @@ proptest! {
             }
         }
     }
-}
-
-#[test]
-fn core_does_not_depend_on_query_saturate() {
-    let manifest = include_str!("../../rustyred-engine/Cargo.toml");
-    assert!(!manifest.contains("rustyred-thg-query-saturate"));
-    assert!(!manifest.contains("rustyred-query-saturate"));
-    let _ = RankingRegistry::with_native_defaults();
 }

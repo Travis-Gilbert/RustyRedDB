@@ -641,14 +641,16 @@ mod turbovec_pin_tests {
     #[test]
     fn turbovec_encode_version_matches_cargo_toml_pin() {
         let manifest = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/Cargo.toml"));
-        let expected = format!(
-            "turbovec = {{ version = \"={}\" }}",
-            crate::TURBOVEC_ENCODE_VERSION
+        let manifest: toml::Value = toml::from_str(manifest).expect("valid package manifest");
+        let dependency = &manifest["dependencies"]["turbovec"];
+        assert_eq!(dependency["package"].as_str(), Some("rustyred-turbovec"));
+        let expected_version = format!("={}", env!("CARGO_PKG_VERSION"));
+        assert_eq!(
+            dependency["version"].as_str(),
+            Some(expected_version.as_str())
         );
-        assert!(
-            manifest.lines().any(|line| line.trim() == expected),
-            "Cargo.toml must pin {expected}; TURBOVEC_ENCODE_VERSION={}",
-            crate::TURBOVEC_ENCODE_VERSION
-        );
+        // The maintained fork has a release version of its own. Its persisted
+        // vector encoding remains the upstream 1.0.0 encoding.
+        assert_eq!(crate::TURBOVEC_ENCODE_VERSION, "1.0.0");
     }
 }

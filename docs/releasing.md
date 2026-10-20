@@ -11,6 +11,34 @@ x86-64 GNU Linux, asserts its actual host, and runs storage tests on each.
 Adding a CI job is not evidence that its latest candidate run passed: retain
 the run URL, commit and result before advertising that target.
 
+## Native build prerequisites and storage operation
+
+Native compilation needs the platform C compiler/linker for dependencies such
+as zstd and ring: Xcode Command Line Tools on macOS, or the ordinary native
+build toolchain on GNU Linux. The default engine does not require GraphBLAS;
+its explicit experimental feature additionally needs SuiteSparse/LAGraph.
+
+The facade maintains in-process graph/index state; it does not expose a memory
+budget. A single `.RR` durability file is not a claim of constant memory use or
+fully memory-mapped execution. Retained low-level residency and fold primitives
+are explicit APIs. Tiny example measurements do not qualify a large-graph
+working-set bound.
+
+For a backup, close every writable handle and writable chunk-store clone,
+copy the `.RR` file to a new path, then run `rustyred verify COPY.rr --json` and
+read representative records from that copy. Read-only query/verification do not
+repair or advance it. Readers are pinned to the catalog recovered at open;
+reopen to observe later commits. Do not copy an active writer's file.
+
+Keep an untouched copy before attempting writable recovery. Writable opening
+may truncate an incomplete tail; corrupt committed data or an unknown format
+can still be refused. Preserve the original bytes and the structured error
+code when reporting a refusal; verification is not a repair command. For a
+commit-outcome-unknown error, close/reopen and reconcile the operation identity
+before retrying. See [storage format](storage-format.md) and the
+[API failure contract](api-contract.md) for the separate physical-log and
+known-committed maintenance outcomes.
+
 ## Package route
 
 `rustyred-egg` and `rustyred-turbovec` are explicitly named support forks in
@@ -65,6 +93,11 @@ compile checks do not establish optional service/runtime behavior. The facade's
 tests. GraphBLAS is experimental, requires the named native libraries, and is
 not part of the default supported matrix. Browser OPFS source is retained; it
 is not a supported native `.RR` target and needs its own browser oracle.
+
+Test execution uses the source oracle's `opt-level = 1` test profile, including
+outside-workspace package tests via `CARGO_PROFILE_TEST_OPT_LEVEL=1`; package
+normalization does not inherit the source workspace's profile table. Fixed
+latency budgets are not loosened to compensate for an unoptimized test build.
 
 CI also checks formatting of changed first-party Rust files with child-module
 traversal disabled (the extraction has inherited whole-tree formatting debt),

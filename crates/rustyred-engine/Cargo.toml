@@ -79,6 +79,7 @@ zstd = "0.13"
 rustyred-thg-graphblas = { package = "rustyred-graphblas", version = "=0.1.0-beta.2", path = "../rustyred-graphblas", optional = true }
 
 [dev-dependencies]
+toml = "0.8"
 criterion = "0.5"
 proptest = "1.5"
 tempfile = "3"

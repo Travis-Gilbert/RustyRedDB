@@ -126,7 +126,8 @@ def main() -> None:
     # child process and give Cargo a fresh home with no maintainer configuration.
     allowed_env = {'PATH', 'TMPDIR', 'TEMP', 'TMP', 'SYSTEMROOT', 'SDKROOT',
                    'MACOSX_DEPLOYMENT_TARGET', 'CARGO_TARGET_DIR', 'CARGO_INCREMENTAL',
-                   'CARGO_BUILD_JOBS', 'CARGO_PROFILE_DEV_DEBUG', 'CARGO_PROFILE_TEST_DEBUG'}
+                   'CARGO_BUILD_JOBS', 'CARGO_PROFILE_DEV_DEBUG', 'CARGO_PROFILE_TEST_DEBUG',
+                   'CARGO_PROFILE_TEST_OPT_LEVEL'}
     env = {key: value for key, value in os.environ.items() if key in allowed_env}
     env['RUSTUP_HOME'] = os.environ.get('RUSTUP_HOME', str(Path.home() / '.rustup'))
     env['HOME'] = str(output / 'runtime-home')
@@ -134,11 +135,13 @@ def main() -> None:
     env['XDG_CONFIG_HOME'] = str(output / 'runtime-home/.config')
     env['CARGO_HOME'] = str(output / 'cargo-home')
     env['CARGO_NET_OFFLINE'] = 'true'
+    env['CARGO_PROFILE_TEST_OPT_LEVEL'] = '1'
+    evidence['test_profile_opt_level'] = env['CARGO_PROFILE_TEST_OPT_LEVEL']
     messages = run(*cargo, 'test', '--offline', '--no-run', '--message-format=json', cwd=consumer, env=env)
     for binary in executable_from_messages(messages, name='rustyred_packaged_consumer', test=True):
         run(*network_denied([binary]), cwd=consumer, env=env)
     evidence['runtime_network_denial'] = network_denied(['<executable>'])[:-1]
-    for name in ['rustyred-engine', 'rustyred-query']:
+    for name in ['rustyred-engine', 'rustyred-query', 'rustyred-query-saturate']:
         run(*cargo, 'check', '--offline', '--all-targets', '--manifest-path', str(source / (name + '-' + version) / 'Cargo.toml'), cwd=consumer, env=env)
     messages = run(*cargo, 'build', '--offline', '--bin', 'parts-catalog', '--message-format=json', cwd=consumer, env=env)
     example = executable_from_messages(messages, name='parts-catalog', test=False)[0]

@@ -44,3 +44,8 @@ version = "0.1.0-beta.2"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/Travis-Gilbert/RustyRedDB"
+
+# The retained memory-query latency oracle was calibrated with opt-level 1.
+# Preserve that runtime profile without changing its checked-in ceiling.
+[profile.test]
+opt-level = 1
