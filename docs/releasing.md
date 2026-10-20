@@ -122,7 +122,7 @@ that this large imported codebase is warning-free.
 
 ## Review artifacts
 
-Install `cargo-about` 0.9.2 (`cargo install --locked --version 0.9.2
+Install `cargo-about` 0.9.2 (`cargo install --locked --version 0.9.2 --features cli
 cargo-about`) for dependency notice generation. On a clean committed candidate:
 
 ```sh

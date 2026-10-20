@@ -54,7 +54,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$REVIEWED_SHA"
           test "$(rustc -Vv | sed -n 's/^host: //p')" = '${{ matrix.target }}'
       - name: Install pinned dependency notice generator
-        run: cargo install --locked --version 0.9.2 cargo-about
+        run: cargo install --locked --version 0.9.2 --features cli cargo-about
       - name: Scan reviewed source history for secrets
         uses: gitleaks/gitleaks-action@v2
         env:
