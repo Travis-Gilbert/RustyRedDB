@@ -453,10 +453,27 @@ fn mixed_exact_and_turbovec_indexes_report_conservative_backend() {
         .vector_search_with_receipt(None, "embedding", &[1.0, 0.0], 8)
         .unwrap();
 
+    let large_receipt = store
+        .vector_search_with_receipt(Some("LargeFixture"), "embedding", &[1.0, 0.0], 8)
+        .unwrap();
+    assert_eq!(large_receipt.work.backend, VectorSearchBackend::Turbovec);
+    assert_eq!(large_receipt.work.fallback_reason, None);
+    let small_receipt = store
+        .vector_search_with_receipt(Some("SmallFixture"), "embedding", &[1.0, 0.0], 8)
+        .unwrap();
+    assert_eq!(small_receipt.work.backend, VectorSearchBackend::ExactCosine);
+    assert_eq!(
+        small_receipt.work.fallback_reason.as_deref(),
+        Some("below_acceleration_minimum")
+    );
+
     assert_eq!(receipt.work.backend, VectorSearchBackend::ExactCosine);
     assert_eq!(receipt.work.indexed_points, 128);
     assert_eq!(receipt.work.index_rebuilds, 1);
-    assert_eq!(receipt.work.fallback_reason, None);
+    assert_eq!(
+        receipt.work.fallback_reason, small_receipt.work.fallback_reason,
+        "the aggregate must preserve the exact index's threshold fallback"
+    );
 }
 
 #[test]

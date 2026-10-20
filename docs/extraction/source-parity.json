@@ -1889,9 +1889,9 @@
       "candidate": "crates/rustyred-engine/tests/it/lfr_chunk_store_injection.rs",
       "plan_pin": null,
       "extraction_source": "073cf53e8a15a6e08c629d2400e0a695f95d5aed82a80f670038a079c8f55875",
-      "candidate_sha256": "073cf53e8a15a6e08c629d2400e0a695f95d5aed82a80f670038a079c8f55875",
+      "candidate_sha256": "6cdd2bf46fc71238fc15050d0a28f1ae82caff85a1088b0c7c336b75ffbb708c",
       "matches_plan": false,
-      "matches_extraction_source": true
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-core/tests/it/main.rs",
@@ -2069,9 +2069,9 @@
       "candidate": "crates/rustyred-engine/tests/it/vector_index_update_acceptance.rs",
       "plan_pin": "7db491dd42531578ea31fa96bc1f39e2d8a85c326fb4e0141aedf4ee4e39cfd9",
       "extraction_source": "7db491dd42531578ea31fa96bc1f39e2d8a85c326fb4e0141aedf4ee4e39cfd9",
-      "candidate_sha256": "7db491dd42531578ea31fa96bc1f39e2d8a85c326fb4e0141aedf4ee4e39cfd9",
-      "matches_plan": true,
-      "matches_extraction_source": true
+      "candidate_sha256": "7c5d8e34af1a7361767faf716569afc29691aebc6ea0e17557fd2b0a9409baae",
+      "matches_plan": false,
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-core/tests/it/vector_phase4_tests.rs",
