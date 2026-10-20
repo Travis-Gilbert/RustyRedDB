@@ -52,26 +52,35 @@ jobs:
       - name: Embedded facade, CLI, example and failure oracles
         run: cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection
       - name: Engine unit suite (calibrated latency profile)
+        if: ${{ !cancelled() }}
         run: cargo test --locked --no-fail-fast -p rustyred-engine --lib --features test-fault-injection
       - name: Complete engine integration target set (calibrated scaling profile)
+        if: ${{ !cancelled() }}
         run: cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --test '*' --features test-fault-injection
       - name: Query suites
+        if: ${{ !cancelled() }}
         run: cargo test --locked --no-fail-fast -p rustyred-query
       - name: Known committed fold-maintenance failure oracle
+        if: ${{ !cancelled() }}
         run: cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome
       - name: Supporting crate suites
+        if: ${{ !cancelled() }}
         env:
           TS_RS_EXPORT_DIR: ${{ runner.temp }}/generated-bindings
         run: cargo test --locked -p rustyred-log -p rustyred-bayes -p rustyred-contracts -p rustyred-scope -p rustyred-datalog -p rustyred-egraph -p rustyred-derivation -p rustyred-query-saturate
       - name: Physical log subprocess crash and mixed-version recovery
+        if: ${{ !cancelled() }}
         env:
           THEOREM_RUN_CRASH_MATRIX: '1'
         run: cargo test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored
       - name: Documentation tests and examples
+        if: ${{ !cancelled() }}
         run: cargo test --locked --doc -p rustyred -p rustyred-engine -p rustyred-query -p rustyred-log -p rustyred-derivation
       - name: Clippy (default supported native closure)
+        if: ${{ !cancelled() }}
         run: cargo clippy --locked -p rustyred -p rustyred-cli -p rustyred-engine -p rustyred-query --all-targets
       - name: Optional pure Rust feature matrix
+        if: ${{ !cancelled() }}
         shell: bash
         run: |
           cargo check --locked -p rustyred-engine --lib --no-default-features
@@ -79,6 +88,7 @@ jobs:
             cargo check --locked -p rustyred-engine --lib --features "$feature"
           done
       - name: Normalized package and outside-workspace consumer
+        if: ${{ !cancelled() }}
         run: python3 scripts/package_rehearsal.py --output '${{ runner.temp }}/rustyred-package-evidence'
       - uses: actions/upload-artifact@v4
         if: always()
