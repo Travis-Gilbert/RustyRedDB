@@ -7,7 +7,7 @@ Supported native targets for this beta, once their tests have been run on that m
 Use the repaired beta.2 candidate at this immutable public revision. Do not float on a branch.
 
 ```toml
-rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "d14c89c7c88f728b7b71b1bcf69a84095832404c" }
+rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "305196455c05d2a9e605d4eb6777ab9985907c14" }
 ```
 
 The historical `v0.1.0-beta.1` tag remains unchanged and does not contain these candidate repairs. Registry publication is not claimed.
