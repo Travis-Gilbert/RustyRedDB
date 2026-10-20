@@ -51,10 +51,14 @@ jobs:
         run: python3 scripts/check-format --base "$FORMAT_BASE"
       - name: Embedded facade, CLI, example and failure oracles
         run: cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection
-      - name: Engine and query suites (all source integration targets)
-        run: cargo test --locked -p rustyred-engine -p rustyred-query
+      - name: Engine unit suite (calibrated latency profile)
+        run: cargo test --locked --no-fail-fast -p rustyred-engine --lib --features test-fault-injection
+      - name: Complete engine integration target set (calibrated scaling profile)
+        run: cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --test '*' --features test-fault-injection
+      - name: Query suites
+        run: cargo test --locked --no-fail-fast -p rustyred-query
       - name: Known committed fold-maintenance failure oracle
-        run: cargo test --locked -p rustyred-engine --features test-fault-injection --test fold_commit_outcome
+        run: cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome
       - name: Supporting crate suites
         env:
           TS_RS_EXPORT_DIR: ${{ runner.temp }}/generated-bindings
@@ -82,6 +86,7 @@ jobs:
           name: package-evidence-${{ matrix.target }}
           path: |
             ${{ runner.temp }}/rustyred-package-evidence/evidence.json
+            ${{ runner.temp }}/rustyred-package-evidence/archive-targets-checked.json
             ${{ runner.temp }}/rustyred-package-evidence/consumer-tree.txt
             ${{ runner.temp }}/rustyred-package-evidence/archives/*.crate
 

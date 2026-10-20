@@ -1,0 +1,176 @@
+{
+  "ast_hash": "sha256:a819981efd255a5c4fe9097cc82e810670e483f051fef346887f2bfaf1291658",
+  "fulltext_hits": [
+    [
+      "part:a",
+      0.6931471824645996
+    ]
+  ],
+  "historical_node": {
+    "content_hash": "sha256:b22c1f86b843d6fabacfc969f8dd1bea61a2a668cb1366658a85d8f7fe84180b",
+    "id": "part:a",
+    "labels": [
+      "Part"
+    ],
+    "properties": {
+      "embedding": {
+        "content_id": "sha256:434b26042aff3fb844a4c4c6be0d81a079b0ce84cfb8190679024404e5dc4822",
+        "dimension": 2
+      },
+      "name": "steel bolt"
+    },
+    "tombstone": false,
+    "version": 1
+  },
+  "params_hash": "sha256:f16ff69d8f203ec540a63fe2aaf037922eb6ac0b16b9f43c79c4f7386cce29a8",
+  "payload_bytes": [
+    115,
+    121,
+    110,
+    116,
+    104,
+    101,
+    116,
+    105,
+    99,
+    45,
+    112,
+    97,
+    121,
+    108,
+    111,
+    97,
+    100,
+    0,
+    255
+  ],
+  "payload_hash": "sha256:a8a5180575648cc195318c15fb293be50f61d4ca22584b70685076987c13d9bc",
+  "query_columns": [
+    "p"
+  ],
+  "query_rows": [
+    [
+      {
+        "id": "part:a",
+        "labels": [
+          "Part"
+        ],
+        "properties": {
+          "embedding": [
+            1.0,
+            0.0
+          ],
+          "name": "steel bolt"
+        }
+      }
+    ]
+  ],
+  "reopened_edge": {
+    "content_hash": "sha256:52c98d03c9f15c4c29b33a6aba62764c4811446e8a22249205e3ba05b2fb55fc",
+    "from_id": "part:a",
+    "id": "edge:a",
+    "properties": {
+      "t_end_ms": 200,
+      "t_start_ms": 100
+    },
+    "to_id": "part:b",
+    "tombstone": false,
+    "type": "RELATED",
+    "version": 3
+  },
+  "reopened_node": {
+    "content_hash": "sha256:e5bce796f0e9bb8ff730f9e782179b19665847c026311a6d30b76751dc1cd744",
+    "id": "part:a",
+    "labels": [
+      "Part"
+    ],
+    "parent_hashes": [
+      "sha256:b22c1f86b843d6fabacfc969f8dd1bea61a2a668cb1366658a85d8f7fe84180b"
+    ],
+    "properties": {
+      "embedding": {
+        "content_id": "sha256:434b26042aff3fb844a4c4c6be0d81a079b0ce84cfb8190679024404e5dc4822",
+        "dimension": 2
+      },
+      "name": "updated bolt"
+    },
+    "tombstone": false,
+    "version": 6
+  },
+  "spatial_bbox": [
+    "flint"
+  ],
+  "spatial_radius": [
+    "flint"
+  ],
+  "temporal_membership": [
+    false,
+    true,
+    false
+  ],
+  "typed_mutation_serialization": {
+    "mutations": [
+      {
+        "op": "node_upsert",
+        "record": {
+          "id": "part:a",
+          "labels": [
+            "Part"
+          ],
+          "properties": {
+            "embedding": [
+              1.0,
+              0.0
+            ],
+            "name": "steel bolt"
+          },
+          "tombstone": false,
+          "version": 0
+        }
+      },
+      {
+        "op": "node_upsert",
+        "record": {
+          "id": "part:b",
+          "labels": [
+            "Part"
+          ],
+          "properties": {
+            "embedding": [
+              0.0,
+              1.0
+            ],
+            "name": "copper ring"
+          },
+          "tombstone": false,
+          "version": 0
+        }
+      },
+      {
+        "op": "edge_upsert",
+        "record": {
+          "from_id": "part:a",
+          "id": "edge:a",
+          "properties": {
+            "t_end_ms": 200,
+            "t_start_ms": 100
+          },
+          "to_id": "part:b",
+          "tombstone": false,
+          "type": "RELATED",
+          "version": 0
+        }
+      }
+    ]
+  },
+  "vector_hits": [
+    [
+      "part:a",
+      0.0
+    ],
+    [
+      "part:b",
+      1.0
+    ]
+  ]
+}

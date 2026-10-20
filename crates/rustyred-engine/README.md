@@ -53,12 +53,17 @@ UFCS gotcha: `RedCoreGraphStore` and `RedisGraphStore` define inherent `get_node
 ## Build and test
 
 ```bash
-cargo +1.96.1 test --locked -p rustyred-engine -- --test-threads=1
-cargo +1.96.1 test --locked --no-run -p rustyred-engine   # compile-only coherence
+RUST_TEST_THREADS=1 cargo +1.96.1 test --locked --no-fail-fast -p rustyred-engine --lib
+RUST_TEST_THREADS=1 cargo +1.96.1 test --locked --no-fail-fast -p rustyred-engine --profile dev --test '*'
+cargo +1.96.1 test --locked --doc -p rustyred-engine
 ```
 
 The integration suites inspect process-global counters, so execute their tests
-serially to prevent unrelated tests from changing those observations.
+serially to prevent unrelated tests from changing those observations. Unit
+latency fixtures use the declared test profile (root optimization level 1); the complete
+integration target set uses its calibrated dev profile (root level 0, external
+dependencies level 2). The quoted wildcard selects integration targets without also
+running unit fixtures in the wrong profile.
 
 Large offline test suite across `src/` unit modules and `tests/` (`document_tier_acceptance`, `epistemic_acceptance`, `hook_dispatch`, `planner_multimodal_acceptance`, `prolly_incremental_commit`, `redcore_snapshot_replay_parity`, `relational_core_acceptance`, and others). Explicitly ignored or environment-gated live tests retain their separate prerequisites; source compilation does not qualify those services.
 

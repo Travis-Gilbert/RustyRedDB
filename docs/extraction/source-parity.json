@@ -1646,9 +1646,9 @@
       "candidate": "crates/rustyred-engine/tests/fold_floor_reopen.rs",
       "plan_pin": "53bb1032cedce8dd53b46a7a4b26d6bd6ba0bfdb34fe492563777da2f983c10b",
       "extraction_source": "53bb1032cedce8dd53b46a7a4b26d6bd6ba0bfdb34fe492563777da2f983c10b",
-      "candidate_sha256": "53bb1032cedce8dd53b46a7a4b26d6bd6ba0bfdb34fe492563777da2f983c10b",
-      "matches_plan": true,
-      "matches_extraction_source": true
+      "candidate_sha256": "ba6f169d46af02891f71c2891298f680a55a3a839feeaf5cc8891911685113d7",
+      "matches_plan": false,
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-core/tests/fold_replay_differential.rs",
@@ -1844,9 +1844,9 @@
       "candidate": "crates/rustyred-engine/tests/it/hook_dispatch.rs",
       "plan_pin": "26ee32a8ed626ccbb567ecda47a2e67f46eea4f8b19d706acf5c07b8ae7b1f05",
       "extraction_source": "26ee32a8ed626ccbb567ecda47a2e67f46eea4f8b19d706acf5c07b8ae7b1f05",
-      "candidate_sha256": "26ee32a8ed626ccbb567ecda47a2e67f46eea4f8b19d706acf5c07b8ae7b1f05",
-      "matches_plan": true,
-      "matches_extraction_source": true
+      "candidate_sha256": "480e641a198db2e36c51cc0ebf9d1d116899f397487789619175cdb08d8f64c9",
+      "matches_plan": false,
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-core/tests/it/identity_index_tests.rs",
@@ -2263,6 +2263,24 @@
       "matches_extraction_source": true
     },
     {
+      "source": "rustyredcore_THG/crates/rustyred-thg-query/tests/extraction_parity.rs",
+      "candidate": "crates/rustyred-query/tests/extraction_parity.rs",
+      "plan_pin": null,
+      "extraction_source": null,
+      "candidate_sha256": "beb405f839b7d4dfdac1da59765704ad381d148b1eaa5e9e52390a011eefc8ac",
+      "matches_plan": false,
+      "matches_extraction_source": false
+    },
+    {
+      "source": "rustyredcore_THG/crates/rustyred-thg-query/tests/fixtures/plan-pin-parity.json",
+      "candidate": "crates/rustyred-query/tests/fixtures/plan-pin-parity.json",
+      "plan_pin": null,
+      "extraction_source": null,
+      "candidate_sha256": "7edec849651f43beb16c0bb74d177118a155780978f959c7ba476ab63763733c",
+      "matches_plan": false,
+      "matches_extraction_source": false
+    },
+    {
       "source": "rustyredcore_THG/crates/theorem-oplog/src/format.rs",
       "candidate": "crates/rustyred-log/src/format.rs",
       "plan_pin": "2b2428308608332ae0b075990430d6bcbcb169e13de7862a55bc423b017e3b17",
@@ -2513,6 +2531,15 @@
       "candidate_sha256": "136429445d071f56a4da49574fcc1f1ff686a1d4d221f209d4b2521fcf2848cc",
       "matches_plan": true,
       "matches_extraction_source": true
+    },
+    {
+      "source": "rustyredcore_THG/crates/egraph/build.rs",
+      "candidate": "crates/rustyred-egraph/build.rs",
+      "plan_pin": null,
+      "extraction_source": null,
+      "candidate_sha256": "b224aaf38ae4042f37a9bc85ede4bd8f00f1e6bcc44646e118bafdfe770b467f",
+      "matches_plan": false,
+      "matches_extraction_source": false
     },
     {
       "source": "rustyredcore_THG/crates/egraph/src/context_pack/legacy-native-fixtures.json",

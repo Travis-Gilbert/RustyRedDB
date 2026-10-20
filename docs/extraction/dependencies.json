@@ -54481,6 +54481,20 @@
           "source": "registry+https://github.com/rust-lang/crates.io-index",
           "target": null,
           "uses_default_features": true
+        },
+        {
+          "features": [
+            "full"
+          ],
+          "kind": "build",
+          "name": "syn",
+          "optional": false,
+          "registry": null,
+          "rename": null,
+          "req": "^2.0",
+          "source": "registry+https://github.com/rust-lang/crates.io-index",
+          "target": null,
+          "uses_default_features": true
         }
       ],
       "features": {},
@@ -54494,6 +54508,7 @@
         "LICENSE",
         "NOTICE.md",
         "README.md",
+        "build.rs",
         "src/context_pack/legacy-native-fixtures.json",
         "src/context_pack/python-fixtures.json",
         "src/context_pack/tests.rs",
@@ -54519,6 +54534,15 @@
             "lib"
           ],
           "name": "egraph"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "custom-build"
+          ],
+          "name": "build-script-build"
         }
       ],
       "version": "0.1.0-beta.2"
@@ -56090,7 +56114,9 @@
         "src/execute.rs",
         "src/lib.rs",
         "src/read_gate.rs",
-        "src/receipt.rs"
+        "src/receipt.rs",
+        "tests/extraction_parity.rs",
+        "tests/fixtures/plan-pin-parity.json"
       ],
       "rust_version": "1.96.1",
       "source": "standalone-workspace",
@@ -56103,6 +56129,15 @@
             "lib"
           ],
           "name": "rustyred_thg_query"
+        },
+        {
+          "crate_types": [
+            "bin"
+          ],
+          "kind": [
+            "test"
+          ],
+          "name": "extraction_parity"
         }
       ],
       "version": "0.1.0-beta.2"
@@ -101485,6 +101520,7 @@
           "serde@1.0.229#registry",
           "serde_json@1.0.154#registry",
           "sha2@0.10.9#registry",
+          "syn@2.0.119#registry",
           "thiserror@2.0.21#registry"
         ],
         "deps": [
@@ -101527,6 +101563,16 @@
             ],
             "name": "sha2",
             "pkg": "sha2@0.10.9#registry"
+          },
+          {
+            "dep_kinds": [
+              {
+                "kind": "build",
+                "target": null
+              }
+            ],
+            "name": "syn",
+            "pkg": "syn@2.0.119#registry"
           },
           {
             "dep_kinds": [
@@ -108167,6 +108213,7 @@
     "crates/rustyred-log/tests/provenance_commit.rs:17:const V2_FIXTURE: &str = include_str!(\"fixtures/physical-log-v2/record.json\");",
     "crates/rustyred-query-saturate/tests/gates.rs:103:    let term: RecExpr<QueryLang> = include_str!(\"../golden/multi_predicate.term\")",
     "crates/rustyred-query-saturate/tests/gates.rs:96:        include_str!(\"../golden/multi_predicate.term\").trim()",
+    "crates/rustyred-query/tests/extraction_parity.rs:140:            serde_json::from_str(include_str!(\"fixtures/plan-pin-parity.json\")).unwrap();",
     "vendor/egg-0.10.0/src/lib.rs:30:#![doc = include_str!(\"../tests/simple.rs\")]",
     "vendor/turbovec-1.0.0-wasm32/examples/encode_hash.rs:41:#[path = \"../tests/common/fingerprint.rs\"]",
     "vendor/turbovec-1.0.0-wasm32/tests/common/fingerprint.rs:21://! a `#[path]` module.",

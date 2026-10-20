@@ -137,12 +137,20 @@ def main() -> None:
     env['CARGO_NET_OFFLINE'] = 'true'
     env['CARGO_PROFILE_TEST_OPT_LEVEL'] = '1'
     evidence['test_profile_opt_level'] = env['CARGO_PROFILE_TEST_OPT_LEVEL']
+    for name in sorted(package['name'] for package in packages if package['name'] != 'rustyred-graphblas'):
+        run(*cargo, 'check', '--offline', '--all-targets', '--manifest-path', str(source / (name + '-' + version) / 'Cargo.toml'), cwd=consumer, env=env)
+    (output / 'archive-targets-checked.json').write_text(json.dumps({
+        'revision': evidence['revision'], 'dirty': evidence['dirty'],
+        'phase': 'standalone_archive_all_targets', 'result': 'PASS',
+        'command': 'cargo +1.96.1 check --offline --all-targets',
+        'checked': sorted(package['name'] for package in packages if package['name'] != 'rustyred-graphblas'),
+        'excluded': {'rustyred-graphblas': 'separate native prerequisites and runtime qualification required'},
+        'packages': evidence['packages'],
+    }, indent=2) + '\n')
     messages = run(*cargo, 'test', '--offline', '--no-run', '--message-format=json', cwd=consumer, env=env)
     for binary in executable_from_messages(messages, name='rustyred_packaged_consumer', test=True):
         run(*network_denied([binary]), cwd=consumer, env=env)
     evidence['runtime_network_denial'] = network_denied(['<executable>'])[:-1]
-    for name in sorted(package['name'] for package in packages if package['name'] != 'rustyred-graphblas'):
-        run(*cargo, 'check', '--offline', '--all-targets', '--manifest-path', str(source / (name + '-' + version) / 'Cargo.toml'), cwd=consumer, env=env)
     messages = run(*cargo, 'build', '--offline', '--bin', 'parts-catalog', '--message-format=json', cwd=consumer, env=env)
     example = executable_from_messages(messages, name='parts-catalog', test=False)[0]
     for _ in range(2):

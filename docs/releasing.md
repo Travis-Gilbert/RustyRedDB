@@ -48,6 +48,12 @@ registry packages with the same API. Each support fork must be published and
 reviewed with its notices; consumers must never silently resolve upstream
 implementations that omit those patches.
 
+`rustyred-egraph` explicitly activates `syn/full` as a host build dependency.
+Its no-op build script exists because pinned `egglog-add-primitive` 2.0.0 parses
+full expressions without declaring that feature itself. [Cargo resolver2](https://doc.rust-lang.org/cargo/reference/resolver.html) keeps
+host and target features separate; unrelated workspace procedural macros must
+not supply the missing requirement. The pinned evaluator is unchanged.
+
 For a development rehearsal, choose a new output directory outside this checkout:
 
 ```sh
@@ -95,10 +101,15 @@ tests. GraphBLAS is experimental, requires the named native libraries, and is
 not part of the default supported matrix. Browser OPFS source is retained; it
 is not a supported native `.RR` target and needs its own browser oracle.
 
-Test execution uses the source oracle's `opt-level = 1` test profile, including
-outside-workspace package tests via `CARGO_PROFILE_TEST_OPT_LEVEL=1`; package
-normalization does not inherit the source workspace's profile table. Fixed
-latency budgets are not loosened to compensate for an unoptimized test build.
+Engine unit latency fixtures run in the declared test profile (root optimization
+level 1). The complete engine integration target set runs with `--profile dev
+--test '*'`: its scaling oracle was calibrated with root level 0 and external
+dependencies level 2. CI and `release-check` preserve both declared profiles and
+run every integration target with `--no-fail-fast`, without changing numerical
+ceilings. Tests that inspect process-global counters run serially. Query and
+other suites keep the normal test profile. Outside-workspace consumer tests use
+`CARGO_PROFILE_TEST_OPT_LEVEL=1`; package normalization does not inherit workspace
+profile tables. See [baseline evidence](extraction/baseline.md).
 
 CI also checks formatting of changed first-party Rust files with child-module
 traversal disabled (the extraction has inherited whole-tree formatting debt),

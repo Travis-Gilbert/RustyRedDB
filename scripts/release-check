@@ -40,7 +40,10 @@ run('cargo', 'about', 'generate', '--locked', '--offline', '--workspace', '--all
 notice_path = output / 'THIRD_PARTY_LICENSES.html'
 notice_text = notice_path.read_text()
 notice_path.write_text('\n'.join(line.rstrip(' \t') for line in notice_text.split('\n')).rstrip('\n') + '\n')
-run('cargo', '+1.96.1', 'test', '--locked', '--workspace', '--exclude', 'rustyred-graphblas', '--exclude', 'rustyred-egg', '--exclude', 'rustyred-turbovec', '--features', 'rustyred/test-fault-injection')
+run('cargo', '+1.96.1', 'test', '--locked', '--no-fail-fast', '--workspace', '--exclude', 'rustyred-engine', '--exclude', 'rustyred-graphblas', '--exclude', 'rustyred-egg', '--exclude', 'rustyred-turbovec', '--features', 'rustyred/test-fault-injection')
+run('cargo', '+1.96.1', 'test', '--locked', '--no-fail-fast', '-p', 'rustyred-engine', '--lib', '--features', 'test-fault-injection')
+run('cargo', '+1.96.1', 'test', '--locked', '--no-fail-fast', '-p', 'rustyred-engine', '--profile', 'dev', '--test', '*', '--features', 'test-fault-injection')
+run('cargo', '+1.96.1', 'test', '--locked', '--doc', '-p', 'rustyred-engine')
 run('cargo', '+1.96.1', 'clippy', '--locked', '-p', 'rustyred', '-p', 'rustyred-cli', '-p', 'rustyred-engine', '-p', 'rustyred-query', '--all-targets')
 run('cargo', '+1.96.1', 'build', '--locked', '--release', '-p', 'rustyred-cli')
 if subprocess.check_output(['git', 'status', '--porcelain'], cwd=root):
@@ -52,7 +55,7 @@ run('git', 'archive', '--format=tar.gz', '--prefix=rustyred-' + revision + '/', 
 target = Path(os.environ.get('CARGO_TARGET_DIR', str(root / 'target')))
 shutil.copy2(target / 'release/rustyred', output / 'rustyred')
 shutil.copytree(output / 'package-evidence/archives', output / 'crates')
-provenance = {'revision': revision, 'source_revision_at_start': source_revision, 'dirty': False, 'rust_test_threads': '1', 'rustc': subprocess.check_output(['rustc', '+1.96.1', '-Vv'], cwd=root, text=True),
+provenance = {'revision': revision, 'source_revision_at_start': source_revision, 'dirty': False, 'rust_test_threads': '1', 'engine_test_profiles': {'unit': 'test/root1', 'integration': 'dev/root0/dependencies2'}, 'rustc': subprocess.check_output(['rustc', '+1.96.1', '-Vv'], cwd=root, text=True),
               'cargo': subprocess.check_output(['cargo', '+1.96.1', '-V'], cwd=root, text=True),
               'publication': 'disabled; review artifacts only', 'notice_generator': notice_tool, 'format': {'magic': 'THEORRDB', 'version': 1, 'header_bytes': 4096}}
 (output / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')

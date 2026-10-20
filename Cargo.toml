@@ -45,7 +45,17 @@ edition = "2021"
 license = "MIT"
 repository = "https://github.com/Travis-Gilbert/RustyRedDB"
 
-# The retained memory-query latency oracle was calibrated with opt-level 1.
-# Preserve that runtime profile without changing its checked-in ceiling.
+# Preserve the source workspace's optimization mix for the integration
+# scaling oracles (9ee2a2798c / d6a7062c): local code at 0, dependencies at 2.
+# Run the complete engine integration targets with --profile dev.
+[profile.dev]
+opt-level = 0
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+opt-level = 2
+
+# The separate memory-query latency unit oracle was calibrated at local level 1.
+# test inherits dev's dependency optimization; neither oracle ceiling changes.
 [profile.test]
 opt-level = 1
