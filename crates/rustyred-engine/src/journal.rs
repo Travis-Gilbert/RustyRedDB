@@ -155,6 +155,12 @@ struct JournalState {
     poisoned: Option<String>,
     #[cfg(any(test, feature = "test-fault-injection"))]
     injected_append_failure: Option<InjectedAppendFailure>,
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    injected_root_failure: Option<InjectedRootFailure>,
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    injected_sync_failure: Option<(bool, bool)>,
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    injected_claimed_release_failure: bool,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -172,6 +178,13 @@ struct StagedChunkAppend {
     address: Hash,
     logical_len: u64,
     frame: Vec<u8>,
+}
+
+#[cfg(any(test, feature = "test-fault-injection"))]
+#[derive(Clone, Copy)]
+struct InjectedRootFailure {
+    after_bytes: usize,
+    fail_rollback: bool,
 }
 
 #[cfg(any(test, feature = "test-fault-injection"))]
@@ -343,6 +356,12 @@ impl JournalChunkStore {
             poisoned: None,
             #[cfg(any(test, feature = "test-fault-injection"))]
             injected_append_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_root_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_sync_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_claimed_release_failure: false,
         };
         if let Some(committed) = state.committed.clone() {
             validate_catalog_in_state(&mut state, committed.root)?;
@@ -444,6 +463,12 @@ impl JournalChunkStore {
             poisoned: None,
             #[cfg(any(test, feature = "test-fault-injection"))]
             injected_append_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_root_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_sync_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_claimed_release_failure: false,
         };
         if let Some(committed) = state.committed.clone() {
             validate_catalog_in_state(&mut state, committed.root)?;
@@ -614,7 +639,8 @@ impl JournalChunkStore {
     }
 
     #[cfg(any(test, feature = "test-fault-injection"))]
-    pub(crate) fn inject_append_failure_after(
+    #[doc(hidden)]
+    pub fn inject_append_failure_after(
         &self,
         successful_appends_before_failure: usize,
         after_bytes: usize,
@@ -630,6 +656,55 @@ impl JournalChunkStore {
             after_bytes,
             fail_rollback,
         });
+    }
+
+    /// Fail an actual root frame append, after all ordinary chunk appends.
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn inject_root_append_failure_for_test(&self, after_bytes: usize, fail_rollback: bool) {
+        let mut state = self
+            .inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        state.injected_root_failure = Some(InjectedRootFailure {
+            after_bytes,
+            fail_rollback,
+        });
+    }
+
+    /// Fail the real root durability barrier, optionally after syncing its bytes.
+    /// A rollback refusal models publication whose outcome is indeterminate.
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn inject_root_sync_failure_for_test(&self, after_sync: bool, fail_rollback: bool) {
+        let mut state = self
+            .inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        state.injected_sync_failure = Some((after_sync, fail_rollback));
+    }
+
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn inject_claimed_release_failure_for_test(&self) {
+        let mut state = self
+            .inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        state.injected_claimed_release_failure = true;
+    }
+
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn claimed_release_failure_pending_for_test(&self) -> bool {
+        self.inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .injected_claimed_release_failure
     }
 
     #[cfg(test)]
@@ -959,6 +1034,13 @@ impl ChunkStore for JournalChunkStore {
     fn release_claimed_in_flight(&self, address: Hash) -> GraphStoreResult<()> {
         let mut state = self.lock_state()?;
         ensure_usable(&state)?;
+        #[cfg(any(test, feature = "test-fault-injection"))]
+        if std::mem::take(&mut state.injected_claimed_release_failure) {
+            return Err(GraphStoreError::new(
+                "chunk_store_injected_claimed_release_failure",
+                "injected claimed pin cleanup failure",
+            ));
+        }
         decrement_journal_pin_count(&mut state.claimed_pins, address, "claimed")?;
         Ok(())
     }
@@ -1258,6 +1340,14 @@ fn execute_commit_batch(
         .chain(frames.iter().map(|(frame, _)| frame.as_slice()))
         .collect::<Vec<_>>();
     let chunk_append_count = chunk_appends.len();
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    if let Some(injection) = state.injected_root_failure.take() {
+        state.injected_append_failure = Some(InjectedAppendFailure {
+            successful_appends_before_failure: chunk_append_count,
+            after_bytes: injection.after_bytes,
+            fail_rollback: injection.fail_rollback,
+        });
+    }
     let offsets = match append_frames_with_checkpoint(
         &mut state,
         &append_frames,
@@ -2057,7 +2147,24 @@ fn append_frames_with_checkpoint(
         }
     }
     if let Some((syncer, action)) = sync {
-        if let Err(error) = syncer.sync_all(&state.file) {
+        #[cfg(any(test, feature = "test-fault-injection"))]
+        let sync_result =
+            if let Some((after_sync, fail_rollback)) = state.injected_sync_failure.take() {
+                let result = if after_sync {
+                    syncer.sync_all(&state.file)
+                } else {
+                    Ok(())
+                };
+                if fail_rollback {
+                    state.poisoned = Some("injected durability rollback refusal".to_string());
+                }
+                result.and(Err(io::Error::other("injected root sync failure")))
+            } else {
+                syncer.sync_all(&state.file)
+            };
+        #[cfg(not(any(test, feature = "test-fault-injection")))]
+        let sync_result = syncer.sync_all(&state.file);
+        if let Err(error) = sync_result {
             return Err(rollback_or_poison(
                 state,
                 checkpoint,

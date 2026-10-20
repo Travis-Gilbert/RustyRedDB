@@ -7,17 +7,72 @@ on:
 permissions:
   contents: read
 
+env:
+  CARGO_INCREMENTAL: '0'
+  CARGO_BUILD_JOBS: '3'
+  CARGO_PROFILE_DEV_DEBUG: '0'
+  CARGO_PROFILE_TEST_DEBUG: '0'
+
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - runner: macos-14
+            target: aarch64-apple-darwin
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@1.96.1
         with:
           components: clippy, rustfmt
-      - name: boundary
-        run: python3 scripts/dependency_boundary.py
-      - name: facade
-        run: cargo test -p rustyred -p rustyred-cli -p parts-catalog --locked
-      - name: engine lib
-        run: cargo test -p rustyred-engine --lib --locked
+      - name: Assert native target and compiler floor
+        shell: bash
+        run: |
+          rustc -Vv
+          test "$(rustc -Vv | sed -n 's/^host: //p')" = '${{ matrix.target }}'
+      - name: Public dependency boundary
+        run: |
+          python3 scripts/test_dependency_boundary.py
+          python3 scripts/dependency_boundary.py
+      - name: Formatting for changed first-party Rust files
+        env:
+          FORMAT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: python3 scripts/check-format --base "$FORMAT_BASE"
+      - name: Embedded facade, CLI, example and failure oracles
+        run: cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection
+      - name: Engine and query suites (all source integration targets)
+        run: cargo test --locked -p rustyred-engine -p rustyred-query
+      - name: Known committed fold-maintenance failure oracle
+        run: cargo test --locked -p rustyred-engine --features test-fault-injection --test fold_commit_outcome
+      - name: Supporting crate suites
+        env:
+          TS_RS_EXPORT_DIR: ${{ runner.temp }}/generated-bindings
+        run: cargo test --locked -p rustyred-log -p rustyred-bayes -p rustyred-contracts -p rustyred-scope -p rustyred-datalog -p rustyred-egraph -p rustyred-derivation -p rustyred-query-saturate
+      - name: Documentation tests and examples
+        run: cargo test --locked --doc -p rustyred -p rustyred-engine -p rustyred-query -p rustyred-log -p rustyred-derivation
+      - name: Clippy (default supported native closure)
+        run: cargo clippy --locked -p rustyred -p rustyred-cli -p rustyred-engine -p rustyred-query --all-targets
+      - name: Optional pure Rust feature matrix
+        shell: bash
+        run: |
+          cargo check --locked -p rustyred-engine --lib --no-default-features
+          for feature in fjall-floor redis-store tantivy s2; do
+            cargo check --locked -p rustyred-engine --lib --features "$feature"
+          done
+      - name: Normalized package and outside-workspace consumer
+        run: python3 scripts/package_rehearsal.py --output '${{ runner.temp }}/rustyred-package-evidence'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: package-evidence-${{ matrix.target }}
+          path: |
+            ${{ runner.temp }}/rustyred-package-evidence/evidence.json
+            ${{ runner.temp }}/rustyred-package-evidence/consumer-tree.txt
+            ${{ runner.temp }}/rustyred-package-evidence/archives/*.crate

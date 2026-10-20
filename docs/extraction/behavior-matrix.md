@@ -8,7 +8,7 @@ This records what the beta keeps, what it refuses, and what was not brought acro
 | --- | --- | --- |
 | `RedCoreGraphStore` plus `redcore.journal` | Directory database. `Database::create_directory` and `open_directory`. | Kept. Opening does not create a missing journal. |
 | `RustyRed` `.RR` file | Single-file database. Magic `THEORRDB`, format 1, header 4096 bytes. | Kept. `Database::create`, `open`, and `open_read_only` compose `RustyRed` with `RedCoreGraphStore::open_with_chunk_store`. |
-| `theorem_oplog` `PhysicalLog` and fold store | A second durable log the engine crate links. | Moved with the crate. RedCore commits do not pass through it. The two owners are not unified in this beta. |
+| `theorem_oplog` `PhysicalLog` and fold store | The physical operation ledger for explicit fold-backed consumers. | Preserved independently, matching source topology. RedCore never routed commits through it. See [storage owners](storage-owners.md). |
 
 ## Public operations
 
@@ -31,14 +31,14 @@ This records what the beta keeps, what it refuses, and what was not brought acro
 
 | Item | Disposition |
 | --- | --- |
-| GraphBLAS / SuiteSparse | Not in the beta build. Code behind the old feature flag is not compiled. |
-| Query saturation | Downstream of the query crate. Not a beta dependency. |
-| Harness loop gate in `feature_dsl` | Not copied. The database assertion in `memory_admission` uses captured SHA-256 goldens. |
+| GraphBLAS / SuiteSparse | Preserved experimental optional `graphblas` extension; native prerequisites required. |
+| Query saturation | Preserved optional generic `rustyred-query-saturate` library; not required by the default facade. |
+| Harness loop gate in `feature_dsl` | Original assertion restored downstream against the canonical `DynamicFeature` and real harness validator. `memory_admission` independently retains captured SHA-256 goldens. |
 | Automatic embeddings, project bootstrap, MCP, login, serve | Not part of create or open. |
 | `object_store` Amazon S3 builder | Still compiled because the history object store names it. Local create, open, and query do not construct it. |
 | crates.io publication | Not done. Names were unclaimed on 2026-10-20. That is not a reservation. |
-| Rust 1.89 as a verified MSRV | Declared on engine manifests. The extract was compiled with 1.96.1 only. |
-| Theorem cutover | The in-tree engine in the Theorem checkout is still the copy Theorem builds. This repository is the intended single source after that checkout pins this git revision. |
+| Compiler floor | Candidate manifests require the verified baseline Rust 1.96.1. No untested lower MSRV is claimed. |
+| Theorem cutover | Prepared in a separate integration branch through canonical crate/type reexports. G10 remains dependent on actual downstream tests and the immutable candidate pin. |
 
 ## Consumer paths that stay in Theorem
 

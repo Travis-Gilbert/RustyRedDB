@@ -308,13 +308,14 @@ pub use graph::capability::{
     GraphVectorPayloadAccess, GraphVerify, GraphWrite,
 };
 pub use graph::error::{GraphStoreError, GraphStoreResult};
+pub use graph::fold_store::{
+    FactTuple, FactsFold, FactsQuery, FoldGraphStore, FoldGraphTransaction, FoldMaintenanceFailure,
+    GraphFold, GraphFoldQuery, GraphIntentBatch, GraphSemanticChange, PinnedGraphRead,
+    PointReadExecution, PositionPinned, GRAPH_INTENT_NAME, GRAPH_INTENT_NAMESPACE,
+    GRAPH_INTENT_VERSION,
+};
 pub use graph::footprint::{
     graph_memory_recompute_invocations, reset_graph_memory_recompute_invocations,
-};
-pub use graph::fold_store::{
-    FactTuple, FactsFold, FactsQuery, FoldGraphStore, FoldGraphTransaction, GraphFold,
-    GraphFoldQuery, GraphIntentBatch, GraphSemanticChange, PinnedGraphRead, PointReadExecution,
-    PositionPinned, GRAPH_INTENT_NAME, GRAPH_INTENT_NAMESPACE, GRAPH_INTENT_VERSION,
 };
 pub use graph::in_memory::InMemoryGraphStore;
 #[allow(deprecated)]
@@ -602,20 +603,19 @@ pub use versioned_graph::{
     edge_to_content_object, graph_payload_address, graph_prolly_parity_validations,
     graph_version_log, hydrate_graph_snapshot_from_payload_index, legacy_graph_pack_v1_parents,
     merge_graph_snapshots, merge_graph_snapshots_with_registry,
-    migrate_legacy_graph_content_object_v1, migrate_legacy_graph_pack_v1,
-    node_from_content_object, node_to_content_object, object_bytes, prolly_validation_enabled,
-    prolly_validation_sample_selected, prolly_validation_selected,
-    recovered_graph_pack_descriptor, reset_graph_prolly_parity_validations,
-    resolve_auto_confidence_edge, retarget_graph_pack_version, snapshot_content_objects,
-    update_graph_payload_index, update_graph_ref, update_graph_ref_cas,
-    validate_incremental_prolly_parity, CommitCost, CompiledGraphPack, GraphCheckoutResult,
-    GraphCommit, GraphCompileOptions, GraphCompilerCapability, GraphContentObject,
-    GraphDiffEntry, GraphMergeConflict, GraphMergeOptions, GraphMergeResolution,
-    GraphMergeResult, GraphMergeSide, GraphMergeStrategy, GraphObjectKind, GraphPackManifest,
-    GraphPayloadRecord, GraphProllyTree, GraphRefConflict, GraphRefDelete, GraphRefUpdate,
-    GraphTreeChild, GraphTreeChunk, GraphTreeEntry, GraphTreeNode, GraphTreeParityAudit,
-    GraphVersionDiff, GraphVersionLog, GraphVersionRef, GraphVersionRepository,
-    IncrementalGraphPack, IncrementalTreeBuild, LegacyGraphObjectMigration,
+    migrate_legacy_graph_content_object_v1, migrate_legacy_graph_pack_v1, node_from_content_object,
+    node_to_content_object, object_bytes, prolly_validation_enabled,
+    prolly_validation_sample_selected, prolly_validation_selected, recovered_graph_pack_descriptor,
+    reset_graph_prolly_parity_validations, resolve_auto_confidence_edge,
+    retarget_graph_pack_version, snapshot_content_objects, update_graph_payload_index,
+    update_graph_ref, update_graph_ref_cas, validate_incremental_prolly_parity, CommitCost,
+    CompiledGraphPack, GraphCheckoutResult, GraphCommit, GraphCompileOptions,
+    GraphCompilerCapability, GraphContentObject, GraphDiffEntry, GraphMergeConflict,
+    GraphMergeOptions, GraphMergeResolution, GraphMergeResult, GraphMergeSide, GraphMergeStrategy,
+    GraphObjectKind, GraphPackManifest, GraphPayloadRecord, GraphProllyTree, GraphRefConflict,
+    GraphRefDelete, GraphRefUpdate, GraphTreeChild, GraphTreeChunk, GraphTreeEntry, GraphTreeNode,
+    GraphTreeParityAudit, GraphVersionDiff, GraphVersionLog, GraphVersionRef,
+    GraphVersionRepository, IncrementalGraphPack, IncrementalTreeBuild, LegacyGraphObjectMigration,
     LegacyGraphPackMigration, ProllyReadMetrics, ProllyReader, StoredProllyNode,
     DEFAULT_GRAPH_BRANCH, DOMAIN_GRAPH_PAYLOAD, GRAPH_CHUNK_FORMAT_VERSION,
     GRAPH_PACK_COMPILER_VERSION, GRAPH_PAYLOAD_FORMAT_VERSION, PROLLY_VALIDATION_SAMPLE_SCALE_PPM,

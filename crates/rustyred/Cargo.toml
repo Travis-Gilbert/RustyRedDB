@@ -1,17 +1,18 @@
 [package]
+include = ["Cargo.toml", "src/**", "tests/**", "fixtures/**", "benches/**", "examples/**", "build.rs", "README*", "LICENSE*", "NOTICE.md"]
 name = "rustyred"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 edition = "2021"
 license = "MIT"
-rust-version = "1.89"
+rust-version = "1.96.1"
 description = "Embedded Rusty Red database: create, query, mutate, and verify a native .RR graph."
 repository = "https://github.com/Travis-Gilbert/RustyRedDB"
 readme = "../../README.md"
 
 [dependencies]
-rustyred-contracts = { version = "=0.1.0-beta.1", path = "../rustyred-contracts" }
-rustyred-engine = { version = "=0.1.0-beta.1", path = "../rustyred-engine" }
-rustyred-query = { version = "=0.1.0-beta.1", path = "../rustyred-query" }
+rustyred-contracts = { version = "=0.1.0-beta.2", path = "../rustyred-contracts" }
+rustyred-engine = { version = "=0.1.0-beta.2", path = "../rustyred-engine" }
+rustyred-query = { version = "=0.1.0-beta.2", path = "../rustyred-query" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["raw_value"] }
 
@@ -22,3 +23,7 @@ sha2 = "0.10"
 [[test]]
 name = "rr_roundtrip"
 harness = false
+
+[features]
+# Explicit diagnostic hooks for release failure oracles; absent in normal builds.
+test-fault-injection = ["rustyred-engine/test-fault-injection"]

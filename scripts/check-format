@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""Check changed first-party Rust files without reformatting imported source."""
+import argparse
+from pathlib import Path
+import subprocess
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--base', help='Review base commit; defaults to HEAD parent')
+args = parser.parse_args()
+root = Path(__file__).resolve().parent.parent
+base = args.base
+if not base or set(base) == {'0'}:
+    base = subprocess.check_output(['git', 'rev-parse', 'HEAD^'], cwd=root, text=True).strip()
+files = subprocess.check_output(['git', 'diff', '--name-only', '--diff-filter=ACMR', base, '--', 'crates', 'examples'], cwd=root, text=True).splitlines()
+files = [name for name in files if name.endswith('.rs') and (root / name).is_file()]
+if files:
+    subprocess.run(['rustfmt', '+1.96.1', '--check', '--edition', '2021', '--config', 'skip_children=true', *files], cwd=root, check=True)
+print(f'Formatting checked for {len(files)} changed first-party Rust files against {base}')

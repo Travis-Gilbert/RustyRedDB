@@ -1,0 +1,14 @@
+# SPDX branches selected for the dependency notice bundle. This configuration
+# does not establish source ownership or replace review of the extracted code.
+accepted = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "BSL-1.0",
+    "ISC",
+    "Unicode-3.0",
+    "MPL-2.0",
+    "0BSD",
+    "CC0-1.0",
+    "Zlib",
+]

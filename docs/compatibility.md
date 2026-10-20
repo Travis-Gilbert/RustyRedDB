@@ -7,4 +7,8 @@
 - The directory journal can be copied into `.RR` with `Database::migrate_journal`. That is the supported migration.
 - Unknown capability versions can be opened read-only. Writable open refuses a capability this build does not implement (`rr_capability_unsupported`).
 - Browser OPFS support remains behind the `browser-opfs` feature of `rustyred-log` and is not a native `.RR` file.
-- Install from this git repository. `cargo package -p rustyred --locked --allow-dirty --list` lists the facade sources and exits 0. The facade still path-depends on sibling crates in this repository. Those crates are not on crates.io, and this beta does not upload them.
+- Published beta.1 remains available from Git. The beta.2 candidate is not yet on crates.io. Its versioned support forks and normalized package family are rehearsed through Cargo directory-source resolution; see [release preparation](releasing.md). This rehearsal does not satisfy the post-publication registry install gate.
+
+The default facade uses the RedCore graph journal. Physical operation logs and their fold APIs remain explicit directory-backed advanced APIs, matching their existing deployment topology; they are not migrated or replaced by graph snapshots. See [storage owners](extraction/storage-owners.md).
+
+The beta.2 contract crate owns only shared database/browser-storage identities. Theorem keeps product window, plugin, workspace and shell policies and reexports the shared storage types. Identical serde shapes alone are not treated as proof of Rust type identity.

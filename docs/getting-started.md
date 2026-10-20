@@ -21,7 +21,7 @@ cargo run -p rustyred-cli -- create notes.rr
 cargo run -p rustyred-cli -- inspect notes.rr --json
 ```
 
-JSON results go to stdout. A one-line diagnostic goes to stderr. Exit `0` is success, `2` is usage, `3` is open/create failure, `4` is a query error, `5` is a verify report that is not ok.
+JSON results go to stdout. A one-line diagnostic goes to stderr. Exit `0` is success, `2` is usage, `3` is open/create failure, `4` is a query error, `5` is a verify report that is not ok, and `6` is an indeterminate commit outcome requiring reopen and reconciliation before retry.
 
 ## Example
 

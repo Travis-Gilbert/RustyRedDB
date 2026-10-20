@@ -12,16 +12,35 @@ members = [
     "crates/rustyred-derivation",
     "crates/rustyred-contracts",
     "crates/rustyred-scope",
+    "crates/rustyred-query-saturate",
+    "crates/rustyred-graphblas",
     "examples/parts-catalog",
-]
-exclude = [
     "vendor/egg-0.10.0",
     "vendor/turbovec-1.0.0-wasm32",
+]
+default-members = [
+    "crates/rustyred",
+    "crates/rustyred-cli",
+    "crates/rustyred-engine",
+    "crates/rustyred-query",
+    "crates/rustyred-log",
+    "crates/rustyred-bayes",
+    "crates/rustyred-datalog",
+    "crates/rustyred-egraph",
+    "crates/rustyred-derivation",
+    "crates/rustyred-contracts",
+    "crates/rustyred-scope",
+    "crates/rustyred-query-saturate",
+    "examples/parts-catalog",
+    "vendor/egg-0.10.0",
+    "vendor/turbovec-1.0.0-wasm32",
+]
+exclude = [
     "tests/external-consumer",
 ]
 
 [workspace.package]
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/Travis-Gilbert/RustyRedDB"

@@ -1,0 +1,26 @@
+{
+  "checked_date": "2026-10-20",
+  "meaning": "404 means unclaimed at check time, not reserved or proof of account ownership",
+  "names": [
+    {
+      "name": "rustyred-egg",
+      "status": 404,
+      "url": "https://index.crates.io/ru/st/rustyred-egg"
+    },
+    {
+      "name": "rustyred-turbovec",
+      "status": 404,
+      "url": "https://index.crates.io/ru/st/rustyred-turbovec"
+    },
+    {
+      "name": "rustyred-graphblas",
+      "status": 404,
+      "url": "https://index.crates.io/ru/st/rustyred-graphblas"
+    },
+    {
+      "name": "rustyred-query-saturate",
+      "status": 404,
+      "url": "https://index.crates.io/ru/st/rustyred-query-saturate"
+    }
+  ]
+}
