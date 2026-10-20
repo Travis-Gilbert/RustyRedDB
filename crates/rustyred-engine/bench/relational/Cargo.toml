@@ -1,0 +1,16 @@
+[package]
+name = "relational-operators-bench"
+version = "0.1.0"
+edition = "2021"
+description = "SPEC-THEOREM-RELATIONAL-OPERATORS-1.0 RO7 relational operator bench."
+license = "MIT"
+publish = false
+
+[[bin]]
+name = "bench"
+path = "src/main.rs"
+
+[dependencies]
+rustyred-thg-core = { package = "rustyred-engine", path = "../.." }
+
+[workspace]

@@ -1,0 +1,23 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.96.1
+        with:
+          components: clippy, rustfmt
+      - name: boundary
+        run: python3 scripts/dependency_boundary.py
+      - name: facade
+        run: cargo test -p rustyred -p rustyred-cli -p parts-catalog --locked
+      - name: engine lib
+        run: cargo test -p rustyred-engine --lib --locked

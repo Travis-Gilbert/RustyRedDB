@@ -1,0 +1,1326 @@
+//! Deterministic orthogonal rotation via a globally-permuted
+//! block-Hadamard transform.
+//!
+//! The rotation decorrelates coordinates so that each coordinate of a
+//! unit vector follows the near-Gaussian marginal the Lloyd-Max codebook
+//! is fit against. Unlike the dense QR-of-a-Gaussian rotation it replaces
+//! (turbovec ≤ 0.9.0), this transform is **deterministic bit-for-bit**
+//! across platforms, CPU architectures, and thread counts:
+//!
+//! * There is no matrix and no GEMM — the transform is applied in place
+//!   to each row as sign flips, in-block Walsh-Hadamard butterflies, and
+//!   integer permutations. Every arithmetic op is a plain `+`, `-`, or a
+//!   single `*` by a fixed constant; the reduction (add) order is fixed
+//!   and no fused-multiply-add is used, so a SIMD implementation would be
+//!   obligated to match the scalar result exactly.
+//! * The sign flips and permutations are drawn from ChaCha8, whose byte
+//!   stream is a pure function of the seed — identical on every target.
+//!
+//! This closes issue #206: the old QR rotation read the global rayon
+//! parallelism and used `faer`'s order-dependent parallel Householder
+//! reduction plus a transcendental Ziggurat sampler, so its output
+//! changed with `RAYON_NUM_THREADS` (dim ≥ 1536) and between libm
+//! implementations (dim ≥ 3072). It also dispatched the rotate GEMM to a
+//! per-OS BLAS backend, so the *encoded bytes* differed by platform. The
+//! block-Hadamard transform removes all three causes by construction and
+//! drops the 42 MB OpenBLAS dependency.
+//!
+//! # The transform (frozen wire-format invariant)
+//!
+//! Let `B` be the largest power-of-two divisor of `dim` (always ≥ 8,
+//! since `dim` is a positive multiple of 8). One *round* is, in order:
+//!
+//! 1. a **global** ChaCha8-seeded Fisher-Yates permutation across all
+//!    `dim` coordinates,
+//! 2. a ChaCha8-seeded ±1 sign flip of every coordinate, and
+//! 3. a normalized Walsh-Hadamard transform (× `1/√B`) applied
+//!    independently to each contiguous `B`-coordinate block.
+//!
+//! The rotation is [`K`] = 2 rounds.
+//!
+//! **The permutation comes first, before every Hadamard.** This makes the
+//! transform *order-invariant*: a `B`-block is never formed from
+//! contiguous input coordinates. Importance-ordered embeddings —
+//! matryoshka/MRL (e.g. OpenAI text-embedding-3, Nomic) and PCA-projected
+//! vectors, whose energy decays monotonically with coordinate index — put
+//! similar-energy coordinates next to each other, so a block built from
+//! contiguous coordinates would group highly-correlated coordinates that
+//! the small Walsh-Hadamard cannot decorrelate. At weak-block dims (`B =
+//! 8`, i.e. `8·odd`) this measurably regressed recall versus the QR
+//! rotation until the leading permutation was added; it scatters those
+//! coordinates across blocks so the result no longer depends on the input
+//! coordinate ordering. The global permutation between rounds also makes
+//! two rounds mix across block boundaries — a single round leaves the
+//! blocks independent and regresses recall; two rounds are statistically
+//! indistinguishable from the old QR rotation's recall.
+//!
+//! Each of permutation, sign flip, and normalized Hadamard is orthogonal,
+//! so their composition is orthogonal: the transform preserves L2 norm
+//! (to f32 rounding) and its inverse is its transpose.
+
+use rand::{RngCore, SeedableRng};
+use rand_chacha::ChaCha8Rng;
+
+/// Number of block-Hadamard rounds.
+///
+/// DO NOT CHANGE — baked into every encoded vector. Two globally-permuted
+/// rounds are the minimum that mixes across block boundaries; the value is
+/// part of the v5 on-disk format contract, not a tunable.
+pub const K: usize = 2;
+
+/// ChaCha8 seed for the sign flips and permutations.
+///
+/// DO NOT CHANGE — baked into every encoded vector. The entire rotation is
+/// a pure function of this seed and `dim`; changing it silently
+/// invalidates every index ever written under the v5 format.
+///
+/// These 32 bytes are the `rand_core` 0.6 `seed_from_u64(42)` expansion,
+/// frozen here as a literal so the wire format depends only on
+/// `rand_chacha` (exact-pinned `=0.3.1`) and not on `rand_core`'s
+/// unpinned seed-expansion algorithm. The golden-bytes tests in
+/// `tests/rotation_determinism.rs` pin the resulting stream.
+const ROTATION_SEED: [u8; 32] = [
+    164, 143, 161, 123, 88, 50, 61, 10, 234, 184, 161, 204, 105, 1, 20, 184, 43, 140, 200,
+    117, 24, 180, 247, 84, 141, 68, 110, 161, 228, 223, 32, 242,
+];
+
+/// Largest power-of-two divisor of `dim`.
+///
+/// `dim` is always a positive multiple of 8, so this is ≥ 8 and a power
+/// of two. For a pure power-of-two `dim` it equals `dim` (one block); for
+/// `8·odd` (e.g. 1000, 200) it collapses to 8.
+fn block_size(dim: usize) -> usize {
+    debug_assert!(dim > 0 && dim % 8 == 0);
+    dim & dim.wrapping_neg()
+}
+
+/// A deterministic orthogonal rotation for a fixed `dim`.
+///
+/// Holds the per-round sign vectors and permutations precomputed from
+/// a fixed internal seed. Construction is `O(K · dim)`; [`Self::apply`]
+/// rotates one `dim`-length row in place in `O(K · dim · log B)`.
+#[derive(Debug, Clone)]
+pub struct Rotation {
+    dim: usize,
+    block: usize,
+    inv_sqrt_block: f32,
+    /// Per-round ±1 sign flips, `K` vectors each of length `dim`.
+    signs: Vec<Vec<f32>>,
+    /// Per-round global permutations, `K` permutations each of length
+    /// `dim` (`perm[i]` is the source coordinate for output slot `i`).
+    perms: Vec<Vec<u32>>,
+    /// Round-1 signs pre-scattered to source positions:
+    /// `signs_pre[perms[1][i]] == signs[1][i]`. Lets the round-1 sign
+    /// multiply ride the (vectorized) round-0 output scale pass instead
+    /// of the scalar gather; the multiply order per element is
+    /// unchanged, so the output is bit-identical.
+    signs1_pre: Vec<f32>,
+}
+
+impl Rotation {
+    /// Build the rotation for `dim` (a positive multiple of 8).
+    ///
+    /// # Panics
+    ///
+    /// - If `dim` is 0 or not a multiple of 8. The packed layout stores
+    ///   one bit-plane byte per 8 coordinates, so no other `dim` has a
+    ///   representable layout.
+    /// - If `dim` exceeds [`MAX_DIM`](crate::MAX_DIM) (16384). The bound
+    ///   is not arbitrary: the permutation indices are handed to the x86
+    ///   gather intrinsics, which read them as *signed* `i32`, so above
+    ///   `2^31` a large index sign-extends into a wild negative offset;
+    ///   and at `2^32` the permutation is truncated into `u32` outright.
+    ///   Past this limit the gather is not merely wrong but unsound, so
+    ///   the ceiling is enforced here as well as at the index types.
+    ///
+    /// Unlike the index constructors, which return
+    /// [`ConstructError`](crate::ConstructError) for the same two
+    /// conditions, this is a direct kernel constructor: reaching it with
+    /// a `dim` the index types would have rejected means the caller
+    /// bypassed that validation, so it aborts rather than reporting.
+    pub fn new(dim: usize) -> Self {
+        assert!(dim > 0 && dim % 8 == 0, "rotation dim must be a positive multiple of 8");
+        // Bound `dim` here, not just at the index types. This module is
+        // public, so `Rotation::new` is reachable without going through
+        // `TurboQuantIndex` (which enforces the same bound) — and past
+        // this limit the SIMD gather stops being merely wrong and becomes
+        // unsound:
+        //
+        // * above 2^31, the permutation indices are handed to
+        //   `_mm{256,512}_i32gather_ps`, which treats them as *signed*
+        //   i32 — a large index sign-extends into a wild negative offset;
+        // * at 2^32 and above, `fisher_yates` truncates the permutation
+        //   into `u32` outright.
+        //
+        // Neither is reachable in a real deployment (2^31 coordinates is
+        // ~9 GB for one vector), and both were merely logic bugs before
+        // the gather existed. They are memory-unsafety now, so the guard
+        // is an assert rather than a comment.
+        assert!(
+            dim <= crate::MAX_DIM,
+            "rotation dim {dim} exceeds MAX_DIM ({})",
+            crate::MAX_DIM,
+        );
+        let block = block_size(dim);
+        let inv_sqrt_block = 1.0 / (block as f32).sqrt();
+
+        // A single ChaCha8 stream drives the whole construction. The draw
+        // order — for each round: `dim` sign draws, then a Fisher-Yates
+        // permutation — is part of the frozen format contract.
+        let mut rng = ChaCha8Rng::from_seed(ROTATION_SEED);
+        let mut signs = Vec::with_capacity(K);
+        let mut perms = Vec::with_capacity(K);
+        for _ in 0..K {
+            let sign_row: Vec<f32> = (0..dim)
+                .map(|_| if rng.next_u32() & 1 == 1 { -1.0 } else { 1.0 })
+                .collect();
+            signs.push(sign_row);
+            perms.push(fisher_yates(dim, &mut rng));
+        }
+
+        let mut signs1_pre = vec![1.0f32; dim];
+        for (i, &p) in perms[1].iter().enumerate() {
+            signs1_pre[p as usize] = signs[1][i];
+        }
+
+        Self { dim, block, inv_sqrt_block, signs, perms, signs1_pre }
+    }
+
+    /// Vector dimensionality this rotation is built for.
+    pub fn dim(&self) -> usize {
+        self.dim
+    }
+
+    /// Apply the rotation to a single `dim`-length row in place.
+    ///
+    /// Reduction-free and scalar: fixed add order, no FMA, no rayon. Two
+    /// calls on equal input produce bit-identical output regardless of the
+    /// ambient thread count — this is the property the QR rotation lacked
+    /// (#206).
+    ///
+    /// Panics if `row.len() != dim`.
+    pub fn apply(&self, row: &mut [f32]) {
+        // Scratch for the permutation step (`out[i] = row[perm[i]]`).
+        let mut scratch = vec![0.0f32; self.dim];
+        self.apply_with_scratch(row, &mut scratch);
+    }
+
+    /// Rotate `src` scaled by `inv` into `dst`, leaving `src` untouched.
+    ///
+    /// Computes exactly what `apply_with_scratch` would produce for a row
+    /// pre-scaled by `inv`: the first round's gather multiplies
+    /// `(src[perm[i]] * inv) * sign[i]` — the same two multiplies, in the
+    /// same order, as a separate scale pass followed by the fused
+    /// gather — so the output is bit-identical while the pre-scaled
+    /// intermediate row never has to be materialized.
+    ///
+    /// Panics if any of `src`, `dst`, or `scratch` is not `dim` long.
+    pub fn apply_scaled_into(
+        &self,
+        src: &[f32],
+        inv: f32,
+        dst: &mut [f32],
+        scratch: &mut [f32],
+    ) {
+        assert_eq!(src.len(), self.dim, "rotation input row must have length dim");
+        assert_eq!(dst.len(), self.dim, "rotation output row must have length dim");
+        assert_eq!(scratch.len(), self.dim, "rotation scratch must have length dim");
+        let dim = self.dim;
+        let block = self.block;
+
+        // Round 0 gathers src -> scratch (applying `inv`), round 1
+        // gathers scratch -> dst; K = 2 keeps the result in `dst`.
+        const _: () = assert!(K == 2, "buffer schedule below is written for K = 2");
+        let wht = |buf: &mut [f32]| {
+            let mut offset = 0;
+            while offset < dim {
+                wht_block(&mut buf[offset..offset + block], block, self.inv_sqrt_block);
+                offset += block;
+            }
+        };
+
+        // Round 0: fused scale + sign in the gather.
+        permute_gather::<2>(src, &self.perms[0], &self.signs[0], inv, scratch);
+        wht(scratch);
+        // Apply round 1's sign at the source positions (see
+        // `signs1_pre`): `(x * 1/sqrtB) * sign` happens in the same
+        // order as the gather-side multiply it replaces, so the round-1
+        // output is bit-identical while its gather becomes a pure move.
+        for (x, &sg) in scratch.iter_mut().zip(self.signs1_pre.iter()) {
+            *x *= sg;
+        }
+
+        // Round 1: scratch -> dst (sign already applied above).
+        permute_gather::<0>(scratch, &self.perms[1], &self.signs1_pre, 1.0, dst);
+        wht(dst);
+    }
+
+    /// [`Self::apply`] with a caller-provided scratch buffer, for hot loops
+    /// that rotate many rows (encode, query batches) — reusing one scratch
+    /// per rayon worker avoids an allocation per row. The scratch is fully
+    /// overwritten before it is read, so its prior contents never influence
+    /// the output and both entry points produce bit-identical results.
+    ///
+    /// Panics if `row.len() != dim` or `scratch.len() != dim`.
+    pub fn apply_with_scratch(&self, row: &mut [f32], scratch: &mut [f32]) {
+        assert_eq!(row.len(), self.dim, "rotation input row must have length dim");
+        assert_eq!(scratch.len(), self.dim, "rotation scratch must have length dim");
+        let dim = self.dim;
+        let block = self.block;
+
+        // The two buffers ping-pong: each round's permutation gathers from
+        // one buffer into the other, and the sign flip + Walsh-Hadamard run
+        // in the destination — no copy back. K = 2 (even), so the final
+        // round lands the result in `row` where callers expect it.
+        const _: () = assert!(K % 2 == 0, "ping-pong ends in `row` only for even K");
+        let (mut input, mut output): (&mut [f32], &mut [f32]) = (row, scratch);
+
+        for round in 0..K {
+
+            // 1. Global permutation FIRST, with the sign flip fused into
+            //    the gather (`out[i] = in[perm[i]] * sign[i]` — the same
+            //    multiply the separate pass performed, so values are
+            //    bit-identical). A permutation precedes *every*
+            //    Walsh-Hadamard, including round 1, so a B-block is never
+            //    formed from contiguous input coordinates. This makes the
+            //    transform order-invariant: importance-ordered embeddings
+            //    (matryoshka/MRL, PCA — energy monotonically ordered by
+            //    coordinate index) otherwise co-locate similar-energy
+            //    coordinates in one small block, which the block-Hadamard
+            //    cannot decorrelate, regressing recall at weak-block (B=8,
+            //    i.e. `8·odd`) dims. Permuting first scatters those
+            //    coordinates across blocks.
+            let perm = &self.perms[round];
+            let sign_row = &self.signs[round];
+            permute_gather::<1>(input, perm, sign_row, 1.0, output);
+
+            // 3. Normalized Walsh-Hadamard per B-block. The butterfly is
+            //    the unnormalized transform (adds/subtracts only, fixed
+            //    order); the single `1/√B` scale at the end makes it
+            //    orthonormal. `√B` may be inexact in f32 (e.g. √8), but the
+            //    scale is a fixed constant so the result is still
+            //    deterministic.
+            //
+            //    The SIMD path below performs exactly the same adds,
+            //    subtracts, and multiplies on the same operand pairs —
+            //    butterflies within a stage are independent, so lane-
+            //    parallel execution cannot reassociate anything and the
+            //    output stays bit-identical to the scalar path (pinned by
+            //    the golden-bytes tests in tests/rotation_determinism.rs).
+            let mut offset = 0;
+            while offset < dim {
+                let blk = &mut output[offset..offset + block];
+                wht_block(blk, block, self.inv_sqrt_block);
+                offset += block;
+            }
+
+            // This round's output feeds the next round's gather.
+            std::mem::swap(&mut input, &mut output);
+        }
+    }
+}
+
+/// One permutation round: `dst[i] = src[perm[i]]`, optionally scaled.
+///
+/// `MODE` selects the multiplies that ride the gather, in the order the
+/// scalar loop performed them:
+///
+/// * `0` — plain move (`signs`/`inv` unused).
+/// * `1` — `src[perm[i]] * signs[i]`.
+/// * `2` — `(src[perm[i]] * inv) * signs[i]`.
+///
+/// The permutation is a bijection over `0..dim` and `dst` is disjoint
+/// from `src`, so lane-parallel execution reads and writes exactly the
+/// elements the scalar loop did; the multiplies are the same IEEE ops in
+/// the same order, so the output is bit-identical (pinned by the
+/// golden-bytes tests in `tests/rotation_determinism.rs`).
+///
+/// Panics if `perm`, `signs`, `src`, and `dst` are not all the same
+/// length.
+#[inline(always)]
+fn permute_gather<const MODE: usize>(
+    src: &[f32],
+    perm: &[u32],
+    signs: &[f32],
+    inv: f32,
+    dst: &mut [f32],
+) {
+    // Not `debug_assert`: the SIMD bodies below index `src` through a
+    // hardware gather and read `perm`/`signs` with `get_unchecked`, so a
+    // length mismatch is an out-of-bounds read in release, which is
+    // exactly the build where a `debug_assert` is absent. Three integer
+    // compares against work that is O(dim) gathers.
+    assert_eq!(src.len(), dst.len(), "permute_gather: src length must equal dst");
+    assert_eq!(perm.len(), dst.len(), "permute_gather: perm length must equal dst");
+    assert_eq!(signs.len(), dst.len(), "permute_gather: signs length must equal dst");
+    #[cfg(target_arch = "x86_64")]
+    {
+        // Hardware gather replaces the per-element load-index/load-value
+        // pair; the surrounding multiplies are unchanged.
+        if std::arch::is_x86_feature_detected!("avx512f")
+            && std::arch::is_x86_feature_detected!("avx2")
+        {
+            unsafe { return permute_gather_avx512::<MODE>(src, perm, signs, inv, dst) }
+        } else if std::arch::is_x86_feature_detected!("avx2") {
+            unsafe { return permute_gather_avx2::<MODE>(src, perm, signs, inv, dst) }
+        }
+    }
+    permute_gather_scalar::<MODE>(src, perm, signs, inv, dst)
+}
+
+#[inline(always)]
+fn permute_gather_scalar<const MODE: usize>(
+    src: &[f32],
+    perm: &[u32],
+    signs: &[f32],
+    inv: f32,
+    dst: &mut [f32],
+) {
+    for ((d, &p), &s) in dst.iter_mut().zip(perm.iter()).zip(signs.iter()) {
+        let v = src[p as usize];
+        *d = match MODE {
+            0 => v,
+            1 => v * s,
+            _ => (v * inv) * s,
+        };
+    }
+}
+
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "avx2")]
+unsafe fn permute_gather_avx2<const MODE: usize>(
+    src: &[f32],
+    perm: &[u32],
+    signs: &[f32],
+    inv: f32,
+    dst: &mut [f32],
+) {
+    use std::arch::x86_64::*;
+    let n = dst.len();
+    let base = src.as_ptr();
+    let invv = _mm256_set1_ps(inv);
+    let mut i = 0;
+    while i + 8 <= n {
+        let idx = _mm256_loadu_si256(perm.as_ptr().add(i) as *const __m256i);
+        let mut v = _mm256_i32gather_ps::<4>(base, idx);
+        if MODE == 2 {
+            v = _mm256_mul_ps(v, invv);
+        }
+        if MODE != 0 {
+            v = _mm256_mul_ps(v, _mm256_loadu_ps(signs.as_ptr().add(i)));
+        }
+        _mm256_storeu_ps(dst.as_mut_ptr().add(i), v);
+        i += 8;
+    }
+    // `dim` is always a multiple of 8, so this tail is dead on every
+    // index path; kept so the helper is correct for any length.
+    while i < n {
+        let v = *src.get_unchecked(*perm.get_unchecked(i) as usize);
+        let s = *signs.get_unchecked(i);
+        *dst.get_unchecked_mut(i) = match MODE {
+            0 => v,
+            1 => v * s,
+            _ => (v * inv) * s,
+        };
+        i += 1;
+    }
+}
+
+// `avx2` as well as `avx512f`: the sub-16 tail below gathers with
+// `_mm256_i32gather_ps`, which is an AVX2 instruction. Every real
+// AVX-512F implementation also has AVX2, but declaring only `avx512f`
+// while executing AVX2 would be a lie the compiler is entitled to act
+// on — and the dispatcher tests both features to match.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "avx512f", enable = "avx2")]
+unsafe fn permute_gather_avx512<const MODE: usize>(
+    src: &[f32],
+    perm: &[u32],
+    signs: &[f32],
+    inv: f32,
+    dst: &mut [f32],
+) {
+    use std::arch::x86_64::*;
+    let n = dst.len();
+    let base = src.as_ptr();
+    let invv = _mm512_set1_ps(inv);
+    let mut i = 0;
+    while i + 16 <= n {
+        let idx = _mm512_loadu_si512(perm.as_ptr().add(i) as *const __m512i);
+        let mut v = _mm512_i32gather_ps::<4>(idx, base);
+        if MODE == 2 {
+            v = _mm512_mul_ps(v, invv);
+        }
+        if MODE != 0 {
+            v = _mm512_mul_ps(v, _mm512_loadu_ps(signs.as_ptr().add(i)));
+        }
+        _mm512_storeu_ps(dst.as_mut_ptr().add(i), v);
+        i += 16;
+    }
+    while i + 8 <= n {
+        let idx = _mm256_loadu_si256(perm.as_ptr().add(i) as *const __m256i);
+        let mut v = _mm256_i32gather_ps::<4>(src.as_ptr(), idx);
+        if MODE == 2 {
+            v = _mm256_mul_ps(v, _mm256_set1_ps(inv));
+        }
+        if MODE != 0 {
+            v = _mm256_mul_ps(v, _mm256_loadu_ps(signs.as_ptr().add(i)));
+        }
+        _mm256_storeu_ps(dst.as_mut_ptr().add(i), v);
+        i += 8;
+    }
+    while i < n {
+        let v = *src.get_unchecked(*perm.get_unchecked(i) as usize);
+        let s = *signs.get_unchecked(i);
+        *dst.get_unchecked_mut(i) = match MODE {
+            0 => v,
+            1 => v * s,
+            _ => (v * inv) * s,
+        };
+        i += 1;
+    }
+}
+
+/// Unnormalized Walsh-Hadamard butterfly over one `block`-length slice,
+/// followed by the `1/√B` orthonormalization scale.
+///
+/// Scalar reference semantics: for each stage `len = 1, 2, 4, …, B/2`,
+/// each pair `(blk[j], blk[j+len])` becomes `(a+b, a-b)`. The aarch64
+/// path executes the identical operations 4 lanes at a time; butterflies
+/// within a stage touch disjoint elements, so the results are
+/// bit-identical to the scalar loop.
+#[cfg(target_arch = "aarch64")]
+#[inline(always)]
+fn wht_block(blk: &mut [f32], block: usize, inv_sqrt_block: f32) {
+    use std::arch::aarch64::*;
+    debug_assert!(block >= 8 && block.is_power_of_two());
+    let p = blk.as_mut_ptr();
+
+    unsafe {
+        // Stages len=1 and len=2, fused: each 8-float group is fully
+        // resolved in registers. Layout per group: [a0 a1 b0 b1 a2 a3
+        // b2 b3] after the len=1 view; the arithmetic below evaluates
+        // the same (a±b) then (·±·) expression trees, with the same f32
+        // roundings, as two sequential passes.
+        let mut j = 0;
+        while j < block {
+            // len=1: adjacent pairs.
+            let ab = vld2q_f32(p.add(j));
+            let s1 = vaddq_f32(ab.0, ab.1); // sums at even slots
+            let d1 = vsubq_f32(ab.0, ab.1); // diffs at odd slots
+            // After len=1 the block is [s0 d0 s1 d1 s2 d2 s3 d3] in
+            // memory order; len=2 pairs slots (k, k+2):
+            //   (s0,d0) with (s1,d1) and (s2,d2) with (s3,d3).
+            // s1/d1 registers hold [s0 s1 s2 s3] / [d0 d1 d2 d3].
+            // len=2 pairs slot k with k+2, i.e. (s0,d0) with (s1,d1)
+            // and (s2,d2) with (s3,d3). Interleave the s/d registers so
+            // each len=2 operand pair sits in matching lanes:
+            let s_even = vtrn1q_f32(s1, d1); // [s0 d0 s2 d2]
+            let s_odd  = vtrn2q_f32(s1, d1); // [s1 d1 s3 d3]
+            let sum2 = vaddq_f32(s_even, s_odd);  // [s0+s1 d0+d1 s2+s3 d2+d3]
+            let dif2 = vsubq_f32(s_even, s_odd);  // [s0-s1 d0-d1 s2-s3 d2-d3]
+            // Memory order after len=2 stage:
+            //   j..j+4  = [s0+s1, d0+d1, s0-s1, d0-d1]
+            //   j+4..j+8= [s2+s3, d2+d3, s2-s3, d2-d3]
+            let out0 = vcombine_f32(vget_low_f32(sum2), vget_low_f32(dif2));
+            let out1 = vcombine_f32(vget_high_f32(sum2), vget_high_f32(dif2));
+            vst1q_f32(p.add(j), out0);
+            vst1q_f32(p.add(j + 4), out1);
+            j += 8;
+        }
+
+        // Stages len >= 4: radix-8 passes (three stages each) while at
+        // least three stages remain, then a radix-4 pass if two remain.
+        // Every output is the identical (((a±b)±(c±d))±((e±f)±(g±h)))
+        // expression tree, with the same f32 roundings, as the
+        // sequential stages it replaces.
+        let mut len = 4;
+        while 4 * len < block {
+            let oct = 8 * len;
+            let mut i = 0;
+            while i < block {
+                let mut j = i;
+                while j < i + len {
+                    let a = vld1q_f32(p.add(j));
+                    let b = vld1q_f32(p.add(j + len));
+                    let c = vld1q_f32(p.add(j + 2 * len));
+                    let d = vld1q_f32(p.add(j + 3 * len));
+                    let e = vld1q_f32(p.add(j + 4 * len));
+                    let f = vld1q_f32(p.add(j + 5 * len));
+                    let g = vld1q_f32(p.add(j + 6 * len));
+                    let h = vld1q_f32(p.add(j + 7 * len));
+                    let apb = vaddq_f32(a, b);
+                    let amb = vsubq_f32(a, b);
+                    let cpd = vaddq_f32(c, d);
+                    let cmd = vsubq_f32(c, d);
+                    let epf = vaddq_f32(e, f);
+                    let emf = vsubq_f32(e, f);
+                    let gph = vaddq_f32(g, h);
+                    let gmh = vsubq_f32(g, h);
+                    let s0 = vaddq_f32(apb, cpd);
+                    let s1 = vaddq_f32(amb, cmd);
+                    let s2 = vsubq_f32(apb, cpd);
+                    let s3 = vsubq_f32(amb, cmd);
+                    let s4 = vaddq_f32(epf, gph);
+                    let s5 = vaddq_f32(emf, gmh);
+                    let s6 = vsubq_f32(epf, gph);
+                    let s7 = vsubq_f32(emf, gmh);
+                    vst1q_f32(p.add(j), vaddq_f32(s0, s4));
+                    vst1q_f32(p.add(j + len), vaddq_f32(s1, s5));
+                    vst1q_f32(p.add(j + 2 * len), vaddq_f32(s2, s6));
+                    vst1q_f32(p.add(j + 3 * len), vaddq_f32(s3, s7));
+                    vst1q_f32(p.add(j + 4 * len), vsubq_f32(s0, s4));
+                    vst1q_f32(p.add(j + 5 * len), vsubq_f32(s1, s5));
+                    vst1q_f32(p.add(j + 6 * len), vsubq_f32(s2, s6));
+                    vst1q_f32(p.add(j + 7 * len), vsubq_f32(s3, s7));
+                    j += 4;
+                }
+                i += oct;
+            }
+            len <<= 3;
+        }
+        if 2 * len < block {
+            let quad = 4 * len;
+            let mut i = 0;
+            while i < block {
+                let mut j = i;
+                while j < i + len {
+                    let a = vld1q_f32(p.add(j));
+                    let b = vld1q_f32(p.add(j + len));
+                    let c = vld1q_f32(p.add(j + 2 * len));
+                    let d = vld1q_f32(p.add(j + 3 * len));
+                    let apb = vaddq_f32(a, b);
+                    let amb = vsubq_f32(a, b);
+                    let cpd = vaddq_f32(c, d);
+                    let cmd = vsubq_f32(c, d);
+                    vst1q_f32(p.add(j), vaddq_f32(apb, cpd));
+                    vst1q_f32(p.add(j + len), vaddq_f32(amb, cmd));
+                    vst1q_f32(p.add(j + 2 * len), vsubq_f32(apb, cpd));
+                    vst1q_f32(p.add(j + 3 * len), vsubq_f32(amb, cmd));
+                    j += 4;
+                }
+                i += quad;
+            }
+            len <<= 2;
+        }
+        // Odd stage left over when the stage count from len=4 up is odd.
+        if len < block {
+            let mut i = 0;
+            while i < block {
+                let mut j = i;
+                while j < i + len {
+                    let a = vld1q_f32(p.add(j));
+                    let b = vld1q_f32(p.add(j + len));
+                    vst1q_f32(p.add(j), vaddq_f32(a, b));
+                    vst1q_f32(p.add(j + len), vsubq_f32(a, b));
+                    j += 4;
+                }
+                i += 2 * len;
+            }
+        }
+
+        // Orthonormalization scale.
+        let sv = vdupq_n_f32(inv_sqrt_block);
+        let mut j = 0;
+        while j < block {
+            vst1q_f32(p.add(j), vmulq_f32(vld1q_f32(p.add(j)), sv));
+            j += 4;
+        }
+    }
+}
+
+#[cfg(target_arch = "x86_64")]
+#[inline(always)]
+fn wht_block(blk: &mut [f32], block: usize, inv_sqrt_block: f32) {
+    // Runtime dispatch: the SIMD paths execute the identical per-element
+    // adds, subtracts, and multiplies 16 or 8 lanes at a time —
+    // butterflies within a stage touch disjoint elements, so results are
+    // bit-identical to the scalar loop (the same property the NEON path
+    // relies on). is_x86_feature_detected caches after the first call.
+    if std::arch::is_x86_feature_detected!("avx512f")
+        && std::arch::is_x86_feature_detected!("avx2")
+    {
+        unsafe { wht_block_avx512(blk, block, inv_sqrt_block) }
+    } else if std::arch::is_x86_feature_detected!("avx2") {
+        unsafe { wht_block_avx2(blk, block, inv_sqrt_block) }
+    } else {
+        wht_block_scalar(blk, block, inv_sqrt_block)
+    }
+}
+
+/// AVX2 Walsh-Hadamard.
+///
+/// The stage schedule mirrors the NEON path: the three lowest stages
+/// (len = 1, 2, 4) are a full 8-point Hadamard resolved inside one
+/// register, then higher stages run as radix-8 passes (three stages per
+/// memory pass) with radix-4 / radix-2 tails for whatever remains. At
+/// block = 512 (dim 1536) that is 3 passes over the block instead of the
+/// 9 a radix-2 ladder needs.
+///
+/// Every output is the same `(((a±b)±(c±d))±((e±f)±(g±h)))` expression
+/// tree, evaluated on the same operands with the same f32 roundings, as
+/// the sequential scalar stages it replaces — reassociation is
+/// impossible because butterflies within a stage are independent.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "avx2")]
+unsafe fn wht_block_avx2(blk: &mut [f32], block: usize, inv_sqrt_block: f32) {
+    use std::arch::x86_64::*;
+    debug_assert!(block >= 8 && block.is_power_of_two());
+    let p = blk.as_mut_ptr();
+
+    // Stages len = 1, 2, 4 fused: each 8-float group is fully resolved in
+    // registers by three shuffle/add/sub/blend triples.
+    let mut j = 0;
+    while j < block {
+        let v = _mm256_loadu_ps(p.add(j));
+        // len=1: pairs (0,1) (2,3) (4,5) (6,7).
+        let a = _mm256_shuffle_ps::<0b10_10_00_00>(v, v);
+        let b = _mm256_shuffle_ps::<0b11_11_01_01>(v, v);
+        let r1 = _mm256_blend_ps::<0b1010_1010>(
+            _mm256_add_ps(a, b),
+            _mm256_sub_ps(a, b),
+        );
+        // len=2: pairs (0,2) (1,3) (4,6) (5,7).
+        let a = _mm256_shuffle_ps::<0b01_00_01_00>(r1, r1);
+        let b = _mm256_shuffle_ps::<0b11_10_11_10>(r1, r1);
+        let r2 = _mm256_blend_ps::<0b1100_1100>(
+            _mm256_add_ps(a, b),
+            _mm256_sub_ps(a, b),
+        );
+        // len=4: pairs (k, k+4) — across the two 128-bit halves.
+        let a = _mm256_permute2f128_ps::<0x00>(r2, r2);
+        let b = _mm256_permute2f128_ps::<0x11>(r2, r2);
+        let r4 = _mm256_blend_ps::<0b1111_0000>(
+            _mm256_add_ps(a, b),
+            _mm256_sub_ps(a, b),
+        );
+        _mm256_storeu_ps(p.add(j), r4);
+        j += 8;
+    }
+
+    // Stages len >= 8: radix-8 passes (three stages each) while at least
+    // three stages remain, then a radix-4 pass if two remain, then a
+    // single radix-2 stage if one does.
+    let mut len = 8;
+    while 4 * len < block {
+        let oct = 8 * len;
+        let mut i = 0;
+        while i < block {
+            let mut j = i;
+            while j < i + len {
+                let a = _mm256_loadu_ps(p.add(j));
+                let b = _mm256_loadu_ps(p.add(j + len));
+                let c = _mm256_loadu_ps(p.add(j + 2 * len));
+                let d = _mm256_loadu_ps(p.add(j + 3 * len));
+                let e = _mm256_loadu_ps(p.add(j + 4 * len));
+                let f = _mm256_loadu_ps(p.add(j + 5 * len));
+                let g = _mm256_loadu_ps(p.add(j + 6 * len));
+                let h = _mm256_loadu_ps(p.add(j + 7 * len));
+                let apb = _mm256_add_ps(a, b);
+                let amb = _mm256_sub_ps(a, b);
+                let cpd = _mm256_add_ps(c, d);
+                let cmd = _mm256_sub_ps(c, d);
+                let epf = _mm256_add_ps(e, f);
+                let emf = _mm256_sub_ps(e, f);
+                let gph = _mm256_add_ps(g, h);
+                let gmh = _mm256_sub_ps(g, h);
+                let s0 = _mm256_add_ps(apb, cpd);
+                let s1 = _mm256_add_ps(amb, cmd);
+                let s2 = _mm256_sub_ps(apb, cpd);
+                let s3 = _mm256_sub_ps(amb, cmd);
+                let s4 = _mm256_add_ps(epf, gph);
+                let s5 = _mm256_add_ps(emf, gmh);
+                let s6 = _mm256_sub_ps(epf, gph);
+                let s7 = _mm256_sub_ps(emf, gmh);
+                _mm256_storeu_ps(p.add(j), _mm256_add_ps(s0, s4));
+                _mm256_storeu_ps(p.add(j + len), _mm256_add_ps(s1, s5));
+                _mm256_storeu_ps(p.add(j + 2 * len), _mm256_add_ps(s2, s6));
+                _mm256_storeu_ps(p.add(j + 3 * len), _mm256_add_ps(s3, s7));
+                _mm256_storeu_ps(p.add(j + 4 * len), _mm256_sub_ps(s0, s4));
+                _mm256_storeu_ps(p.add(j + 5 * len), _mm256_sub_ps(s1, s5));
+                _mm256_storeu_ps(p.add(j + 6 * len), _mm256_sub_ps(s2, s6));
+                _mm256_storeu_ps(p.add(j + 7 * len), _mm256_sub_ps(s3, s7));
+                j += 8;
+            }
+            i += oct;
+        }
+        len <<= 3;
+    }
+    if 2 * len < block {
+        let quad = 4 * len;
+        let mut i = 0;
+        while i < block {
+            let mut j = i;
+            while j < i + len {
+                let a = _mm256_loadu_ps(p.add(j));
+                let b = _mm256_loadu_ps(p.add(j + len));
+                let c = _mm256_loadu_ps(p.add(j + 2 * len));
+                let d = _mm256_loadu_ps(p.add(j + 3 * len));
+                let apb = _mm256_add_ps(a, b);
+                let amb = _mm256_sub_ps(a, b);
+                let cpd = _mm256_add_ps(c, d);
+                let cmd = _mm256_sub_ps(c, d);
+                _mm256_storeu_ps(p.add(j), _mm256_add_ps(apb, cpd));
+                _mm256_storeu_ps(p.add(j + len), _mm256_add_ps(amb, cmd));
+                _mm256_storeu_ps(p.add(j + 2 * len), _mm256_sub_ps(apb, cpd));
+                _mm256_storeu_ps(p.add(j + 3 * len), _mm256_sub_ps(amb, cmd));
+                j += 8;
+            }
+            i += quad;
+        }
+        len <<= 2;
+    }
+    if len < block {
+        let mut i = 0;
+        while i < block {
+            let mut j = i;
+            while j < i + len {
+                let a = _mm256_loadu_ps(p.add(j));
+                let b = _mm256_loadu_ps(p.add(j + len));
+                _mm256_storeu_ps(p.add(j), _mm256_add_ps(a, b));
+                _mm256_storeu_ps(p.add(j + len), _mm256_sub_ps(a, b));
+                j += 8;
+            }
+            i += 2 * len;
+        }
+    }
+
+    // Orthonormalization scale.
+    let sv = _mm256_set1_ps(inv_sqrt_block);
+    let mut j = 0;
+    while j < block {
+        _mm256_storeu_ps(p.add(j), _mm256_mul_ps(_mm256_loadu_ps(p.add(j)), sv));
+        j += 8;
+    }
+}
+
+/// AVX-512 Walsh-Hadamard — the AVX2 schedule at 16 lanes.
+///
+/// The four lowest stages (len = 1, 2, 4, 8) become a full 16-point
+/// Hadamard inside one zmm register, so block = 512 and block = 1024
+/// (dims 1536 and 3072) each need just 3 memory passes. Same operand
+/// pairs, same expression trees, same f32 roundings as the scalar
+/// ladder — enforced against it by `wht_simd_matches_scalar_bit_exactly`
+/// at every block size.
+// `avx2` as well as `avx512f`: a block of 8 has no room for a 16-lane
+// register and is handed to the AVX2 kernel below. See the note on
+// `permute_gather_avx512` for why the declaration has to say so.
+#[cfg(target_arch = "x86_64")]
+#[target_feature(enable = "avx512f", enable = "avx2")]
+unsafe fn wht_block_avx512(blk: &mut [f32], block: usize, inv_sqrt_block: f32) {
+    use std::arch::x86_64::*;
+    debug_assert!(block >= 8 && block.is_power_of_two());
+    let p = blk.as_mut_ptr();
+
+    // A block of 8 has only the three lowest stages and no room for a
+    // 16-lane register — hand it to the AVX2 kernel, which is written
+    // for exactly that case.
+    if block < 16 {
+        return wht_block_avx2(blk, block, inv_sqrt_block);
+    }
+
+    // Stages len = 1, 2, 4, 8 fused: 16-point Hadamard in registers.
+    let mut j = 0;
+    while j < block {
+        let v = _mm512_loadu_ps(p.add(j));
+        // len=1: pairs (k, k+1) inside each 128-bit lane.
+        let a = _mm512_shuffle_ps::<0b10_10_00_00>(v, v);
+        let b = _mm512_shuffle_ps::<0b11_11_01_01>(v, v);
+        let r1 = _mm512_mask_blend_ps(
+            0b1010_1010_1010_1010,
+            _mm512_add_ps(a, b),
+            _mm512_sub_ps(a, b),
+        );
+        // len=2: pairs (k, k+2) inside each 128-bit lane.
+        let a = _mm512_shuffle_ps::<0b01_00_01_00>(r1, r1);
+        let b = _mm512_shuffle_ps::<0b11_10_11_10>(r1, r1);
+        let r2 = _mm512_mask_blend_ps(
+            0b1100_1100_1100_1100,
+            _mm512_add_ps(a, b),
+            _mm512_sub_ps(a, b),
+        );
+        // len=4: pairs across adjacent 128-bit lanes (0↔1, 2↔3).
+        let a = _mm512_shuffle_f32x4::<0b10_10_00_00>(r2, r2);
+        let b = _mm512_shuffle_f32x4::<0b11_11_01_01>(r2, r2);
+        let r4 = _mm512_mask_blend_ps(
+            0b1111_0000_1111_0000,
+            _mm512_add_ps(a, b),
+            _mm512_sub_ps(a, b),
+        );
+        // len=8: pairs across the two 256-bit halves (lane 0↔2, 1↔3).
+        let a = _mm512_shuffle_f32x4::<0b01_00_01_00>(r4, r4);
+        let b = _mm512_shuffle_f32x4::<0b11_10_11_10>(r4, r4);
+        let r8 = _mm512_mask_blend_ps(
+            0b1111_1111_0000_0000,
+            _mm512_add_ps(a, b),
+            _mm512_sub_ps(a, b),
+        );
+        _mm512_storeu_ps(p.add(j), r8);
+        j += 16;
+    }
+
+    // Stages len >= 16: radix-8, then radix-4 / radix-2 tails.
+    let mut len = 16;
+    while 4 * len < block {
+        let oct = 8 * len;
+        let mut i = 0;
+        while i < block {
+            let mut j = i;
+            while j < i + len {
+                let a = _mm512_loadu_ps(p.add(j));
+                let b = _mm512_loadu_ps(p.add(j + len));
+                let c = _mm512_loadu_ps(p.add(j + 2 * len));
+                let d = _mm512_loadu_ps(p.add(j + 3 * len));
+                let e = _mm512_loadu_ps(p.add(j + 4 * len));
+                let f = _mm512_loadu_ps(p.add(j + 5 * len));
+                let g = _mm512_loadu_ps(p.add(j + 6 * len));
+                let h = _mm512_loadu_ps(p.add(j + 7 * len));
+                let apb = _mm512_add_ps(a, b);
+                let amb = _mm512_sub_ps(a, b);
+                let cpd = _mm512_add_ps(c, d);
+                let cmd = _mm512_sub_ps(c, d);
+                let epf = _mm512_add_ps(e, f);
+                let emf = _mm512_sub_ps(e, f);
+                let gph = _mm512_add_ps(g, h);
+                let gmh = _mm512_sub_ps(g, h);
+                let s0 = _mm512_add_ps(apb, cpd);
+                let s1 = _mm512_add_ps(amb, cmd);
+                let s2 = _mm512_sub_ps(apb, cpd);
+                let s3 = _mm512_sub_ps(amb, cmd);
+                let s4 = _mm512_add_ps(epf, gph);
+                let s5 = _mm512_add_ps(emf, gmh);
+                let s6 = _mm512_sub_ps(epf, gph);
+                let s7 = _mm512_sub_ps(emf, gmh);
+                _mm512_storeu_ps(p.add(j), _mm512_add_ps(s0, s4));
+                _mm512_storeu_ps(p.add(j + len), _mm512_add_ps(s1, s5));
+                _mm512_storeu_ps(p.add(j + 2 * len), _mm512_add_ps(s2, s6));
+                _mm512_storeu_ps(p.add(j + 3 * len), _mm512_add_ps(s3, s7));
+                _mm512_storeu_ps(p.add(j + 4 * len), _mm512_sub_ps(s0, s4));
+                _mm512_storeu_ps(p.add(j + 5 * len), _mm512_sub_ps(s1, s5));
+                _mm512_storeu_ps(p.add(j + 6 * len), _mm512_sub_ps(s2, s6));
+                _mm512_storeu_ps(p.add(j + 7 * len), _mm512_sub_ps(s3, s7));
+                j += 16;
+            }
+            i += oct;
+        }
+        len <<= 3;
+    }
+    if 2 * len < block {
+        let quad = 4 * len;
+        let mut i = 0;
+        while i < block {
+            let mut j = i;
+            while j < i + len {
+                let a = _mm512_loadu_ps(p.add(j));
+                let b = _mm512_loadu_ps(p.add(j + len));
+                let c = _mm512_loadu_ps(p.add(j + 2 * len));
+                let d = _mm512_loadu_ps(p.add(j + 3 * len));
+                let apb = _mm512_add_ps(a, b);
+                let amb = _mm512_sub_ps(a, b);
+                let cpd = _mm512_add_ps(c, d);
+                let cmd = _mm512_sub_ps(c, d);
+                _mm512_storeu_ps(p.add(j), _mm512_add_ps(apb, cpd));
+                _mm512_storeu_ps(p.add(j + len), _mm512_add_ps(amb, cmd));
+                _mm512_storeu_ps(p.add(j + 2 * len), _mm512_sub_ps(apb, cpd));
+                _mm512_storeu_ps(p.add(j + 3 * len), _mm512_sub_ps(amb, cmd));
+                j += 16;
+            }
+            i += quad;
+        }
+        len <<= 2;
+    }
+    if len < block {
+        let mut i = 0;
+        while i < block {
+            let mut j = i;
+            while j < i + len {
+                let a = _mm512_loadu_ps(p.add(j));
+                let b = _mm512_loadu_ps(p.add(j + len));
+                _mm512_storeu_ps(p.add(j), _mm512_add_ps(a, b));
+                _mm512_storeu_ps(p.add(j + len), _mm512_sub_ps(a, b));
+                j += 16;
+            }
+            i += 2 * len;
+        }
+    }
+
+    // Orthonormalization scale.
+    let sv = _mm512_set1_ps(inv_sqrt_block);
+    let mut j = 0;
+    while j < block {
+        _mm512_storeu_ps(p.add(j), _mm512_mul_ps(_mm512_loadu_ps(p.add(j)), sv));
+        j += 16;
+    }
+}
+
+#[cfg(not(any(target_arch = "aarch64", target_arch = "x86_64")))]
+#[inline(always)]
+fn wht_block(blk: &mut [f32], block: usize, inv_sqrt_block: f32) {
+    wht_block_scalar(blk, block, inv_sqrt_block)
+}
+
+#[cfg_attr(target_arch = "aarch64", allow(dead_code))]
+#[inline(always)]
+fn wht_block_scalar(blk: &mut [f32], block: usize, inv_sqrt_block: f32) {
+    let mut len = 1;
+    while len < block {
+        let mut i = 0;
+        while i < block {
+            for j in i..i + len {
+                let a = blk[j];
+                let b = blk[j + len];
+                blk[j] = a + b;
+                blk[j + len] = a - b;
+            }
+            i += 2 * len;
+        }
+        len <<= 1;
+    }
+    for x in blk.iter_mut() {
+        *x *= inv_sqrt_block;
+    }
+}
+
+/// Fisher-Yates shuffle of `0..dim` driven by `rng`.
+///
+/// Uses `next_u64() % (i + 1)` for the swap index — a fixed, portable
+/// integer op. The residual modulo bias is negligible for `dim ≤ MAX_DIM`
+/// and, being deterministic, is part of the frozen format contract rather
+/// than a defect to correct.
+fn fisher_yates(dim: usize, rng: &mut ChaCha8Rng) -> Vec<u32> {
+    let mut perm: Vec<u32> = (0..dim as u32).collect();
+    for i in (1..dim).rev() {
+        let j = (rng.next_u64() % (i as u64 + 1)) as usize;
+        perm.swap(i, j);
+    }
+    perm
+}
+
+#[cfg(test)]
+pub(crate) mod tests {
+    use super::*;
+
+    /// Opt-in SIMD coverage gate.
+    ///
+    /// The identity tests below check every implementation the *host* can
+    /// run and silently skip the rest. That is right for a laptop and
+    /// wrong for CI: a runner without AVX-512 exercises neither AVX-512
+    /// kernel, the tests still pass, and nobody learns that the paths
+    /// went uncovered. GitHub-hosted x86 runners are not guaranteed to
+    /// have AVX-512 at all.
+    ///
+    /// Setting `TURBOVEC_REQUIRE_SIMD` to a comma-separated feature list
+    /// (e.g. `TURBOVEC_REQUIRE_SIMD=avx2,avx512f`) turns a missing
+    /// feature into a test failure, so a machine that is *supposed* to
+    /// cover a kernel proves it did.
+    #[cfg(target_arch = "x86_64")]
+    pub(crate) fn require_simd_features() {
+        let Ok(list) = std::env::var("TURBOVEC_REQUIRE_SIMD") else {
+            return;
+        };
+        for feat in list.split(',').map(str::trim).filter(|f| !f.is_empty()) {
+            let present = match feat {
+                "avx" => std::arch::is_x86_feature_detected!("avx"),
+                "avx2" => std::arch::is_x86_feature_detected!("avx2"),
+                "avx512f" => std::arch::is_x86_feature_detected!("avx512f"),
+                "avx512bw" => std::arch::is_x86_feature_detected!("avx512bw"),
+                "avx512vbmi" => std::arch::is_x86_feature_detected!("avx512vbmi"),
+                other => panic!(
+                    "TURBOVEC_REQUIRE_SIMD lists unknown feature {other:?}"
+                ),
+            };
+            assert!(
+                present,
+                "TURBOVEC_REQUIRE_SIMD demands {feat:?} but this host does \
+                 not have it — the kernels gated on it would be skipped, \
+                 leaving them untested rather than failing",
+            );
+        }
+    }
+
+    #[cfg(not(target_arch = "x86_64"))]
+    pub(crate) fn require_simd_features() {}
+
+    #[test]
+    fn block_size_is_largest_power_of_two_divisor() {
+        assert_eq!(block_size(8), 8);
+        assert_eq!(block_size(200), 8); // 8·25
+        assert_eq!(block_size(768), 256); // 256·3
+        assert_eq!(block_size(1000), 8); // 8·125
+        assert_eq!(block_size(1536), 512); // 512·3
+        assert_eq!(block_size(3072), 1024); // 1024·3
+        assert_eq!(block_size(1024), 1024); // pure power of two
+    }
+
+    #[test]
+    fn wht_simd_matches_scalar_bit_exactly() {
+        require_simd_features();
+        // The format contract requires the SIMD butterfly to reproduce
+        // the scalar expression trees bit-for-bit. Enforce it directly,
+        // on every architecture, for every block-size regime the stage
+        // scheduler has (8 = min block, 16/128/1024 = radix-4 tail,
+        // 32/64/256/512 = other radix-8/leftover mixes).
+        // Up to MAX_DIM's largest block (16384), not just 1024: the
+        // radix-8/4/2 stage scheduler picks a different tail per regime
+        // and the wider blocks were previously only hand-checked.
+        for block in [8usize, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384] {
+            let inv = 1.0 / (block as f32).sqrt();
+            // Deterministic pseudo-random input.
+            let mut x = 0x9E3779B97F4A7C15u64;
+            let buf: Vec<f32> = (0..block)
+                .map(|_| {
+                    x ^= x << 13;
+                    x ^= x >> 7;
+                    x ^= x << 17;
+                    (x as f64 / u64::MAX as f64) as f32 - 0.5
+                })
+                .collect();
+            let mut expect = buf.clone();
+            wht_block_scalar(&mut expect, block, inv);
+
+            // Check *every* implementation this host can run, not just
+            // the one dispatch would pick. On a machine with AVX-512 the
+            // dispatcher never reaches the AVX2 kernel, so testing only
+            // the dispatched path leaves whichever kernels the CI runner
+            // outranks completely unexercised — and they are the ones
+            // most users run.
+            // Only the x86 arms below push, so on other targets this is
+            // never mutated.
+            #[cfg_attr(not(target_arch = "x86_64"), allow(unused_mut))]
+            let mut checked = vec![("dispatch", {
+                let mut b = buf.clone();
+                wht_block(&mut b, block, inv);
+                b
+            })];
+            #[cfg(target_arch = "x86_64")]
+            {
+                if std::arch::is_x86_feature_detected!("avx2") {
+                    let mut b = buf.clone();
+                    unsafe { wht_block_avx2(&mut b, block, inv) };
+                    checked.push(("avx2", b));
+                }
+                if std::arch::is_x86_feature_detected!("avx512f")
+                    && std::arch::is_x86_feature_detected!("avx2")
+                {
+                    let mut b = buf.clone();
+                    unsafe { wht_block_avx512(&mut b, block, inv) };
+                    checked.push(("avx512", b));
+                }
+            }
+            for (name, got) in &checked {
+                for (i, (a, b)) in got.iter().zip(expect.iter()).enumerate() {
+                    assert_eq!(
+                        a.to_bits(),
+                        b.to_bits(),
+                        "block {block} lane {i}: {name} {a} != scalar {b}"
+                    );
+                }
+            }
+        }
+    }
+
+    /// The permutation gather has the same problem as the butterfly: the
+    /// dispatcher hides whichever paths the host outranks. Check them all
+    /// against the scalar reference, in every multiply mode.
+    #[test]
+    fn permute_gather_paths_match_scalar_bit_exactly() {
+        require_simd_features();
+        // Non-multiples of 8 are the only cases that reach the scalar
+        // tail loops — the ones that index with `get_unchecked`. Every
+        // real index path uses a multiple of 8, so without these the
+        // unchecked tail is never executed by any test.
+        //
+        // The three sizes are not interchangeable: 12 and 13 are below
+        // 16, so the AVX-512 path skips its wide body entirely and falls
+        // to the 8-wide loop plus a scalar tail; 29 is the only one that
+        // runs all three stages in sequence (one 16-wide body, one
+        // 8-wide, then a 5-element scalar tail), which is the arrangement
+        // where an off-by-one in the stage hand-off would actually bite.
+        for dim in [8usize, 12, 13, 16, 24, 29, 64, 200, 1536] {
+            let mut x = 0x243F_6A88_85A3_08D3u64 ^ dim as u64;
+            let mut next = || {
+                x ^= x << 13;
+                x ^= x >> 7;
+                x ^= x << 17;
+                x
+            };
+            let src: Vec<f32> =
+                (0..dim).map(|_| (next() as f64 / u64::MAX as f64) as f32 - 0.5).collect();
+            let signs: Vec<f32> =
+                (0..dim).map(|_| if next() & 1 == 1 { -1.0 } else { 1.0 }).collect();
+            // A real permutation, so the gather covers every source slot.
+            let mut rng = ChaCha8Rng::from_seed(ROTATION_SEED);
+            let perm = fisher_yates(dim, &mut rng);
+            let inv = 0.812_5_f32;
+
+            macro_rules! check_mode {
+                ($mode:literal) => {{
+                    let mut expect = vec![0.0f32; dim];
+                    permute_gather_scalar::<$mode>(&src, &perm, &signs, inv, &mut expect);
+
+                    let mut got = vec![0.0f32; dim];
+                    permute_gather::<$mode>(&src, &perm, &signs, inv, &mut got);
+                    assert_eq!(got.iter().map(|v| v.to_bits()).collect::<Vec<_>>(),
+                               expect.iter().map(|v| v.to_bits()).collect::<Vec<_>>(),
+                               "dim {} mode {} dispatch", dim, $mode);
+                    #[cfg(target_arch = "x86_64")]
+                    {
+                        if std::arch::is_x86_feature_detected!("avx2") {
+                            let mut g = vec![0.0f32; dim];
+                            unsafe {
+                                permute_gather_avx2::<$mode>(&src, &perm, &signs, inv, &mut g)
+                            };
+                            assert_eq!(g.iter().map(|v| v.to_bits()).collect::<Vec<_>>(),
+                                       expect.iter().map(|v| v.to_bits()).collect::<Vec<_>>(),
+                                       "dim {} mode {} avx2", dim, $mode);
+                        }
+                        if std::arch::is_x86_feature_detected!("avx512f")
+                            && std::arch::is_x86_feature_detected!("avx2")
+                        {
+                            let mut g = vec![0.0f32; dim];
+                            unsafe {
+                                permute_gather_avx512::<$mode>(&src, &perm, &signs, inv, &mut g)
+                            };
+                            assert_eq!(g.iter().map(|v| v.to_bits()).collect::<Vec<_>>(),
+                                       expect.iter().map(|v| v.to_bits()).collect::<Vec<_>>(),
+                                       "dim {} mode {} avx512", dim, $mode);
+                        }
+                    }
+                }};
+            }
+            check_mode!(0);
+            check_mode!(1);
+            check_mode!(2);
+        }
+    }
+
+    #[test]
+    fn golden_rotation_dim128() {
+        // Pins the dim=128 rotation output (block = 128, the radix-4
+        // tail branch) against frozen bytes. Input: e_0.
+        let rot = Rotation::new(128);
+        let mut row = vec![0.0f32; 128];
+        row[0] = 1.0;
+        rot.apply(&mut row);
+        // Frozen fingerprint: bit-pattern XOR-fold and first four lanes.
+        let fold = row.iter().fold(0u32, |acc, v| acc.rotate_left(1) ^ v.to_bits());
+        let head: Vec<u32> = row[..4].iter().map(|v| v.to_bits()).collect();
+        assert_eq!(
+            (fold, head[0], head[1], head[2], head[3]),
+            GOLDEN_DIM128,
+            "dim=128 rotation output drifted from the frozen v5 bytes",
+        );
+    }
+
+    /// `apply_scaled_into` is the rotation entry point `encode` uses —
+    /// it produces **every encoded byte in every index** — and until
+    /// this test it had no direct coverage at all (#372). The golden
+    /// byte tests all go through `apply`, which shares only the WHT and
+    /// `permute_gather` with it: the round-0 fused `(src·inv)·sign`
+    /// schedule and the `signs1_pre` pre-scatter are unique to this
+    /// path, and their bit-equivalence to `apply` was asserted only in a
+    /// doc comment.
+    ///
+    /// An edit to `signs1_pre`'s construction, to the round-1 sign
+    /// placement, or to the MODE-0/MODE-2 gather split would silently
+    /// change encoded bytes with the rest of the rotation suite green.
+    /// This states the doc comment's claim as a check: bit-for-bit, not
+    /// within a tolerance — a tolerance is exactly what lets a format
+    /// drift through.
+    #[test]
+    fn apply_scaled_into_is_bit_identical_to_apply_of_the_scaled_row() {
+        require_simd_features();
+        // Every block-size regime: B=8 (`8·odd`), B=64, B=128 and the
+        // production dims whose deep radix-8 ladders (B=256/512/1024)
+        // nothing else pins through this entry point.
+        for &dim in &[8usize, 24, 64, 128, 200, 768, 1000, 1024, 1536, 3072] {
+            let rot = Rotation::new(dim);
+            let mut state = 0x517C_C1B7_2722_0A95u64 ^ dim as u64;
+            let mut next = || {
+                state ^= state << 13;
+                state ^= state >> 7;
+                state ^= state << 17;
+                ((state >> 33) as f64 / (1u64 << 31) as f64 - 1.0) as f32
+            };
+            for trial in 0..3 {
+                let src: Vec<f32> = (0..dim).map(|_| next()).collect();
+                let norm = src.iter().map(|x| x * x).sum::<f32>().sqrt();
+                // `0.0` is included deliberately: it is the scale encode
+                // uses for a zero-norm row, and it is the one input that
+                // can expose a signed-zero difference between the fused
+                // and separate multiplies.
+                for &inv in &[1.0f32, 1.0 / norm, 0.0, 0.8125, -1.0] {
+                    // Reference: scale the row, then rotate it — the
+                    // "separate scale pass followed by the fused gather"
+                    // the doc comment claims equivalence to.
+                    let mut expect: Vec<f32> = src.iter().map(|x| x * inv).collect();
+                    rot.apply(&mut expect);
+
+                    // Non-zero fill: the callee must fully overwrite
+                    // both buffers. A partial write would otherwise be
+                    // masked by a zeroed scratch.
+                    let mut dst = vec![f32::NAN; dim];
+                    let mut scratch = vec![f32::NAN; dim];
+                    rot.apply_scaled_into(&src, inv, &mut dst, &mut scratch);
+
+                    for i in 0..dim {
+                        assert_eq!(
+                            dst[i].to_bits(),
+                            expect[i].to_bits(),
+                            "dim={dim} trial={trial} inv={inv} coord {i}: \
+                             apply_scaled_into diverged from apply of the \
+                             pre-scaled row ({} vs {}). This is the function \
+                             that writes every encoded byte — a difference \
+                             here is a format break.",
+                            dst[i],
+                            expect[i],
+                        );
+                    }
+                }
+
+                // `src` is borrowed immutably, but the guarantee callers
+                // rely on is that the *contents* survive: encode reuses
+                // the input row after rotating it.
+                let mut dst = vec![0.0f32; dim];
+                let mut scratch = vec![0.0f32; dim];
+                let before = src.clone();
+                rot.apply_scaled_into(&src, 0.5, &mut dst, &mut scratch);
+                assert_eq!(src, before, "dim={dim}: apply_scaled_into mutated src");
+            }
+        }
+    }
+
+    #[test]
+    fn preserves_norm_and_is_deterministic() {
+        for &dim in &[8usize, 200, 768, 1000, 1536] {
+            let rot = Rotation::new(dim);
+            let mut state = 0x1234_5678u64 ^ dim as u64;
+            let mut v: Vec<f32> = (0..dim)
+                .map(|_| {
+                    state = state.wrapping_mul(6364136223846793005).wrapping_add(1);
+                    ((state >> 33) as f64 / (1u64 << 31) as f64 - 1.0) as f32
+                })
+                .collect();
+            let before = (v.iter().map(|x| x * x).sum::<f32>()).sqrt();
+            let orig = v.clone();
+            rot.apply(&mut v);
+            let after = (v.iter().map(|x| x * x).sum::<f32>()).sqrt();
+            assert!(
+                (before - after).abs() / before < 1e-4,
+                "norm changed at dim={dim}: {before} -> {after}"
+            );
+
+            // Determinism: a second rotation of the same input matches
+            // bit-for-bit.
+            let mut again = orig;
+            Rotation::new(dim).apply(&mut again);
+            assert_eq!(v, again, "rotation not deterministic at dim={dim}");
+        }
+    }
+}
+
+#[cfg(test)]
+/// Frozen golden fingerprint for `golden_rotation_dim128` — generated
+/// once from the v5 rotation; must never change.
+const GOLDEN_DIM128: (u32, u32, u32, u32, u32) =
+    (186507913, 1033895935, 3175088127, 1027604479, 3162505217);

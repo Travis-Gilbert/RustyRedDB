@@ -1,0 +1,138 @@
+{
+  "plan_pin": "d6a7062c14c11c6838362bda307e267b2297c684",
+  "extracted_commit": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de",
+  "pin_is_ancestor": false,
+  "copy_method": "git archive of the committed tree, then path moves. Uncommitted Theorem files were not copied. Theorem git history was not copied.",
+  "items": [
+    {
+      "source": "rustyredcore_THG/crates/rustyred-thg-core",
+      "destination": "crates/rustyred-engine",
+      "action": "move",
+      "package": "rustyred-engine",
+      "rust_lib": "rustyred_thg_core",
+      "notes": "GraphBLAS feature and its path dependency were removed from the manifest. cfg(feature = \"graphblas\") code stays unbuilt. theorem-harness-core dev-dependency was removed."
+    },
+    {
+      "source": "rustyredcore_THG/crates/rustyred-thg-query",
+      "destination": "crates/rustyred-query",
+      "action": "move",
+      "package": "rustyred-query",
+      "rust_lib": "rustyred_thg_query"
+    },
+    {
+      "source": "rustyredcore_THG/crates/theorem-oplog",
+      "destination": "crates/rustyred-log",
+      "action": "move",
+      "package": "rustyred-log",
+      "rust_lib": "theorem_oplog",
+      "notes": "Crate root remains src/physical_lib.rs. RedCore commits do not go through PhysicalLog. Both owners are present. They are not unified."
+    },
+    {
+      "source": "rustyredcore_THG/crates/theorem-bayes",
+      "destination": "crates/rustyred-bayes",
+      "action": "move",
+      "package": "rustyred-bayes",
+      "rust_lib": "theorem_bayes"
+    },
+    {
+      "source": "rustyredcore_THG/crates/datalog",
+      "destination": "crates/rustyred-datalog",
+      "action": "move",
+      "package": "rustyred-datalog",
+      "rust_lib": "datalog"
+    },
+    {
+      "source": "rustyredcore_THG/crates/egraph",
+      "destination": "crates/rustyred-egraph",
+      "action": "move",
+      "package": "rustyred-egraph",
+      "rust_lib": "egraph"
+    },
+    {
+      "source": "rustyredcore_THG/crates/rustyred-thg-derivation",
+      "destination": "crates/rustyred-derivation",
+      "action": "move",
+      "package": "rustyred-derivation",
+      "rust_lib": "rustyred_thg_derivation"
+    },
+    {
+      "source": "rustyredcore_THG/crates/theorem-capability-scope",
+      "destination": "crates/rustyred-scope",
+      "action": "move",
+      "package": "rustyred-scope",
+      "rust_lib": "theorem_capability_scope",
+      "notes": "The engine uses browser::OpaqueGrantTable. The small crate moved whole."
+    },
+    {
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/{article,article_links,desktop,link,link_api,sync}.rs",
+      "destination": "crates/rustyred-contracts",
+      "action": "move",
+      "package": "rustyred-contracts",
+      "rust_lib": "theorem_surface_contracts",
+      "notes": "UI, shell, and registry modules were not copied. PluginId and AgpuiSurfaceId are local newtypes with the same serde shape as the product protocol. WikiRefusal was copied as its own enum because link_api names it."
+    },
+    {
+      "source": "rustyredcore_THG/vendor/egg-0.10.0",
+      "destination": "vendor/egg-0.10.0",
+      "action": "move",
+      "notes": "Direct path dependency. Consumers do not need a workspace [patch]. MIT, with the rustc 1.96 fmt::Error annotation."
+    },
+    {
+      "source": "rustyredcore_THG/vendor/turbovec-1.0.0-wasm32",
+      "destination": "vendor/turbovec-1.0.0-wasm32",
+      "action": "move",
+      "notes": "Direct path dependency. MIT."
+    },
+    {
+      "source": "new",
+      "destination": "crates/rustyred",
+      "action": "keep",
+      "package": "rustyred",
+      "rust_lib": "rustyred",
+      "notes": "Facade over RustyRed plus RedCoreGraphStore::open_with_chunk_store. Not a second writer."
+    },
+    {
+      "source": "new",
+      "destination": "crates/rustyred-cli",
+      "action": "keep",
+      "package": "rustyred-cli",
+      "notes": "Commands: create, query, inspect, verify."
+    },
+    {
+      "source": "apps/rustyred-embedded",
+      "destination": null,
+      "action": "excluded-with-reason",
+      "notes": "Reference only. MCP boot, automatic embedding designation, and product configuration were not moved."
+    },
+    {
+      "source": "rustyredcore_THG/crates/rustyred-thg-graphblas",
+      "destination": null,
+      "action": "excluded-with-reason",
+      "notes": "Optional SuiteSparse accelerator. Not in the default closure. The feature was removed so the public tree has no missing path dependency."
+    },
+    {
+      "source": "rustyredcore_THG/crates/rustyred-thg-query-saturate",
+      "destination": null,
+      "action": "downstream-only",
+      "notes": "Used by server surfaces, not by rustyred-thg-query's library."
+    },
+    {
+      "source": "theorem-harness-core",
+      "destination": null,
+      "action": "replace-with-existing-generic-owner",
+      "notes": "Dev-dependency only. memory_admission hashes are golden SHA-256 values. The feature_dsl harness-gate test was not copied because it tests the harness loop, not the database. The original remains in Theorem."
+    },
+    {
+      "source": "agpui-shell-protocol, agpui-contract, theorem-block-registry, theorem-body-registry",
+      "destination": null,
+      "action": "excluded-with-reason",
+      "notes": "Product and renderer contracts. The database keeps the serialized identity types it already stored."
+    },
+    {
+      "source": "rustyred-thg-server, rustyred-thg-mcp, agent, harness, theoremweb",
+      "destination": null,
+      "action": "downstream-only",
+      "notes": "Stay in Theorem."
+    }
+  ]
+}

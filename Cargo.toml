@@ -1,0 +1,27 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/rustyred",
+    "crates/rustyred-cli",
+    "crates/rustyred-engine",
+    "crates/rustyred-query",
+    "crates/rustyred-log",
+    "crates/rustyred-bayes",
+    "crates/rustyred-datalog",
+    "crates/rustyred-egraph",
+    "crates/rustyred-derivation",
+    "crates/rustyred-contracts",
+    "crates/rustyred-scope",
+    "examples/parts-catalog",
+]
+exclude = [
+    "vendor/egg-0.10.0",
+    "vendor/turbovec-1.0.0-wasm32",
+    "tests/external-consumer",
+]
+
+[workspace.package]
+version = "0.1.0-beta.1"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"

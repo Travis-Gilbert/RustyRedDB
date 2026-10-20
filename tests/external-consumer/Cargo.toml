@@ -1,0 +1,9 @@
+[package]
+name = "rustyred-external-consumer"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+# Placeholder until the published revision is pinned. A path dependency is not the release proof.
+rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "0000000000000000000000000000000000000000" }

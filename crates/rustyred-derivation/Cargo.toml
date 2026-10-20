@@ -1,0 +1,21 @@
+[package]
+name = "rustyred-derivation"
+version = "0.1.0-beta.1"
+edition = "2021"
+description = "Semiring trait, fold/why derivation machinery, and lift adapters for the Theorem Harness Experience Compiler."
+license = "MIT"
+rust-version = "1.85"
+
+[lib]
+name = "rustyred_thg_derivation"
+path = "src/lib.rs"
+
+[dependencies]
+egraph = { package = "rustyred-egraph", version = "=0.1.0-beta.1", path = "../rustyred-egraph" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+
+[dev-dependencies]
+proptest = "1.5"
+rustyred-thg-core = { package = "rustyred-engine", version = "=0.1.0-beta.1", path = "../rustyred-engine" }

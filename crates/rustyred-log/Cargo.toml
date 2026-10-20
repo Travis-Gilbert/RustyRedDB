@@ -1,0 +1,77 @@
+[package]
+name = "rustyred-log"
+version = "0.1.0-beta.1"
+edition = "2021"
+description = "Typed append-only operation ledger and deterministic folds for Theorem."
+license = "MIT"
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"
+rust-version = "1.85"
+
+[dependencies]
+blake3 = "1.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+ulid = { version = "1", features = ["serde"] }
+
+[features]
+# The browser storage backend: OPFS sync access handles, plus the small probe
+# surface the PWA oracle (`apps/theoremweb/oracles/pwa-opfs-ledger.mjs`)
+# drives. Off by default, so native builds and every native consumer of this
+# crate are untouched by it, and the product-facing browser API above it is
+# `fold-reader-wasm`'s task rather than this one's.
+browser-opfs = [
+    "dep:js-sys",
+    "dep:wasm-bindgen",
+    "dep:wasm-bindgen-futures",
+    "dep:web-sys",
+]
+
+# The exclusive lock on a log directory is a filesystem act, and wasm32 has no
+# filesystem to lock: a browser build's only storage is its own origin's OPFS,
+# written by one runtime. Gating the dependency rather than the ledger is what
+# lets the fold reader this crate carries reach the browser at all; the call
+# site is gated with it, in `src/storage.rs`, which is the crate's only naming
+# of `std::fs`. The ledger reaches storage through that module's `LogFile`
+# trait, so the browser build substitutes OPFS handles (the `opfs-backend` leg
+# of SPEC-THEOREM-APP-HOST-2.0) and a wasm32 build without them refuses to open
+# a log by name rather than failing inside a filesystem call that has no
+# filesystem behind it.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+fs2 = "0.4"
+
+# `ulid` resolves `rand` 0.9, whose `getrandom` 0.3 has no default backend on
+# wasm32-unknown-unknown. `theorem-voice` declares the same dependency for the
+# same reason; a browser build that reaches this crate needs it here. The other
+# three are the browser storage backend's bindings, optional and wasm-only so
+# that nothing native changes shape.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.3", features = ["wasm_js"] }
+js-sys = { version = "0.3", optional = true }
+wasm-bindgen = { version = "=0.2.127", optional = true }
+wasm-bindgen-futures = { version = "0.4", optional = true }
+web-sys = { version = "0.3", optional = true, features = [
+    "FileSystemDirectoryHandle",
+    "FileSystemFileHandle",
+    "FileSystemGetDirectoryOptions",
+    "FileSystemGetFileOptions",
+    "FileSystemHandle",
+    "FileSystemReadWriteOptions",
+    "FileSystemSyncAccessHandle",
+    "StorageManager",
+    "WorkerGlobalScope",
+    "WorkerNavigator",
+] }
+
+# A plain rlib on purpose. A `cdylib` crate type makes cargo drop the
+# `-C extra-filename` hash, so every checkout sharing a CARGO_TARGET_DIR writes
+# the same `deps/libtheorem_oplog.rlib` under one fingerprint: alternating
+# checkouts rebuild each other's output, and one observed build linked the
+# other checkout's (2026-10-01). The browser oracle's wasm asks for a cdylib
+# per invocation instead
+# (`cargo rustc --crate-type cdylib` in `apps/theoremweb/scripts/build-oplog-opfs.mjs`).
+[lib]
+name = "theorem_oplog"
+path = "src/physical_lib.rs"
+
+[dev-dependencies]
+tempfile = "3"

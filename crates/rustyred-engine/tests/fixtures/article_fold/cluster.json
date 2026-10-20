@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {"id":"repo:theorem","labels":["Repo","Rust"],"properties":{"slug":"theorem","kind":"repo","title":"Theorem","gist":"Theorem is a graph workspace. Its readers share provenance.","owner":"Travis","default_branch":"main","primary_language":"Rust","active_plans":["Wiki"],"last_commit":"source-commit-42","links":["Inhabited Web"]}},
+    {"id":"memory:decision","labels":["HarnessMemory","MemoryAtom","MemoryNode"],"properties":{"node_id":"decision/wiki","kind":"decision","title":"Classic article layout","gist":"Use a recessed sidebar and lifted article panel.","content":"Use a recessed sidebar and lifted article panel. Preserve the shell."}},
+    {"id":"memory:spec","labels":["HarnessMemory","MemoryAtom","MemoryDocument","Value"],"properties":{"doc_id":"SPEC-WIKI-1","kind":"spec","title":"Wiki surface","summary":"Articles are graph projections.\n\nThe rest belongs in the article.","content":"Articles are graph projections.\n\nThe rest belongs in the article."}},
+    {"id":"plan:wiki","labels":["Plan"],"properties":{"title":"Wiki","gist":"Ship the article browser.","status":"active"}},
+    {"id":"room:wiki","labels":["CoordinationRoom"],"properties":{"title":"Wiki room","gist":"Discuss the article here."}},
+    {"id":"evidence:wiki","labels":["MemoryDocument"],"properties":{"kind":"evidence","title":"Source receipt","gist":"The implementation matches the specification."}},
+    {"id":"tool:rust","labels":["Tool"],"properties":{"title":"Rust","gist":"The language used by Theorem."}},
+    {"id":"outsider","labels":["MemoryNode"],"properties":{"kind":"concept","title":"Outside the allowlist","gist":"Must not become article content."}},
+    {"id":"back:one","labels":["Project"],"properties":{"title":"Consumer","gist":"Uses Theorem."}}
+  ],
+  "edges": [
+    {"id":"e:decision","from":"repo:theorem","type":"MEMORY_RELATES","to":"memory:decision"},
+    {"id":"e:spec","from":"repo:theorem","type":"HAS_SPEC","to":"memory:spec"},
+    {"id":"e:plan","from":"repo:theorem","type":"HAS_PLAN","to":"plan:wiki"},
+    {"id":"e:room","from":"repo:theorem","type":"DISCUSSES","to":"room:wiki"},
+    {"id":"e:evidence","from":"repo:theorem","type":"CITES","to":"evidence:wiki"},
+    {"id":"e:tool","from":"repo:theorem","type":"DEPENDS_ON","to":"tool:rust"},
+    {"id":"e:ignored","from":"repo:theorem","type":"UNREGISTERED_RELATION","to":"outsider"},
+    {"id":"e:back","from":"back:one","type":"REFERENCES","to":"repo:theorem"},
+    {"id":"e:dangling","from":"repo:theorem","type":"REFERENCES","to":"future:target"}
+  ],
+  "expected": {
+    "title":"Theorem",
+    "infobox":["owner","default_branch","primary_language","active_plans","last_commit"],
+    "sections":["decisions","specifications","plans","discussions","evidence","related"],
+    "redLinks":["Inhabited Web","future:target"],
+    "backlinks":["back:one"]
+  }
+}

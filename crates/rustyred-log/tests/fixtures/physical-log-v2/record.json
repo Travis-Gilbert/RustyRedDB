@@ -1,0 +1,33 @@
+{
+  "deployment_id": "test:physical-log-v2",
+  "log_id": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "expected_payload_hash": "e44a45f0a57a6a997c767587808eb5860db0e769d77341b7b1853a9423ac0547",
+  "expected_record_hash": "b478d60b70074e370abf4636af6b5fa8ef9c58a351c22a9ea4a46c495e6bc93d",
+  "record": {
+    "protocol_version": 2,
+    "deployment_id": "test:physical-log-v2",
+    "log_id": "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    "position": 1,
+    "record_id": "01ARZ3NDEKTSV4RRFFQ69G5FB0",
+    "previous_record_hash": null,
+    "payload_hash": "e44a45f0a57a6a997c767587808eb5860db0e769d77341b7b1853a9423ac0547",
+    "record_hash": "b478d60b70074e370abf4636af6b5fa8ef9c58a351c22a9ea4a46c495e6bc93d",
+    "op_digest": "fixture-op-digest-v2",
+    "intent": {
+      "kind": {
+        "namespace": "theorem",
+        "name": "fixture_event",
+        "version": 1
+      },
+      "payload": {
+        "value": "legacy"
+      }
+    },
+    "write_set": [
+      {
+        "scope": "entity",
+        "entity": "note:v2"
+      }
+    ]
+  }
+}

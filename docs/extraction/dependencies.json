@@ -1,0 +1,1108 @@
+{
+  "resolver": "2",
+  "packages": [
+    {
+      "name": "rustyred",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "rustyred-contracts",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-contracts",
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-engine",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-engine",
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-query",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-query",
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "raw_value"
+          ]
+        },
+        {
+          "name": "sha2",
+          "req": "^0.10",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "tempfile",
+          "req": "^3",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        }
+      ]
+    },
+    {
+      "name": "rustyred-contracts",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "serde",
+          "req": "^1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "ts-rs",
+          "req": "^12.0.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "serde-compat",
+            "serde-json-impl"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rustyred-engine",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "async-trait",
+          "req": "^0.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "base64",
+          "req": "^0.22",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "blake3",
+          "req": "^1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "bm25",
+          "req": "^2.3.2",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "crc32fast",
+          "req": "^1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-datalog",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-datalog",
+          "rename": "datalog",
+          "features": []
+        },
+        {
+          "name": "ed25519-dalek",
+          "req": "^2",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "egg",
+          "req": "*",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "vendor/egg-0.10.0",
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-egraph",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-egraph",
+          "rename": "egraph",
+          "features": []
+        },
+        {
+          "name": "fjall",
+          "req": "=2.11.2",
+          "kind": null,
+          "optional": true,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "single_writer_tx"
+          ]
+        },
+        {
+          "name": "h3o",
+          "req": "^0.7",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "html2text",
+          "req": "^0.13",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "imbl",
+          "req": "^7.0.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "serde"
+          ]
+        },
+        {
+          "name": "libc",
+          "req": "^0.2",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "memmap2",
+          "req": "^0.9.11",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "object_store",
+          "req": "^0.12.5",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "aws"
+          ]
+        },
+        {
+          "name": "rand_chacha",
+          "req": "^0.3",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "redb",
+          "req": "=2.6.3",
+          "kind": null,
+          "optional": true,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "redis",
+          "req": "^0.27",
+          "kind": null,
+          "optional": true,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rkyv",
+          "req": "^0.8.16",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "roaring",
+          "req": "^0.10",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-derivation",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-derivation",
+          "rename": "rustyred-thg-derivation",
+          "features": []
+        },
+        {
+          "name": "s2",
+          "req": "^0.0.12",
+          "kind": null,
+          "optional": true,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "same-file",
+          "req": "^1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "raw_value",
+            "float_roundtrip"
+          ]
+        },
+        {
+          "name": "sha2",
+          "req": "^0.10",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "tantivy",
+          "req": "^0.22",
+          "kind": null,
+          "optional": true,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-bayes",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-bayes",
+          "rename": "theorem-bayes",
+          "features": []
+        },
+        {
+          "name": "rustyred-scope",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-scope",
+          "rename": "theorem-capability-scope",
+          "features": []
+        },
+        {
+          "name": "rustyred-log",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-log",
+          "rename": "theorem-oplog",
+          "features": []
+        },
+        {
+          "name": "rustyred-contracts",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-contracts",
+          "rename": "theorem-surface-contracts",
+          "features": []
+        },
+        {
+          "name": "thiserror",
+          "req": "^2.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "turbovec",
+          "req": "*",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "vendor/turbovec-1.0.0-wasm32",
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "zstd",
+          "req": "^0.13",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "criterion",
+          "req": "^0.5",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "proptest",
+          "req": "^1.5",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "tempfile",
+          "req": "^3",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "tokio",
+          "req": "^1.47.1",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "rt-multi-thread"
+          ]
+        },
+        {
+          "name": "getrandom",
+          "req": "^0.2",
+          "kind": null,
+          "optional": false,
+          "target": "cfg(all(target_family = \"wasm\", target_os = \"unknown\"))",
+          "path": null,
+          "rename": null,
+          "features": [
+            "js"
+          ]
+        },
+        {
+          "name": "getrandom",
+          "req": "^0.3",
+          "kind": null,
+          "optional": false,
+          "target": "cfg(all(target_family = \"wasm\", target_os = \"unknown\"))",
+          "path": null,
+          "rename": "getrandom03",
+          "features": [
+            "wasm_js"
+          ]
+        },
+        {
+          "name": "web-time",
+          "req": "^1.1.0",
+          "kind": null,
+          "optional": false,
+          "target": "cfg(all(target_family = \"wasm\", target_os = \"unknown\"))",
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "fs2",
+          "req": "^0.4",
+          "kind": null,
+          "optional": false,
+          "target": "cfg(not(target_arch = \"wasm32\"))",
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-log",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": "cfg(target_arch = \"wasm32\")",
+          "path": "crates/rustyred-log",
+          "rename": "theorem-oplog",
+          "features": [
+            "browser-opfs"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rustyred-datalog",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "datafrog",
+          "req": "=2.0.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-egraph",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-egraph",
+          "rename": "egraph",
+          "features": []
+        },
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "float_roundtrip"
+          ]
+        },
+        {
+          "name": "sha2",
+          "req": "^0.10",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        }
+      ]
+    },
+    {
+      "name": "rustyred-egraph",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "egglog",
+          "req": "=2.0.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "float_roundtrip"
+          ]
+        },
+        {
+          "name": "sha2",
+          "req": "^0.10",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "thiserror",
+          "req": "^2.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        }
+      ]
+    },
+    {
+      "name": "rustyred-derivation",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "rustyred-egraph",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-egraph",
+          "rename": "egraph",
+          "features": []
+        },
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "thiserror",
+          "req": "^2.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "proptest",
+          "req": "^1.5",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-engine",
+          "req": "=0.1.0-beta.1",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-engine",
+          "rename": "rustyred-thg-core",
+          "features": []
+        }
+      ]
+    },
+    {
+      "name": "rustyred-bayes",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "sha2",
+          "req": "^0.10",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        }
+      ]
+    },
+    {
+      "name": "rustyred-scope",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rustyred-log",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "blake3",
+          "req": "^1.8",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "ulid",
+          "req": "^1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "serde"
+          ]
+        },
+        {
+          "name": "tempfile",
+          "req": "^3",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "fs2",
+          "req": "^0.4",
+          "kind": null,
+          "optional": false,
+          "target": "cfg(not(target_arch = \"wasm32\"))",
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "getrandom",
+          "req": "^0.3",
+          "kind": null,
+          "optional": false,
+          "target": "cfg(target_arch = \"wasm32\")",
+          "path": null,
+          "rename": null,
+          "features": [
+            "wasm_js"
+          ]
+        },
+        {
+          "name": "js-sys",
+          "req": "^0.3",
+          "kind": null,
+          "optional": true,
+          "target": "cfg(target_arch = \"wasm32\")",
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "wasm-bindgen",
+          "req": "=0.2.127",
+          "kind": null,
+          "optional": true,
+          "target": "cfg(target_arch = \"wasm32\")",
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "wasm-bindgen-futures",
+          "req": "^0.4",
+          "kind": null,
+          "optional": true,
+          "target": "cfg(target_arch = \"wasm32\")",
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "web-sys",
+          "req": "^0.3",
+          "kind": null,
+          "optional": true,
+          "target": "cfg(target_arch = \"wasm32\")",
+          "path": null,
+          "rename": null,
+          "features": [
+            "FileSystemDirectoryHandle",
+            "FileSystemFileHandle",
+            "FileSystemGetDirectoryOptions",
+            "FileSystemGetFileOptions",
+            "FileSystemHandle",
+            "FileSystemReadWriteOptions",
+            "FileSystemSyncAccessHandle",
+            "StorageManager",
+            "WorkerGlobalScope",
+            "WorkerNavigator"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rustyred-query",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "hex",
+          "req": "^0.4",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "pest",
+          "req": "^2.7",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "pest_derive",
+          "req": "^2.7",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "rustyred-engine",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred-engine",
+          "rename": "rustyred-thg-core",
+          "features": []
+        },
+        {
+          "name": "serde",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": [
+            "derive"
+          ]
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "sha2",
+          "req": "^0.10",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        }
+      ]
+    },
+    {
+      "name": "rustyred-cli",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "rustyred",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred",
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "tempfile",
+          "req": "^3",
+          "kind": "dev",
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        }
+      ]
+    },
+    {
+      "name": "parts-catalog",
+      "version": "0.1.0-beta.1",
+      "dependencies": [
+        {
+          "name": "rustyred",
+          "req": "=0.1.0-beta.1",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": "crates/rustyred",
+          "rename": null,
+          "features": []
+        },
+        {
+          "name": "serde_json",
+          "req": "^1.0",
+          "kind": null,
+          "optional": false,
+          "target": null,
+          "path": null,
+          "rename": null,
+          "features": []
+        }
+      ]
+    }
+  ]
+}

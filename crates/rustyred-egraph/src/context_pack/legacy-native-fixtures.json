@@ -1,0 +1,209 @@
+[
+  {
+    "input": {
+      "expression_id": "ctx-1",
+      "items": [
+        {
+          "channel": "trusted_repo_memory",
+          "id": "a",
+          "obligation_id": "o1",
+          "text": "Keep tests green",
+          "tokens": 20
+        },
+        {
+          "channel": "trusted_repo_memory",
+          "id": "b",
+          "obligation_id": "o1",
+          "text": "Keep tests green",
+          "tokens": 20
+        },
+        {
+          "channel": "external_content",
+          "id": "c",
+          "obligation_id": "o2",
+          "text": "",
+          "tokens": 5
+        }
+      ]
+    },
+    "legacy_native_receipt": {
+      "domain": "context_pack",
+      "engine": "egraph-theorem",
+      "equivalent": true,
+      "extracted_cost": 20.05,
+      "extraction": {
+        "domain": "context_pack",
+        "expression_hash": "3fde4a3de0dd578c6bf31c833bd6b8aef59cf7ecfa819522982ff7afe78d4652",
+        "expression_id": "ctx-1",
+        "items": [
+          {
+            "channel": "trusted_repo_memory",
+            "id": "a",
+            "obligation_id": "o1",
+            "text": "Keep tests green",
+            "tokens": 20
+          }
+        ],
+        "metadata": {
+          "egg_probe": {
+            "engine": "egg",
+            "probe_best": "context",
+            "probe_cost": 1
+          },
+          "native_backend": "rust-egg-context-pack"
+        }
+      },
+      "input_hash": "f0d24cab484af3fba8d7c9da8bd427d4c12c060be2417ad8dd1b9ae20920aa4a",
+      "native_backend": "rust-egg-context-pack",
+      "original_cost": 45.15,
+      "output_hash": "3fde4a3de0dd578c6bf31c833bd6b8aef59cf7ecfa819522982ff7afe78d4652",
+      "rewrite_trace": [
+        {
+          "after_hash": "ad1b278a3e6243f6bd8e797f1404e78802f552dd2574e939ddae5e7b79d1ece3",
+          "before_hash": "f0d24cab484af3fba8d7c9da8bd427d4c12c060be2417ad8dd1b9ae20920aa4a",
+          "data": {
+            "removed_count": 1
+          },
+          "delta_cost": -5.05,
+          "reason": "Removed optional empty context items without changing represented obligations.",
+          "rule_id": "drop_empty_optional"
+        },
+        {
+          "after_hash": "7810ae089c497fd2fcc0c601a7fcc9290613f70173f736069ee33ab9f693f172",
+          "before_hash": "ad1b278a3e6243f6bd8e797f1404e78802f552dd2574e939ddae5e7b79d1ece3",
+          "data": {
+            "removed_count": 1
+          },
+          "delta_cost": -20.05,
+          "reason": "Removed duplicate non-required context items with the same obligation and channel.",
+          "rule_id": "dedupe_same_obligation"
+        }
+      ]
+    }
+  },
+  {
+    "input": {
+      "expression_id": "ctx-2",
+      "items": [
+        {
+          "channel": "user_task",
+          "id": "a",
+          "obligation_id": "o1",
+          "text": "Ship it",
+          "tokens": 5
+        }
+      ]
+    },
+    "legacy_native_receipt": {
+      "domain": "context_pack",
+      "engine": "egraph-theorem",
+      "equivalent": true,
+      "extracted_cost": 5.05,
+      "extraction": {
+        "domain": "context_pack",
+        "expression_hash": "094c48da9a5e5fb20268792dda2b5c67162b88b09127347694fa720678441770",
+        "expression_id": "ctx-2",
+        "items": [
+          {
+            "channel": "user_task",
+            "id": "a",
+            "obligation_id": "o1",
+            "text": "Ship it",
+            "tokens": 5
+          }
+        ],
+        "metadata": {
+          "egg_probe": {
+            "engine": "egg",
+            "probe_best": "context",
+            "probe_cost": 1
+          },
+          "native_backend": "rust-egg-context-pack"
+        }
+      },
+      "input_hash": "c790573ee00bcb1a49de13e9d87186c4760ebd65b8cc5980ec5f3e2cf736adf7",
+      "native_backend": "rust-egg-context-pack",
+      "original_cost": 5.05,
+      "output_hash": "094c48da9a5e5fb20268792dda2b5c67162b88b09127347694fa720678441770",
+      "rewrite_trace": []
+    }
+  },
+  {
+    "input": {
+      "expression_id": "bgi-parity-context",
+      "items": [
+        {
+          "channel": "trusted_repo_memory",
+          "id": "atom-1",
+          "semantic_hash": "sem-1",
+          "text": "Graph kernels are read-only in this pass.",
+          "tokens": 12
+        },
+        {
+          "channel": "trusted_repo_memory",
+          "id": "atom-1-copy",
+          "semantic_hash": "sem-1",
+          "text": "Graph kernels are read-only in this pass.",
+          "tokens": 12
+        },
+        {
+          "channel": "external_content",
+          "id": "empty-optional",
+          "text": "",
+          "tokens": 0
+        }
+      ]
+    },
+    "legacy_native_receipt": {
+      "domain": "context_pack",
+      "engine": "egraph-theorem",
+      "equivalent": true,
+      "extracted_cost": 24.1,
+      "extraction": {
+        "domain": "context_pack",
+        "expression_hash": "b3d65dc934b0ddb050439bab438b9f8f4afa9a1a017eee93a1aac909de6d1a79",
+        "expression_id": "bgi-parity-context",
+        "items": [
+          {
+            "channel": "trusted_repo_memory",
+            "id": "atom-1",
+            "semantic_hash": "sem-1",
+            "text": "Graph kernels are read-only in this pass.",
+            "tokens": 12
+          },
+          {
+            "channel": "trusted_repo_memory",
+            "id": "atom-1-copy",
+            "semantic_hash": "sem-1",
+            "text": "Graph kernels are read-only in this pass.",
+            "tokens": 12
+          }
+        ],
+        "metadata": {
+          "egg_probe": {
+            "engine": "egg",
+            "probe_best": "context",
+            "probe_cost": 1
+          },
+          "native_backend": "rust-egg-context-pack"
+        }
+      },
+      "input_hash": "69dc0a0afda314cf43c01d85cd22953cb81c4e010fc882db0598a015659dedc1",
+      "native_backend": "rust-egg-context-pack",
+      "original_cost": 24.15,
+      "output_hash": "b3d65dc934b0ddb050439bab438b9f8f4afa9a1a017eee93a1aac909de6d1a79",
+      "rewrite_trace": [
+        {
+          "after_hash": "e78cf0b46d03f96144df34e1c1a5b0bd630edc3c11f06bbeb2e80cfbb177b3a9",
+          "before_hash": "69dc0a0afda314cf43c01d85cd22953cb81c4e010fc882db0598a015659dedc1",
+          "data": {
+            "removed_count": 1
+          },
+          "delta_cost": -0.05,
+          "reason": "Removed optional empty context items without changing represented obligations.",
+          "rule_id": "drop_empty_optional"
+        }
+      ]
+    }
+  }
+]

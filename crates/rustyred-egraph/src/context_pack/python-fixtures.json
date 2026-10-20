@@ -1,0 +1,117 @@
+[
+  {
+    "input": {
+      "expression_id": "ctx-1",
+      "items": [
+        {
+          "id": "a",
+          "channel": "trusted_repo_memory",
+          "obligation_id": "o1",
+          "text": "Keep tests green",
+          "tokens": 20
+        },
+        {
+          "id": "b",
+          "channel": "trusted_repo_memory",
+          "obligation_id": "o1",
+          "text": "Keep tests green",
+          "tokens": 20
+        },
+        {
+          "id": "c",
+          "channel": "external_content",
+          "obligation_id": "o2",
+          "text": "",
+          "tokens": 5
+        }
+      ]
+    },
+    "python_receipt": {
+      "engine": "egraph-theorem",
+      "native_backend": "python-fallback",
+      "input_hash": "f0d24cab484af3fba8d7c9da8bd427d4c12c060be2417ad8dd1b9ae20920aa4a",
+      "output_hash": "7810ae089c497fd2fcc0c601a7fcc9290613f70173f736069ee33ab9f693f172",
+      "domain": "context_pack",
+      "equivalent": true,
+      "original_cost": 45.15,
+      "extracted_cost": 20.05,
+      "rewrite_trace": [
+        {
+          "rule_id": "drop_empty_optional",
+          "before_hash": "f0d24cab484af3fba8d7c9da8bd427d4c12c060be2417ad8dd1b9ae20920aa4a",
+          "after_hash": "ad1b278a3e6243f6bd8e797f1404e78802f552dd2574e939ddae5e7b79d1ece3",
+          "reason": "Removed optional empty context items without changing represented obligations.",
+          "delta_cost": -5.05,
+          "data": {
+            "removed_count": 1
+          }
+        },
+        {
+          "rule_id": "dedupe_same_obligation",
+          "before_hash": "ad1b278a3e6243f6bd8e797f1404e78802f552dd2574e939ddae5e7b79d1ece3",
+          "after_hash": "7810ae089c497fd2fcc0c601a7fcc9290613f70173f736069ee33ab9f693f172",
+          "reason": "Removed duplicate non-required context items with the same obligation and channel.",
+          "delta_cost": -20.05,
+          "data": {
+            "removed_count": 1
+          }
+        }
+      ],
+      "extraction": {
+        "expression_id": "ctx-1",
+        "domain": "context_pack",
+        "items": [
+          {
+            "id": "a",
+            "channel": "trusted_repo_memory",
+            "obligation_id": "o1",
+            "text": "Keep tests green",
+            "tokens": 20
+          }
+        ],
+        "metadata": {},
+        "expression_hash": "7810ae089c497fd2fcc0c601a7fcc9290613f70173f736069ee33ab9f693f172"
+      }
+    }
+  },
+  {
+    "input": {
+      "expression_id": "ctx-2",
+      "items": [
+        {
+          "id": "a",
+          "channel": "user_task",
+          "obligation_id": "o1",
+          "text": "Ship it",
+          "tokens": 5
+        }
+      ]
+    },
+    "python_receipt": {
+      "engine": "egraph-theorem",
+      "native_backend": "python-fallback",
+      "input_hash": "c790573ee00bcb1a49de13e9d87186c4760ebd65b8cc5980ec5f3e2cf736adf7",
+      "output_hash": "c790573ee00bcb1a49de13e9d87186c4760ebd65b8cc5980ec5f3e2cf736adf7",
+      "domain": "context_pack",
+      "equivalent": true,
+      "original_cost": 5.05,
+      "extracted_cost": 5.05,
+      "rewrite_trace": [],
+      "extraction": {
+        "expression_id": "ctx-2",
+        "domain": "context_pack",
+        "items": [
+          {
+            "id": "a",
+            "channel": "user_task",
+            "obligation_id": "o1",
+            "text": "Ship it",
+            "tokens": 5
+          }
+        ],
+        "metadata": {},
+        "expression_hash": "c790573ee00bcb1a49de13e9d87186c4760ebd65b8cc5980ec5f3e2cf736adf7"
+      }
+    }
+  }
+]

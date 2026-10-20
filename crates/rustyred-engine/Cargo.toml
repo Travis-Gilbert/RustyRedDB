@@ -1,0 +1,121 @@
+[package]
+name = "rustyred-engine"
+version = "0.1.0-beta.1"
+edition = "2021"
+description = "Rusty Red graph engine: property graph, journal, vectors, payloads, and native .RR storage."
+license = "MIT"
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"
+readme = "README.md"
+rust-version = "1.89"
+
+[lib]
+name = "rustyred_thg_core"
+
+[features]
+default = ["redb-floor"]
+redb-floor = ["dep:redb"]
+fjall-floor = ["dep:fjall"]
+redis-store = ["dep:redis"]
+# §P5-A pa5.1+pa5.2: tantivy as alternative full-text backend behind
+# RUSTY_RED_FULLTEXT_BACKEND=tantivy. Default builds use the bm25 crate.
+tantivy = ["dep:tantivy"]
+# §P8-A pa8.1+pa8.2: S2 cells as alternative spatial backend behind
+# RUSTY_RED_SPATIAL_BACKEND=s2. Default builds keep H3.
+s2 = ["dep:s2"]
+# Optional GraphBLAS sparse-matrix compute: typed adjacency over graph_csr,
+# semiring traversal, LAGraph algorithms, and CFL-reachability. Pulls in the
+# native rustyred-thg-graphblas leaf crate (SuiteSparse:GraphBLAS + LAGraph);
+# default builds stay native-free (no libgraphblas required).
+# Downstream failure-oracle crates may opt into deterministic journal faults.
+# The production API and normal builds do not expose these hooks.
+test-fault-injection = []
+
+[dependencies]
+async-trait = "0.1"
+blake3 = "1"
+bm25 = "2.3.2"
+crc32fast = "1"
+egg = { path = "../../vendor/egg-0.10.0" }
+datalog = { package = "rustyred-datalog", version = "=0.1.0-beta.1", path = "../rustyred-datalog" }
+egraph = { package = "rustyred-egraph", version = "=0.1.0-beta.1", path = "../rustyred-egraph" }
+h3o = "0.7"
+imbl = { version = "7.0.0", features = ["serde"] }
+libc = "0.2"
+redis = { version = "0.27", optional = true }
+redb = { version = "=2.6.3", optional = true }
+fjall = { version = "=2.11.2", optional = true, default-features = false, features = ["single_writer_tx"] }
+memmap2 = "0.9.11"
+object_store = { version = "0.12.5", features = ["aws"] }
+rkyv = "0.8.16"
+roaring = "0.10"
+s2 = { version = "0.0.12", optional = true }
+same-file = "1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["raw_value", "float_roundtrip"] }
+sha2 = "0.10"
+theorem-bayes = { package = "rustyred-bayes", version = "=0.1.0-beta.1", path = "../rustyred-bayes" }
+theorem-oplog = { package = "rustyred-log", version = "=0.1.0-beta.1", path = "../rustyred-log" }
+theorem-surface-contracts = { package = "rustyred-contracts", version = "=0.1.0-beta.1", path = "../rustyred-contracts" }
+theorem-capability-scope = { package = "rustyred-scope", version = "=0.1.0-beta.1", path = "../rustyred-scope" }
+rustyred-thg-derivation = { package = "rustyred-derivation", version = "=0.1.0-beta.1", path = "../rustyred-derivation" }
+ed25519-dalek = "2"
+tantivy = { version = "0.22", optional = true }
+turbovec = { path = "../../vendor/turbovec-1.0.0-wasm32" }
+base64 = "0.22"
+rand_chacha = "0.3"
+thiserror = "2.0"
+html2text = "0.13"
+# `zip` was declared here but never used: no `zip::` path, no `ZipArchive`,
+# `ZipWriter` or `ZipFile` in src/, tests/ or benches/ (the only matches for
+# "zip" are `zipper` and `zipf`). It was also the sole route to `bzip2-sys`,
+# whose C build has no wasm32 target, so it was the last thing standing between
+# this crate and a wasm32 compile. Removing it rather than target-gating it: a
+# cfg would keep a dependency nothing uses on one target and hide the fact
+# that it was never needed on any of them.
+zstd = "0.13"
+
+[dev-dependencies]
+criterion = "0.5"
+proptest = "1.5"
+tempfile = "3"
+tokio = { version = "1.47.1", features = ["rt-multi-thread"] }
+
+[[bench]]
+name = "fold_floor"
+harness = false
+
+# The single-writer boundary (`rr_file::lock`, `journal`, `graph_store`,
+# `zerocopy`) takes its advisory lock through `fs2`, which has no wasm32
+# support at all -- its ten compile errors are 'cannot find module or crate
+# sys'. A wasm32 build has no filesystem to lock and one runtime owning the
+# store, so the dependency is native-only and those four files import the lock
+# trait from `crate::file_lock` instead. That module refuses by name on wasm32
+# rather than returning Ok from a lock nothing took, because `rr_file::lock`'s
+# contract is a *named* refusal, not an absent check. Same shape as
+# `theorem-oplog`'s fs2 gate.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+fs2 = "0.4"
+
+# The browser composition reaches this crate through the PWA vector projection
+# (SPEC-THEOREMWEB-PWA-HTML-CANVAS-1.1 section 33), so two backends in its
+# transitive graph have to be told that Web Crypto is the entropy source:
+# turbovec -> rand 0.8 -> getrandom 0.2 wants `js`, and the getrandom 0.3 that
+# rustyred-web already depends on wants `wasm_js`. Declared target-specifically
+# so no native build changes shape. Same pattern as
+# apps/theoremweb/crates/gpui/host (the 0.2 half) and crates/theorem-oplog.
+[target.'cfg(all(target_family = "wasm", target_os = "unknown"))'.dependencies]
+web-time = "1.1.0"
+getrandom = { version = "0.2", features = ["js"] }
+getrandom03 = { package = "getrandom", version = "0.3", features = ["wasm_js"] }
+
+# The browser projection's chunk store sits above `theorem-oplog`'s
+# six-operation storage seam, and on wasm32 the only implementation of that
+# seam is the OPFS backend. Declared target-specifically for the same reason
+# the two getrandom entries are: a native build's graph of dependencies is
+# untouched, and `browser_projection` -- which is compiled on every target so
+# the host can test the same commit protocol -- reaches `LogFile` here and
+# `NativeLogFile` through the native arm.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+theorem-oplog = { package = "rustyred-log", version = "=0.1.0-beta.1", path = "../rustyred-log", features = [
+    "browser-opfs",
+] }

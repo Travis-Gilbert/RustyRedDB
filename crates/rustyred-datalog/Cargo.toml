@@ -1,0 +1,19 @@
+[package]
+name = "rustyred-datalog"
+version = "0.1.0-beta.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Theorem Datalog engines: compiled datafrog rules and runtime egglog relations with one derivation receipt"
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"
+readme = "README.md"
+include = ["Cargo.toml", "README.md", "src/**", "tests/**", "fixtures/**"]
+
+[lib]
+name = "datalog"
+
+[dependencies]
+datafrog = "=2.0.1"
+egraph = { package = "rustyred-egraph", version = "=0.1.0-beta.1", path = "../rustyred-egraph" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["float_roundtrip"] }
+sha2 = "0.10"

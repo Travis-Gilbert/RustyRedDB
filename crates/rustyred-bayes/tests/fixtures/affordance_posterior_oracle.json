@@ -1,0 +1,63 @@
+{
+  "bounds": {
+    "max_depth": 4,
+    "max_nodes": 8
+  },
+  "closed_form": {
+    "failures": 3.0,
+    "max_depth_seen": 3,
+    "observation_count": 4,
+    "posterior": {
+      "alpha": 8.0,
+      "beta": 6.0,
+      "distribution": "beta",
+      "mean": 0.5714285714285714,
+      "variance": 0.0163265306122449
+    },
+    "successes": 6.0,
+    "total_weight": 9.0
+  },
+  "metadata": {
+    "fixture_id": "affordance-posterior-oracle-v1",
+    "model_version": "tool-success-beta-binomial-v1",
+    "pymc_optional": true,
+    "seed": 20260704
+  },
+  "observations": [
+    {
+      "children": [
+        {
+          "children": [],
+          "outcome_value": 0.0,
+          "outcome_weight": 1.0,
+          "receipt_id": "pt-004-child-failure"
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "outcome_value": 0.0,
+              "outcome_weight": 2.0,
+              "receipt_id": "pt-004-grandchild-failure"
+            }
+          ],
+          "outcome_value": 1.0,
+          "outcome_weight": 4.0,
+          "receipt_id": "pt-004-child-success"
+        }
+      ],
+      "outcome_value": 1.0,
+      "outcome_weight": 2.0,
+      "receipt_id": "pt-004-root-success"
+    }
+  ],
+  "prior": {
+    "alpha": 2.0,
+    "beta": 3.0,
+    "distribution": "beta"
+  },
+  "pymc_model": {
+    "likelihood": "pm.Binomial('tool_success_observed', n=9, p=theta, observed=6)",
+    "prior": "theta = pm.Beta('tool_success_theta', alpha=2.0, beta=3.0)"
+  }
+}

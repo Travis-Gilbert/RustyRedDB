@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "txn_id": 3,
+  "graph": {
+    "version": 3,
+    "nodes": [
+      {
+        "id": "doc:a",
+        "labels": ["Doc"],
+        "properties": {
+          "path": "src/a.rs",
+          "embedding": [1.0, 0.0]
+        },
+        "version": 1,
+        "tombstone": false,
+        "content_hash": "sha256:a36dbe002f88a9f0172035f9f415a975d3f288c95d9b6fae6bb27077959177c9"
+      },
+      {
+        "id": "doc:b",
+        "labels": ["Doc"],
+        "properties": {
+          "path": "src/b.rs",
+          "embedding": [0.0, 1.0]
+        },
+        "version": 2,
+        "tombstone": false,
+        "content_hash": "sha256:0bc81d2c4c163585ac142f1623910f3de45faf4541fb868e09f8abe0b7230832"
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge:ab",
+        "from_id": "doc:a",
+        "to_id": "doc:b",
+        "type": "CITES",
+        "properties": {
+          "source": "format-fixture"
+        },
+        "version": 3,
+        "tombstone": false,
+        "confidence": 0.9,
+        "content_hash": "sha256:296cee5017cfc44c1b7ec007fde0d6a421157102ca53ffec271934307ea697c3"
+      }
+    ]
+  }
+}
