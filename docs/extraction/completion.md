@@ -1,5 +1,7 @@
 # OSS implementation completion record
 
+> Historical qualification below applies to `9844533`. The subsequent [downstream API and Redis repair candidate](downstream-api-recovery.md) changes production source and is awaiting fresh qualification. Do not apply these passing results to that changed candidate.
+
 Contract: [release-plan.md](release-plan.md), requirements R01-R10 and gates G01-G12. The original `v0.1.0-beta.1` tag is unchanged. Repairs prepare unpublished `0.1.0-beta.2`; publication and landing the separate Theorem branch require authorization.
 
 ## Source and review boundary

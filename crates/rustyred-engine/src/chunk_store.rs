@@ -289,6 +289,15 @@ pub fn canonical_chunk_store_commit_hash(root: Hash, meta: &CommitMeta) -> Graph
 /// Verified chunk storage with one committed named-root catalog.
 pub trait ChunkStore: Send + Sync {
     fn get(&self, addr: Hash) -> GraphStoreResult<Option<Arc<[u8]>>>;
+    /// Physical payload admission before allocation/decompression. A backend
+    /// without this capability refuses; calling ordinary get first is unsafe.
+    fn get_bounded(&self, _addr: Hash, _max_bytes: usize) -> GraphStoreResult<Option<Arc<[u8]>>> {
+        Err(GraphStoreError::new(
+            "chunk_bounded_read_unsupported",
+            "backend has no bounded chunk read",
+        ))
+    }
+
     fn has(&self, addr: Hash) -> GraphStoreResult<bool>;
 
     /// Cheap existence probe: is this address present in the store?
@@ -568,6 +577,10 @@ impl<S: ChunkStore + ?Sized> Drop for ChunkPublicationWindow<S> {
 }
 
 impl<S: ChunkStore + ?Sized> ChunkStore for ChunkPublicationWindow<S> {
+    fn get_bounded(&self, addr: Hash, max_bytes: usize) -> GraphStoreResult<Option<Arc<[u8]>>> {
+        self.store.get_bounded(addr, max_bytes)
+    }
+
     fn get(&self, addr: Hash) -> GraphStoreResult<Option<Arc<[u8]>>> {
         self.store.get(addr)
     }
@@ -669,6 +682,27 @@ pub trait ChunkStoreCatalog: ChunkStore {
         updates: &BTreeMap<String, Option<Hash>>,
         meta: CommitMeta,
     ) -> GraphStoreResult<CatalogCommitResult>;
+
+    /// Whether this backend can compare and publish one catalog atomically.
+    /// Importers check this before staging canonical destination chunks.
+    fn supports_catalog_compare_and_swap(&self) -> bool {
+        false
+    }
+
+    /// Compare the accepted catalog while holding the same publication lock
+    /// used by every other writer. A mismatch publishes nothing; staged chunks
+    /// remain unreachable. `None` requires an uncommitted destination.
+    fn commit_catalog_updates_if_root(
+        &self,
+        _expected: Option<Hash>,
+        _updates: &BTreeMap<String, Option<Hash>>,
+        _meta: CommitMeta,
+    ) -> GraphStoreResult<CatalogCommitResult> {
+        Err(GraphStoreError::new(
+            "chunk_store_catalog_precondition_unsupported",
+            "backend cannot atomically fence a changed catalog",
+        ))
+    }
 }
 
 /// Exact physical delta admitted by one [`ChunkStore::write_accounted`] call.
@@ -820,6 +854,21 @@ impl MemChunkStore {
 }
 
 impl ChunkStore for MemChunkStore {
+    fn get_bounded(&self, addr: Hash, max_bytes: usize) -> GraphStoreResult<Option<Arc<[u8]>>> {
+        let state = read_state(&self.state)?;
+        if state
+            .chunks
+            .get(&addr)
+            .is_some_and(|bytes| bytes.len() > max_bytes)
+        {
+            return Err(GraphStoreError::new(
+                "chunk_read_bound_refused",
+                "chunk exceeds admitted read bytes",
+            ));
+        }
+        Self::verified_chunk(&state, addr)
+    }
+
     fn get(&self, addr: Hash) -> GraphStoreResult<Option<Arc<[u8]>>> {
         let state = read_state(&self.state)?;
         Self::verified_chunk(&state, addr)
@@ -986,7 +1035,38 @@ impl ChunkStoreCatalog for MemChunkStore {
         updates: &BTreeMap<String, Option<Hash>>,
         meta: CommitMeta,
     ) -> GraphStoreResult<CatalogCommitResult> {
+        self.commit_catalog_updates_checked(None, updates, meta)
+    }
+    fn supports_catalog_compare_and_swap(&self) -> bool {
+        true
+    }
+    fn commit_catalog_updates_if_root(
+        &self,
+        expected: Option<Hash>,
+        updates: &BTreeMap<String, Option<Hash>>,
+        meta: CommitMeta,
+    ) -> GraphStoreResult<CatalogCommitResult> {
+        self.commit_catalog_updates_checked(Some(expected), updates, meta)
+    }
+}
+
+impl MemChunkStore {
+    fn commit_catalog_updates_checked(
+        &self,
+        expected: Option<Option<Hash>>,
+        updates: &BTreeMap<String, Option<Hash>>,
+        meta: CommitMeta,
+    ) -> GraphStoreResult<CatalogCommitResult> {
         let mut state = self.state.write().map_err(|_| poisoned())?;
+        if expected.is_some_and(|expected| {
+            expected != state.committed.as_ref().map(|committed| committed.root)
+        }) {
+            return Err(GraphStoreError::new(
+                "chunk_store_catalog_precondition_failed",
+                "accepted catalog changed before publication",
+            ));
+        }
+
         let (current, current_parent) = match state.committed.clone() {
             Some(committed) => {
                 committed.verify_commit(committed.commit)?;

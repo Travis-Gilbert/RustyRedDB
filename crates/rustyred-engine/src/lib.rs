@@ -74,6 +74,7 @@ pub mod journal;
 pub mod judgment;
 pub mod labeled_training_run;
 pub mod layer;
+pub mod logical_exchange;
 pub mod map_artifact;
 pub mod memory_admission;
 pub mod memory_document;

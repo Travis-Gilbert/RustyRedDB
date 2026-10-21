@@ -166,11 +166,8 @@ pub trait ReachabilityCodec: Send + Sync {
         bytes: &[u8],
     ) -> GraphStoreResult<Vec<Hash>>;
 
-    fn decode_browser_database(
-        &self,
-        expected_address: Hash,
-        bytes: &[u8],
-    ) -> GraphStoreResult<()>;
+    fn decode_browser_database(&self, expected_address: Hash, bytes: &[u8])
+        -> GraphStoreResult<()>;
 }
 
 /// Strict codecs for the chunk formats owned by this crate.
@@ -583,7 +580,7 @@ pub fn walk_committed_reachable_with_limits(
     codec: &dyn ReachabilityCodec,
     limits: ReachabilityLimits,
 ) -> GraphStoreResult<ReachabilityReport> {
-    walk_committed_reachable_impl(store, codec, limits)
+    walk_committed_reachable_impl(store, codec, limits, &mut |_, _, _| Ok(()))
 }
 
 /// Reclaim unreachable chunks only after a complete typed walk succeeds.
@@ -615,10 +612,22 @@ pub fn compact_committed_reachable_with_limits(
     })
 }
 
+/// Internal typed observation after canonical decoding, before any caller's
+/// destination mutation. Existing maintenance walks keep their no-op observer.
+pub(crate) fn walk_committed_reachable_with_observer(
+    store: &dyn ChunkStore,
+    codec: &dyn ReachabilityCodec,
+    limits: ReachabilityLimits,
+    observer: &mut dyn FnMut(ReachabilityKind, Hash, &[u8]) -> GraphStoreResult<()>,
+) -> GraphStoreResult<ReachabilityReport> {
+    walk_committed_reachable_impl(store, codec, limits, observer)
+}
+
 fn walk_committed_reachable_impl(
     store: &dyn ChunkStore,
     codec: &dyn ReachabilityCodec,
     limits: ReachabilityLimits,
+    observer: &mut dyn FnMut(ReachabilityKind, Hash, &[u8]) -> GraphStoreResult<()>,
 ) -> GraphStoreResult<ReachabilityReport> {
     let catalog_root = store.read_root()?.ok_or_else(|| {
         GraphStoreError::new(
@@ -684,6 +693,8 @@ fn walk_committed_reachable_impl(
             &bytes,
             &pending.vector_designations,
         )?;
+
+        observer(pending.kind, pending.address, &bytes)?;
 
         visited.insert((pending.address, pending.kind, pending.context));
         reachable.insert(pending.address);
@@ -1342,18 +1353,25 @@ fn chat_upload_payload_references(node: &NodeRecord) -> GraphStoreResult<Vec<Has
     // extraction stage on. A received or scanning upload owns its source bytes
     // alone; once either reference is written it is retained like the source.
     for property in ["contextDocumentRef", "extractedContentRef"] {
-        let Some(value) = node.properties.get(property).filter(|value| !value.is_null()) else {
+        let Some(value) = node
+            .properties
+            .get(property)
+            .filter(|value| !value.is_null())
+        else {
             continue;
         };
-        let value = value.as_str().filter(|value| !value.is_empty()).ok_or_else(|| {
-            GraphStoreError::new(
-                ERROR_CODE,
-                format!(
-                    "TheoremChatUpload node {} property {property} must be a non-empty string",
-                    node.id
-                ),
-            )
-        })?;
+        let value = value
+            .as_str()
+            .filter(|value| !value.is_empty())
+            .ok_or_else(|| {
+                GraphStoreError::new(
+                    ERROR_CODE,
+                    format!(
+                        "TheoremChatUpload node {} property {property} must be a non-empty string",
+                        node.id
+                    ),
+                )
+            })?;
         addresses.push(parse_raw_sha256(node, property, value, ERROR_CODE)?);
     }
     let mut seen = BTreeSet::new();
