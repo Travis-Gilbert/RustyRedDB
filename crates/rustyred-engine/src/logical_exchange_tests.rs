@@ -78,7 +78,7 @@ fn populate(engine: &mut RedCoreGraphStore) {
     }
 }
 fn memory_source() -> (RedCoreGraphStore, MemoryArchive) {
-    let mut engine = RedCoreGraphStore::open_with_chunk_store_and_paged_mutation_log(
+    let mut engine = RedCoreGraphStore::open_with_chunk_store(
         Arc::new(MemChunkStore::new()),
         crate::graph_store::RedCoreOptions::default(),
     )
@@ -97,7 +97,7 @@ fn logical_exchange_full_history_native_rr_reopens_without_source_write() {
     let source_path = directory.path().join("source.RR");
     let target_path = directory.path().join("target.RR");
     let source = RustyRed::create(&source_path, &DeviceId::new("exchange-source-device")).unwrap();
-    let mut engine = RedCoreGraphStore::open_with_chunk_store_and_paged_mutation_log(
+    let mut engine = RedCoreGraphStore::open_with_chunk_store(
         source.store().clone(),
         crate::graph_store::RedCoreOptions::default(),
     )
@@ -132,7 +132,7 @@ fn logical_exchange_full_history_native_rr_reopens_without_source_write() {
     accepted
         .verify_destination(reopened.store().clone())
         .unwrap();
-    let restored = RedCoreGraphStore::open_with_chunk_store_and_paged_mutation_log(
+    let restored = RedCoreGraphStore::open_with_chunk_store(
         reopened.store().clone(),
         crate::graph_store::RedCoreOptions::default(),
     )
@@ -221,7 +221,7 @@ fn logical_exchange_exact_empty_facade_allowed_but_existing_domain_refused() {
 }
 #[test]
 fn logical_exchange_foreign_historical_payload_refuses_even_when_current_head_is_admitted() {
-    let mut source = RedCoreGraphStore::open_with_chunk_store_and_paged_mutation_log(
+    let mut source = RedCoreGraphStore::open_with_chunk_store(
         Arc::new(MemChunkStore::new()),
         crate::graph_store::RedCoreOptions::default(),
     )
@@ -346,7 +346,7 @@ fn logical_exchange_concurrent_accepted_publication_between_check_and_commit_is_
     };
     let importer = std::thread::spawn(move || accepted.apply_to_empty(&fenced, None));
     arrived.wait();
-    let mut other = RedCoreGraphStore::open_with_chunk_store_and_paged_mutation_log(
+    let mut other = RedCoreGraphStore::open_with_chunk_store(
         target.clone(),
         crate::graph_store::RedCoreOptions::default(),
     )
