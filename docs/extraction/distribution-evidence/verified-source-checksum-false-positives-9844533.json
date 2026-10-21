@@ -1,0 +1,83 @@
+{
+  "status": "ALL7 cryptographically verified public source checksums",
+  "findings": [
+    {
+      "rule": "generic-api-key",
+      "path": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+      "line": 25,
+      "source_path": "crates/rustyred-contracts/src/link_api.rs",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "source_sha256": "cd6bfc6f21dc8acbd5d8849b2047425be86d08640cca1e0d256c18df8704ea6e",
+      "matches_actual_git_blob_sha256": true,
+      "disposition": "Verified public source checksum, not a credential",
+      "scanner_fingerprint": "984453329f99ae41a5d40e0297218b242ff5075a:docs/extraction/storage-evidence/runtime-source-06acfc4.json:generic-api-key:25"
+    },
+    {
+      "rule": "generic-api-key",
+      "path": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+      "line": 72,
+      "source_path": "crates/rustyred-engine/src/access_method.rs",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "source_sha256": "30cf3ec33df106d119643d09fe05881b5eb0232db5134c55b4a740544b4a6c78",
+      "matches_actual_git_blob_sha256": true,
+      "disposition": "Verified public source checksum, not a credential",
+      "scanner_fingerprint": "984453329f99ae41a5d40e0297218b242ff5075a:docs/extraction/storage-evidence/runtime-source-06acfc4.json:generic-api-key:72"
+    },
+    {
+      "rule": "generic-api-key",
+      "path": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+      "line": 98,
+      "source_path": "crates/rustyred-engine/src/data_api.rs",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "source_sha256": "3031d25185902ece84b896998b0b81cdcc6c51a2f1b8f3d31667b63f7ae6aa35",
+      "matches_actual_git_blob_sha256": true,
+      "disposition": "Verified public source checksum, not a credential",
+      "scanner_fingerprint": "984453329f99ae41a5d40e0297218b242ff5075a:docs/extraction/storage-evidence/runtime-source-06acfc4.json:generic-api-key:98"
+    },
+    {
+      "rule": "generic-api-key",
+      "path": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+      "line": 228,
+      "source_path": "crates/rustyred-engine/src/token_encoder.rs",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "source_sha256": "1bcc0d061b5ab549781324fd74617b2fda4b7b8e9843d690cdbd2e2b03b70881",
+      "matches_actual_git_blob_sha256": true,
+      "disposition": "Verified public source checksum, not a credential",
+      "scanner_fingerprint": "984453329f99ae41a5d40e0297218b242ff5075a:docs/extraction/storage-evidence/runtime-source-06acfc4.json:generic-api-key:228"
+    },
+    {
+      "rule": "generic-api-key",
+      "path": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+      "line": 240,
+      "source_path": "crates/rustyred-engine/tests/algebra_token_region.rs",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "source_sha256": "df2a5da33ff43ad9441e6ee9a28fd60357b9fd91356c7d201d9567277a392851",
+      "matches_actual_git_blob_sha256": true,
+      "disposition": "Verified public source checksum, not a credential",
+      "scanner_fingerprint": "984453329f99ae41a5d40e0297218b242ff5075a:docs/extraction/storage-evidence/runtime-source-06acfc4.json:generic-api-key:240"
+    },
+    {
+      "rule": "generic-api-key",
+      "path": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+      "line": 364,
+      "source_path": "crates/rustyred/tests/embedded_api.rs",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "source_sha256": "47d38347cd9095d1925c11b36074ccdde26bc90e66d9de25796ed57bf3981eaf",
+      "matches_actual_git_blob_sha256": true,
+      "disposition": "Verified public source checksum, not a credential",
+      "scanner_fingerprint": "984453329f99ae41a5d40e0297218b242ff5075a:docs/extraction/storage-evidence/runtime-source-06acfc4.json:generic-api-key:364"
+    },
+    {
+      "rule": "generic-api-key",
+      "path": "docs/extraction/storage-evidence/runtime-source-06acfc4.json",
+      "line": 445,
+      "source_path": "vendor/turbovec-1.0.0-wasm32/tests/crate_api.rs",
+      "source_revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+      "source_sha256": "3e7e88e37a02c7292e05ac1cb1b5728e34a7db6a5e74e8d08e2a996865abb142",
+      "matches_actual_git_blob_sha256": true,
+      "disposition": "Verified public source checksum, not a credential",
+      "scanner_fingerprint": "984453329f99ae41a5d40e0297218b242ff5075a:docs/extraction/storage-evidence/runtime-source-06acfc4.json:generic-api-key:445"
+    }
+  ],
+  "policy": "Only these specific reviewed baseline findings may be suppressed; original redacted reports retained; no global secret-rule suppression"
+}

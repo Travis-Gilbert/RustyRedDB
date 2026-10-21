@@ -1,0 +1,33 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "result": "PASS",
+  "tests": 2,
+  "build_command": [
+    "cargo",
+    "+1.96.1",
+    "test",
+    "--no-run",
+    "--message-format=json"
+  ],
+  "runtime_commands": [
+    [
+      "/usr/bin/sandbox-exec",
+      "-p",
+      "(version 1)(allow default)(deny network*)",
+      "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement/debug/deps/rustyred_external_consumer-fbf4dce5f82ac8c9"
+    ]
+  ],
+  "runtime_network_denial": "macOS sandbox deny network*",
+  "fresh_home": true,
+  "fresh_cargo_home": false,
+  "consumer_profiles": "Cargo defaults test/dev opt-level0",
+  "cargo_home_provenance": "Reused public-only credential-free home created for immutable 7140b00 proof; no user Cargo configuration copied.",
+  "rustc": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2\n",
+  "consumer_source_sha256": "729abeb0997303114339445259d89c5358c696c064af372c46a285d2e5701a6b",
+  "consumer_manifest_sha256": "7930acdd97f85b89f688a87895b4824bfbfa891a287af6ed98dd287b14163b8f",
+  "consumer_lock_sha256": "b414df8404101d77d720362627869aaf34fa33d05c5ce8bddf7722c594bf14d4",
+  "binary_sha256": {
+    "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement/debug/deps/rustyred_external_consumer-fbf4dce5f82ac8c9": "5e53caf615570df48416baac808869af6e107e3e46cebc7d9faf4d508bc7773f"
+  },
+  "consumer_tree_sha256": "c5b801e36cbad470cc3c8b090f1af7cbd1b22f6daa88397fcdf8f2f6aa2ab39f"
+}

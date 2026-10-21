@@ -128,6 +128,7 @@ enum CommitOperation {
     Catalog {
         updates: BTreeMap<String, Option<Hash>>,
         meta: CommitMeta,
+        expected: Option<Option<Hash>>,
     },
 }
 
@@ -155,6 +156,12 @@ struct JournalState {
     poisoned: Option<String>,
     #[cfg(any(test, feature = "test-fault-injection"))]
     injected_append_failure: Option<InjectedAppendFailure>,
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    injected_root_failure: Option<InjectedRootFailure>,
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    injected_sync_failure: Option<(bool, bool)>,
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    injected_claimed_release_failure: bool,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -172,6 +179,13 @@ struct StagedChunkAppend {
     address: Hash,
     logical_len: u64,
     frame: Vec<u8>,
+}
+
+#[cfg(any(test, feature = "test-fault-injection"))]
+#[derive(Clone, Copy)]
+struct InjectedRootFailure {
+    after_bytes: usize,
+    fail_rollback: bool,
 }
 
 #[cfg(any(test, feature = "test-fault-injection"))]
@@ -343,6 +357,12 @@ impl JournalChunkStore {
             poisoned: None,
             #[cfg(any(test, feature = "test-fault-injection"))]
             injected_append_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_root_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_sync_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_claimed_release_failure: false,
         };
         if let Some(committed) = state.committed.clone() {
             validate_catalog_in_state(&mut state, committed.root)?;
@@ -444,6 +464,12 @@ impl JournalChunkStore {
             poisoned: None,
             #[cfg(any(test, feature = "test-fault-injection"))]
             injected_append_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_root_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_sync_failure: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_claimed_release_failure: false,
         };
         if let Some(committed) = state.committed.clone() {
             validate_catalog_in_state(&mut state, committed.root)?;
@@ -614,7 +640,8 @@ impl JournalChunkStore {
     }
 
     #[cfg(any(test, feature = "test-fault-injection"))]
-    pub(crate) fn inject_append_failure_after(
+    #[doc(hidden)]
+    pub fn inject_append_failure_after(
         &self,
         successful_appends_before_failure: usize,
         after_bytes: usize,
@@ -630,6 +657,55 @@ impl JournalChunkStore {
             after_bytes,
             fail_rollback,
         });
+    }
+
+    /// Fail an actual root frame append, after all ordinary chunk appends.
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn inject_root_append_failure_for_test(&self, after_bytes: usize, fail_rollback: bool) {
+        let mut state = self
+            .inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        state.injected_root_failure = Some(InjectedRootFailure {
+            after_bytes,
+            fail_rollback,
+        });
+    }
+
+    /// Fail the real root durability barrier, optionally after syncing its bytes.
+    /// A rollback refusal models publication whose outcome is indeterminate.
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn inject_root_sync_failure_for_test(&self, after_sync: bool, fail_rollback: bool) {
+        let mut state = self
+            .inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        state.injected_sync_failure = Some((after_sync, fail_rollback));
+    }
+
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn inject_claimed_release_failure_for_test(&self) {
+        let mut state = self
+            .inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        state.injected_claimed_release_failure = true;
+    }
+
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn claimed_release_failure_pending_for_test(&self) -> bool {
+        self.inner
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .injected_claimed_release_failure
     }
 
     #[cfg(test)]
@@ -776,6 +852,17 @@ fn group_commit_worker(shared: Arc<GroupCommitShared>) {
 }
 
 impl ChunkStore for JournalChunkStore {
+    fn get_bounded(&self, addr: Hash, max_bytes: usize) -> GraphStoreResult<Option<Arc<[u8]>>> {
+        let mut state = self.lock_state()?;
+        ensure_usable(&state)?;
+        let Some(location) = state.index.get(&addr).copied() else {
+            return Ok(None);
+        };
+        let bytes = load_chunk_at_bounded(&mut state.file, location.offset, Some(max_bytes))?;
+        ensure_address(addr, &bytes)?;
+        Ok(Some(bytes))
+    }
+
     fn get(&self, addr: Hash) -> GraphStoreResult<Option<Arc<[u8]>>> {
         let mut state = self.lock_state()?;
         ensure_usable(&state)?;
@@ -959,6 +1046,13 @@ impl ChunkStore for JournalChunkStore {
     fn release_claimed_in_flight(&self, address: Hash) -> GraphStoreResult<()> {
         let mut state = self.lock_state()?;
         ensure_usable(&state)?;
+        #[cfg(any(test, feature = "test-fault-injection"))]
+        if std::mem::take(&mut state.injected_claimed_release_failure) {
+            return Err(GraphStoreError::new(
+                "chunk_store_injected_claimed_release_failure",
+                "injected claimed pin cleanup failure",
+            ));
+        }
         decrement_journal_pin_count(&mut state.claimed_pins, address, "claimed")?;
         Ok(())
     }
@@ -980,6 +1074,26 @@ impl ChunkStoreCatalog for JournalChunkStore {
         self.submit_commit(CommitOperation::Catalog {
             updates: updates.clone(),
             meta,
+            expected: None,
+        })
+        .map(|outcome| CatalogCommitResult {
+            catalog_root: outcome.catalog_root,
+            commit: outcome.commit,
+        })
+    }
+    fn supports_catalog_compare_and_swap(&self) -> bool {
+        true
+    }
+    fn commit_catalog_updates_if_root(
+        &self,
+        expected: Option<Hash>,
+        updates: &BTreeMap<String, Option<Hash>>,
+        meta: CommitMeta,
+    ) -> GraphStoreResult<CatalogCommitResult> {
+        self.submit_commit(CommitOperation::Catalog {
+            updates: updates.clone(),
+            meta,
+            expected: Some(expected),
         })
         .map(|outcome| CatalogCommitResult {
             catalog_root: outcome.catalog_root,
@@ -1220,6 +1334,23 @@ fn execute_commit_batch(
             outcomes.push(Err(error.clone()));
             continue;
         }
+        // Refuse a stale compare-and-swap before entering the operation
+        // preparer: no bytes/catalog overlay for this request can be staged.
+        // It loses independently while earlier valid requests retain their
+        // order. Ordinary preparation/validation/IO errors still abort all.
+        if let CommitOperation::Catalog {
+            expected: Some(expected),
+            ..
+        } = &operation
+        {
+            if *expected != staged_committed.as_ref().map(|committed| committed.root) {
+                outcomes.push(Err(GraphStoreError::new(
+                    "chunk_store_catalog_precondition_failed",
+                    "accepted catalog changed before publication",
+                )));
+                continue;
+            }
+        }
         match prepare_commit_operation(
             &mut state,
             &mut staged_chunks,
@@ -1258,6 +1389,14 @@ fn execute_commit_batch(
         .chain(frames.iter().map(|(frame, _)| frame.as_slice()))
         .collect::<Vec<_>>();
     let chunk_append_count = chunk_appends.len();
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    if let Some(injection) = state.injected_root_failure.take() {
+        state.injected_append_failure = Some(InjectedAppendFailure {
+            successful_appends_before_failure: chunk_append_count,
+            after_bytes: injection.after_bytes,
+            fail_rollback: injection.fail_rollback,
+        });
+    }
     let offsets = match append_frames_with_checkpoint(
         &mut state,
         &append_frames,
@@ -1284,6 +1423,107 @@ fn execute_commit_batch(
     outcomes
 }
 
+#[cfg(test)]
+mod exchange_grouped_cas_tests {
+    use super::test_support::CountingSync;
+    use super::*;
+    fn operation(graph: Hash, expected: Option<Option<Hash>>) -> CommitOperation {
+        CommitOperation::Catalog {
+            updates: BTreeMap::from([("graph".into(), Some(graph))]),
+            expected,
+            meta: CommitMeta {
+                parents: vec![],
+                author: "exchange-cas-test".into(),
+                message: "actual native grouped publication".into(),
+                timestamp_unix_ms: 0,
+                graph_version: 0,
+            },
+        }
+    }
+    #[test]
+    fn logical_exchange_grouped_cas_refusal_does_not_abort_valid_request() {
+        let directory = tempfile::tempdir().unwrap();
+        let syncer = Arc::new(CountingSync::default());
+        let store = JournalChunkStore::open_with_syncer(
+            &directory.path().join("actual.journal"),
+            syncer.clone(),
+        )
+        .unwrap();
+        let graph = Hash::of(b"actual graph");
+        store.write(&[(graph, b"actual graph")]).unwrap();
+        let syncs = syncer.calls();
+        let results = execute_commit_batch(
+            &store.inner.state,
+            syncer.as_ref(),
+            vec![operation(graph, Some(None)), operation(graph, Some(None))],
+        );
+        assert!(results[0].is_ok());
+        assert_eq!(
+            results[1].as_ref().err().unwrap().code,
+            "chunk_store_catalog_precondition_failed"
+        );
+        assert_eq!(
+            store.read_root().unwrap(),
+            Some(results[0].as_ref().unwrap().catalog_root)
+        );
+        assert_eq!(syncer.calls(), syncs + 1);
+    }
+    #[test]
+    fn logical_exchange_grouped_cas_loser_plus_ordinary_invalid_request_aborts_all() {
+        let directory = tempfile::tempdir().unwrap();
+        let syncer = Arc::new(CountingSync::default());
+        let store = JournalChunkStore::open_with_syncer(
+            &directory.path().join("actual.journal"),
+            syncer.clone(),
+        )
+        .unwrap();
+        let graph = Hash::of(b"actual graph");
+        store.write(&[(graph, b"actual graph")]).unwrap();
+        let syncs = syncer.calls();
+        let results = execute_commit_batch(
+            &store.inner.state,
+            syncer.as_ref(),
+            vec![
+                operation(graph, Some(None)),
+                operation(graph, Some(None)),
+                operation(Hash::of(b"missing"), None),
+            ],
+        );
+        assert!(results.iter().all(Result::is_err));
+        assert_eq!(store.read_root().unwrap(), None);
+        assert_eq!(
+            syncer.calls(),
+            syncs,
+            "ordinary validation failure never appends a partially prepared group"
+        );
+    }
+    #[test]
+    fn logical_exchange_grouped_cas_post_sync_failure_never_acknowledges() {
+        let directory = tempfile::tempdir().unwrap();
+        let syncer = Arc::new(CountingSync::default());
+        let store = JournalChunkStore::open_with_syncer(
+            &directory.path().join("actual.journal"),
+            syncer.clone(),
+        )
+        .unwrap();
+        let graph = Hash::of(b"actual graph");
+        store.write(&[(graph, b"actual graph")]).unwrap();
+        syncer.fail_after_sync_on_call(syncer.calls() + 1);
+        let results = execute_commit_batch(
+            &store.inner.state,
+            syncer.as_ref(),
+            vec![operation(graph, Some(None)), operation(graph, Some(None))],
+        );
+        assert!(results.iter().all(Result::is_err));
+        assert_ne!(
+            results[0].as_ref().err().unwrap().code,
+            "chunk_store_catalog_precondition_failed",
+            "a valid request's failed barrier cannot be reported as a stale precondition"
+        );
+        assert_eq!(store.read_root().unwrap(), None);
+    }
+}
+
 fn prepare_commit_operation(
     state: &mut JournalState,
     staged_chunks: &mut HashMap<Hash, Arc<[u8]>>,
@@ -1297,7 +1537,11 @@ fn prepare_commit_operation(
             meta.parents = prior.into_iter().map(|root| root.commit).collect();
             CommittedRoot::new(root, meta)?
         }
-        CommitOperation::Catalog { updates, mut meta } => {
+        CommitOperation::Catalog {
+            updates,
+            mut meta,
+            expected: _,
+        } => {
             let current = prior
                 .map(|committed| validate_catalog_with_staged(state, staged_chunks, committed.root))
                 .transpose()?;
@@ -1738,10 +1982,17 @@ fn contains_address_with_staged(
 }
 
 fn load_chunk_at(file: &mut File, offset: u64) -> GraphStoreResult<Arc<[u8]>> {
+    load_chunk_at_bounded(file, offset, None)
+}
+fn load_chunk_at_bounded(
+    file: &mut File,
+    offset: u64,
+    max_bytes: Option<usize>,
+) -> GraphStoreResult<Arc<[u8]>> {
     file.seek(SeekFrom::Start(offset))
         .map_err(|error| journal_io("seek chunk", error))?;
     let mut reader = BufReader::new(file);
-    let frame = read_frame(&mut reader).map_err(|error| match error {
+    let frame = read_frame_bounded(&mut reader, max_bytes).map_err(|error| match error {
         FrameReadError::Partial | FrameReadError::BadCrc { .. } | FrameReadError::ZeroedHeader => {
             corrupt(format!("stored chunk frame at offset {offset} is torn"))
         }
@@ -1875,6 +2126,12 @@ fn encode_frame(kind: RecordKind, address: Hash, payload: &[u8]) -> GraphStoreRe
 }
 
 fn read_frame(reader: &mut impl Read) -> Result<DecodedFrame, FrameReadError> {
+    read_frame_bounded(reader, None)
+}
+fn read_frame_bounded(
+    reader: &mut impl Read,
+    max_bytes: Option<usize>,
+) -> Result<DecodedFrame, FrameReadError> {
     let mut fixed = [0_u8; RECORD_HEADER_LEN];
     read_exact_classified(reader, &mut fixed)?;
     if fixed[..4] != JOURNAL_MAGIC {
@@ -1918,6 +2175,12 @@ fn read_frame(reader: &mut impl Read) -> Result<DecodedFrame, FrameReadError> {
             ))));
         }
         PayloadEncoding::Raw | PayloadEncoding::Zstd => {}
+    }
+    if max_bytes.is_some_and(|bound| decoded_len > bound || encoded_len > bound) {
+        return Err(FrameReadError::Semantic(GraphStoreError::new(
+            "chunk_read_bound_refused",
+            "chunk frame exceeds admitted read bytes",
+        )));
     }
     let mut encoded = Vec::with_capacity(encoded_len);
     (&mut *reader)
@@ -2057,7 +2320,24 @@ fn append_frames_with_checkpoint(
         }
     }
     if let Some((syncer, action)) = sync {
-        if let Err(error) = syncer.sync_all(&state.file) {
+        #[cfg(any(test, feature = "test-fault-injection"))]
+        let sync_result =
+            if let Some((after_sync, fail_rollback)) = state.injected_sync_failure.take() {
+                let result = if after_sync {
+                    syncer.sync_all(&state.file)
+                } else {
+                    Ok(())
+                };
+                if fail_rollback {
+                    state.poisoned = Some("injected durability rollback refusal".to_string());
+                }
+                result.and(Err(io::Error::other("injected root sync failure")))
+            } else {
+                syncer.sync_all(&state.file)
+            };
+        #[cfg(not(any(test, feature = "test-fault-injection")))]
+        let sync_result = syncer.sync_all(&state.file);
+        if let Err(error) = sync_result {
             return Err(rollback_or_poison(
                 state,
                 checkpoint,
@@ -4125,6 +4405,27 @@ mod tests {
         assert!(
             !here.join("Travis.RR").exists(),
             "resolving a path must not create it"
+        );
+    }
+}
+
+#[cfg(test)]
+mod bounded_frame_admission_tests {
+    use super::*;
+    #[test]
+    fn refuses_decoded_size_before_payload_read_or_decompression() {
+        // A real compressed frame with a tiny encoded body must still be
+        // refused on its declared decoded size before that body is read.
+        let body = vec![b'x'; 64 * 1024];
+        let frame = encode_frame(RecordKind::Chunk, Hash::of(&body), &body).unwrap();
+        let mut source = std::io::Cursor::new(frame);
+        let result = read_frame_bounded(&mut source, Some(1024));
+        assert!(
+            matches!(result,Err(FrameReadError::Semantic(ref e)) if e.code=="chunk_read_bound_refused")
+        );
+        assert_eq!(
+            source.position(),
+            (RECORD_HEADER_LEN + RECORD_ENCODED_LEN_LEN) as u64
         );
     }
 }

@@ -15,8 +15,11 @@ pub enum ErrorKind {
     ReadOnly,
     /// The Cypher text or its parameters were rejected.
     Query,
-    /// The engine refused before publication, or the file could not be read.
+    /// Storage, format or validation failure without an indeterminate journal outcome.
     Storage,
+    /// Publication or its rollback could not be confirmed. Close the handle,
+    /// reopen, and reconcile the operation before deciding whether to retry.
+    CommitOutcomeUnknown,
 }
 
 /// A bounded failure. `code` is stable for programs. The message is for people.
@@ -45,6 +48,7 @@ impl Error {
         let kind = match error.code.as_str() {
             "rr_already_exists" => ErrorKind::AlreadyExists,
             "not_found" => ErrorKind::NotFound,
+            "chunk_store_journal_poisoned" => ErrorKind::CommitOutcomeUnknown,
             _ => ErrorKind::Storage,
         };
         Self {

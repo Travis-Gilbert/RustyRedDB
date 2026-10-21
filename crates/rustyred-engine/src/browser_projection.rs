@@ -33,9 +33,11 @@
 //!
 //! The log is a header followed by self-delimiting frames: `kind`,
 //! `payload_len`, a CRC over the payload, then the payload. The CRC does not cover
-//! the declared length. An address is never stored -- every address in this
-//! journal is *recomputed from verified bytes*, so the file cannot carry an
-//! address that disagrees with its own content. Opening scans from the first
+//! the declared length. V1 stores canonical bytes directly; V2 may store a
+//! smaller zstd envelope with bounded decoded length and canonical hash. Every
+//! address is *recomputed from verified decoded bytes*, and V2 checks it against
+//! the envelope's hash before admission. Existing V1 journals remain V1; only
+//! an explicitly selected empty-store opener creates V2. Opening scans from the first
 //! frame and builds the **verified prefix**. A short final header/payload, or a
 //! complete corrupt chunk suffix with no later valid commit root, is uncommitted
 //! and may be truncated and synced. A length that runs past EOF triggers a
@@ -148,6 +150,10 @@ pub const BROWSER_DEFAULT_DURABILITY: RedCoreDurability = RedCoreDurability::Aof
 /// Identifies this journal as the projection's chunk log rather than a ledger.
 const JOURNAL_MAGIC: [u8; 8] = *b"RRBPCJ01";
 const JOURNAL_VERSION: u8 = 1;
+const COMPRESSED_JOURNAL_VERSION: u8 = 2;
+
+#[path = "browser_projection_codec.rs"]
+mod codec;
 const JOURNAL_HEADER_BYTES: u64 = 9;
 
 /// `kind`, `payload_len`, `payload_crc` -- no address, deliberately.
@@ -155,8 +161,9 @@ const FRAME_HEADER_BYTES: u64 = 9;
 
 /// The same bound the native journal puts on a decoded payload, for the same
 /// reason: a corrupt or torn length must not become an unbounded allocation.
-/// Frames are not compressed here, so there is no separate encoded bound. The
-/// damaged-length rescan is also bounded by this existing frame-size limit.
+/// Encoded and decoded chunks each retain this ceiling. V2 compression is used
+/// only when the envelope is smaller than the canonical bytes. Damaged-length
+/// rescans retain this same bound.
 const MAX_FRAME_PAYLOAD: u32 = 64 * 1024 * 1024;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -166,6 +173,8 @@ enum FrameKind {
     Root = 2,
     /// Payload-free sticky metadata; it never changes the committed catalog.
     PressureMarker = 3,
+    /// V2 only: decoded length, canonical hash, then one zstd payload.
+    CompressedChunk = 4,
 }
 
 impl FrameKind {
@@ -174,6 +183,7 @@ impl FrameKind {
             1 => Some(Self::Chunk),
             2 => Some(Self::Root),
             3 => Some(Self::PressureMarker),
+            4 => Some(Self::CompressedChunk),
             _ => None,
         }
     }
@@ -190,11 +200,15 @@ struct Frame {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct ChunkLocation {
     payload_offset: u64,
+    /// Canonical decoded length used by pre-allocation admission.
     payload_len: u32,
+    encoded_len: u32,
+    compressed: bool,
 }
 
 struct ProjectionState {
     file: Box<dyn LogFile>,
+    format_version: u8,
     /// Verified frames only. A recovered scan populates this from the verified
     /// prefix, and a write populates it only after the frame that carries the
     /// bytes is complete.
@@ -319,6 +333,8 @@ pub struct ProjectionStorageSnapshot {
 /// Read-only result for the browser projection's existing journal format.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ProjectionInspection {
+    /// None for an empty file; otherwise its verified physical header version.
+    pub format_version: Option<u8>,
     pub file_len: u64,
     pub verified_prefix_len: u64,
     pub committed: Option<CommittedRoot>,
@@ -382,12 +398,31 @@ impl ProjectionChunkStore {
         file: Box<dyn LogFile>,
         bounds: Option<ProjectionStorageBounds>,
     ) -> GraphStoreResult<Self> {
+        Self::open_with_initial_version(file, bounds, JOURNAL_VERSION)
+    }
+
+    /// Opt in to V2 compression for a fresh, empty journal only. An existing
+    /// V1 journal retains its header and uncompressed writer; no bytes migrate
+    /// or get reclaimed during this open. Ordinary new readers support both.
+    pub fn open_with_compressed_chunks(
+        file: Box<dyn LogFile>,
+        bounds: Option<ProjectionStorageBounds>,
+    ) -> GraphStoreResult<Self> {
+        Self::open_with_initial_version(file, bounds, COMPRESSED_JOURNAL_VERSION)
+    }
+
+    fn open_with_initial_version(
+        file: Box<dyn LogFile>,
+        bounds: Option<ProjectionStorageBounds>,
+        initial_version: u8,
+    ) -> GraphStoreResult<Self> {
         let bounds = bounds.map(ProjectionStorageBounds::validate).transpose()?;
         let mut file = file;
-        let recovered = recover(&mut *file)?;
+        let recovered = recover(&mut *file, initial_version)?;
         let store = Self {
             state: Mutex::new(ProjectionState {
                 file,
+                format_version: recovered.format_version,
                 index: recovered.index,
                 committed: recovered.committed,
                 poisoned: None,
@@ -496,6 +531,22 @@ impl ProjectionChunkStore {
 }
 
 impl ChunkStore for ProjectionChunkStore {
+    fn get_bounded(&self, addr: Hash, max_bytes: usize) -> GraphStoreResult<Option<Arc<[u8]>>> {
+        let mut state = self.lock_state()?;
+        ensure_usable(&state)?;
+        if state
+            .index
+            .get(&addr)
+            .is_some_and(|location| u64::from(location.payload_len) > max_bytes as u64)
+        {
+            return Err(GraphStoreError::new(
+                "chunk_read_bound_refused",
+                "chunk exceeds admitted read bytes",
+            ));
+        }
+        chunk_bytes(&mut state, addr)
+    }
+
     fn get(&self, addr: Hash) -> GraphStoreResult<Option<Arc<[u8]>>> {
         let mut state = self.lock_state()?;
         ensure_usable(&state)?;
@@ -555,11 +606,15 @@ impl ChunkStore for ProjectionChunkStore {
                 .bytes_written
                 .checked_add(bytes.len())
                 .ok_or_else(size_overflow)?;
-            frames.push(Frame {
-                kind: FrameKind::Chunk,
-                payload: bytes.to_vec(),
-            });
-            admitted.push((address, payload_len));
+            let frame = prepare_chunk_frame(state.format_version, &bytes)?;
+            let encoded_len = u32::try_from(frame.payload.len()).map_err(|_| size_overflow())?;
+            admitted.push((
+                address,
+                payload_len,
+                encoded_len,
+                frame.kind == FrameKind::CompressedChunk,
+            ));
+            frames.push(frame);
         }
 
         if frames.is_empty() {
@@ -578,12 +633,16 @@ impl ChunkStore for ProjectionChunkStore {
             false,
             GrowthReservation::StagedUserData,
         )?;
-        for ((address, payload_len), payload_offset) in admitted.into_iter().zip(offsets) {
+        for ((address, payload_len, encoded_len, compressed), payload_offset) in
+            admitted.into_iter().zip(offsets)
+        {
             state.index.insert(
                 address,
                 ChunkLocation {
                     payload_offset,
                     payload_len,
+                    encoded_len,
+                    compressed,
                 },
             );
         }
@@ -624,10 +683,40 @@ impl ChunkStoreCatalog for ProjectionChunkStore {
         updates: &BTreeMap<String, Option<Hash>>,
         meta: CommitMeta,
     ) -> GraphStoreResult<CatalogCommitResult> {
+        self.commit_catalog_updates_checked(None, updates, meta)
+    }
+    fn supports_catalog_compare_and_swap(&self) -> bool {
+        true
+    }
+    fn commit_catalog_updates_if_root(
+        &self,
+        expected: Option<Hash>,
+        updates: &BTreeMap<String, Option<Hash>>,
+        meta: CommitMeta,
+    ) -> GraphStoreResult<CatalogCommitResult> {
+        self.commit_catalog_updates_checked(Some(expected), updates, meta)
+    }
+}
+
+impl ProjectionChunkStore {
+    fn commit_catalog_updates_checked(
+        &self,
+        expected: Option<Option<Hash>>,
+        updates: &BTreeMap<String, Option<Hash>>,
+        meta: CommitMeta,
+    ) -> GraphStoreResult<CatalogCommitResult> {
         // The lock spans merge, parent derivation, append, flush and
         // publication: this is the root-state lock the trait contract names.
         let mut state = self.lock_state()?;
         ensure_usable(&state)?;
+        if expected.is_some_and(|expected| {
+            expected != state.committed.as_ref().map(|committed| committed.root)
+        }) {
+            return Err(GraphStoreError::new(
+                "chunk_store_catalog_precondition_failed",
+                "accepted catalog changed before publication",
+            ));
+        }
 
         let current = match state.committed.clone() {
             Some(committed) => {
@@ -655,31 +744,14 @@ impl ChunkStoreCatalog for ProjectionChunkStore {
             }
         }
 
-        let mut meta = meta;
-        meta.parents = state
-            .committed
-            .as_ref()
-            .map(|committed| committed.commit)
-            .into_iter()
-            .collect();
-        let committed = CommittedRoot::new(catalog_root, meta)?;
-
-        // A new catalog chunk and its root frame go in as one batch behind one
-        // flush. If the catalog chunk is already in the log its frame is not
-        // rewritten: the bytes are content-addressed and were verified on the
-        // way in.
-        let mut frames = Vec::new();
         let catalog_is_new = !state.index.contains_key(&catalog_root);
-        if catalog_is_new {
-            frames.push(Frame {
-                kind: FrameKind::Chunk,
-                payload: catalog_bytes.clone(),
-            });
-        }
-        frames.push(Frame {
-            kind: FrameKind::Root,
-            payload: committed.to_bytes()?,
-        });
+        let (committed, frames) = prepare_catalog_frames(
+            catalog_root,
+            &catalog_bytes,
+            state.committed.as_ref(),
+            meta,
+            catalog_is_new,
+        )?;
 
         let offsets = append_frames(&mut state, &frames, true, GrowthReservation::Publication)?;
         if catalog_is_new {
@@ -688,6 +760,8 @@ impl ChunkStoreCatalog for ProjectionChunkStore {
                 ChunkLocation {
                     payload_offset: offsets[0],
                     payload_len: u32::try_from(catalog_bytes.len()).map_err(|_| size_overflow())?,
+                    encoded_len: u32::try_from(catalog_bytes.len()).map_err(|_| size_overflow())?,
+                    compressed: false,
                 },
             );
         }
@@ -777,6 +851,7 @@ pub fn browser_red_core_options() -> RedCoreOptions {
 }
 
 struct Recovered {
+    format_version: u8,
     index: HashMap<Hash, ChunkLocation>,
     committed: Option<CommittedRoot>,
     pressure_marker_observed: bool,
@@ -784,6 +859,7 @@ struct Recovered {
 }
 
 struct Scanned {
+    format_version: u8,
     inspection: ProjectionInspection,
     index: HashMap<Hash, ChunkLocation>,
     pressure_marker_observed: bool,
@@ -815,7 +891,9 @@ fn scan_file(file: &mut dyn LogFile) -> GraphStoreResult<Scanned> {
     let length = file.len().map_err(storage_failure)?;
     if length == 0 {
         return Ok(Scanned {
+            format_version: JOURNAL_VERSION,
             inspection: ProjectionInspection {
+                format_version: None,
                 file_len: 0,
                 verified_prefix_len: 0,
                 committed: None,
@@ -841,9 +919,10 @@ fn scan_file(file: &mut dyn LogFile) -> GraphStoreResult<Scanned> {
             &header[..JOURNAL_MAGIC.len()]
         )));
     }
-    if header[JOURNAL_MAGIC.len()] != JOURNAL_VERSION {
+    let format_version = header[JOURNAL_MAGIC.len()];
+    if !matches!(format_version, JOURNAL_VERSION | COMPRESSED_JOURNAL_VERSION) {
         return Err(unsupported_format(format!(
-            "the journal carries format version {}, and this build writes {JOURNAL_VERSION}",
+            "the journal carries format version {}, and this build supports {JOURNAL_VERSION}/{COMPRESSED_JOURNAL_VERSION}",
             header[JOURNAL_MAGIC.len()]
         )));
     }
@@ -856,19 +935,32 @@ fn scan_file(file: &mut dyn LogFile) -> GraphStoreResult<Scanned> {
     let mut pressure_marker_observed = false;
     let mut pressure_unknown = false;
     while offset < length {
-        match read_frame(file, offset, length)? {
+        match read_frame_in_version(file, offset, length, format_version)? {
             FrameRead::Valid(frame) => {
                 let payload_len =
                     u32::try_from(frame.payload.len()).map_err(|_| size_overflow())?;
                 match frame.kind {
-                    FrameKind::Chunk => {
-                        // Chunk identity is recomputed from verified bytes.
-                        let address = Hash::of(&frame.payload);
+                    FrameKind::Chunk | FrameKind::CompressedChunk => {
+                        let compressed = frame.kind == FrameKind::CompressedChunk;
+                        if compressed && format_version != COMPRESSED_JOURNAL_VERSION {
+                            return Err(unsupported_format("compressed chunk in a V1 journal"));
+                        }
+                        let decoded = if compressed {
+                            Some(codec::decode(&frame.payload)?)
+                        } else {
+                            None
+                        };
+                        let bytes = decoded.as_deref().unwrap_or(&frame.payload);
+                        // Identity belongs to canonical bytes, never their envelope.
+                        let address = Hash::of(bytes);
                         index.insert(
                             address,
                             ChunkLocation {
                                 payload_offset: offset + FRAME_HEADER_BYTES,
-                                payload_len,
+                                payload_len: u32::try_from(bytes.len())
+                                    .map_err(|_| size_overflow())?,
+                                encoded_len: payload_len,
+                                compressed,
                             },
                         );
                     }
@@ -917,7 +1009,7 @@ fn scan_file(file: &mut dyn LogFile) -> GraphStoreResult<Scanned> {
                 next_offset,
                 detail,
             } => {
-                match suffix_has_commit_root(file, next_offset, length) {
+                match suffix_has_commit_root(file, next_offset, length, format_version) {
                     Ok(true) => {
                         tail = ProjectionTailState::CommittedCorruption;
                         diagnosis = Some(detail);
@@ -952,7 +1044,9 @@ fn scan_file(file: &mut dyn LogFile) -> GraphStoreResult<Scanned> {
     }
 
     Ok(Scanned {
+        format_version,
         inspection: ProjectionInspection {
+            format_version: Some(format_version),
             file_len: length,
             verified_prefix_len: offset,
             committed,
@@ -966,16 +1060,18 @@ fn scan_file(file: &mut dyn LogFile) -> GraphStoreResult<Scanned> {
 }
 
 /// Scans and only truncates a suffix that inspection proved uncommitted.
-fn recover(file: &mut dyn LogFile) -> GraphStoreResult<Recovered> {
+fn recover(file: &mut dyn LogFile, initial_version: u8) -> GraphStoreResult<Recovered> {
     let scanned = scan_file(file)?;
     if scanned.inspection.file_len == 0 {
         // A fresh journal. The header goes in and is made durable here, before
         // the first frame, so a log with frames in it always has an identity to
         // check; `sync_directory` is honestly a no-op on OPFS.
-        file.append(&journal_header()).map_err(storage_failure)?;
+        file.append(&journal_header(initial_version))
+            .map_err(storage_failure)?;
         file.sync().map_err(storage_failure)?;
         file.sync_directory().map_err(storage_failure)?;
         return Ok(Recovered {
+            format_version: initial_version,
             index: HashMap::new(),
             committed: None,
             pressure_marker_observed: false,
@@ -1011,6 +1107,7 @@ fn recover(file: &mut dyn LogFile) -> GraphStoreResult<Recovered> {
         }
     }
     Ok(Recovered {
+        format_version: scanned.format_version,
         index: scanned.index,
         committed: scanned.inspection.committed,
         pressure_marker_observed: scanned.pressure_marker_observed,
@@ -1020,6 +1117,25 @@ fn recover(file: &mut dyn LogFile) -> GraphStoreResult<Recovered> {
 
 /// Reads and fully verifies one frame. Only a short final header/payload is an
 /// incomplete write; complete invalid frames keep their own named diagnosis.
+fn read_frame_in_version(
+    file: &mut dyn LogFile,
+    offset: u64,
+    length: u64,
+    version: u8,
+) -> GraphStoreResult<FrameRead> {
+    if version == JOURNAL_VERSION && offset < length {
+        let mut kind = [0u8; 1];
+        file.read_exact_at(offset, &mut kind)
+            .map_err(storage_failure)?;
+        if kind[0] == FrameKind::CompressedChunk as u8 {
+            return Ok(FrameRead::Unsupported(
+                "V2 compressed frame in a V1 journal".into(),
+            ));
+        }
+    }
+    read_frame(file, offset, length)
+}
+
 fn read_frame(file: &mut dyn LogFile, offset: u64, length: u64) -> GraphStoreResult<FrameRead> {
     if length.saturating_sub(offset) < FRAME_HEADER_BYTES as u64 {
         return Ok(FrameRead::Incomplete);
@@ -1051,7 +1167,7 @@ fn read_frame(file: &mut dyn LogFile, offset: u64, length: u64) -> GraphStoreRes
     if crc32fast::hash(&payload) != expected_crc {
         let detail = format!("frame payload checksum mismatch at byte {offset}");
         return Ok(match kind {
-            FrameKind::Chunk => FrameRead::CorruptChunk {
+            FrameKind::Chunk | FrameKind::CompressedChunk => FrameRead::CorruptChunk {
                 next_offset: payload_end,
                 detail,
             },
@@ -1060,6 +1176,14 @@ fn read_frame(file: &mut dyn LogFile, offset: u64, length: u64) -> GraphStoreRes
                 next_offset: payload_end,
             },
         });
+    }
+    if kind == FrameKind::CompressedChunk {
+        if let Err(error) = codec::decode(&payload) {
+            return Ok(FrameRead::CorruptChunk {
+                next_offset: payload_end,
+                detail: error.message,
+            });
+        }
     }
     if kind == FrameKind::Root {
         let committed = match CommittedRoot::from_bytes(&payload) {
@@ -1175,9 +1299,10 @@ fn suffix_has_commit_root(
     file: &mut dyn LogFile,
     mut offset: u64,
     length: u64,
+    version: u8,
 ) -> GraphStoreResult<bool> {
     while offset < length {
-        match read_frame(file, offset, length)? {
+        match read_frame_in_version(file, offset, length, version)? {
             FrameRead::Valid(frame) => {
                 if frame.kind == FrameKind::Root {
                     return Ok(true);
@@ -1249,12 +1374,7 @@ fn append_frames(
             GrowthReservation::Publication => bounds.publication_limit_bytes(),
             GrowthReservation::PressureMarker => bounds.max_log_bytes,
         };
-        let append_len = frames.iter().try_fold(0_u64, |total, frame| {
-            total
-                .checked_add(FRAME_HEADER_BYTES)
-                .and_then(|total| total.checked_add(frame.payload.len() as u64))
-                .ok_or_else(size_overflow)
-        })?;
+        let append_len = encoded_frames_len(frames)?;
         let projected_end = checkpoint
             .checked_add(append_len)
             .ok_or_else(size_overflow)?;
@@ -1407,11 +1527,28 @@ fn chunk_bytes_from_index(
     let Some(location) = index.get(&address).copied() else {
         return Ok(None);
     };
-    let mut buffer = vec![0_u8; location.payload_len as usize];
+    let mut buffer = vec![0_u8; location.encoded_len as usize];
     file.read_exact_at(location.payload_offset, &mut buffer)
         .map_err(storage_failure)?;
-    verify_address(address, &buffer)?;
-    Ok(Some(Arc::from(buffer)))
+    if location.compressed && codec::decoded_len(&buffer)? != location.payload_len {
+        return Err(GraphStoreError::new(
+            "chunk_store_browser_chunk_length_mismatch",
+            "compressed length changed after index admission",
+        ));
+    }
+    let bytes = if location.compressed {
+        codec::decode(&buffer)?
+    } else {
+        buffer
+    };
+    if bytes.len() != location.payload_len as usize {
+        return Err(GraphStoreError::new(
+            "chunk_store_browser_chunk_length_mismatch",
+            "decoded chunk changed length",
+        ));
+    }
+    verify_address(address, &bytes)?;
+    Ok(Some(Arc::from(bytes)))
 }
 
 /// Loads the committed catalog chunk and checks the graph root it must carry
@@ -1491,10 +1628,10 @@ fn ensure_payload_bound(len: usize) -> GraphStoreResult<()> {
     Ok(())
 }
 
-fn journal_header() -> Vec<u8> {
+fn journal_header(version: u8) -> Vec<u8> {
     let mut header = Vec::with_capacity(JOURNAL_HEADER_BYTES as usize);
     header.extend_from_slice(&JOURNAL_MAGIC);
-    header.push(JOURNAL_VERSION);
+    header.push(version);
     header
 }
 
@@ -2366,4 +2503,143 @@ mod tests {
         );
         assert_ne!(BROWSER_DEFAULT_DURABILITY, RedCoreDurability::AofEverysec);
     }
+}
+
+#[cfg(test)]
+#[path = "browser_projection_codec_tests.rs"]
+mod codec_tests;
+
+/// Exact physical bytes admitted by one preflight over a validated logical
+/// archive. Estimates are source/version bound, not an actual write receipt.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct ProjectionExchangeAdmission {
+    pub format_version: u8,
+    pub current_log_bytes: u64,
+    pub staged_chunk_bytes: u64,
+    pub publication_bytes: u64,
+    pub projected_log_bytes: u64,
+}
+
+impl ProjectionChunkStore {
+    /// Preflight every unique archive address against this physical index and
+    /// the exact V1/V2 encoder used by write_accounted. No state or pressure
+    /// marker is changed. Final publication still needs the atomic root fence.
+    pub fn preflight_logical_exchange(
+        &self,
+        archive: &crate::logical_exchange::ValidatedExchange,
+        expected_catalog: Option<Hash>,
+    ) -> GraphStoreResult<ProjectionExchangeAdmission> {
+        archive.require_empty_destination(self, expected_catalog)?;
+        let state = self.lock_state()?;
+        ensure_usable(&state)?;
+        if state.committed.as_ref().map(|committed| committed.root) != expected_catalog {
+            return Err(GraphStoreError::new(
+                "chunk_store_catalog_precondition_failed",
+                "accepted catalog changed before capacity admission",
+            ));
+        }
+        let mut staged_chunk_bytes = 0_u64;
+        let root = archive.receipt().catalog;
+        let mut catalog_bytes = None;
+        archive.for_each_chunk(&mut |address, bytes| {
+            if address == root {
+                catalog_bytes = Some(bytes.to_vec());
+            }
+            if !state.index.contains_key(&address) {
+                let frame = prepare_chunk_frame(state.format_version, bytes)?;
+                staged_chunk_bytes = staged_chunk_bytes
+                    .checked_add(encoded_frames_len(&[frame])?)
+                    .ok_or_else(size_overflow)?;
+            }
+            Ok(())
+        })?;
+        let catalog_bytes = catalog_bytes.ok_or_else(|| {
+            GraphStoreError::new(
+                "exchange_catalog_missing",
+                "validated archive does not contain its catalog",
+            )
+        })?;
+        // The complete archive stages the catalog itself, so it is present by
+        // publication. The shared constructor still handles a missing raw
+        // catalog frame for the ordinary writer's un-staged catalog path.
+        let (_, publication_frames) = prepare_catalog_frames(
+            root,
+            &catalog_bytes,
+            state.committed.as_ref(),
+            archive.publication_metadata(),
+            false,
+        )?;
+        let publication_bytes = encoded_frames_len(&publication_frames)?;
+        let current_log_bytes = state.file.len().map_err(storage_failure)?;
+        let staged_end = current_log_bytes
+            .checked_add(staged_chunk_bytes)
+            .ok_or_else(size_overflow)?;
+        let projected_log_bytes = staged_end
+            .checked_add(publication_bytes)
+            .ok_or_else(size_overflow)?;
+        if state.bounds.is_some_and(|bounds| {
+            staged_end > bounds.user_growth_limit_bytes()
+                || projected_log_bytes > bounds.publication_limit_bytes()
+        }) {
+            return Err(GraphStoreError::new("local_storage_pressure_refused", "complete exchange cannot fit the current journal's admitted staging and publication capacities; original archive preserved"));
+        }
+        Ok(ProjectionExchangeAdmission {
+            format_version: state.format_version,
+            current_log_bytes,
+            staged_chunk_bytes,
+            publication_bytes,
+            projected_log_bytes,
+        })
+    }
+}
+
+fn prepare_chunk_frame(format_version: u8, bytes: &[u8]) -> GraphStoreResult<Frame> {
+    ensure_payload_bound(bytes.len())?;
+    if format_version == COMPRESSED_JOURNAL_VERSION {
+        if let Some(payload) = codec::encode(bytes)? {
+            return Ok(Frame {
+                kind: FrameKind::CompressedChunk,
+                payload,
+            });
+        }
+    }
+    Ok(Frame {
+        kind: FrameKind::Chunk,
+        payload: bytes.to_vec(),
+    })
+}
+
+fn prepare_catalog_frames(
+    catalog_root: Hash,
+    catalog_bytes: &[u8],
+    prior: Option<&CommittedRoot>,
+    mut meta: CommitMeta,
+    catalog_is_new: bool,
+) -> GraphStoreResult<(CommittedRoot, Vec<Frame>)> {
+    meta.parents = prior
+        .map(|committed| committed.commit)
+        .into_iter()
+        .collect();
+    let committed = CommittedRoot::new(catalog_root, meta)?;
+    let mut frames = Vec::new();
+    if catalog_is_new {
+        frames.push(Frame {
+            kind: FrameKind::Chunk,
+            payload: catalog_bytes.to_vec(),
+        });
+    }
+    frames.push(Frame {
+        kind: FrameKind::Root,
+        payload: committed.to_bytes()?,
+    });
+    Ok((committed, frames))
+}
+
+fn encoded_frames_len(frames: &[Frame]) -> GraphStoreResult<u64> {
+    frames.iter().try_fold(0_u64, |total, frame| {
+        total
+            .checked_add(FRAME_HEADER_BYTES)
+            .and_then(|total| total.checked_add(frame.payload.len() as u64))
+            .ok_or_else(size_overflow)
+    })
 }

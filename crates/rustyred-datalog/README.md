@@ -1,4 +1,4 @@
-# Theorem Datalog
+# rustyred-datalog
 
 One pure engine interface serves graph adapters and compute-offload. This crate
 does not read the graph, network or filesystem. Callers supply immutable,
@@ -6,7 +6,7 @@ content-addressed data and retain the resulting derivation receipts.
 
 `Compiled` runs the existing fixed rules with Datafrog and reports
 `rust-datafrog-core`. `Runtime` parses caller-supplied scalar relational rules
-through theorem-egraph and reports `egraph-theorem`. Runtime programs cannot
+through the `rustyred-egraph` package (library `egraph`) and reports `egraph-theorem`. Runtime programs cannot
 create equality sorts, union values or execute external commands.
 
 ```rust
@@ -55,3 +55,5 @@ The unchanged Python reference supplies 45 regression fixtures across its
 fourteen current rules. The retained native-only `same_entity` rule has a
 separate Rust provenance test. Neither substitutes for the actual native.py
 extension parity gate run by the application.
+
+The Rust library import remains `datalog`; persisted receipt engine strings stay unchanged. From the RustyRedDB repository root, run `cargo +1.96.1 test --locked -p rustyred-datalog`. Captured Python reference fixtures are included; the application-specific native.py parity gate is separate.

@@ -192,6 +192,7 @@ impl ProposalCommitter {
         provenance: &EntryProvenance,
         attempts: u32,
     ) -> Result<CommitOutcome, CommitError> {
+        self.log.ensure_writable()?;
         validate_v3_provenance(provenance)?;
         if let Some(existing) = self.log.record_for_digest(&proposal.op_digest) {
             let provenance_matches = existing.protocol_version == PHYSICAL_LOG_PROTOCOL_V2

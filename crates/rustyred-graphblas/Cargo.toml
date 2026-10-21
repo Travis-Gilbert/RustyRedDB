@@ -1,0 +1,22 @@
+[package]
+rust-version = "1.96.1"
+include = ["src/**", "tests/**", "benches/**", "build.rs", "wrapper.h", "graphblas.sh", "README*", "LICENSE*", "NOTICE.md"]
+name = "rustyred-graphblas"
+version = "0.1.0-beta.2"
+edition = "2021"
+license = "MIT"
+description = "GraphBLAS + LAGraph FFI and safe sparse-linear-algebra layer for RustyRed: matrix/vector/semiring handles, masked mxv/mxm semiring traversal, and LAGraph algorithm bindings. Links SuiteSparse:GraphBLAS (Apache-2.0) and LAGraph (BSD); copies no GPL/CC-BY-NC/SSPL code."
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"
+# Declares the native library this crate links, so Cargo enforces a single
+# GraphBLAS link unit across the dependency graph.
+links = "graphblas"
+
+[dependencies]
+# Leaf crate: no workspace dependencies (integration lives in rustyred-thg-core
+# behind its optional `graphblas` feature, to keep the dependency edge acyclic).
+
+[build-dependencies]
+bindgen = "0.70"
+
+[lib]
+name = "rustyred_thg_graphblas"

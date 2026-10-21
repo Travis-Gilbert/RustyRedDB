@@ -1,0 +1,173 @@
+{
+  "reviewer": "/root/release_review",
+  "implementation_author": "/root/storage_oracles",
+  "review_kind": "independent_raw_source_and_failure_oracle_review",
+  "repository": "https://github.com/Travis-Gilbert/RustyRedDB",
+  "revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "tracked_source_clean_at_review": true,
+  "storage_source_unchanged_since": "b4ebfc32fe5e543ed44ff52eb86eea6b122de3f3",
+  "independence": "Reviewer did not implement the canonical storage/log/fold repairs. The review directly read current source and fault-oracle assertions; it is separate from implementer re-reading, CI executions and PR bots.",
+  "reviewed_files": [
+    {
+      "path": "crates/rustyred-engine/src/journal.rs",
+      "sha256": "7679feba3b0b1d6534364da8361a86b06f18579660714c8401760edfcabe9661"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/error.rs",
+      "sha256": "cd7eb37b90ce173f91d0ff6934588cb49700b65af66ebe67cbd19ce8ac8d7b61"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/fold_store.rs",
+      "sha256": "a025d78714aceb3cccf25f9f91160a1e5b69d3318270b8193b489f870a490600"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/linked_to.rs",
+      "sha256": "d513277d11799dc2cc16dd0162ee799cbeb425fcc36795f7bf148b6964eff767"
+    },
+    {
+      "path": "crates/rustyred-engine/src/graph/in_memory.rs",
+      "sha256": "7d9ac144025b1aadf176304b24ba2de8af14bcf8b91cb300fe1d4ede73f80c35"
+    },
+    {
+      "path": "crates/rustyred-log/src/physical.rs",
+      "sha256": "47de07716b2ea5ccfad095cb630fb96ed0a39c67eee987b7a3b363809c77a610"
+    },
+    {
+      "path": "crates/rustyred-log/src/proposal.rs",
+      "sha256": "a9b8667d108a082e91706029e47b504f9578f2da59f10098f2bbb7be1eed6475"
+    },
+    {
+      "path": "crates/rustyred/src/error.rs",
+      "sha256": "a8cf8fdba1c3f7050bad39f16adad238823798a1c808583d2391bb8566ab309d"
+    },
+    {
+      "path": "crates/rustyred/tests/rr_failures.rs",
+      "sha256": "6ff8cd9ad271674b51794eadaf1c989731512a58937c3d950ac1baa481e28637"
+    },
+    {
+      "path": "crates/rustyred/tests/embedded_api.rs",
+      "sha256": "47d38347cd9095d1925c11b36074ccdde26bc90e66d9de25796ed57bf3981eaf"
+    },
+    {
+      "path": "crates/rustyred-engine/tests/fold_commit_outcome.rs",
+      "sha256": "2c75fa1954e7271d2834d87831b7342b2e859d5479887f915260e57bde3a9547"
+    },
+    {
+      "path": "crates/rustyred/tests/rr_roundtrip.rs",
+      "sha256": "5a330919307d4a9d0551d6e844c58f318973cbff527757bf0e51f929d5296e9c"
+    }
+  ],
+  "findings_and_resolutions": [
+    {
+      "id": "IR01",
+      "finding": "An uncertain root publication must remain distinguishable from a refused transaction, including after rollback failure.",
+      "resolution_reviewed": "Journal frames use one actual end-of-file checkpoint. Root sync failure returns the original I/O refusal only after truncate/seek/sync rollback is confirmed; failed rollback poisons the handle. Public facade maps the exact poison code to ErrorKind::CommitOutcomeUnknown. Further writes refuse the poisoned handle.",
+      "source": [
+        "crates/rustyred-engine/src/journal.rs:2127",
+        "crates/rustyred-engine/src/journal.rs:2213",
+        "crates/rustyred-engine/src/journal.rs:2267",
+        "crates/rustyred/src/error.rs:47"
+      ],
+      "oracles": [
+        "crates/rustyred/tests/rr_failures.rs::root_sync_failure_with_confirmed_rollback_keeps_the_prior_commit",
+        "crates/rustyred/tests/rr_failures.rs::an_unconfirmed_durable_publication_is_typed_unknown_and_never_retried"
+      ],
+      "oracle_review": "Tests use the real per-store journal seam. Unknown-outcome test syncs the actual root, refuses rollback, checks scalar and vector errors, rejects a later write, closes, and independently reopens through Database to observe the landed operation."
+    },
+    {
+      "id": "IR02",
+      "finding": "A vector pin-cleanup error could mask the journal poison code, or turn a committed write into an ordinary failure.",
+      "resolution_reviewed": "vector_pin_cleanup_error structurally preserves chunk_store_journal_poisoned if either publication or release has that code. Known post-commit claimed-pin cleanup failure stays on the successful mutation path.",
+      "source": [
+        "crates/rustyred-engine/src/graph/error.rs:85",
+        "crates/rustyred/src/error.rs:47"
+      ],
+      "oracles": [
+        "crates/rustyred/tests/rr_failures.rs::an_unconfirmed_durable_publication_is_typed_unknown_and_never_retried",
+        "crates/rustyred/tests/rr_failures.rs::committed_vector_write_stays_successful_when_pin_maintenance_fails"
+      ],
+      "oracle_review": "The maintenance test asserts the actual claimed-release seam was consumed, then closes and publicly reopens to resolve the committed vector. The unknown-outcome test includes the designated-vector path, exercising the outer error wrapper."
+    },
+    {
+      "id": "IR03",
+      "finding": "A history/compaction test that only observes current vector search does not prove old vector payload survival.",
+      "resolution_reviewed": "The oracle now resolves the historical vector payload via DiskObjectStore/read_vector_property and requires exact [1,0,0], both while pinned and after independent public reopen; the current vector is [0,1,0]. Exact old/new binary file payloads and catalog preservation are also asserted.",
+      "source": [
+        "crates/rustyred/tests/embedded_api.rs:251"
+      ],
+      "oracles": [
+        "crates/rustyred/tests/embedded_api.rs::rr_compaction_preserves_pinned_history_vectors_and_file_payloads"
+      ]
+    },
+    {
+      "id": "IR04",
+      "finding": "A physically committed operation followed by fold-maintenance failure must not look uncommitted; stale materialization must not claim the log head is its graph watermark.",
+      "resolution_reviewed": "FoldGraphStore commit_batch returns an Ok receipt with committed position and structured maintenance_failure after durable append. GraphWrite/GraphAtomic adapters report committed_fold_maintenance_failed with position rather than missing_write or silent success. Sticky maintenance/unknown states guard later mutations and checked views before early-return validation. pin_current reports graph.current_position. GraphVerify is not-ok for either failure state; independent reopen replays and clears the state.",
+      "source": [
+        "crates/rustyred-engine/src/graph/fold_store.rs:487",
+        "crates/rustyred-engine/src/graph/fold_store.rs:614",
+        "crates/rustyred-engine/src/graph/fold_store.rs:693",
+        "crates/rustyred-engine/src/graph/fold_store.rs:781",
+        "crates/rustyred-engine/src/graph/fold_store.rs:909",
+        "crates/rustyred-engine/src/graph/fold_store.rs:1093",
+        "crates/rustyred-engine/src/graph/fold_store.rs:1467"
+      ],
+      "oracles": [
+        "crates/rustyred-engine/tests/fold_commit_outcome.rs::physical_commit_receipt_retains_position_when_fold_maintenance_fails",
+        "crates/rustyred-engine/tests/fold_commit_outcome.rs::trait_adapters_report_known_commit_instead_of_missing_write_or_success"
+      ],
+      "oracle_review": "Both pre-graph and post-graph/pre-algebra maintenance phases assert verify failure, truthful graph position, blocked later append, and successful independent recovery. Both ordinary and conditional trait adapters assert explicit known-committed errors.",
+      "limit": "Existing infallible low-level GraphRead views can still expose the materialized snapshot after maintenance failure; checked views refuse, pin_current exposes its actual position, and maintenance_failure/verify disclose the condition. This review does not claim those infallible signatures became fallible."
+    },
+    {
+      "id": "IR05",
+      "finding": "A partial physical append or lost sync acknowledgement could leave disk bytes while memory retained the old digest/position and accepted a misleading retry.",
+      "resolution_reviewed": "PhysicalLog checkpoints actual length before length/payload/checksum/sync. Every fallible stage rolls back by truncate plus sync; only confirmed rollback returns the original refusal. Failed rollback retains typed candidate position/digest/cause, poisons append and verify, and ProposalCommitter checks poison before digest-idempotency lookup. Records/digest indexes publish only after successful append/sync.",
+      "source": [
+        "crates/rustyred-log/src/physical.rs:168",
+        "crates/rustyred-log/src/physical.rs:233",
+        "crates/rustyred-log/src/physical.rs:278",
+        "crates/rustyred-log/src/physical.rs:335",
+        "crates/rustyred-log/src/proposal.rs:189"
+      ],
+      "oracles": [
+        "crates/rustyred-log/src/physical.rs::partial_length_payload_checksum_and_failed_sync_roll_back_durably",
+        "crates/rustyred-log/src/physical.rs::failed_rollback_poison_retains_exact_candidate_and_refuses_later_proposals"
+      ],
+      "oracle_review": "FaultInjectingLogFile wraps actual NativeLogFile, writes partial bytes or syncs the actual file before returning the injected error, and tests truncate/rollback-sync refusal. Public PhysicalLog::open reconciles the same candidate digest; resumed append uses position2, and duplicate replay leaves bytes unchanged. This is real-file deterministic fault injection, not hardware power-loss proof."
+    },
+    {
+      "id": "IR06",
+      "finding": "Extraction must retain the canonical LINKED_TO first-version writer boundary and product receipt/privacy enforcement.",
+      "resolution_reviewed": "Generic stamp_first_version validates canonical tuple-derived identity, record schema, visibility object and first allocated/preserved version; InMemoryGraphStore::upsert_edge calls it after live endpoint checks and before publishing edge state. Theorem retains its product receipt/DATAWAVE validators and their real-consumer tests.",
+      "source": [
+        "crates/rustyred-engine/src/graph/linked_to.rs:6",
+        "crates/rustyred-engine/src/graph/in_memory.rs:826"
+      ],
+      "downstream_oracles": [
+        "rustyredcore_THG/crates/rustyred-thg-link/src/edge_tests.rs::edges_mask_private_endpoint_with_real_datawave_rule_and_preserve_row_count",
+        "rustyredcore_THG/crates/rustyred-thg-link/src/edge_tests.rs::edges_actual_staged_repeat_allocates_once_and_rejects_forged_first_version",
+        "rustyredcore_THG/crates/rustyred-thg-link/src/edge_tests.rs::persisted_link_verification_refuses_forged_receipts_headers_and_read_failures",
+        "rustyredcore_THG/crates/rustyred-thg-link/src/edge_tests.rs::edges_stale_candidates_and_mismatched_signals_cannot_publish"
+      ],
+      "limit": "Final06 downstream runtime acceptance is still building. This source review does not substitute for those tests or claim a full live permission audit."
+    },
+    {
+      "id": "IR07",
+      "finding": "A portability oracle limited to node metadata or same-process reopen does not prove the full single-file database boundary.",
+      "resolution_reviewed": "The parent closes the writer, copies only the .RR into a fresh directory containing one file, and launches a distinct child process. Child publicly opens read-only, queries records, resolves the directed edge/properties, checks vector ranking, resolves old/current node history, reads exact binary file bytes, and verifies. Parent asserts no added sidecar; child asserts the entire file bytes remain unchanged. A separate child cannot acquire an already-held writer.",
+      "source": [
+        "crates/rustyred/tests/rr_roundtrip.rs:20",
+        "crates/rustyred/tests/rr_roundtrip.rs:120",
+        "crates/rustyred/tests/rr_roundtrip.rs:151"
+      ],
+      "oracles": [
+        "crates/rustyred/tests/rr_roundtrip.rs::rr_graph_and_payload_roundtrip_across_processes"
+      ],
+      "limit": "This receipt reviews the actual subprocess oracle implementation. Its execution result belongs to the separate native CI evidence, not this source review."
+    }
+  ],
+  "new_blocking_source_findings": [],
+  "runtime_results_claimed_by_this_receipt": false,
+  "remaining_acceptance": "Actual final Theorem native, embedded, prior-pack and product-ledger gates remain separate pending checks. Final worker WASM compilation has its own contract receipt. Storage CI results belong to the parent release evidence."
+}

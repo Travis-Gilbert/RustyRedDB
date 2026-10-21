@@ -23,4 +23,36 @@ Cypher here is the existing read dialect: `MATCH`, `WHERE`, `RETURN`, path patte
 
 Full-text and spatial indexes are explicit engine APIs (`tantivy` and `s2` features, H3 by default). They are not built just because a string or a coordinate was stored.
 
-Package version `0.1.0-beta.1` is not the file format version. The file format is version 1.
+Package version `0.1.0-beta.2` is not the file format version. The file format is version 1.
+
+The beta.2 candidate distinguishes an indeterminate durability outcome:
+`ErrorKind::CommitOutcomeUnknown` retains `chunk_store_journal_poisoned`,
+including when vector-pin cleanup also fails. The commit may have landed.
+Close all handles, reopen and reconcile the operation identity before retrying;
+the facade never retries automatically. CLI reports the stable JSON code and
+uses exit status 6 with a reconciliation diagnostic on stderr. Ordinary
+prepublication failures and known committed postcommit cleanup are separate.
+
+`rustyred::engine` reexports the retained low-level API rather than duplicating
+its types. Full-text/spatial/time/history operations remain explicit; the
+outside-workspace consumer exercises those primitives as well as the facade.
+
+The advanced physical-log `FoldGraphStore::commit_batch` returns a durable
+`FoldGraphTransaction` even when postappend fold materialization fails. Its
+optional `maintenance_failure` records the actual committed log position and
+bounded cause. New mutations and checked pins then refuse until the owner is
+reopened/reconciled. Infallible low-level fold reads may still show the previous
+materialization; `pin_current` labels the actual graph position, never the
+newer log tip. Trait write adapters that cannot return the richer receipt use
+`committed_fold_maintenance_failed`, with the durable position available through
+`maintenance_failure()`. This is a known committed outcome, never an invitation
+to repeat the operation.
+
+For explicit physical operation logs, an append error is precommit only after
+truncate plus sync confirms rollback. Otherwise
+`PhysicalLogError::CommitOutcomeUnknown { position, op_digest, cause }` poisons
+the handle: append, proposal replay and verification require reopen. The fold
+adapter retains this as `fold_commit_outcome_unknown`, distinct from known
+committed `committed_fold_maintenance_failed`. Reopen reconstructs the durable
+digest index; an already landed digest replays at its original position without
+appending a duplicate record.

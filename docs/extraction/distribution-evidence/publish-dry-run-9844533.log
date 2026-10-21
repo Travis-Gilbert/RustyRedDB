@@ -1,0 +1,76 @@
+    Updating crates.io index
+   Packaging rustyred-contracts v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-contracts)
+    Updating crates.io index
+    Packaged 15 files, 55.1KiB (15.4KiB compressed)
+   Packaging rustyred-bayes v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-bayes)
+    Updating crates.io index
+    Packaged 9 files, 65.4KiB (16.4KiB compressed)
+   Packaging rustyred-egraph v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-egraph)
+    Updating crates.io index
+    Packaged 21 files, 144.6KiB (36.1KiB compressed)
+   Packaging rustyred-datalog v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-datalog)
+    Updating crates.io index
+    Packaged 17 files, 562.8KiB (46.7KiB compressed)
+   Packaging rustyred-derivation v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-derivation)
+    Updating crates.io index
+    Packaged 18 files, 269.4KiB (64.6KiB compressed)
+   Packaging rustyred-egg v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/vendor/egg-0.10.0)
+    Updating crates.io index
+    Packaged 34 files, 413.6KiB (113.9KiB compressed)
+   Packaging rustyred-graphblas v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-graphblas)
+    Updating crates.io index
+    Packaged 19 files, 68.5KiB (19.8KiB compressed)
+   Packaging rustyred-log v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-log)
+    Updating crates.io index
+    Packaged 23 files, 182.7KiB (42.7KiB compressed)
+   Packaging rustyred-scope v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-scope)
+    Updating crates.io index
+    Packaged 9 files, 21.7KiB (7.3KiB compressed)
+   Packaging rustyred-turbovec v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/vendor/turbovec-1.0.0-wasm32)
+    Updating crates.io index
+    Packaged 77 files, 1.5MiB (419.2KiB compressed)
+   Packaging rustyred-engine v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-engine)
+    Updating crates.io index
+    Packaged 247 files, 5.6MiB (1.1MiB compressed)
+   Packaging rustyred-query v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-query)
+    Updating crates.io index
+    Packaged 22 files, 296.7KiB (65.2KiB compressed)
+   Packaging rustyred v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred)
+    Updating crates.io index
+    Packaged 15 files, 151.8KiB (38.8KiB compressed)
+   Packaging rustyred-cli v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-cli)
+    Updating crates.io index
+    Packaged 11 files, 112.9KiB (30.3KiB compressed)
+   Packaging rustyred-query-saturate v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-query-saturate)
+    Updating crates.io index
+    Packaged 21 files, 304.3KiB (65.7KiB compressed)
+   Uploading rustyred-bayes v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-bayes)
+warning: aborting upload due to dry run
+   Uploading rustyred-contracts v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-contracts)
+warning: aborting upload due to dry run
+   Uploading rustyred-egg v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/vendor/egg-0.10.0)
+warning: aborting upload due to dry run
+   Uploading rustyred-egraph v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-egraph)
+warning: aborting upload due to dry run
+   Uploading rustyred-graphblas v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-graphblas)
+warning: aborting upload due to dry run
+   Uploading rustyred-log v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-log)
+warning: aborting upload due to dry run
+   Uploading rustyred-scope v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-scope)
+warning: aborting upload due to dry run
+   Uploading rustyred-turbovec v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/vendor/turbovec-1.0.0-wasm32)
+warning: aborting upload due to dry run
+   Uploading rustyred-datalog v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-datalog)
+warning: aborting upload due to dry run
+   Uploading rustyred-derivation v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-derivation)
+warning: aborting upload due to dry run
+   Uploading rustyred-engine v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-engine)
+warning: aborting upload due to dry run
+   Uploading rustyred-query v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-query)
+warning: aborting upload due to dry run
+   Uploading rustyred-query-saturate v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-query-saturate)
+warning: aborting upload due to dry run
+   Uploading rustyred v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred)
+warning: aborting upload due to dry run
+   Uploading rustyred-cli v0.1.0-beta.2 (/Users/travisgilbert/Tech Dev Local/Creative/Website/RustyRedDB/crates/rustyred-cli)
+warning: aborting upload due to dry run

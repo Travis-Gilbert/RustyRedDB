@@ -39,10 +39,7 @@ fn client_checkpoint_plus_tail_equals_full_replay() -> Result<(), Box<dyn Error>
                     assert_eq!(tail.through, latest);
                     // The tail interval is fully accounted for: applied plus
                     // quarantined is exactly the records after the cut.
-                    assert_eq!(
-                        tail.applied + tail.quarantined,
-                        (latest.0 - cut) as usize
-                    );
+                    assert_eq!(tail.applied + tail.quarantined, (latest.0 - cut) as usize);
                 }
                 other => panic!("expected a restored checkpoint, got {other:?}"),
             }
@@ -64,7 +61,9 @@ fn client_checkpoint_plus_tail_equals_full_replay() -> Result<(), Box<dyn Error>
             // A pin whose hash names another prefix refuses; it never answers
             // from a prefix the client did not name.
             let wrong = ClientPin::new(pin.through, ContentHash::from_bytes(b"not-this-log"));
-            let mismatch = resumed.upquery_by_hash(&log, &queries[0], &wrong).unwrap_err();
+            let mismatch = resumed
+                .upquery_by_hash(&log, &queries[0], &wrong)
+                .unwrap_err();
             assert!(
                 matches!(mismatch, FoldError::PinHashMismatch { .. }),
                 "expected PinHashMismatch, got {mismatch:?}"
@@ -81,21 +80,9 @@ fn client_fold_subset_is_declared_once_and_matches_the_constant() {
     assert_eq!(FoldId::CLIENT_SUBSET, FoldId::ALL);
     for id in FoldId::CLIENT_SUBSET {
         assert!(FoldId::ALL.contains(&id));
-        assert!(!id.surfaces().is_empty(), "{id} declares no client surfaces");
-    }
-
-    // The written surface re-exports the constant rather than restating a list.
-    let doc_store_client = include_str!("../../theorem-doc-store/src/client.rs");
-    assert!(doc_store_client.contains("&FoldId::CLIENT_SUBSET"));
-    for restated in [
-        "FoldId::Facts",
-        "FoldId::Graph",
-        "FoldId::Algebra",
-        "FoldId::History",
-    ] {
         assert!(
-            !doc_store_client.contains(restated),
-            "theorem-doc-store/src/client.rs restates {restated}; the subset is declared once"
+            !id.surfaces().is_empty(),
+            "{id} declares no client surfaces"
         );
     }
 
@@ -134,9 +121,10 @@ fn client_proposals_are_the_only_write_path() -> Result<(), Box<dyn Error>> {
     assert_eq!(observation(client.runtime(), head)?, before);
     client.apply_tail(committer.log())?;
     assert_eq!(client.position(), committer.log().latest_position());
-    let answer = client
-        .runtime()
-        .query(&json!({"view": "document", "key": "doc:client"}), client.position())?;
+    let answer = client.runtime().query(
+        &json!({"view": "document", "key": "doc:client"}),
+        client.position(),
+    )?;
     assert_eq!(answer["record"]["kind"], "authored");
 
     // A stale proposal that read doc:client before the commit is refused with

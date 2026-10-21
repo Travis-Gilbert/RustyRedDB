@@ -1,0 +1,22 @@
+    Updating crates.io index
+    Updating crates.io index
+   Packaging rustyred-contracts v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-06/source/crates/rustyred-contracts)
+    Updating crates.io index
+    Packaged 14 files, 55.0KiB (15.3KiB compressed)
+   Packaging rustyred-bayes v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-06/source/crates/rustyred-bayes)
+    Updating crates.io index
+    Packaged 8 files, 65.3KiB (16.3KiB compressed)
+   Packaging rustyred-egraph v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-06/source/crates/rustyred-egraph)
+    Updating crates.io index
+    Packaged 20 files, 144.5KiB (36.0KiB compressed)
+   Packaging rustyred-datalog v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-06/source/crates/rustyred-datalog)
+    Updating crates.io index
+    Packaged 16 files, 562.7KiB (46.6KiB compressed)
+   Packaging rustyred-derivation v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-06/source/crates/rustyred-derivation)
+    Updating crates.io index
+error: failed to prepare local package for uploading
+
+Caused by:
+  no matching package named `rustyred-engine` found
+  location searched: crates.io index
+  required by package `rustyred-derivation v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-06/source/crates/rustyred-derivation)`

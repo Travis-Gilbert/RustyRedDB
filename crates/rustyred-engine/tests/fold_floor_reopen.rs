@@ -59,7 +59,10 @@ fn crash_during_batch_never_exposes_partial_state() -> Result<(), Box<dyn Error>
             b"acknowledged".to_vec(),
             b"seed".to_vec(),
         )])?;
-        println!("ACK");
+        // Serial libtest writes its test-name prefix without a newline. Keep
+        // the subprocess protocol on its own line so the parent observes the
+        // durable acknowledgement before scheduling the kill.
+        println!("\nACK");
         std::io::stdout().flush()?;
 
         let interrupted = (0..INTERRUPTED_BATCH_SIZE)

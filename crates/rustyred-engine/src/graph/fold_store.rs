@@ -14,7 +14,7 @@ use super::mutation::{
 use super::query::{NeighborHit, NeighborQuery, NodeQuery};
 use super::record::{EdgeRecord, NodeRecord};
 use super::snapshot::GraphSnapshot;
-use super::verify::{GraphRebuildReport, VerifyReport};
+use super::verify::{GraphRebuildReport, VerifyProblem, VerifyReport};
 use crate::fold::algebra::AlgebraFold;
 use crate::fold::{Fold, FoldCapabilities, FoldError, FoldId, FoldRuntime, FoldVersion};
 use crate::fold_quarantine::{FoldConsumeError, FoldRefusalCode, QuarantineReceipt};
@@ -486,9 +486,36 @@ impl Fold for GraphFold {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FoldGraphTransaction {
+    /// The operation is durable at this position even when fold maintenance failed.
     pub position: LogPosition,
     pub writes: Vec<GraphWriteResult>,
     pub replayed: bool,
+    pub maintenance_failure: Option<FoldMaintenanceFailure>,
+}
+
+/// A known durable commit whose derived folds need recovery. Do not retry the operation.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct FoldMaintenanceFailure {
+    pub committed_position: LogPosition,
+    pub cause: GraphStoreError,
+}
+
+impl FoldMaintenanceFailure {
+    fn as_error(&self) -> GraphStoreError {
+        GraphStoreError::new(
+            "committed_fold_maintenance_failed",
+            format!("operation committed durably at log position {}; fold maintenance failed ({}). Reopen and reconcile materialization; do not retry the committed operation", self.committed_position, self.cause),
+        )
+    }
+}
+
+impl FoldGraphTransaction {
+    fn require_materialized(self) -> GraphStoreResult<Self> {
+        match &self.maintenance_failure {
+            Some(failure) => Err(failure.as_error()),
+            None => Ok(self),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -549,6 +576,10 @@ pub struct FoldGraphStore {
     facts: FoldRuntime<FactsFold>,
     graph: FoldRuntime<GraphFold>,
     algebra: FoldRuntime<AlgebraFold>,
+    maintenance_failure: Option<FoldMaintenanceFailure>,
+    unconfirmed_append: Option<GraphStoreError>,
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    injected_maintenance_failure: Option<bool>,
 }
 
 impl FoldGraphStore {
@@ -569,7 +600,32 @@ impl FoldGraphStore {
             facts,
             graph,
             algebra,
+            maintenance_failure: None,
+            unconfirmed_append: None,
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            injected_maintenance_failure: None,
         })
+    }
+
+    pub fn maintenance_failure(&self) -> Option<&FoldMaintenanceFailure> {
+        self.maintenance_failure.as_ref()
+    }
+
+    fn require_materialized(&self) -> GraphStoreResult<()> {
+        if let Some(error) = &self.unconfirmed_append {
+            return Err(error.clone());
+        }
+        match &self.maintenance_failure {
+            Some(failure) => Err(failure.as_error()),
+            None => Ok(()),
+        }
+    }
+
+    /// Interrupt derived-fold maintenance after a real physical log commit.
+    #[cfg(any(test, feature = "test-fault-injection"))]
+    #[doc(hidden)]
+    pub fn inject_fold_maintenance_failure_for_test(&mut self, after_graph: bool) {
+        self.injected_maintenance_failure = Some(after_graph);
     }
 
     pub fn latest_position(&self) -> LogPosition {
@@ -603,6 +659,7 @@ impl FoldGraphStore {
     pub fn algebra_projection(
         &mut self,
     ) -> GraphStoreResult<crate::fold::algebra::AlgebraProjection<'_>> {
+        self.require_materialized()?;
         let log_id = self.algebra.log_id();
         self.algebra.inner_mut().set_log_id(log_id);
         self.algebra
@@ -617,7 +674,8 @@ impl FoldGraphStore {
     }
 
     pub fn pin(&self, position: LogPosition) -> GraphStoreResult<PinnedGraphRead<'_>> {
-        let current = self.latest_position();
+        self.require_materialized()?;
+        let current = self.graph.current_position();
         if position != current {
             return Err(GraphStoreError::new(
                 "graph_position_not_materialized",
@@ -635,7 +693,7 @@ impl FoldGraphStore {
     pub fn pin_current(&self) -> PinnedGraphRead<'_> {
         PinnedGraphRead {
             store: self,
-            position: self.latest_position(),
+            position: self.graph.current_position(),
         }
     }
 
@@ -654,26 +712,31 @@ impl FoldGraphStore {
         &mut self,
         batch: GraphMutationBatch,
     ) -> GraphStoreResult<FoldGraphTransaction> {
+        self.require_materialized()?;
         self.commit_intent_batch(GraphIntentBatch::from_mutations(batch)?)
     }
 
     pub fn delete_node(&mut self, id: &str) -> GraphStoreResult<bool> {
+        self.require_materialized()?;
         if self.get_node(id).is_none() {
             return Ok(false);
         }
         self.commit_batch(GraphMutationBatch::new([GraphMutation::NodeDelete(
             id.to_string(),
-        )]))?;
+        )]))?
+        .require_materialized()?;
         Ok(true)
     }
 
     pub fn delete_edge(&mut self, id: &str) -> GraphStoreResult<bool> {
+        self.require_materialized()?;
         if self.get_edge(id).is_none() {
             return Ok(false);
         }
         self.commit_batch(GraphMutationBatch::new([GraphMutation::EdgeDelete(
             id.to_string(),
-        )]))?;
+        )]))?
+        .require_materialized()?;
         Ok(true)
     }
 
@@ -681,6 +744,7 @@ impl FoldGraphStore {
         &mut self,
         batch: GraphIntentBatch,
     ) -> GraphStoreResult<FoldGraphTransaction> {
+        self.require_materialized()?;
         FactsFold::validate_batch(&batch).map_err(|error| {
             GraphStoreError::new("facts_fold_validation_failed", error.to_string())
         })?;
@@ -714,27 +778,67 @@ impl FoldGraphStore {
             })?,
         );
         let proposal = Proposal::new(begin, read_set, write_set, digest, intent);
-        let CommitOutcome::Committed(receipt) =
-            self.committer.commit(proposal).map_err(commit_error)?
-        else {
+        let outcome = self.committer.commit(proposal).map_err(|error| {
+            let error = commit_error(error);
+            if error.code == "fold_commit_outcome_unknown" {
+                self.unconfirmed_append = Some(error.clone());
+            }
+            error
+        })?;
+        let CommitOutcome::Committed(receipt) = outcome else {
             return Err(GraphStoreError::new(
                 "occ_conflict",
                 "graph proposal overlapped a committed write after its begin position",
             ));
         };
 
-        if receipt.append.position > self.graph.current_position() {
+        if let Err(cause) = self.materialize_committed(receipt.append.position) {
+            self.maintenance_failure = Some(FoldMaintenanceFailure {
+                committed_position: receipt.append.position,
+                cause,
+            });
+        }
+        Ok(FoldGraphTransaction {
+            position: receipt.append.position,
+            writes: self
+                .graph
+                .inner()
+                .writes_at(receipt.append.position)
+                .to_vec(),
+            replayed: receipt.append.replayed,
+            maintenance_failure: self.maintenance_failure.clone(),
+        })
+    }
+
+    fn materialize_committed(&mut self, position: LogPosition) -> GraphStoreResult<()> {
+        #[cfg(any(test, feature = "test-fault-injection"))]
+        let injected = self.injected_maintenance_failure.take();
+        #[cfg(any(test, feature = "test-fault-injection"))]
+        if injected == Some(false) {
+            return Err(GraphStoreError::new(
+                "injected_fold_maintenance_failure",
+                "injected before derived fold replay",
+            ));
+        }
+        if position > self.graph.current_position() {
             let facts_report = self
                 .facts
-                .apply_range(self.committer.log(), receipt.append.position)
+                .apply_range(self.committer.log(), position)
                 .map_err(fold_error)?;
             let graph_report = self
                 .graph
-                .apply_range(self.committer.log(), receipt.append.position)
+                .apply_range(self.committer.log(), position)
                 .map_err(fold_error)?;
+            #[cfg(any(test, feature = "test-fault-injection"))]
+            if injected == Some(true) {
+                return Err(GraphStoreError::new(
+                    "injected_fold_maintenance_failure",
+                    "injected after graph replay, before Algebra installation",
+                ));
+            }
             let algebra_report = self
                 .algebra
-                .apply_range(self.committer.log(), receipt.append.position)
+                .apply_range(self.committer.log(), position)
                 .map_err(fold_error)?;
             if facts_report.quarantined != 0
                 || graph_report.quarantined != 0
@@ -746,15 +850,7 @@ impl FoldGraphStore {
                 ));
             }
         }
-        Ok(FoldGraphTransaction {
-            position: receipt.append.position,
-            writes: self
-                .graph
-                .inner()
-                .writes_at(receipt.append.position)
-                .to_vec(),
-            replayed: receipt.append.replayed,
-        })
+        Ok(())
     }
 
     fn access_sets(&self, batch: &GraphIntentBatch) -> GraphStoreResult<(ReadSet, WriteSet)> {
@@ -813,6 +909,7 @@ impl FoldGraphStore {
 impl GraphWrite for FoldGraphStore {
     fn upsert_node(&mut self, node: NodeRecord) -> GraphStoreResult<GraphWriteResult> {
         self.commit_batch(GraphMutationBatch::new([GraphMutation::NodeUpsert(node)]))?
+            .require_materialized()?
             .writes
             .into_iter()
             .next()
@@ -821,6 +918,7 @@ impl GraphWrite for FoldGraphStore {
 
     fn upsert_edge(&mut self, edge: EdgeRecord) -> GraphStoreResult<GraphWriteResult> {
         self.commit_batch(GraphMutationBatch::new([GraphMutation::EdgeUpsert(edge)]))?
+            .require_materialized()?
             .writes
             .into_iter()
             .next()
@@ -833,6 +931,7 @@ impl GraphAtomic for FoldGraphStore {
         &mut self,
         node: NodeRecord,
     ) -> GraphStoreResult<Option<GraphWriteResult>> {
+        self.require_materialized()?;
         if self.get_node(&node.id).is_some() {
             Ok(None)
         } else {
@@ -844,6 +943,7 @@ impl GraphAtomic for FoldGraphStore {
         &mut self,
         node: NodeRecord,
     ) -> GraphStoreResult<Option<GraphWriteResult>> {
+        self.require_materialized()?;
         if self.has_historical_node_id(&node.id) {
             Ok(None)
         } else {
@@ -858,6 +958,7 @@ impl GraphAtomic for FoldGraphStore {
         expected: &Value,
         new_value: Value,
     ) -> GraphStoreResult<Option<GraphWriteResult>> {
+        self.require_materialized()?;
         let property = property.trim();
         if property.is_empty() {
             return Err(GraphStoreError::empty_field("node.property"));
@@ -893,10 +994,11 @@ impl GraphAtomic for FoldGraphStore {
         conditions: Vec<ConditionalNodePropertyUpdate>,
         batch: GraphMutationBatch,
     ) -> GraphStoreResult<bool> {
+        self.require_materialized()?;
         let Some(batch) = prepare_conditional_batch(self, conditions, batch)? else {
             return Ok(false);
         };
-        self.commit_batch(batch)?;
+        self.commit_batch(batch)?.require_materialized()?;
         Ok(true)
     }
 }
@@ -983,16 +1085,35 @@ impl GraphRead for FoldGraphStore {
 
 impl GraphSnapshotSource for FoldGraphStore {
     fn graph_snapshot(&self) -> GraphStoreResult<GraphSnapshot> {
+        self.require_materialized()?;
         Ok(self.graph_store().snapshot())
     }
 }
 
 impl GraphVerify for FoldGraphStore {
     fn verify(&self) -> VerifyReport {
-        self.graph_store().verify()
+        let mut report = self.graph_store().verify();
+        if let Some(failure) = &self.maintenance_failure {
+            report.ok = false;
+            report.problems.push(VerifyProblem {
+                kind: "committed_fold_maintenance_failed".into(),
+                id: failure.committed_position.to_string(),
+                detail: failure.as_error().message,
+            });
+        }
+        if let Some(error) = &self.unconfirmed_append {
+            report.ok = false;
+            report.problems.push(VerifyProblem {
+                kind: error.code.clone(),
+                id: "unconfirmed_append".into(),
+                detail: error.message.clone(),
+            });
+        }
+        report
     }
 
     fn rebuild_indexes(&mut self) -> GraphStoreResult<GraphRebuildReport> {
+        self.require_materialized()?;
         self.graph.inner_mut().store.rebuild_indexes()
     }
 }
@@ -1003,6 +1124,7 @@ impl GraphTtl for FoldGraphStore {
         id: &str,
         expires_at_ms: Option<i64>,
     ) -> GraphStoreResult<GraphWriteResult> {
+        self.require_materialized()?;
         let node = self.get_node_record(id).ok_or_else(|| {
             GraphStoreError::new("missing_graph_node", format!("node {id} does not exist"))
         })?;
@@ -1014,6 +1136,7 @@ impl GraphTtl for FoldGraphStore {
     }
 
     fn purge_expired_nodes(&mut self) -> GraphStoreResult<usize> {
+        self.require_materialized()?;
         let ids = self
             .graph_store()
             .nodes_expiring_before(now_ms(), usize::MAX)
@@ -1025,7 +1148,8 @@ impl GraphTtl for FoldGraphStore {
         }
         self.commit_batch(GraphMutationBatch::new(
             ids.iter().cloned().map(GraphMutation::NodeDelete),
-        ))?;
+        ))?
+        .require_materialized()?;
         Ok(ids.len())
     }
 
@@ -1040,24 +1164,29 @@ impl GraphTtl for FoldGraphStore {
 
 impl GraphResidency for FoldGraphStore {
     fn evict_node(&mut self, id: &str) -> GraphStoreResult<Option<NodeRecord>> {
+        self.require_materialized()?;
         self.graph.inner_mut().store.evict_node(id)
     }
 
     fn readmit_node(&mut self, node: NodeRecord) -> GraphStoreResult<()> {
+        self.require_materialized()?;
         self.graph.inner_mut().store.readmit_node(node)
     }
 
     fn evict_edge(&mut self, id: &str) -> GraphStoreResult<Option<EdgeRecord>> {
+        self.require_materialized()?;
         self.graph.inner_mut().store.evict_edge(id)
     }
 
     fn readmit_edge(&mut self, edge: EdgeRecord) -> GraphStoreResult<()> {
+        self.require_materialized()?;
         self.graph.inner_mut().store.readmit_edge(edge)
     }
 }
 
 impl GraphVectorPayloadAccess for FoldGraphStore {
     fn vector_payload_store(&self) -> GraphStoreResult<Arc<dyn TensorBlockPayloadStore>> {
+        self.require_materialized()?;
         self.graph_store().vector_payload_store()
     }
 }
@@ -1336,5 +1465,11 @@ fn physical_error(error: theorem_oplog::PhysicalLogError) -> GraphStoreError {
 }
 
 fn commit_error(error: theorem_oplog::CommitError) -> GraphStoreError {
-    GraphStoreError::new("fold_graph_commit_failed", error.to_string())
+    let code = match &error {
+        theorem_oplog::CommitError::Physical(
+            theorem_oplog::PhysicalLogError::CommitOutcomeUnknown { .. },
+        ) => "fold_commit_outcome_unknown",
+        _ => "fold_graph_commit_failed",
+    };
+    GraphStoreError::new(code, error.to_string())
 }

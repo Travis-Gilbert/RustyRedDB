@@ -1,0 +1,111 @@
+// Pest grammar for the Cypher subset rusty-red supports.
+// Read shapes: node, outbound/inbound/undirected chain, variable-length expand
+// as a chain member, boolean WHERE, comparisons, IN, DISTINCT, RETURN AS,
+// and path projection. Write shapes: CREATE, MERGE with ON CREATE/ON MATCH,
+// MATCH ... SET, MATCH ... DELETE, MATCH ... DETACH DELETE.
+
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+
+query        = { SOI ~ (write_query | read_query) ~ EOI }
+
+read_query   = { match_clause ~ where_clause? ~ with_clause? ~ return_clause ~ order_clause? ~ skip_clause? ~ limit_clause? }
+
+write_query  = {
+    create_node_only
+    | merge_clause
+    | match_with_set
+    | match_with_delete
+}
+
+with_clause  = { ^"WITH" ~ with_items }
+with_items   = { with_item ~ ("," ~ with_item)* }
+with_item    = { (aggregate_call | property_path | ident) ~ ^"AS" ~ ident }
+
+order_clause = { ^"ORDER" ~ ^"BY" ~ order_items }
+order_items  = { order_item ~ ("," ~ order_item)* }
+order_item   = { order_expr ~ order_dir? }
+order_expr   = { property_path | ident }
+order_dir    = { ^"ASC" | ^"DESC" }
+
+skip_clause  = { ^"SKIP" ~ integer }
+
+create_node_only = { ^"CREATE" ~ create_target }
+create_target    = { create_edge_form | node_pattern }
+create_edge_form = { node_pattern ~ edge_continuation }
+
+merge_clause     = { ^"MERGE" ~ node_pattern ~ merge_branch* }
+merge_branch     = _{ on_create_branch | on_match_branch }
+on_create_branch = { ^"ON" ~ ^"CREATE" ~ set_list }
+on_match_branch  = { ^"ON" ~ ^"MATCH" ~ set_list }
+set_list         = { ^"SET" ~ set_assignment ~ ("," ~ set_assignment)* }
+set_assignment   = { property_path ~ "=" ~ set_value_expr }
+set_value_expr   = { increment_expr | value }
+increment_expr   = { property_path ~ "+" ~ value }
+
+match_with_set    = { match_clause ~ where_clause? ~ set_list }
+match_with_delete = { match_clause ~ where_clause? ~ delete_form }
+delete_form       = { detach_delete | plain_delete }
+detach_delete     = { ^"DETACH" ~ ^"DELETE" ~ ident }
+plain_delete      = { ^"DELETE" ~ ident }
+
+match_clause     = { ^"MATCH" ~ path_binding? ~ pattern }
+path_binding     = { ident ~ "=" }
+where_clause     = { ^"WHERE" ~ where_expr }
+return_clause    = { ^"RETURN" ~ distinct_kw? ~ return_items }
+distinct_kw      = { ^"DISTINCT" }
+limit_clause     = { ^"LIMIT" ~ integer }
+
+pattern            = { edge_chain_pattern | node_pattern }
+edge_chain_pattern = { node_pattern ~ edge_continuation+ }
+
+// Outbound `]->` is tried before undirected `]-` so `-[:TYPE]->` stays outbound.
+edge_continuation = { outbound_cont | inbound_cont | undirected_cont }
+outbound_cont     = { "-[" ~ rel_body ~ "]->" ~ node_pattern }
+inbound_cont      = { "<-[" ~ rel_body ~ "]-" ~ node_pattern }
+undirected_cont   = { "-[" ~ rel_body ~ "]-" ~ node_pattern }
+rel_body          = { rel_type ~ var_length_star? }
+var_length_star   = { "*" ~ var_length_range? }
+var_length_range  = { integer ~ ".." ~ integer | integer }
+rel_type          = { ":" ~ ident }
+
+node_pattern   = { "(" ~ binding? ~ label? ~ property_block? ~ ")" }
+binding        = { ident }
+label          = { ":" ~ ident }
+property_block = { "{" ~ property_pair ~ ("," ~ property_pair)* ~ "}" }
+property_pair  = { ident ~ ":" ~ value }
+
+where_expr     = { or_expr }
+or_expr        = { and_expr ~ (or_kw ~ and_expr)* }
+and_expr       = { not_expr ~ (and_kw ~ not_expr)* }
+not_expr       = { (not_kw ~ not_expr) | grouped | predicate }
+grouped        = { "(" ~ where_expr ~ ")" }
+or_kw          = { ^"OR" }
+and_kw         = { ^"AND" }
+not_kw         = { ^"NOT" }
+predicate      = { property_path ~ pred_op ~ pred_rhs }
+pred_op        = { "<>" | "<=" | ">=" | "<" | ">" | "=" | in_kw }
+in_kw          = { ^"IN" }
+pred_rhs       = { value_list | value }
+value_list     = { "[" ~ value ~ ("," ~ value)* ~ "]" }
+
+property_path  = { ident ~ "." ~ ident }
+
+return_items   = { return_item ~ ("," ~ return_item)* }
+return_item    = { return_value ~ (^"AS" ~ ident)? }
+return_value   = { path_fn | aggregate_call | property_path | ident }
+path_fn        = { path_fn_name ~ "(" ~ ident ~ ")" }
+path_fn_name   = { ^"nodes" | ^"relationships" | ^"length" }
+aggregate_call = { agg_op ~ "(" ~ agg_arg ~ ")" }
+agg_op         = { ^"COUNT" | ^"SUM" | ^"AVG" | ^"MIN" | ^"MAX" }
+agg_arg        = { "*" | property_path | ident }
+count_call     = { ^"COUNT" ~ "(" ~ count_arg ~ ")" }
+count_arg      = { "*" | ident }
+
+value   = { param | string | number | boolean | null }
+param   = { "$" ~ ident }
+string  = @{ "'" ~ (!"'" ~ ANY)* ~ "'" | "\"" ~ (!"\"" ~ ANY)* ~ "\"" }
+number  = @{ "-"? ~ ASCII_DIGIT+ ~ ("." ~ ASCII_DIGIT+)? }
+integer = @{ ASCII_DIGIT+ }
+boolean = { ^"true" | ^"false" }
+null    = { ^"null" }
+ident   = @{ (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")* }

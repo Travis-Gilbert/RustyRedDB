@@ -1,12 +1,13 @@
 [package]
+include = ["Cargo.toml", "src/**", "tests/**", "fixtures/**", "benches/**", "examples/**", "build.rs", "README*", "LICENSE*", "NOTICE.md"]
 name = "rustyred-engine"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 edition = "2021"
 description = "Rusty Red graph engine: property graph, journal, vectors, payloads, and native .RR storage."
 license = "MIT"
 repository = "https://github.com/Travis-Gilbert/RustyRedDB"
 readme = "README.md"
-rust-version = "1.89"
+rust-version = "1.96.1"
 
 [lib]
 name = "rustyred_thg_core"
@@ -28,6 +29,7 @@ s2 = ["dep:s2"]
 # default builds stay native-free (no libgraphblas required).
 # Downstream failure-oracle crates may opt into deterministic journal faults.
 # The production API and normal builds do not expose these hooks.
+graphblas = ["dep:rustyred-thg-graphblas"]
 test-fault-injection = []
 
 [dependencies]
@@ -35,9 +37,9 @@ async-trait = "0.1"
 blake3 = "1"
 bm25 = "2.3.2"
 crc32fast = "1"
-egg = { path = "../../vendor/egg-0.10.0" }
-datalog = { package = "rustyred-datalog", version = "=0.1.0-beta.1", path = "../rustyred-datalog" }
-egraph = { package = "rustyred-egraph", version = "=0.1.0-beta.1", path = "../rustyred-egraph" }
+egg = { package = "rustyred-egg", version = "=0.1.0-beta.2", path = "../../vendor/egg-0.10.0" }
+datalog = { package = "rustyred-datalog", version = "=0.1.0-beta.2", path = "../rustyred-datalog" }
+egraph = { package = "rustyred-egraph", version = "=0.1.0-beta.2", path = "../rustyred-egraph" }
 h3o = "0.7"
 imbl = { version = "7.0.0", features = ["serde"] }
 libc = "0.2"
@@ -53,14 +55,14 @@ same-file = "1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["raw_value", "float_roundtrip"] }
 sha2 = "0.10"
-theorem-bayes = { package = "rustyred-bayes", version = "=0.1.0-beta.1", path = "../rustyred-bayes" }
-theorem-oplog = { package = "rustyred-log", version = "=0.1.0-beta.1", path = "../rustyred-log" }
-theorem-surface-contracts = { package = "rustyred-contracts", version = "=0.1.0-beta.1", path = "../rustyred-contracts" }
-theorem-capability-scope = { package = "rustyred-scope", version = "=0.1.0-beta.1", path = "../rustyred-scope" }
-rustyred-thg-derivation = { package = "rustyred-derivation", version = "=0.1.0-beta.1", path = "../rustyred-derivation" }
+theorem-bayes = { package = "rustyred-bayes", version = "=0.1.0-beta.2", path = "../rustyred-bayes" }
+theorem-oplog = { package = "rustyred-log", version = "=0.1.0-beta.2", path = "../rustyred-log" }
+theorem-surface-contracts = { package = "rustyred-contracts", version = "=0.1.0-beta.2", path = "../rustyred-contracts" }
+theorem-capability-scope = { package = "rustyred-scope", version = "=0.1.0-beta.2", path = "../rustyred-scope" }
+rustyred-thg-derivation = { package = "rustyred-derivation", version = "=0.1.0-beta.2", path = "../rustyred-derivation" }
 ed25519-dalek = "2"
 tantivy = { version = "0.22", optional = true }
-turbovec = { path = "../../vendor/turbovec-1.0.0-wasm32" }
+turbovec = { package = "rustyred-turbovec", version = "=0.1.0-beta.2", path = "../../vendor/turbovec-1.0.0-wasm32" }
 base64 = "0.22"
 rand_chacha = "0.3"
 thiserror = "2.0"
@@ -74,7 +76,10 @@ html2text = "0.13"
 # that it was never needed on any of them.
 zstd = "0.13"
 
+rustyred-thg-graphblas = { package = "rustyred-graphblas", version = "=0.1.0-beta.2", path = "../rustyred-graphblas", optional = true }
+
 [dev-dependencies]
+toml = "0.8"
 criterion = "0.5"
 proptest = "1.5"
 tempfile = "3"
@@ -116,6 +121,6 @@ getrandom03 = { package = "getrandom", version = "0.3", features = ["wasm_js"] }
 # the host can test the same commit protocol -- reaches `LogFile` here and
 # `NativeLogFile` through the native arm.
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-theorem-oplog = { package = "rustyred-log", version = "=0.1.0-beta.1", path = "../rustyred-log", features = [
+theorem-oplog = { package = "rustyred-log", version = "=0.1.0-beta.2", path = "../rustyred-log", features = [
     "browser-opfs",
 ] }

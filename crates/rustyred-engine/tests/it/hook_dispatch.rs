@@ -643,6 +643,30 @@ fn derived_same_entity(
 /// per coalesced batch, sees all N events, and its derived write lands.
 #[test]
 fn coalesces_ingest_storm_into_one_call_and_writes_back() {
+    use rustyred_thg_core::HookStoreAccess;
+    use std::sync::mpsc;
+
+    // Schedule the real dispatcher before it takes the actual store lock. The
+    // primer occupies its first dispatch while all 50 independent commits feed
+    // the next batch, so this oracle does not depend on commit speed versus an
+    // 80ms debounce window. All reads and writes still use the actual store.
+    struct FirstDispatchGateStore {
+        inner: Arc<Mutex<RedCoreGraphStore>>,
+        first_dispatch: Mutex<Option<(mpsc::Sender<()>, mpsc::Receiver<()>)>>,
+    }
+
+    impl HookStoreAccess for FirstDispatchGateStore {
+        fn with_store_mut(&self, f: &mut dyn FnMut(&mut RedCoreGraphStore)) -> bool {
+            let gate = self.first_dispatch.lock().unwrap().take();
+            if let Some((entered, resume)) = gate {
+                if entered.send(()).is_err() || resume.recv().is_err() {
+                    return false;
+                }
+            }
+            self.inner.with_store_mut(f)
+        }
+    }
+
     let calls = Arc::new(AtomicUsize::new(0));
     let seen = Arc::new(AtomicUsize::new(0));
     let calls_h = Arc::clone(&calls);
@@ -669,12 +693,38 @@ fn coalesces_ingest_storm_into_one_call_and_writes_back() {
         handler,
     );
 
+    let primer = HookRegistration::new(
+        "coalescing-primer",
+        MutationMatcher::any().with_labels(["HookPrimer"]),
+        coalesce_all,
+        Arc::new(|_, _| Ok(HookOutcome::Done)),
+    );
     let store = shared_store();
-    let dispatcher = HookDispatcher::start(Arc::clone(&store), vec![reg], fast_config());
+    let (entered, wait_for_entry) = mpsc::channel();
+    let (resume, wait_for_resume) = mpsc::channel();
+    let dispatcher = HookDispatcher::start(
+        FirstDispatchGateStore {
+            inner: Arc::clone(&store),
+            first_dispatch: Mutex::new(Some((entered, wait_for_resume))),
+        },
+        vec![primer, reg],
+        fast_config(),
+    );
+    // Declared after the dispatcher: a panic closes the channel before its
+    // worker is joined, so the fixture cannot strand shutdown at recv().
+    let resume_first_dispatch = resume;
     store
         .lock()
         .unwrap()
         .attach_hook_emitter(dispatcher.emitter());
+    store
+        .lock()
+        .unwrap()
+        .upsert_node(NodeRecord::new("hook-primer", ["HookPrimer"], json!({})))
+        .unwrap();
+    wait_for_entry
+        .recv_timeout(Duration::from_secs(5))
+        .expect("the primer dispatch reached the gate without holding the store lock");
 
     for i in 0..50 {
         store
@@ -688,6 +738,7 @@ fn coalesces_ingest_storm_into_one_call_and_writes_back() {
             .unwrap();
     }
 
+    resume_first_dispatch.send(()).unwrap();
     assert!(dispatcher.quiesce(Duration::from_secs(5)), "queue drained");
     assert_eq!(
         calls.load(Ordering::SeqCst),

@@ -3,21 +3,180 @@ name: ci
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      reviewed_sha:
+        description: Full reviewed implementation commit SHA (no branch or tag)
+        required: true
+        type: string
 
 permissions:
   contents: read
 
+env:
+  CARGO_INCREMENTAL: '0'
+  CARGO_BUILD_JOBS: '3'
+  CARGO_PROFILE_DEV_DEBUG: '0'
+  CARGO_PROFILE_TEST_DEBUG: '0'
+  # Several retained structural oracles read process-wide work counters.
+  # Keep their assertions isolated from other tests in the same binary.
+  RUST_TEST_THREADS: '1'
+
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - runner: macos-14
+            target: aarch64-apple-darwin
+    runs-on: ${{ matrix.runner }}
     steps:
+      - name: Require immutable source on manual dispatch
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+        run: test "${#REVIEWED_SHA}" = 40 && [[ "$REVIEWED_SHA" =~ ^[0-9a-f]+$ ]]
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.reviewed_sha || '' }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Assert dispatched source and record workflow revision
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+          WORKFLOW_REVISION: ${{ github.workflow_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEWED_SHA"
+          printf 'Workflow revision: %s\nReviewed source: %s\n' "$WORKFLOW_REVISION" "$REVIEWED_SHA"
       - uses: dtolnay/rust-toolchain@1.96.1
         with:
           components: clippy, rustfmt
-      - name: boundary
-        run: python3 scripts/dependency_boundary.py
-      - name: facade
-        run: cargo test -p rustyred -p rustyred-cli -p parts-catalog --locked
-      - name: engine lib
-        run: cargo test -p rustyred-engine --lib --locked
+      - name: Assert native target and compiler floor
+        shell: bash
+        run: |
+          rustc -Vv
+          test "$(rustc -Vv | sed -n 's/^host: //p')" = '${{ matrix.target }}'
+      - name: Public dependency boundary
+        run: |
+          python3 scripts/test_dependency_boundary.py
+          python3 scripts/dependency_boundary.py
+      - name: Formatting for changed first-party Rust files
+        env:
+          FORMAT_BASE: ${{ github.event_name == 'workflow_dispatch' && 'HEAD^' || github.event.pull_request.base.sha || github.event.before }}
+        run: python3 scripts/check-format --base "$FORMAT_BASE"
+      - name: Embedded facade, CLI, example and failure oracles
+        run: cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection
+      - name: Engine unit suite (calibrated latency profile)
+        if: ${{ !cancelled() }}
+        run: cargo test --locked --no-fail-fast -p rustyred-engine --lib --features test-fault-injection
+      - name: Complete engine integration target set (calibrated scaling profile)
+        if: ${{ !cancelled() }}
+        run: cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --test '*' --features test-fault-injection
+      - name: Query suites
+        if: ${{ !cancelled() }}
+        run: cargo test --locked --no-fail-fast -p rustyred-query
+      - name: Known committed fold-maintenance failure oracle
+        if: ${{ !cancelled() }}
+        run: cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome
+      - name: Supporting crate suites
+        if: ${{ !cancelled() }}
+        env:
+          TS_RS_EXPORT_DIR: ${{ runner.temp }}/generated-bindings
+        run: cargo test --locked -p rustyred-log -p rustyred-bayes -p rustyred-contracts -p rustyred-scope -p rustyred-datalog -p rustyred-egraph -p rustyred-derivation -p rustyred-query-saturate
+      - name: Public support fork suites and doctests
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p vendor/egg-0.10.0/target
+          cargo test --locked --no-fail-fast -p rustyred-egg -p rustyred-turbovec
+      - name: Physical log subprocess crash and mixed-version recovery
+        if: ${{ !cancelled() }}
+        env:
+          THEOREM_RUN_CRASH_MATRIX: '1'
+        run: cargo test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored
+      - name: Documentation tests and examples
+        if: ${{ !cancelled() }}
+        run: cargo test --locked --doc -p rustyred -p rustyred-engine -p rustyred-query -p rustyred-log -p rustyred-derivation
+      - name: Clippy (default supported native closure)
+        if: ${{ !cancelled() }}
+        run: cargo clippy --locked -p rustyred -p rustyred-cli -p rustyred-engine -p rustyred-query --all-targets
+      - name: Optional pure Rust feature matrix
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          cargo check --locked -p rustyred-engine --lib --no-default-features
+          for feature in fjall-floor redis-store tantivy s2; do
+            cargo check --locked -p rustyred-engine --lib --features "$feature"
+          done
+      - name: Install pinned dependency notice generator
+        if: ${{ !cancelled() }}
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/target
+        run: cargo install --locked --version 0.9.2 --features cli cargo-about
+      - name: Prepare source and optimized CLI review artifacts
+        if: ${{ !cancelled() }}
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/target
+        run: scripts/release-check --output '${{ runner.temp }}/rustyred-release-review'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-review-${{ matrix.target }}
+          path: |
+            ${{ runner.temp }}/rustyred-release-review/rustyred
+            ${{ runner.temp }}/rustyred-release-review/rustyred-source-*.tar.gz
+            ${{ runner.temp }}/rustyred-release-review/crates/*.crate
+            ${{ runner.temp }}/rustyred-release-review/SHA256SUMS
+            ${{ runner.temp }}/rustyred-release-review/provenance.json
+            ${{ runner.temp }}/rustyred-release-review/THIRD_PARTY_LICENSES.html
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/evidence.json
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/archive-targets-checked.json
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/consumer-tree.txt
+            ${{ runner.temp }}/rustyred-release-review/package-evidence/archives/*.crate
+
+  clean-candidate-measurement:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require immutable source on manual dispatch
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+        run: test "${#REVIEWED_SHA}" = 40 && [[ "$REVIEWED_SHA" =~ ^[0-9a-f]+$ ]]
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.reviewed_sha || '' }}
+          persist-credentials: false
+      - name: Assert dispatched source and record workflow revision
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+          WORKFLOW_REVISION: ${{ github.workflow_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEWED_SHA"
+          printf 'Workflow revision: %s\nReviewed source: %s\n' "$WORKFLOW_REVISION" "$REVIEWED_SHA"
+      - uses: dtolnay/rust-toolchain@1.96.1
+      - name: Install isolated measurement dependency
+        shell: bash
+        run: |
+          python3 -m venv "$RUNNER_TEMP/measurement-venv"
+          "$RUNNER_TEMP/measurement-venv/bin/pip" install psutil==7.2.2
+      - name: Cold clean-pinned build and real example measurements
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/measurement-venv/bin/python" scripts/measure_release.py \
+            --target-dir "$RUNNER_TEMP/measurement-target" \
+            --output "$RUNNER_TEMP/measurement-evidence"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clean-candidate-measurement-x86_64-unknown-linux-gnu
+          path: |
+            ${{ runner.temp }}/measurement-evidence/measurements.json
+            ${{ runner.temp }}/measurement-evidence/build.log

@@ -10,10 +10,11 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
+include = ["Cargo.toml", "src/**", "tests/**", "examples/**", "README*", "LICENSE*", "THEOREM-PATCH.md"]
 edition = "2021"
-rust-version = "1.89"
-name = "turbovec"
-version = "1.0.0"
+rust-version = "1.96.1"
+name = "rustyred-turbovec"
+version = "0.1.0-beta.2"
 build = false
 autolib = false
 autobins = false
@@ -36,7 +37,7 @@ categories = [
     "compression",
 ]
 license = "MIT"
-repository = "https://github.com/RyanCodrai/turbovec"
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"
 
 [features]
 mask-skip-counter = []

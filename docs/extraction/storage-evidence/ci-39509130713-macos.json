@@ -1,0 +1,2828 @@
+{
+  "run_id": 39509130713,
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "workflow_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "actual_checkout_sha_evidence": [
+    "984453329f99ae41a5d40e0297218b242ff5075a"
+  ],
+  "target": "aarch64-apple-darwin",
+  "raw_log_path": "/tmp/rustyred-ci-984-macos.log",
+  "raw_log_sha256": "ad387f8bcdb125d16790c50bca19651b37b7db237649af1ce7e5448287c33e36",
+  "qualification_vs_artifact_policy": "Normal named qualification commands and artifact-script repetitions are separate; no duplicate counts aggregated. rr_roundtrip uses harness=false and therefore no libtest count.",
+  "commands": [
+    {
+      "command": "cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "unittests src/main.rs",
+          "binary": "target/debug/deps/parts_catalog-4e156620d86dfd41",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:41:44.5087260Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred-43ce47a8100beb95",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:41:44.5125230Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/embedded_api.rs",
+          "binary": "target/debug/deps/embedded_api-a38b89ff1d142b95",
+          "result": "ok",
+          "passed": 12,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.1,
+          "log_line": "2026-10-20T22:41:44.6123460Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s"
+        },
+        {
+          "target": "tests/rr_failures.rs",
+          "binary": "target/debug/deps/rr_failures-67fe6a68b697f2b4",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.1,
+          "log_line": "2026-10-20T22:41:44.7226300Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s"
+        },
+        {
+          "target": "unittests src/main.rs",
+          "binary": "target/debug/deps/rustyred-da8f4eda4af12cc8",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:41:44.7905590Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/cli_contract.rs",
+          "binary": "target/debug/deps/cli_contract-8eb357a267fc2d86",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.25,
+          "log_line": "2026-10-20T22:41:45.0630920Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s"
+        },
+        {
+          "target": "Doc-tests rustyred",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:41:45.2674900Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        }
+      ],
+      "harness_free_processes": [
+        {
+          "target": "tests/rr_roundtrip.rs",
+          "binary": "target/debug/deps/rr_roundtrip-4e9ee54bdd6a7075"
+        }
+      ],
+      "source_fixture_lines": []
+    },
+    {
+      "command": "cargo test --locked --no-fail-fast -p rustyred-engine --lib --features test-fault-injection",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_core-2370adb36f7f1dca",
+          "result": "ok",
+          "passed": 852,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 12.63,
+          "log_line": "2026-10-20T22:47:00.0118850Z test result: ok. 852 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 12.63s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": []
+    },
+    {
+      "command": "cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --test '*' --features test-fault-injection",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "tests/algebra_fold_differential.rs",
+          "binary": "target/debug/deps/algebra_fold_differential-1cbcfe41361388c8",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:48:15.5448020Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/algebra_fold_repairs.rs",
+          "binary": "target/debug/deps/algebra_fold_repairs-50ddd6d6f08aa02d",
+          "result": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.35,
+          "log_line": "2026-10-20T22:48:15.9060880Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s"
+        },
+        {
+          "target": "tests/algebra_fold_rss.rs",
+          "binary": "target/debug/deps/algebra_fold_rss-ea732f2883f5504a",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:48:15.9129020Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/algebra_identity_interner.rs",
+          "binary": "target/debug/deps/algebra_identity_interner-2d60e4b70420b088",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T22:48:15.9555360Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/algebra_token_region.rs",
+          "binary": "target/debug/deps/algebra_token_region-8b0371b08624284f",
+          "result": "ok",
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.24,
+          "log_line": "2026-10-20T22:48:16.2109920Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s"
+        },
+        {
+          "target": "tests/deployment_identity.rs",
+          "binary": "target/debug/deps/deployment_identity-76a1ce84100b9b74",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T22:48:16.2277250Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/derivation_core_store.rs",
+          "binary": "target/debug/deps/derivation_core_store-fa436b14463afa8f",
+          "result": "ok",
+          "passed": 15,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T22:48:16.2399890Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/documents_fold_differential.rs",
+          "binary": "target/debug/deps/documents_fold_differential-d3253cde026350b0",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T22:48:16.4578000Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "tests/fold_algebra_laws.rs",
+          "binary": "target/debug/deps/fold_algebra_laws-5aa78194b80538f7",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T22:48:16.4952400Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/fold_commit_outcome.rs",
+          "binary": "target/debug/deps/fold_commit_outcome-a395a50efc2984ce",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.03,
+          "log_line": "2026-10-20T22:48:16.5343170Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s"
+        },
+        {
+          "target": "tests/fold_floor_reopen.rs",
+          "binary": "target/debug/deps/fold_floor_reopen-9cbc5b6356557858",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.56,
+          "log_line": "2026-10-20T22:48:17.0980500Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s"
+        },
+        {
+          "target": "tests/fold_replay_differential.rs",
+          "binary": "target/debug/deps/fold_replay_differential-aea77e8dba155f72",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.42,
+          "log_line": "2026-10-20T22:48:18.5235170Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.42s"
+        },
+        {
+          "target": "tests/fold_retraction_differential.rs",
+          "binary": "target/debug/deps/fold_retraction_differential-c9b44b6a43b06eb5",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:48:18.5296110Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/fold_storage_differential.rs",
+          "binary": "target/debug/deps/fold_storage_differential-f77911b155d4bcec",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.8,
+          "log_line": "2026-10-20T22:48:19.3366700Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s"
+        },
+        {
+          "target": "tests/graphstore_fold_differential.rs",
+          "binary": "target/debug/deps/graphstore_fold_differential-a60c0ed31215d21e",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.64,
+          "log_line": "2026-10-20T22:48:20.9863950Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.64s"
+        },
+        {
+          "target": "tests/history_fold_differential.rs",
+          "binary": "target/debug/deps/history_fold_differential-d8b52a669cae5c81",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.07,
+          "log_line": "2026-10-20T22:48:21.0648360Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s"
+        },
+        {
+          "target": "tests/history_tigris_live.rs",
+          "binary": "target/debug/deps/history_tigris_live-a9d4c0b0707727f3",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:48:21.0715870Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/identity_interner_churn.rs",
+          "binary": "target/debug/deps/identity_interner_churn-6173891e6b4210bf",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T22:48:21.0811900Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/incremental_integration_acceptance.rs",
+          "binary": "target/debug/deps/incremental_integration_acceptance-273b689b857036ec",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T22:48:21.1255640Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/it/main.rs",
+          "binary": "target/debug/deps/it-cda5feb9ea3651cb",
+          "result": "ok",
+          "passed": 241,
+          "failed": 0,
+          "ignored": 6,
+          "filtered_out": 0,
+          "runtime_seconds": 244.41,
+          "log_line": "2026-10-20T22:52:25.6619950Z test result: ok. 241 passed; 0 failed; 6 ignored; 0 measured; 0 filtered out; finished in 244.41s"
+        },
+        {
+          "target": "tests/logfold_client_abi.rs",
+          "binary": "target/debug/deps/logfold_client_abi-44aa9b7457dceb99",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.12,
+          "log_line": "2026-10-20T22:52:25.8190030Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s"
+        },
+        {
+          "target": "tests/overlap_consumers.rs",
+          "binary": "target/debug/deps/overlap_consumers-e1fb935d2ed41926",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.03,
+          "log_line": "2026-10-20T22:52:25.8622550Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s"
+        },
+        {
+          "target": "tests/partial_fold_differential.rs",
+          "binary": "target/debug/deps/partial_fold_differential-359f4913f9cff217",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.79,
+          "log_line": "2026-10-20T22:52:26.6735800Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s"
+        },
+        {
+          "target": "tests/partial_fold_races.rs",
+          "binary": "target/debug/deps/partial_fold_races-87e0ef37fe897b11",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T22:52:26.8859460Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "tests/partial_fold_soak.rs",
+          "binary": "target/debug/deps/partial_fold_soak-eafbe7ced0be94b1",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:52:26.9007460Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/point_read_no_interpreter.rs",
+          "binary": "target/debug/deps/point_read_no_interpreter-625e225f3d3ea8cc",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T22:52:26.9605600Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/query_extension_boundary.rs",
+          "binary": "target/debug/deps/query_extension_boundary-e00a43df3d816e3b",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:52:26.9785210Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": []
+    },
+    {
+      "command": "cargo test --locked --no-fail-fast -p rustyred-query",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_query-b8b546d292168feb",
+          "result": "ok",
+          "passed": 81,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T22:54:39.0585790Z test result: ok. 81 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/extraction_parity.rs",
+          "binary": "target/debug/deps/extraction_parity-3142a055edf55679",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.06,
+          "log_line": "2026-10-20T22:54:39.1279510Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_query",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:54:39.3840670Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": [
+        "2026-10-20T22:54:39.1278860Z test source_fixture_preserves_records_queries_indexes_payloads_and_history ... ok"
+      ]
+    },
+    {
+      "command": "cargo test --locked --no-fail-fast -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "tests/fold_commit_outcome.rs",
+          "binary": "target/debug/deps/fold_commit_outcome-a395a50efc2984ce",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.06,
+          "log_line": "2026-10-20T22:54:40.7303540Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": []
+    },
+    {
+      "command": "cargo test --locked -p rustyred-log -p rustyred-bayes -p rustyred-contracts -p rustyred-scope -p rustyred-datalog -p rustyred-egraph -p rustyred-derivation -p rustyred-query-saturate",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/theorem_bayes-07f9164af1a6c16f",
+          "result": "ok",
+          "passed": 18,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:20.3510110Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/theorem_surface_contracts-721996f6777cd121",
+          "result": "ok",
+          "passed": 14,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.03,
+          "log_line": "2026-10-20T22:57:20.3877960Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/datalog-b190715e6b5c53de",
+          "result": "ok",
+          "passed": 12,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T22:57:20.4368260Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/python_reference.rs",
+          "binary": "target/debug/deps/python_reference-9ac505408016f4b3",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.05,
+          "log_line": "2026-10-20T22:57:20.4912030Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_derivation-654441d2c7db1d80",
+          "result": "ok",
+          "passed": 94,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.46,
+          "log_line": "2026-10-20T22:57:20.9591660Z test result: ok. 94 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s"
+        },
+        {
+          "target": "tests/algebra_laws.rs",
+          "binary": "target/debug/deps/algebra_laws-8fd20b1e2cd69d2e",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T22:57:20.9777440Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/egraph-b9e9b9bf803a9939",
+          "result": "ok",
+          "passed": 25,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.13,
+          "log_line": "2026-10-20T22:57:21.1111640Z test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s"
+        },
+        {
+          "target": "unittests src/physical_lib.rs",
+          "binary": "target/debug/deps/theorem_oplog-8b3773ad0b2d48db",
+          "result": "ok",
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.05,
+          "log_line": "2026-10-20T22:57:21.1690990Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s"
+        },
+        {
+          "target": "tests/crash_reopen.rs",
+          "binary": "target/debug/deps/crash_reopen-2a2455bf0d0e0563",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 4,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:21.1739600Z test result: ok. 0 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/fsync_append.rs",
+          "binary": "target/debug/deps/fsync_append-985cd1d3f212a66e",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T22:57:21.1877240Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/overlap_differential.rs",
+          "binary": "target/debug/deps/overlap_differential-98ac138c395914ea",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.08,
+          "log_line": "2026-10-20T22:57:21.2699120Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s"
+        },
+        {
+          "target": "tests/proposal_commit.rs",
+          "binary": "target/debug/deps/proposal_commit-90dcaaaeca835e77",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.05,
+          "log_line": "2026-10-20T22:57:21.3211800Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s"
+        },
+        {
+          "target": "tests/provenance_commit.rs",
+          "binary": "target/debug/deps/provenance_commit-79f28e429553e4c1",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T22:57:21.3330860Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/provenance_wire.rs",
+          "binary": "target/debug/deps/provenance_wire-6e6a3ffff98a97f9",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:21.3377050Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_query_saturate-8ef7ab6ac8feefc5",
+          "result": "ok",
+          "passed": 46,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T22:57:21.5545510Z test result: ok. 46 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s"
+        },
+        {
+          "target": "tests/differential.rs",
+          "binary": "target/debug/deps/differential-cc7a8a7fbab31bbb",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T22:57:21.7707030Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s"
+        },
+        {
+          "target": "tests/gates.rs",
+          "binary": "target/debug/deps/gates-5736e4276b430095",
+          "result": "ok",
+          "passed": 17,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.28,
+          "log_line": "2026-10-20T22:57:22.0547220Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/theorem_capability_scope-c9b1410c137b24ad",
+          "result": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:22.0580560Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests theorem_bayes",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:22.1617630Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests theorem_surface_contracts",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:22.4429440Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests datalog",
+          "binary": null,
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.46,
+          "log_line": "2026-10-20T22:57:23.0348290Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_derivation",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:23.1406000Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests egraph",
+          "binary": null,
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.23,
+          "log_line": "2026-10-20T22:57:23.4726130Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s"
+        },
+        {
+          "target": "Doc-tests theorem_oplog",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:23.5669620Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_query_saturate",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:23.7230660Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests theorem_capability_scope",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:57:23.7527650Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": []
+    },
+    {
+      "command": "mkdir -p vendor/egg-0.10.0/target",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/egg-cbed3e0fd600d360",
+          "result": "ok",
+          "passed": 21,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.23,
+          "log_line": "2026-10-20T22:58:27.2814960Z test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s"
+        },
+        {
+          "target": "tests/datalog.rs",
+          "binary": "target/debug/deps/datalog-64f3adeb33d11c6c",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T22:58:27.5180270Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "tests/lambda.rs",
+          "binary": "target/debug/deps/lambda-023171ab4d4ec645",
+          "result": "ok",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T22:58:27.8028900Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s"
+        },
+        {
+          "target": "tests/math.rs",
+          "binary": "target/debug/deps/math-0cb8bf3c570dddd1",
+          "result": "ok",
+          "passed": 26,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.34,
+          "log_line": "2026-10-20T22:58:28.0507560Z test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s"
+        },
+        {
+          "target": "tests/prop.rs",
+          "binary": "target/debug/deps/prop-86c2904ef6a37841",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T22:58:28.2893510Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "tests/simple.rs",
+          "binary": "target/debug/deps/simple-2dcf281792b191ea",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T22:58:28.4788260Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/turbovec-3f624253da624896",
+          "result": "ok",
+          "passed": 137,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 64.97,
+          "log_line": "2026-10-20T22:59:33.4342720Z test result: ok. 137 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 64.97s"
+        },
+        {
+          "target": "tests/adversarial_durability.rs",
+          "binary": "target/debug/deps/adversarial_durability-be4235d7ca16fbdc",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.3,
+          "log_line": "2026-10-20T22:59:34.7349740Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s"
+        },
+        {
+          "target": "tests/adversarial_durability_edges.rs",
+          "binary": "target/debug/deps/adversarial_durability_edges-0a6d57395e7e790e",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.24,
+          "log_line": "2026-10-20T22:59:34.9743400Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s"
+        },
+        {
+          "target": "tests/adversarial_durability_fuzz.rs",
+          "binary": "target/debug/deps/adversarial_durability_fuzz-e77709d6deaf331d",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 4.35,
+          "log_line": "2026-10-20T22:59:39.3243820Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.35s"
+        },
+        {
+          "target": "tests/adversarial_durability_round2.rs",
+          "binary": "target/debug/deps/adversarial_durability_round2-da93352e8c264a44",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.67,
+          "log_line": "2026-10-20T22:59:40.0012090Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s"
+        },
+        {
+          "target": "tests/adversarial_gen_reuse.rs",
+          "binary": "target/debug/deps/adversarial_gen_reuse-ce9faf031737e167",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.41,
+          "log_line": "2026-10-20T22:59:40.4161870Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s"
+        },
+        {
+          "target": "tests/adversarial_load_memory.rs",
+          "binary": "target/debug/deps/adversarial_load_memory-68d4cee1d521e614",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.08,
+          "log_line": "2026-10-20T22:59:41.5048440Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s"
+        },
+        {
+          "target": "tests/allocation_hot_paths.rs",
+          "binary": "target/debug/deps/allocation_hot_paths-d1adc3d2f6c24688",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.12,
+          "log_line": "2026-10-20T22:59:41.6278510Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s"
+        },
+        {
+          "target": "tests/avx512_tail_simulation.rs",
+          "binary": "target/debug/deps/avx512_tail_simulation-d6afda0bdb717420",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T22:59:41.7209310Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/batch_matches_single.rs",
+          "binary": "target/debug/deps/batch_matches_single-ff9c0f2c26a29bf5",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.14,
+          "log_line": "2026-10-20T22:59:41.7811240Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s"
+        },
+        {
+          "target": "tests/bytes_io.rs",
+          "binary": "target/debug/deps/bytes_io-f26435841640fb62",
+          "result": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.88,
+          "log_line": "2026-10-20T22:59:42.6953320Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s"
+        },
+        {
+          "target": "tests/calibration_bounds.rs",
+          "binary": "target/debug/deps/calibration_bounds-929ea38e08cc045f",
+          "result": "ok",
+          "passed": 15,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.31,
+          "log_line": "2026-10-20T22:59:42.9906340Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s"
+        },
+        {
+          "target": "tests/codebook_determinism.rs",
+          "binary": "target/debug/deps/codebook_determinism-7a60111894e281ef",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.61,
+          "log_line": "2026-10-20T22:59:43.6043990Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s"
+        },
+        {
+          "target": "tests/concurrent_search.rs",
+          "binary": "target/debug/deps/concurrent_search-beaafbe4fdf8c85f",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.39,
+          "log_line": "2026-10-20T22:59:43.9925320Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s"
+        },
+        {
+          "target": "tests/convert_versions.rs",
+          "binary": "target/debug/deps/convert_versions-741b7bc1bd104474",
+          "result": "ok",
+          "passed": 14,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.36,
+          "log_line": "2026-10-20T22:59:44.3514660Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s"
+        },
+        {
+          "target": "tests/crate_api.rs",
+          "binary": "target/debug/deps/crate_api-2a8d008545662d9b",
+          "result": "ok",
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.14,
+          "log_line": "2026-10-20T22:59:44.4963780Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s"
+        },
+        {
+          "target": "tests/encode_fingerprint.rs",
+          "binary": "target/debug/deps/encode_fingerprint-61b0ac8340d75748",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.74,
+          "log_line": "2026-10-20T22:59:46.2398060Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.74s"
+        },
+        {
+          "target": "tests/explicit_calibration.rs",
+          "binary": "target/debug/deps/explicit_calibration-0a87dfa971d27fdc",
+          "result": "ok",
+          "passed": 20,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 2.98,
+          "log_line": "2026-10-20T22:59:49.2248200Z test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.98s"
+        },
+        {
+          "target": "tests/filtering.rs",
+          "binary": "target/debug/deps/filtering-94bf6aefc06da65b",
+          "result": "ok",
+          "passed": 22,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.92,
+          "log_line": "2026-10-20T22:59:50.1479780Z test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.92s"
+        },
+        {
+          "target": "tests/from_parts.rs",
+          "binary": "target/debug/deps/from_parts-ee7bd307fdd5f70a",
+          "result": "ok",
+          "passed": 33,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.54,
+          "log_line": "2026-10-20T22:59:51.6924060Z test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s"
+        },
+        {
+          "target": "tests/id_map.rs",
+          "binary": "target/debug/deps/id_map-d65d6c5dc450887e",
+          "result": "ok",
+          "passed": 23,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.97,
+          "log_line": "2026-10-20T22:59:52.6819500Z test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s"
+        },
+        {
+          "target": "tests/input_validation.rs",
+          "binary": "target/debug/deps/input_validation-1c201d622c0f30d2",
+          "result": "ok",
+          "passed": 22,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.47,
+          "log_line": "2026-10-20T22:59:53.1450090Z test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s"
+        },
+        {
+          "target": "tests/input_validation_reporting.rs",
+          "binary": "target/debug/deps/input_validation_reporting-298b64a6c771d32a",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.16,
+          "log_line": "2026-10-20T22:59:53.3030080Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s"
+        },
+        {
+          "target": "tests/kernel_correctness.rs",
+          "binary": "target/debug/deps/kernel_correctness-43fed63cc037f523",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.09,
+          "log_line": "2026-10-20T22:59:54.3971520Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s"
+        },
+        {
+          "target": "tests/lazy_init.rs",
+          "binary": "target/debug/deps/lazy_init-8d7a07f76dcb69de",
+          "result": "ok",
+          "passed": 31,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.38,
+          "log_line": "2026-10-20T22:59:54.7808980Z test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s"
+        },
+        {
+          "target": "tests/query_scale_invariance.rs",
+          "binary": "target/debug/deps/query_scale_invariance-d8c3f8c5468ea50b",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 2.74,
+          "log_line": "2026-10-20T22:59:57.5529320Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.74s"
+        },
+        {
+          "target": "tests/recall_sanity.rs",
+          "binary": "target/debug/deps/recall_sanity-2b8b0974d758dd58",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 6.2,
+          "log_line": "2026-10-20T23:00:03.7344230Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.20s"
+        },
+        {
+          "target": "tests/rotation.rs",
+          "binary": "target/debug/deps/rotation-dd647ef84bd22f74",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T23:00:03.7567610Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/rotation_determinism.rs",
+          "binary": "target/debug/deps/rotation_determinism-96b7c64c7ccccc77",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.18,
+          "log_line": "2026-10-20T23:00:03.9398520Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s"
+        },
+        {
+          "target": "tests/state_sequences.rs",
+          "binary": "target/debug/deps/state_sequences-268147e09b0e935e",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T23:00:04.1545330Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s"
+        },
+        {
+          "target": "tests/swap_remove.rs",
+          "binary": "target/debug/deps/swap_remove-e669162d63818bbb",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.65,
+          "log_line": "2026-10-20T23:00:04.8414170Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s"
+        },
+        {
+          "target": "tests/sync_v7.rs",
+          "binary": "target/debug/deps/sync_v7-a888b17d3dbe8644",
+          "result": "ok",
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.91,
+          "log_line": "2026-10-20T23:00:05.7286240Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s"
+        },
+        {
+          "target": "tests/sync_v7_idmap.rs",
+          "binary": "target/debug/deps/sync_v7_idmap-6adb1d4e2658b541",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.19,
+          "log_line": "2026-10-20T23:00:05.9231140Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s"
+        },
+        {
+          "target": "tests/tmp_sweep.rs",
+          "binary": "target/debug/deps/tmp_sweep-63704eeb355090ab",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.18,
+          "log_line": "2026-10-20T23:00:06.1076150Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s"
+        },
+        {
+          "target": "tests/tqplus_calibration.rs",
+          "binary": "target/debug/deps/tqplus_calibration-22b4031f837a9fec",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.22,
+          "log_line": "2026-10-20T23:00:06.3300390Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s"
+        },
+        {
+          "target": "tests/v7_bytes_entry_points.rs",
+          "binary": "target/debug/deps/v7_bytes_entry_points-9c1b9459e512f93b",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.14,
+          "log_line": "2026-10-20T23:00:06.4725330Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s"
+        },
+        {
+          "target": "tests/v7_only.rs",
+          "binary": "target/debug/deps/v7_only-72ac937da0a23e87",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.37,
+          "log_line": "2026-10-20T23:00:06.8410660Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s"
+        },
+        {
+          "target": "tests/warning_hook.rs",
+          "binary": "target/debug/deps/warning_hook-6cec8c8b588e5bd9",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.19,
+          "log_line": "2026-10-20T23:00:07.0364610Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s"
+        },
+        {
+          "target": "tests/wasm32_parity.rs",
+          "binary": "target/debug/deps/wasm32_parity-ff26a9a513408577",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.33,
+          "log_line": "2026-10-20T23:00:07.3922580Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.33s"
+        },
+        {
+          "target": "tests/write_path.rs",
+          "binary": "target/debug/deps/write_path-ac5c31085467c38e",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.22,
+          "log_line": "2026-10-20T23:00:07.5953410Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s"
+        },
+        {
+          "target": "Doc-tests egg",
+          "binary": null,
+          "result": "ok",
+          "passed": 41,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 18.62,
+          "log_line": "2026-10-20T23:00:26.3706150Z test result: ok. 41 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 18.62s"
+        },
+        {
+          "target": "Doc-tests turbovec",
+          "binary": null,
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.93,
+          "log_line": "2026-10-20T23:00:27.4327830Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.93s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": []
+    },
+    {
+      "command": "cargo test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "tests/crash_reopen.rs",
+          "binary": "target/debug/deps/crash_reopen-42f468d4d09a5dd5",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 2,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T23:00:55.7533930Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.21s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": []
+    },
+    {
+      "command": "cargo test --locked --doc -p rustyred -p rustyred-engine -p rustyred-query -p rustyred-log -p rustyred-derivation",
+      "evidence_set": "independent-qualification",
+      "binary_results": [
+        {
+          "target": "Doc-tests rustyred",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:02:55.9264950Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_derivation",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:02:56.0643900Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_core",
+          "binary": null,
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.63,
+          "log_line": "2026-10-20T23:03:00.5226620Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s"
+        },
+        {
+          "target": "Doc-tests theorem_oplog",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:03:00.6823270Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_query",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:03:00.8858920Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        }
+      ],
+      "harness_free_processes": [],
+      "source_fixture_lines": []
+    }
+  ],
+  "artifact_script": [
+    {
+      "command": "scripts/release-check --output '/Users/runner/work/_temp/rustyred-release-review'",
+      "evidence_set": "artifact-script-repetition",
+      "header_count": 113,
+      "summary_count": 114,
+      "subcommands": [
+        "2026-10-20T23:10:12.9618100Z + python3 scripts/test_dependency_boundary.py",
+        "2026-10-20T23:10:13.2798270Z + python3 scripts/dependency_boundary.py",
+        "2026-10-20T23:10:13.7489160Z + python3 scripts/package_rehearsal.py --output /Users/runner/work/_temp/rustyred-release-review/package-evidence",
+        "2026-10-20T23:10:13.8377410Z + cargo +1.96.1 package --workspace --locked --no-verify --exclude parts-catalog",
+        "2026-10-20T23:10:16.0647730Z + cargo +1.96.1 vendor --locked --versioned-dirs /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source",
+        "2026-10-20T23:10:29.2078440Z + rustc +1.96.1 -Vv",
+        "2026-10-20T23:10:29.8731500Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:11:35.8656460Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-bayes-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:11:42.0791600Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-cli-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:11:42.8707350Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-contracts-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:11:48.3730830Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-datalog-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:11:58.7515050Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-derivation-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:12:02.9343980Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-egg-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:12:05.9670070Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-egraph-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:12:07.0256050Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-engine-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:13:00.8534180Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-log-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:13:05.7745710Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-query-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:13:40.5078580Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-query-saturate-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:13:51.8135580Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-scope-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:13:52.2950060Z + cargo +1.96.1 check --offline --all-targets --manifest-path /Users/runner/work/_temp/rustyred-release-review/package-evidence/directory-source/rustyred-turbovec-0.1.0-beta.2/Cargo.toml",
+        "2026-10-20T23:14:03.3530200Z + cargo +1.96.1 test --offline --no-run --message-format=json",
+        "2026-10-20T23:15:49.8909310Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/RustyRedDB/RustyRedDB/target/debug/deps/rustyred_packaged_consumer-90f03d343f99e06d",
+        "2026-10-20T23:15:49.8914450Z + cargo +1.96.1 build --offline --bin parts-catalog --message-format=json",
+        "2026-10-20T23:15:52.1967880Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/RustyRedDB/RustyRedDB/target/debug/parts-catalog /Users/runner/work/_temp/rustyred-release-review/package-evidence/parts.rr",
+        "2026-10-20T23:15:52.1972770Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/RustyRedDB/RustyRedDB/target/debug/parts-catalog /Users/runner/work/_temp/rustyred-release-review/package-evidence/parts.rr",
+        "2026-10-20T23:15:52.1976880Z + cargo +1.96.1 tree --offline --prefix none",
+        "2026-10-20T23:15:52.3185660Z + cargo +1.96.1 install --config /Users/runner/work/_temp/rustyred-release-review/package-evidence/consumer/.cargo/config.toml --debug --offline --version =0.1.0-beta.2 --root /Users/runner/work/_temp/rustyred-release-review/package-evidence/installed rustyred-cli",
+        "2026-10-20T23:15:53.9157290Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/_temp/rustyred-release-review/package-evidence/installed/bin/rustyred create /Users/runner/work/_temp/rustyred-release-review/package-evidence/cli.rr",
+        "2026-10-20T23:15:53.9639040Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/_temp/rustyred-release-review/package-evidence/installed/bin/rustyred inspect /Users/runner/work/_temp/rustyred-release-review/package-evidence/cli.rr",
+        "2026-10-20T23:15:53.9813210Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/_temp/rustyred-release-review/package-evidence/installed/bin/rustyred verify /Users/runner/work/_temp/rustyred-release-review/package-evidence/cli.rr",
+        "2026-10-20T23:15:53.9967630Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/_temp/rustyred-release-review/package-evidence/installed/bin/rustyred query /Users/runner/work/_temp/rustyred-release-review/package-evidence/cli.rr --cypher MATCH (n) RETURN n",
+        "2026-10-20T23:15:54.0505290Z + cargo about generate --locked --offline --workspace --all-features --fail about.hbs --output-file /Users/runner/work/_temp/rustyred-release-review/THIRD_PARTY_LICENSES.html",
+        "2026-10-20T23:16:51.5528030Z + cargo +1.96.1 test --locked --no-fail-fast --workspace --exclude rustyred-engine --exclude rustyred-graphblas --exclude rustyred-egg --exclude rustyred-turbovec --features rustyred/test-fault-injection",
+        "2026-10-20T23:17:32.7939510Z + cargo +1.96.1 test --locked --no-fail-fast -p rustyred-egg -p rustyred-turbovec",
+        "2026-10-20T23:19:05.3836590Z + cargo +1.96.1 test --locked --no-fail-fast -p rustyred-engine --lib --features test-fault-injection",
+        "2026-10-20T23:19:19.9240610Z + cargo +1.96.1 test --locked --no-fail-fast -p rustyred-engine --profile dev --test * --features test-fault-injection",
+        "2026-10-20T23:22:26.7982400Z + cargo +1.96.1 test --locked --doc -p rustyred-engine",
+        "2026-10-20T23:24:13.8253650Z + cargo +1.96.1 clippy --locked -p rustyred -p rustyred-cli -p rustyred-engine -p rustyred-query --all-targets",
+        "2026-10-20T23:24:15.5557220Z + cargo +1.96.1 build --locked --release -p rustyred-cli",
+        "2026-10-20T23:29:20.5895710Z + git archive --format=tar.gz --prefix=rustyred-984453329f99ae41a5d40e0297218b242ff5075a/ --output=/Users/runner/work/_temp/rustyred-release-review/rustyred-source-984453329f99ae41a5d40e0297218b242ff5075a.tar.gz 984453329f99ae41a5d40e0297218b242ff5075a"
+      ],
+      "note": "Never aggregate with independent suite counts. Artifact script includes actual direct consumer binaries without Cargo Running headers; archive evidence.json/provenance independently bind their outcome.",
+      "direct_packaged_consumer": {
+        "command_evidence": [
+          "2026-10-20T23:15:49.8909310Z + /usr/bin/sandbox-exec -p (version 1)(allow default)(deny network*) /Users/runner/work/RustyRedDB/RustyRedDB/target/debug/deps/rustyred_packaged_consumer-90f03d343f99e06d"
+        ],
+        "named_test_evidence": [
+          "2026-10-20T23:15:49.8912100Z test tests::explicit_fulltext_and_spatial_primitives_are_usable_without_product_runtime ... ok",
+          "2026-10-20T23:15:49.8912620Z test tests::an_outside_crate_preserves_atomic_graph_vectors_payloads_and_history ... ok"
+        ],
+        "result": {
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.08,
+          "log_line": "2026-10-20T23:15:49.8913130Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s"
+        }
+      },
+      "repeated_binary_results": [
+        {
+          "target": "unittests src/main.rs",
+          "binary": "target/debug/deps/parts_catalog-4e156620d86dfd41",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:29.1566360Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred-7cd608e456c1d928",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:29.1604950Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/embedded_api.rs",
+          "binary": "target/debug/deps/embedded_api-bd87ba5a46827cbc",
+          "result": "ok",
+          "passed": 12,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.11,
+          "log_line": "2026-10-20T23:17:29.2708260Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s"
+        },
+        {
+          "target": "tests/rr_failures.rs",
+          "binary": "target/debug/deps/rr_failures-649a47f4b532f642",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.08,
+          "log_line": "2026-10-20T23:17:29.3561890Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/theorem_bayes-07f9164af1a6c16f",
+          "result": "ok",
+          "passed": 18,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:29.4056980Z test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/main.rs",
+          "binary": "target/debug/deps/rustyred-aa6db3b178ee4efb",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:29.4089200Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/cli_contract.rs",
+          "binary": "target/debug/deps/cli_contract-70c46d5d2fbda068",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.14,
+          "log_line": "2026-10-20T23:17:29.5531520Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/theorem_surface_contracts-721996f6777cd121",
+          "result": "ok",
+          "passed": 14,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T23:17:29.5699720Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/datalog-b190715e6b5c53de",
+          "result": "ok",
+          "passed": 12,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.03,
+          "log_line": "2026-10-20T23:17:29.6126200Z test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s"
+        },
+        {
+          "target": "tests/python_reference.rs",
+          "binary": "target/debug/deps/python_reference-9ac505408016f4b3",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.05,
+          "log_line": "2026-10-20T23:17:29.6664610Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_derivation-654441d2c7db1d80",
+          "result": "ok",
+          "passed": 94,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.43,
+          "log_line": "2026-10-20T23:17:30.1061480Z test result: ok. 94 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s"
+        },
+        {
+          "target": "tests/algebra_laws.rs",
+          "binary": "target/debug/deps/algebra_laws-8fd20b1e2cd69d2e",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:30.1191290Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/egraph-b9e9b9bf803a9939",
+          "result": "ok",
+          "passed": 25,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.1,
+          "log_line": "2026-10-20T23:17:30.2284470Z test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s"
+        },
+        {
+          "target": "unittests src/physical_lib.rs",
+          "binary": "target/debug/deps/theorem_oplog-8b3773ad0b2d48db",
+          "result": "ok",
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T23:17:30.2762400Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/crash_reopen.rs",
+          "binary": "target/debug/deps/crash_reopen-2a2455bf0d0e0563",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 4,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:30.2852160Z test result: ok. 0 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/fsync_append.rs",
+          "binary": "target/debug/deps/fsync_append-985cd1d3f212a66e",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T23:17:30.2988870Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/overlap_differential.rs",
+          "binary": "target/debug/deps/overlap_differential-98ac138c395914ea",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.09,
+          "log_line": "2026-10-20T23:17:30.4165270Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s"
+        },
+        {
+          "target": "tests/proposal_commit.rs",
+          "binary": "target/debug/deps/proposal_commit-90dcaaaeca835e77",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.02,
+          "log_line": "2026-10-20T23:17:30.4810240Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s"
+        },
+        {
+          "target": "tests/provenance_commit.rs",
+          "binary": "target/debug/deps/provenance_commit-79f28e429553e4c1",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T23:17:30.5003990Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/provenance_wire.rs",
+          "binary": "target/debug/deps/provenance_wire-6e6a3ffff98a97f9",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:30.5097060Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_query-d6f685f18111b245",
+          "result": "ok",
+          "passed": 81,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T23:17:30.5184720Z test result: ok. 81 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/extraction_parity.rs",
+          "binary": "target/debug/deps/extraction_parity-9cc7a8f55b07a3f4",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.02,
+          "log_line": "2026-10-20T23:17:30.5430500Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_query_saturate-9950000f0c5227f0",
+          "result": "ok",
+          "passed": 46,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T23:17:30.7521930Z test result: ok. 46 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s"
+        },
+        {
+          "target": "tests/differential.rs",
+          "binary": "target/debug/deps/differential-ec04eb342e9314d1",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.22,
+          "log_line": "2026-10-20T23:17:30.9772330Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s"
+        },
+        {
+          "target": "tests/gates.rs",
+          "binary": "target/debug/deps/gates-21c633dec40bbd88",
+          "result": "ok",
+          "passed": 17,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.28,
+          "log_line": "2026-10-20T23:17:31.2620240Z test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/theorem_capability_scope-c9b1410c137b24ad",
+          "result": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:31.2744650Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:31.4118570Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests theorem_bayes",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:31.4722120Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests theorem_surface_contracts",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:31.6597580Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests datalog",
+          "binary": null,
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.3,
+          "log_line": "2026-10-20T23:17:32.0292690Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_derivation",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:32.1275650Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests egraph",
+          "binary": null,
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.18,
+          "log_line": "2026-10-20T23:17:32.4040040Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s"
+        },
+        {
+          "target": "Doc-tests theorem_oplog",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:32.5029650Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_query",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:32.6115400Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_query_saturate",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:32.7574020Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests theorem_capability_scope",
+          "binary": null,
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:17:32.7877060Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/egg-cbed3e0fd600d360",
+          "result": "ok",
+          "passed": 21,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.22,
+          "log_line": "2026-10-20T23:17:33.2679650Z test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s"
+        },
+        {
+          "target": "tests/datalog.rs",
+          "binary": "target/debug/deps/datalog-64f3adeb33d11c6c",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T23:17:33.4817300Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "tests/lambda.rs",
+          "binary": "target/debug/deps/lambda-023171ab4d4ec645",
+          "result": "ok",
+          "passed": 11,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T23:17:33.7075680Z test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s"
+        },
+        {
+          "target": "tests/math.rs",
+          "binary": "target/debug/deps/math-0cb8bf3c570dddd1",
+          "result": "ok",
+          "passed": 26,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.31,
+          "log_line": "2026-10-20T23:17:34.0279600Z test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s"
+        },
+        {
+          "target": "tests/prop.rs",
+          "binary": "target/debug/deps/prop-86c2904ef6a37841",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T23:17:34.2409890Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "tests/simple.rs",
+          "binary": "target/debug/deps/simple-2dcf281792b191ea",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.2,
+          "log_line": "2026-10-20T23:17:34.4628320Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/turbovec-3f624253da624896",
+          "result": "ok",
+          "passed": 137,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 53.44,
+          "log_line": "2026-10-20T23:18:27.9120100Z test result: ok. 137 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 53.44s"
+        },
+        {
+          "target": "tests/adversarial_durability.rs",
+          "binary": "target/debug/deps/adversarial_durability-be4235d7ca16fbdc",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.13,
+          "log_line": "2026-10-20T23:18:29.0515780Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s"
+        },
+        {
+          "target": "tests/adversarial_durability_edges.rs",
+          "binary": "target/debug/deps/adversarial_durability_edges-0a6d57395e7e790e",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.16,
+          "log_line": "2026-10-20T23:18:29.2254960Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s"
+        },
+        {
+          "target": "tests/adversarial_durability_fuzz.rs",
+          "binary": "target/debug/deps/adversarial_durability_fuzz-e77709d6deaf331d",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 2.34,
+          "log_line": "2026-10-20T23:18:31.5784800Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.34s"
+        },
+        {
+          "target": "tests/adversarial_durability_round2.rs",
+          "binary": "target/debug/deps/adversarial_durability_round2-da93352e8c264a44",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.26,
+          "log_line": "2026-10-20T23:18:31.8440020Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s"
+        },
+        {
+          "target": "tests/adversarial_gen_reuse.rs",
+          "binary": "target/debug/deps/adversarial_gen_reuse-ce9faf031737e167",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.11,
+          "log_line": "2026-10-20T23:18:31.9632010Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s"
+        },
+        {
+          "target": "tests/adversarial_load_memory.rs",
+          "binary": "target/debug/deps/adversarial_load_memory-68d4cee1d521e614",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.6,
+          "log_line": "2026-10-20T23:18:32.5674700Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s"
+        },
+        {
+          "target": "tests/allocation_hot_paths.rs",
+          "binary": "target/debug/deps/allocation_hot_paths-d1adc3d2f6c24688",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.11,
+          "log_line": "2026-10-20T23:18:32.6882670Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s"
+        },
+        {
+          "target": "tests/avx512_tail_simulation.rs",
+          "binary": "target/debug/deps/avx512_tail_simulation-d6afda0bdb717420",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:18:32.7003510Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/batch_matches_single.rs",
+          "binary": "target/debug/deps/batch_matches_single-ff9c0f2c26a29bf5",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.12,
+          "log_line": "2026-10-20T23:18:32.8281970Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s"
+        },
+        {
+          "target": "tests/bytes_io.rs",
+          "binary": "target/debug/deps/bytes_io-f26435841640fb62",
+          "result": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.83,
+          "log_line": "2026-10-20T23:18:33.6647070Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s"
+        },
+        {
+          "target": "tests/calibration_bounds.rs",
+          "binary": "target/debug/deps/calibration_bounds-929ea38e08cc045f",
+          "result": "ok",
+          "passed": 15,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.25,
+          "log_line": "2026-10-20T23:18:33.9229840Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s"
+        },
+        {
+          "target": "tests/codebook_determinism.rs",
+          "binary": "target/debug/deps/codebook_determinism-7a60111894e281ef",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.47,
+          "log_line": "2026-10-20T23:18:34.4090460Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s"
+        },
+        {
+          "target": "tests/concurrent_search.rs",
+          "binary": "target/debug/deps/concurrent_search-beaafbe4fdf8c85f",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.32,
+          "log_line": "2026-10-20T23:18:34.7383740Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s"
+        },
+        {
+          "target": "tests/convert_versions.rs",
+          "binary": "target/debug/deps/convert_versions-741b7bc1bd104474",
+          "result": "ok",
+          "passed": 14,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.32,
+          "log_line": "2026-10-20T23:18:35.0645870Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s"
+        },
+        {
+          "target": "tests/crate_api.rs",
+          "binary": "target/debug/deps/crate_api-2a8d008545662d9b",
+          "result": "ok",
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.12,
+          "log_line": "2026-10-20T23:18:35.1964120Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s"
+        },
+        {
+          "target": "tests/encode_fingerprint.rs",
+          "binary": "target/debug/deps/encode_fingerprint-61b0ac8340d75748",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.14,
+          "log_line": "2026-10-20T23:18:36.3487590Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s"
+        },
+        {
+          "target": "tests/explicit_calibration.rs",
+          "binary": "target/debug/deps/explicit_calibration-0a87dfa971d27fdc",
+          "result": "ok",
+          "passed": 20,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 2.11,
+          "log_line": "2026-10-20T23:18:38.4695450Z test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.11s"
+        },
+        {
+          "target": "tests/filtering.rs",
+          "binary": "target/debug/deps/filtering-94bf6aefc06da65b",
+          "result": "ok",
+          "passed": 22,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.63,
+          "log_line": "2026-10-20T23:18:39.1020630Z test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s"
+        },
+        {
+          "target": "tests/from_parts.rs",
+          "binary": "target/debug/deps/from_parts-ee7bd307fdd5f70a",
+          "result": "ok",
+          "passed": 33,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.13,
+          "log_line": "2026-10-20T23:18:40.2368940Z test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s"
+        },
+        {
+          "target": "tests/id_map.rs",
+          "binary": "target/debug/deps/id_map-d65d6c5dc450887e",
+          "result": "ok",
+          "passed": 23,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.57,
+          "log_line": "2026-10-20T23:18:40.8199590Z test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s"
+        },
+        {
+          "target": "tests/input_validation.rs",
+          "binary": "target/debug/deps/input_validation-1c201d622c0f30d2",
+          "result": "ok",
+          "passed": 22,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.24,
+          "log_line": "2026-10-20T23:18:41.0718380Z test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s"
+        },
+        {
+          "target": "tests/input_validation_reporting.rs",
+          "binary": "target/debug/deps/input_validation_reporting-298b64a6c771d32a",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.11,
+          "log_line": "2026-10-20T23:18:41.1884170Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s"
+        },
+        {
+          "target": "tests/kernel_correctness.rs",
+          "binary": "target/debug/deps/kernel_correctness-43fed63cc037f523",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.77,
+          "log_line": "2026-10-20T23:18:41.9659940Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s"
+        },
+        {
+          "target": "tests/lazy_init.rs",
+          "binary": "target/debug/deps/lazy_init-8d7a07f76dcb69de",
+          "result": "ok",
+          "passed": 31,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.27,
+          "log_line": "2026-10-20T23:18:42.2419220Z test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s"
+        },
+        {
+          "target": "tests/query_scale_invariance.rs",
+          "binary": "target/debug/deps/query_scale_invariance-d8c3f8c5468ea50b",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.53,
+          "log_line": "2026-10-20T23:18:42.7784570Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s"
+        },
+        {
+          "target": "tests/recall_sanity.rs",
+          "binary": "target/debug/deps/recall_sanity-2b8b0974d758dd58",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 4.42,
+          "log_line": "2026-10-20T23:18:47.2078720Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.42s"
+        },
+        {
+          "target": "tests/rotation.rs",
+          "binary": "target/debug/deps/rotation-dd647ef84bd22f74",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T23:18:47.2310490Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/rotation_determinism.rs",
+          "binary": "target/debug/deps/rotation_determinism-96b7c64c7ccccc77",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.16,
+          "log_line": "2026-10-20T23:18:47.3966770Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s"
+        },
+        {
+          "target": "tests/state_sequences.rs",
+          "binary": "target/debug/deps/state_sequences-268147e09b0e935e",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.13,
+          "log_line": "2026-10-20T23:18:47.5347010Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s"
+        },
+        {
+          "target": "tests/swap_remove.rs",
+          "binary": "target/debug/deps/swap_remove-e669162d63818bbb",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.45,
+          "log_line": "2026-10-20T23:18:47.9951650Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s"
+        },
+        {
+          "target": "tests/sync_v7.rs",
+          "binary": "target/debug/deps/sync_v7-a888b17d3dbe8644",
+          "result": "ok",
+          "passed": 16,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.58,
+          "log_line": "2026-10-20T23:18:48.5875370Z test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s"
+        },
+        {
+          "target": "tests/sync_v7_idmap.rs",
+          "binary": "target/debug/deps/sync_v7_idmap-6adb1d4e2658b541",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.13,
+          "log_line": "2026-10-20T23:18:48.7243370Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s"
+        },
+        {
+          "target": "tests/tmp_sweep.rs",
+          "binary": "target/debug/deps/tmp_sweep-63704eeb355090ab",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.14,
+          "log_line": "2026-10-20T23:18:48.8731350Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s"
+        },
+        {
+          "target": "tests/tqplus_calibration.rs",
+          "binary": "target/debug/deps/tqplus_calibration-22b4031f837a9fec",
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.12,
+          "log_line": "2026-10-20T23:18:49.0001850Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s"
+        },
+        {
+          "target": "tests/v7_bytes_entry_points.rs",
+          "binary": "target/debug/deps/v7_bytes_entry_points-9c1b9459e512f93b",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.11,
+          "log_line": "2026-10-20T23:18:49.1230720Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s"
+        },
+        {
+          "target": "tests/v7_only.rs",
+          "binary": "target/debug/deps/v7_only-72ac937da0a23e87",
+          "result": "ok",
+          "passed": 9,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.31,
+          "log_line": "2026-10-20T23:18:49.4447170Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s"
+        },
+        {
+          "target": "tests/warning_hook.rs",
+          "binary": "target/debug/deps/warning_hook-6cec8c8b588e5bd9",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.13,
+          "log_line": "2026-10-20T23:18:49.5856620Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s"
+        },
+        {
+          "target": "tests/wasm32_parity.rs",
+          "binary": "target/debug/deps/wasm32_parity-ff26a9a513408577",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.23,
+          "log_line": "2026-10-20T23:18:49.8281860Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s"
+        },
+        {
+          "target": "tests/write_path.rs",
+          "binary": "target/debug/deps/write_path-ac5c31085467c38e",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.15,
+          "log_line": "2026-10-20T23:18:49.9869900Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s"
+        },
+        {
+          "target": "Doc-tests egg",
+          "binary": null,
+          "result": "ok",
+          "passed": 41,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 14.49,
+          "log_line": "2026-10-20T23:19:04.6312200Z test result: ok. 41 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 14.49s"
+        },
+        {
+          "target": "Doc-tests turbovec",
+          "binary": null,
+          "result": "ok",
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.61,
+          "log_line": "2026-10-20T23:19:05.3768110Z test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s"
+        },
+        {
+          "target": "unittests src/lib.rs",
+          "binary": "target/debug/deps/rustyred_thg_core-2370adb36f7f1dca",
+          "result": "ok",
+          "passed": 852,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 14.14,
+          "log_line": "2026-10-20T23:19:19.9158070Z test result: ok. 852 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 14.14s"
+        },
+        {
+          "target": "tests/algebra_fold_differential.rs",
+          "binary": "target/debug/deps/algebra_fold_differential-1cbcfe41361388c8",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:19:20.3550310Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/algebra_fold_repairs.rs",
+          "binary": "target/debug/deps/algebra_fold_repairs-50ddd6d6f08aa02d",
+          "result": "ok",
+          "passed": 7,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.27,
+          "log_line": "2026-10-20T23:19:20.6429980Z test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s"
+        },
+        {
+          "target": "tests/algebra_fold_rss.rs",
+          "binary": "target/debug/deps/algebra_fold_rss-ea732f2883f5504a",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:19:20.6583850Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/algebra_identity_interner.rs",
+          "binary": "target/debug/deps/algebra_identity_interner-2d60e4b70420b088",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.06,
+          "log_line": "2026-10-20T23:19:20.7332190Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s"
+        },
+        {
+          "target": "tests/algebra_token_region.rs",
+          "binary": "target/debug/deps/algebra_token_region-8b0371b08624284f",
+          "result": "ok",
+          "passed": 10,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.27,
+          "log_line": "2026-10-20T23:19:21.0167410Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s"
+        },
+        {
+          "target": "tests/deployment_identity.rs",
+          "binary": "target/debug/deps/deployment_identity-76a1ce84100b9b74",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T23:19:21.0662690Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/derivation_core_store.rs",
+          "binary": "target/debug/deps/derivation_core_store-fa436b14463afa8f",
+          "result": "ok",
+          "passed": 15,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.02,
+          "log_line": "2026-10-20T23:19:21.1017880Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s"
+        },
+        {
+          "target": "tests/documents_fold_differential.rs",
+          "binary": "target/debug/deps/documents_fold_differential-d3253cde026350b0",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.21,
+          "log_line": "2026-10-20T23:19:21.3316750Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s"
+        },
+        {
+          "target": "tests/fold_algebra_laws.rs",
+          "binary": "target/debug/deps/fold_algebra_laws-5aa78194b80538f7",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.05,
+          "log_line": "2026-10-20T23:19:21.4017610Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s"
+        },
+        {
+          "target": "tests/fold_commit_outcome.rs",
+          "binary": "target/debug/deps/fold_commit_outcome-a395a50efc2984ce",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T23:19:21.4486360Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/fold_floor_reopen.rs",
+          "binary": "target/debug/deps/fold_floor_reopen-9cbc5b6356557858",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 1.45,
+          "log_line": "2026-10-20T23:19:22.9135540Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s"
+        },
+        {
+          "target": "tests/fold_replay_differential.rs",
+          "binary": "target/debug/deps/fold_replay_differential-aea77e8dba155f72",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.63,
+          "log_line": "2026-10-20T23:19:23.7847280Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s"
+        },
+        {
+          "target": "tests/fold_retraction_differential.rs",
+          "binary": "target/debug/deps/fold_retraction_differential-c9b44b6a43b06eb5",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:19:23.7977540Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/fold_storage_differential.rs",
+          "binary": "target/debug/deps/fold_storage_differential-f77911b155d4bcec",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.34,
+          "log_line": "2026-10-20T23:19:24.1532700Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s"
+        },
+        {
+          "target": "tests/graphstore_fold_differential.rs",
+          "binary": "target/debug/deps/graphstore_fold_differential-a60c0ed31215d21e",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.97,
+          "log_line": "2026-10-20T23:19:25.1423560Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.97s"
+        },
+        {
+          "target": "tests/history_fold_differential.rs",
+          "binary": "target/debug/deps/history_fold_differential-d8b52a669cae5c81",
+          "result": "ok",
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.05,
+          "log_line": "2026-10-20T23:19:25.1994190Z test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s"
+        },
+        {
+          "target": "tests/history_tigris_live.rs",
+          "binary": "target/debug/deps/history_tigris_live-a9d4c0b0707727f3",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:19:25.2112940Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/identity_interner_churn.rs",
+          "binary": "target/debug/deps/identity_interner_churn-6173891e6b4210bf",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.01,
+          "log_line": "2026-10-20T23:19:25.2274620Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+        },
+        {
+          "target": "tests/incremental_integration_acceptance.rs",
+          "binary": "target/debug/deps/incremental_integration_acceptance-273b689b857036ec",
+          "result": "ok",
+          "passed": 8,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T23:19:25.2759850Z test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/it/main.rs",
+          "binary": "target/debug/deps/it-cda5feb9ea3651cb",
+          "result": "ok",
+          "passed": 241,
+          "failed": 0,
+          "ignored": 6,
+          "filtered_out": 0,
+          "runtime_seconds": 180.3,
+          "log_line": "2026-10-20T23:22:25.5937820Z test result: ok. 241 passed; 0 failed; 6 ignored; 0 measured; 0 filtered out; finished in 180.30s"
+        },
+        {
+          "target": "tests/logfold_client_abi.rs",
+          "binary": "target/debug/deps/logfold_client_abi-44aa9b7457dceb99",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.08,
+          "log_line": "2026-10-20T23:22:25.7079920Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s"
+        },
+        {
+          "target": "tests/overlap_consumers.rs",
+          "binary": "target/debug/deps/overlap_consumers-e1fb935d2ed41926",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.03,
+          "log_line": "2026-10-20T23:22:25.7453620Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s"
+        },
+        {
+          "target": "tests/partial_fold_differential.rs",
+          "binary": "target/debug/deps/partial_fold_differential-359f4913f9cff217",
+          "result": "ok",
+          "passed": 3,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.72,
+          "log_line": "2026-10-20T23:22:26.4789570Z test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s"
+        },
+        {
+          "target": "tests/partial_fold_races.rs",
+          "binary": "target/debug/deps/partial_fold_races-87e0ef37fe897b11",
+          "result": "ok",
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.22,
+          "log_line": "2026-10-20T23:22:26.7127030Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s"
+        },
+        {
+          "target": "tests/partial_fold_soak.rs",
+          "binary": "target/debug/deps/partial_fold_soak-eafbe7ced0be94b1",
+          "result": "ok",
+          "passed": 0,
+          "failed": 0,
+          "ignored": 1,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:22:26.7257730Z test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "tests/point_read_no_interpreter.rs",
+          "binary": "target/debug/deps/point_read_no_interpreter-625e225f3d3ea8cc",
+          "result": "ok",
+          "passed": 4,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.04,
+          "log_line": "2026-10-20T23:22:26.7750990Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s"
+        },
+        {
+          "target": "tests/query_extension_boundary.rs",
+          "binary": "target/debug/deps/query_extension_boundary-e00a43df3d816e3b",
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.0,
+          "log_line": "2026-10-20T23:22:26.7909770Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+        },
+        {
+          "target": "Doc-tests rustyred_thg_core",
+          "binary": null,
+          "result": "ok",
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "filtered_out": 0,
+          "runtime_seconds": 0.52,
+          "log_line": "2026-10-20T23:24:13.8149600Z test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s"
+        }
+      ],
+      "pairing_policy": "The direct packaged consumer summary appears before the first Cargo Running header. Remaining113 ordered Cargo headers pair with113 summaries; root suite repetitions are not aggregated into normal qualification counts."
+    }
+  ],
+  "job_id": 118925445187,
+  "job_conclusion": "success",
+  "job_url": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39509130713/job/118925445187",
+  "independent_step_outcomes": [
+    {
+      "name": "Public dependency boundary",
+      "conclusion": "success"
+    },
+    {
+      "name": "Formatting for changed first-party Rust files",
+      "conclusion": "success"
+    },
+    {
+      "name": "Embedded facade, CLI, example and failure oracles",
+      "conclusion": "success"
+    },
+    {
+      "name": "Engine unit suite (calibrated latency profile)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete engine integration target set (calibrated scaling profile)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Query suites",
+      "conclusion": "success"
+    },
+    {
+      "name": "Known committed fold-maintenance failure oracle",
+      "conclusion": "success"
+    },
+    {
+      "name": "Supporting crate suites",
+      "conclusion": "success"
+    },
+    {
+      "name": "Public support fork suites and doctests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Physical log subprocess crash and mixed-version recovery",
+      "conclusion": "success"
+    },
+    {
+      "name": "Documentation tests and examples",
+      "conclusion": "success"
+    },
+    {
+      "name": "Clippy (default supported native closure)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Optional pure Rust feature matrix",
+      "conclusion": "success"
+    },
+    {
+      "name": "Install pinned dependency notice generator",
+      "conclusion": "success"
+    },
+    {
+      "name": "Prepare source and optimized CLI review artifacts",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/upload-artifact@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ],
+  "artifact_source_binding": {
+    "provenance": {
+      "revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+      "source_revision_at_start": "984453329f99ae41a5d40e0297218b242ff5075a",
+      "dirty": false,
+      "rust_test_threads": "1",
+      "engine_test_profiles": {
+        "unit": "test/root1",
+        "integration": "dev/root0/dependencies2"
+      },
+      "rustc": "rustc 1.96.1 (31fca3adb 2026-06-26)\nbinary: rustc\ncommit-hash: 31fca3adb283cc9dfd56b49cdee9a96eb9c96ffd\ncommit-date: 2026-06-26\nhost: aarch64-apple-darwin\nrelease: 1.96.1\nLLVM version: 22.1.2\n",
+      "cargo": "cargo 1.96.1 (356927216 2026-06-26)\n",
+      "publication": "disabled; review artifacts only",
+      "notice_generator": "cargo-about 0.9.2",
+      "format": {
+        "magic": "THEORRDB",
+        "version": 1,
+        "header_bytes": 4096
+      }
+    },
+    "provenance_sha256": "cb29f076d6092bd070469d5349f4cfc9b32c9757793b0aeac4c8fb8bb8bd728a",
+    "normalized_package_evidence_sha256": "350f52f2aa78a183de81d979a6d1c573ce18efe16df0e65ae2e2e70517d60a4e",
+    "normalized_package_count": 15,
+    "consumer_profiles": {
+      "test": "Cargo default opt-level 0",
+      "build_install": "Cargo default opt-level 0"
+    },
+    "runtime_network_denial": [
+      "/usr/bin/sandbox-exec",
+      "-p",
+      "(version 1)(allow default)(deny network*)"
+    ],
+    "distribution_receipt": "docs/extraction/distribution-evidence/macos-artifacts-9844533.json"
+  }
+}

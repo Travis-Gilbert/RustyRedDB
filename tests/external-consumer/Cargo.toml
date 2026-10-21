@@ -5,6 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-# Pinned to the first published library revision. A path dependency is not the release proof.
-rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "bdc5c749ac29639e4b0427e161db8afd6af9beb1" }
+# Reviewed implementation baseline. Release rehearsals set the exact candidate pin
+# in their isolated copy and record it; a path dependency is not release proof.
+rustyred = { git = "https://github.com/Travis-Gilbert/RustyRedDB", rev = "984453329f99ae41a5d40e0297218b242ff5075a" }
 serde_json = "1"

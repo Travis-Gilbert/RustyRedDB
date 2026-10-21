@@ -194,6 +194,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "bindgen"
+version = "0.70.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f49d8fed880d473ea71efb9bf597651e77201bdd4893efe54c9e5d65ae04ce6f"
+dependencies = [
+ "bitflags",
+ "cexpr",
+ "clang-sys",
+ "itertools 0.13.0",
+ "log",
+ "prettyplease",
+ "proc-macro2",
+ "quote",
+ "regex",
+ "rustc-hash 1.1.0",
+ "shlex 1.3.0",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "bit-set"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -397,7 +417,7 @@ dependencies = [
  "find-msvc-tools",
  "jobserver",
  "libc",
- "shlex",
+ "shlex 2.0.1",
 ]
 
 [[package]]
@@ -405,6 +425,15 @@ name = "census"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4f4c707c6a209cbe82d10abd08e1ea8995e9ea937d2550646e02798948992be0"
+
+[[package]]
+name = "cexpr"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6fac387a98bb7c37292057cffc56d62ecb629900026402633ae9160df93a8766"
+dependencies = [
+ "nom",
+]
 
 [[package]]
 name = "cfg-if"
@@ -479,6 +508,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "clang-sys"
+version = "1.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "157a8ba7b480713b56f4c09fd13fc3e0a22a5dfab8097ba61cbc5feef950788a"
+dependencies = [
+ "glob",
+ "libc",
+ "libloading",
+]
+
+[[package]]
 name = "clap"
 version = "4.6.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -517,6 +557,25 @@ name = "clap_lex"
 version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1c133bc6a41be0d194c306b5506d15e6feeea7b1d6604bd3f8310dfb2ca96486"
+
+[[package]]
+name = "coin_cbc"
+version = "0.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b9bc933a1e54a161006787be18d1f963a2defe587ba4c59ae962899c6b6949f"
+dependencies = [
+ "coin_cbc_sys",
+ "lazy_static",
+]
+
+[[package]]
+name = "coin_cbc_sys"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a32b35768f8d7e0e938c3c307e8a06c27633b1c8490042dd66508b85be29032"
+dependencies = [
+ "pkg-config",
+]
 
 [[package]]
 name = "colorchoice"
@@ -928,25 +987,6 @@ dependencies = [
  "sha2",
  "subtle",
  "zeroize",
-]
-
-[[package]]
-name = "egg"
-version = "0.10.0"
-dependencies = [
- "env_logger",
- "hashbrown 0.15.5",
- "indexmap",
- "log",
- "num-bigint",
- "num-traits",
- "quanta",
- "rustc-hash 2.1.3",
- "saturating",
- "smallvec",
- "symbol_table",
- "symbolic_expressions",
- "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -1421,6 +1461,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "glob"
+version = "0.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4eba85ea1d0a966a983acd07deee566e67395d2d96b6fb39e62b5a833f1eb0b"
+
+[[package]]
 name = "guardian"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1490,6 +1536,7 @@ dependencies = [
  "allocator-api2",
  "equivalent",
  "foldhash 0.1.5",
+ "serde",
 ]
 
 [[package]]
@@ -1845,6 +1892,8 @@ checksum = "cc4e190f5d26ca7051642629da2c52fc03bde85a03197c99408dcd291734c855"
 dependencies = [
  "equivalent",
  "hashbrown 0.17.1",
+ "serde",
+ "serde_core",
 ]
 
 [[package]]
@@ -1971,6 +2020,16 @@ name = "libc"
 version = "0.2.191"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "65cd87c9a6d60536580b316ad985726104730a5151c99845f2490428ef91240a"
+
+[[package]]
+name = "libloading"
+version = "0.8.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d7c4b02199fee7c5d21a5ae7d8cfa79a6ef5bb2fc834d6e9058e89c825efdc55"
+dependencies = [
+ "cfg-if",
+ "windows-link",
+]
 
 [[package]]
 name = "libm"
@@ -2376,6 +2435,15 @@ checksum = "7c87def4c32ab89d880effc9e097653c8da5d6ef28e6b539d313baaacfbafcbe"
 
 [[package]]
 name = "ordered-float"
+version = "3.9.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1e1c390732d15f1d48471625cd92d154e66db2c56645e29a9cd26f4699f72dc"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
+name = "ordered-float"
 version = "4.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7bb71e1b3fa6ca1c61f383464aaf2bb0e2f8e772a1f01d486832464de363b951"
@@ -2426,7 +2494,7 @@ dependencies = [
 
 [[package]]
 name = "parts-catalog"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "rustyred",
  "serde_json",
@@ -2637,12 +2705,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "925383efa346730478fb4838dbe9137d2a47675ad789c546d150a6e1dd4ab31c"
 
 [[package]]
+name = "prettyplease"
+version = "0.2.37"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "479ca8adacdd7ce8f1fb39ce9ecccbfe93a3f1344b3d0d97f20bc0196208f62b"
+dependencies = [
+ "proc-macro2",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "proc-macro-crate"
 version = "3.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e67ba7e9b2b56446f1d419b1d807906278ffa1a658a8a5d8a39dcb1f5a78614f"
 dependencies = [
- "toml_edit",
+ "toml_edit 0.25.17+spec-1.1.0",
 ]
 
 [[package]]
@@ -2988,6 +3066,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "recursive"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0786a43debb760f491b1bc0269fe5e84155353c67482b9e60d0cfb596054b43e"
+dependencies = [
+ "recursive-proc-macro-impl",
+ "stacker",
+]
+
+[[package]]
+name = "recursive-proc-macro-impl"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76009fbe0614077fc1a2ce255e3a1881a2e3a3527097d5dc6d8212c585e7e38b"
+dependencies = [
+ "quote",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "redb"
 version = "2.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3281,7 +3379,7 @@ dependencies = [
 
 [[package]]
 name = "rustyred"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "rustyred-contracts",
  "rustyred-engine",
@@ -3294,7 +3392,7 @@ dependencies = [
 
 [[package]]
 name = "rustyred-bayes"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "serde",
  "serde_json",
@@ -3303,8 +3401,9 @@ dependencies = [
 
 [[package]]
 name = "rustyred-cli"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
+ "clap",
  "rustyred",
  "serde_json",
  "tempfile",
@@ -3312,7 +3411,7 @@ dependencies = [
 
 [[package]]
 name = "rustyred-contracts"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "serde",
  "serde_json",
@@ -3321,7 +3420,7 @@ dependencies = [
 
 [[package]]
 name = "rustyred-datalog"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "datafrog",
  "rustyred-egraph",
@@ -3332,30 +3431,54 @@ dependencies = [
 
 [[package]]
 name = "rustyred-derivation"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "proptest",
  "rustyred-egraph",
- "rustyred-engine",
  "serde",
  "serde_json",
  "thiserror 2.0.21",
 ]
 
 [[package]]
+name = "rustyred-egg"
+version = "0.1.0-beta.2"
+dependencies = [
+ "coin_cbc",
+ "env_logger",
+ "hashbrown 0.15.5",
+ "indexmap",
+ "log",
+ "num-bigint",
+ "num-traits",
+ "ordered-float 3.9.2",
+ "quanta",
+ "rustc-hash 2.1.3",
+ "saturating",
+ "serde",
+ "serde_json",
+ "smallvec",
+ "symbol_table",
+ "symbolic_expressions",
+ "thiserror 1.0.69",
+ "vectorize",
+]
+
+[[package]]
 name = "rustyred-egraph"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "egglog",
  "serde",
  "serde_json",
  "sha2",
+ "syn 2.0.119",
  "thiserror 2.0.21",
 ]
 
 [[package]]
 name = "rustyred-engine"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "async-trait",
  "base64 0.22.1",
@@ -3364,7 +3487,6 @@ dependencies = [
  "crc32fast",
  "criterion",
  "ed25519-dalek",
- "egg",
  "fjall",
  "fs2",
  "getrandom 0.2.17",
@@ -3385,9 +3507,12 @@ dependencies = [
  "rustyred-contracts",
  "rustyred-datalog",
  "rustyred-derivation",
+ "rustyred-egg",
  "rustyred-egraph",
+ "rustyred-graphblas",
  "rustyred-log",
  "rustyred-scope",
+ "rustyred-turbovec",
  "s2",
  "same-file",
  "serde",
@@ -3397,14 +3522,21 @@ dependencies = [
  "tempfile",
  "thiserror 2.0.21",
  "tokio",
- "turbovec",
+ "toml",
  "web-time",
  "zstd",
 ]
 
 [[package]]
+name = "rustyred-graphblas"
+version = "0.1.0-beta.2"
+dependencies = [
+ "bindgen",
+]
+
+[[package]]
 name = "rustyred-log"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "blake3",
  "fs2",
@@ -3421,7 +3553,7 @@ dependencies = [
 
 [[package]]
 name = "rustyred-query"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "hex",
  "pest",
@@ -3433,10 +3565,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustyred-query-saturate"
+version = "0.1.0-beta.2"
+dependencies = [
+ "pest",
+ "pest_derive",
+ "proptest",
+ "rustyred-egg",
+ "rustyred-engine",
+ "serde",
+ "serde_json",
+ "sha2",
+ "sqlparser",
+]
+
+[[package]]
 name = "rustyred-scope"
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "rustyred-turbovec"
+version = "0.1.0-beta.2"
+dependencies = [
+ "ordered-float 4.6.0",
+ "rand 0.8.8",
+ "rand_chacha 0.3.1",
+ "rayon",
+ "statrs",
 ]
 
 [[package]]
@@ -3577,6 +3735,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde_spanned"
+version = "0.6.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf41e0cfaf7226dca15e8197172c295a782857fcb97fad1808a166870dee75a3"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "serde_urlencoded"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3604,6 +3771,12 @@ dependencies = [
  "cpufeatures 0.2.17",
  "digest",
 ]
+
+[[package]]
+name = "shlex"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 
 [[package]]
 name = "shlex"
@@ -3707,6 +3880,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "sqlparser"
+version = "0.62.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "13c6d1b651dc4edf07eead2a0c6c78016ce971bc2c10da5266861b13f25e7cec"
+dependencies = [
+ "log",
+ "recursive",
+]
+
+[[package]]
 name = "stable_deref_trait"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3798,6 +3981,7 @@ dependencies = [
  "crossbeam-utils",
  "foldhash 0.1.5",
  "hashbrown 0.15.5",
+ "serde",
 ]
 
 [[package]]
@@ -4178,6 +4362,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "toml"
+version = "0.8.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dc1beb996b9d83529a9e75c17a1686767d148d70663143c7854d8b4a09ced362"
+dependencies = [
+ "serde",
+ "serde_spanned",
+ "toml_datetime 0.6.11",
+ "toml_edit 0.22.27",
+]
+
+[[package]]
+name = "toml_datetime"
+version = "0.6.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "22cddaf88f4fbc13c51aebbf5f8eceb5c7c5a9da2ac40a13519eb5b0a0e8f11c"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "toml_datetime"
 version = "1.1.2+spec-1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4188,14 +4393,28 @@ dependencies = [
 
 [[package]]
 name = "toml_edit"
+version = "0.22.27"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41fe8c660ae4257887cf66394862d21dbca4a6ddd26f04a3560410406a2f819a"
+dependencies = [
+ "indexmap",
+ "serde",
+ "serde_spanned",
+ "toml_datetime 0.6.11",
+ "toml_write",
+ "winnow 0.7.15",
+]
+
+[[package]]
+name = "toml_edit"
 version = "0.25.17+spec-1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3641d5bbb5349a79e1020a242d251efbc546ad8048d133958323ce9c40a9c9c"
 dependencies = [
  "indexmap",
- "toml_datetime",
+ "toml_datetime 1.1.2+spec-1.1.0",
  "toml_parser",
- "winnow",
+ "winnow 1.0.4",
 ]
 
 [[package]]
@@ -4204,8 +4423,14 @@ version = "1.1.5+spec-1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baa693a8032d7e1cada7d0041e96126df243179ff061456783ac7f12bda4744c"
 dependencies = [
- "winnow",
+ "winnow 1.0.4",
 ]
+
+[[package]]
+name = "toml_write"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5d99f8c9a7727884afe522e9bd5edbfc91a3312b36a77b5fb8926e4c31a41801"
 
 [[package]]
 name = "tower"
@@ -4310,17 +4535,6 @@ dependencies = [
  "quote",
  "syn 2.0.119",
  "termcolor",
-]
-
-[[package]]
-name = "turbovec"
-version = "1.0.0"
-dependencies = [
- "ordered-float 4.6.0",
- "rand 0.8.8",
- "rand_chacha 0.3.1",
- "rayon",
- "statrs",
 ]
 
 [[package]]
@@ -4446,6 +4660,15 @@ name = "varint-rs"
 version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bfa6c38708f6257f1ec2ca7e5a11f9bbf58a27d7060078b6b333624968183d96"
+
+[[package]]
+name = "vectorize"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25e3bbfdfdcc4ea60ce183b1b45c936aacd69fe097ebf137984a32faf80e365b"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "version_check"
@@ -4774,6 +4997,15 @@ name = "windows_x86_64_msvc"
 version = "0.52.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "589f6da84c646204747d1270a2a5661ea66ed1cced2631d546fdfb155959f9ec"
+
+[[package]]
+name = "winnow"
+version = "0.7.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df79d97927682d2fd8adb29682d1140b343be4ac0f08fd68b7765d9c059d3945"
+dependencies = [
+ "memchr",
+]
 
 [[package]]
 name = "winnow"

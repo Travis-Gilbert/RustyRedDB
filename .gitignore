@@ -1,2 +1,6 @@
 /target/
 .DS_Store
+
+# Local Python tooling bytecode is rebuildable, not release source.
+__pycache__/
+*.py[cod]

@@ -1,3 +1,20 @@
+# rustyred-turbovec
+
+Explicit Rusty Red support fork of turbovec 1.0.0, with Rust library name `turbovec`.
+The extracted fixes and original notices are described in `THEOREM-PATCH.md`
+and `LICENSE`. Its beta.2 package version is separate from upstream algorithm
+and encoding versions. This family is not yet uploaded to crates.io.
+
+The upstream README below is retained for attribution and API context. Upstream
+badges and benchmark figures describe upstream results; Rusty Red support
+claims require the candidate's own native receipts. Rust installation examples
+identify this named fork through the public Git snapshot instead of silently
+selecting the upstream registry implementation.
+
+From the RustyRedDB repository root: `cargo +1.96.1 test --locked -p rustyred-turbovec`.
+These support-package suites are separate from the embedded beta's engine and
+storage acceptance matrix.
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/RyanCodrai/turbovec/main/docs/header.png" alt="turbovec — Google's TurboQuant for vector search" width="100%">
 </p>
@@ -23,7 +40,10 @@ turbovec is a Rust vector index with Python bindings, built on Google Research's
 
 Building RAG where privacy, memory, or latency matters? **You're in the right place.**
 
-## Python
+## Upstream Python distribution
+
+The following Python API and framework integrations belong to the upstream
+project. This support fork packages the Rust library only.
 
 ```bash
 pip install turbovec
@@ -101,7 +121,7 @@ Drop-in replacements for the in-tree reference vector / document stores in each 
 ## Rust
 
 ```bash
-cargo add turbovec
+cargo add rustyred-turbovec --rename turbovec --git https://github.com/Travis-Gilbert/RustyRedDB --rev d14c89c7c88f728b7b71b1bcf69a84095832404c
 ```
 
 ```rust
@@ -229,54 +249,21 @@ Encoding cost: one extra `d`-dimensional dot product per vector to compute `⟨u
 
 The Lloyd-Max codebook achieves distortion within a factor of 2.7x of the information-theoretic lower bound (Shannon's distortion-rate limit); the length-renormalization step removes the residual bias the Lloyd-Max codebook introduces on the inner-product estimator itself.
 
-## Building
+## Building the support fork
 
-### Python (via maturin)
-
-```bash
-pip install maturin
-cd turbovec-python
-maturin build --release
-pip install target/wheels/*.whl
-```
-
-### Rust
+From the RustyRedDB repository root:
 
 ```bash
-cargo build --release
+cargo +1.96.1 build --locked --release -p rustyred-turbovec
+cargo +1.96.1 test --locked -p rustyred-turbovec
 ```
 
-All x86_64 builds target `x86-64-v2` (SSE4.2 baseline, Nehalem 2008+) via `.cargo/config.toml`, so any x86-64-v2 CPU can run the whole crate. The AVX-512 and AVX2 kernels are `#[target_feature]`-gated and selected at runtime via `is_x86_feature_detected!`, so they kick in on hardware that supports them regardless of the compile baseline; CPUs with neither run the scalar fallback.
-
-## Running benchmarks
-
-Download datasets:
-```bash
-python3 benchmarks/download_data.py all            # all datasets
-python3 benchmarks/download_data.py glove          # GloVe d=200
-python3 benchmarks/download_data.py openai-1536    # OpenAI DBpedia d=1536
-python3 benchmarks/download_data.py openai-3072    # OpenAI DBpedia d=3072
-```
-
-Each benchmark is a self-contained script in `benchmarks/suite/`. Run any one individually:
-```bash
-python3 benchmarks/suite/speed_d1536_2bit_arm_mt.py
-python3 benchmarks/suite/recall_d1536_2bit.py
-python3 benchmarks/suite/compression.py
-```
-
-Run all benchmarks for a category:
-```bash
-for f in benchmarks/suite/speed_*arm*.py; do python3 "$f"; done    # all ARM speed
-for f in benchmarks/suite/speed_*x86*.py; do python3 "$f"; done    # all x86 speed
-for f in benchmarks/suite/recall_*.py; do python3 "$f"; done       # all recall
-python3 benchmarks/suite/compression.py                            # compression
-```
-
-Results are saved as JSON to `benchmarks/results/`. Regenerate charts:
-```bash
-python3 benchmarks/create_diagrams.py
-```
+The upstream Python build and benchmark suite are not part of this Rust support
+package. Their procedures and dataset scripts live in the
+[upstream repository](https://github.com/RyanCodrai/turbovec). The upstream
+performance and compression charts above have not been reproduced as release
+qualification for this fork. Compiler flags follow the RustyRedDB build command;
+no upstream `.cargo/config.toml` CPU baseline is implied.
 
 ### Quick harness for optimization work
 
@@ -288,15 +275,15 @@ deterministic synthetic vectors, so a hypothesis can be measured in seconds on
 any machine with no dataset and no FAISS:
 
 ```bash
-cargo run --release --example insert_bench -- --dim 1536 --bits 2
-RAYON_NUM_THREADS=1 cargo run --release --example insert_bench
+cargo +1.96.1 run --locked --release -p rustyred-turbovec --example insert_bench -- --dim 1536 --bits 2
+RAYON_NUM_THREADS=1 cargo +1.96.1 run --locked --release -p rustyred-turbovec --example insert_bench
 ```
 
 It is a screening tool, not a source of published numbers.
 
 `examples/encode_hash` prints a per-stage hash of the encode pipeline for a
-fixed input; CI runs it on every OS in the matrix and fails if they disagree,
-which is how cross-platform byte identity of the encode is checked.
+fixed input. That upstream diagnostic is retained; cross-platform release
+claims require a recorded comparison of its outputs.
 
 ## References
 

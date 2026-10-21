@@ -1,0 +1,40 @@
+{
+  "revision": "06acfc450d9c56067cac68d1f0866047a81cfb45",
+  "source_kind": "actual normalized .crate",
+  "archive_sha256": "477609278d602bc0e7b353b8520a1fe8e9c7a8c1e812842c7904e897f84d3461",
+  "command": [
+    "cargo",
+    "+1.96.1",
+    "test",
+    "--config",
+    "/Volumes/SSD Samsung/rustyred-release-qualification-06acfc4/native-graphblas/consumer/config.toml",
+    "--offline",
+    "--manifest-path",
+    "/Volumes/SSD Samsung/rustyred-release-qualification-06acfc4/native-graphblas/unpacked/rustyred-graphblas-0.1.0-beta.2/Cargo.toml",
+    "--lib",
+    "--no-run",
+    "--message-format=json"
+  ],
+  "runtime_command": [
+    "/usr/bin/sandbox-exec",
+    "-p",
+    "(version 1)(allow default)(deny network*)",
+    "/Volumes/SSD Samsung/codex-targets/rustyred-oss-measurement/debug/deps/rustyred_thg_graphblas-44b0a698f2572c75",
+    "--test-threads=1"
+  ],
+  "runtime_exit": 0,
+  "result": "PASS",
+  "native_target": "aarch64-apple-darwin",
+  "native_prefix": "/Users/travisgilbert/.cache/rustyred-thg-graphblas/install",
+  "native_dependencies": {
+    "libgraphblas.9.4.5.dylib": "18fbc92745af6d0c93937d62d217136447527f7af4b64290588e2571bde5feac",
+    "liblagraph.1.2.1.dylib": "ad6aa0f8dee7191fb50e994eeda9346de56c758fa566c80cb1d025f2dc6a9a3a",
+    "liblagraphx.1.2.1.dylib": "5cbf8aea7f88d108b01548c426eb27dca2a0d5c875c554974a9a96094f702169"
+  },
+  "elapsed_seconds": 63.68508833400119,
+  "binary_sha256": "1aeac64455c7a07573a9bbc0174da7c916f2b51eebb8c033b4c51eb0c9b06897",
+  "runtime_log_sha256": "2f3b33b2c7e3f2a44e6a6c3845e89faa53787b5c54026ead0471942c02de4b01",
+  "qualification": "experimental native GraphBLAS only; existing SuiteSparse9.4.5/LAGraph1.2.1 installed prefix required; no other target claim",
+  "public_registry_dependency_source": "Registry-only symlink view of historical public cargo-vendor cache, excluding every rustyred-* family package; actual06 normalized archive is the only RustyRed package in dependency-tree.txt; no private credentials, source or consumer patches",
+  "runtime_network_denial": "macOS sandbox deny network*"
+}

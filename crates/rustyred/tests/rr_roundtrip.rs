@@ -1,28 +1,26 @@
-//! Cross-process proof that a closed `.RR` file is the database.
-//!
-//! `cargo test --test rr_roundtrip` runs `main`. The child is this same binary
-//! with `RR_ROUNDTRIP_ROLE=reopen`.
-
+//! Cross-process proof: the closed `.RR` copy alone retains the database.
 use std::collections::BTreeMap;
-use std::env;
-use std::fs;
 use std::process::Command;
+use std::{env, fs};
 
-use rustyred::{Database, NodeRecord, OpenOptions};
+use rustyred::{Database, EdgeRecord, GraphMutation, GraphMutationBatch, NodeRecord, OpenOptions};
+use rustyred_thg_core::hash::Hash;
 use serde_json::{json, Value};
+
+const BODY: &[u8] = b"bolt-drawing-v1-\x00\xff binary";
 
 fn main() {
     match env::var("RR_ROUNDTRIP_ROLE").ok().as_deref() {
         Some("reopen") => reopen(),
         Some("second-writer") => second_writer(),
-        _ => parent(),
+        _ => rr_graph_and_payload_roundtrip_across_processes(),
     }
 }
 
-fn parent() {
-    let dir = tempfile::tempdir().expect("tempdir");
+fn rr_graph_and_payload_roundtrip_across_processes() {
+    let dir = tempfile::tempdir().unwrap();
     let path = dir.path().join("catalog.rr");
-    let body = b"bolt-drawing-v1-\x00\xff binary";
+    let first_commit;
     {
         let mut db =
             Database::create_with(&path, &OpenOptions::new().device_name("parent")).unwrap();
@@ -30,7 +28,20 @@ fn parent() {
         db.upsert_node(NodeRecord::new(
             "part:bolt",
             ["Part"],
-            json!({"name": "bolt", "embedding": [1.0, 0.0, 0.0]}),
+            json!({"name": "bolt-v1", "embedding": [1.0, 0.0, 0.0]}),
+        ))
+        .unwrap();
+        first_commit = db
+            .engine()
+            .pin_graph_history()
+            .unwrap()
+            .head_roots()
+            .logical_commit
+            .to_prefixed();
+        db.upsert_node(NodeRecord::new(
+            "part:nut",
+            ["Part"],
+            json!({"name": "nut", "embedding": [0.0, 1.0, 0.0]}),
         ))
         .unwrap();
         db.upsert_node(NodeRecord::new(
@@ -39,89 +50,101 @@ fn parent() {
             json!({"name": "acme"}),
         ))
         .unwrap();
-        db.put_file_node("file:drawing", "drawings/bolt.bin", body)
+        db.mutate(GraphMutationBatch::new([GraphMutation::EdgeUpsert(
+            EdgeRecord::new(
+                "supplies:bolt",
+                "supplier:acme",
+                "SUPPLIES",
+                "part:bolt",
+                json!({"quantity": 42}),
+            ),
+        )]))
+        .unwrap();
+        db.put_file_node("file:drawing", "drawings/bolt.bin", BODY)
             .unwrap();
+        db.upsert_node(NodeRecord::new(
+            "part:bolt",
+            ["Part"],
+            json!({"name": "bolt-v2", "embedding": [1.0, 0.0, 0.0]}),
+        ))
+        .unwrap();
         assert!(db.verify().unwrap().ok);
     }
-
-    let held = Database::open_with(&path, &OpenOptions::new().device_name("holder")).unwrap();
+    let held = Database::open(&path).unwrap();
     let status = Command::new(env::current_exe().unwrap())
         .env("RR_ROUNDTRIP_ROLE", "second-writer")
         .env("RR_ROUNDTRIP_PATH", &path)
         .status()
         .unwrap();
-    assert_eq!(status.code(), Some(3), "a second process must be refused");
+    assert_eq!(
+        status.code(),
+        Some(3),
+        "another process must not acquire the writer"
+    );
     drop(held);
 
-    let copied = dir.path().join("catalog-copy.rr");
+    // Copy into a fresh directory: no lock, cache, journal or payload sidecar can help.
+    let copied_dir = tempfile::tempdir().unwrap();
+    let copied = copied_dir.path().join("copy.rr");
     fs::copy(&path, &copied).unwrap();
+    assert_eq!(fs::read_dir(copied_dir.path()).unwrap().count(), 1);
     let output = Command::new(env::current_exe().unwrap())
         .env("RR_ROUNDTRIP_ROLE", "reopen")
         .env("RR_ROUNDTRIP_PATH", &copied)
+        .env("RR_ROUNDTRIP_FIRST_COMMIT", &first_commit)
         .output()
         .unwrap();
     assert!(
         output.status.success(),
-        "child failed: {}",
+        "child: {}",
         String::from_utf8_lossy(&output.stderr)
     );
-    let report: Value = serde_json::from_slice(&output.stdout).expect("child json");
-    assert_eq!(report["file_len"], body.len());
-    assert_eq!(report["part_id"], "part:bolt");
-    assert_eq!(report["vector_dimension"], 3);
-    assert_eq!(report["nodes"], 6);
-    let listed = report["listed"].as_array().expect("listed nodes");
-    let ids = listed
-        .iter()
-        .map(|node| node["id"].as_str().unwrap_or(""))
-        .collect::<Vec<_>>();
-    assert!(ids.contains(&"part:bolt"), "{report}");
-    assert!(ids.contains(&"supplier:acme"), "{report}");
-    assert!(ids.contains(&"file:drawing"), "{report}");
+    let report: Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(report["file_bytes"], json!(BODY));
+    assert_eq!(report["current_name"], "bolt-v2");
+    assert_eq!(report["historical_name"], "bolt-v1");
+    assert_eq!(report["edge"]["from_id"], "supplier:acme");
+    assert_eq!(report["edge"]["to_id"], "part:bolt");
+    assert_eq!(report["edge"]["properties"]["quantity"], 42);
+    assert_eq!(report["nearest"][0][0], "part:bolt");
+    assert_eq!(report["nearest"][1][0], "part:nut");
+    assert_eq!(report["parts"], 2);
+    assert!(report["verified"].as_bool().unwrap());
     assert_eq!(
-        listed
-            .iter()
-            .filter(|node| node["labels"]
-                .as_array()
-                .is_some_and(|labels| labels.iter().any(|label| label == "ControlEvent")))
-            .count(),
-        3,
-        "each created record also keeps its control event"
+        fs::read_dir(copied_dir.path()).unwrap().count(),
+        1,
+        "read-only child writes no sidecars"
     );
 }
 
 fn reopen() {
     let path = env::var("RR_ROUNDTRIP_PATH").unwrap();
-    let db = Database::open_read_only(&path).unwrap_or_else(|err| {
-        eprintln!("{err}");
-        std::process::exit(1);
-    });
+    let before = fs::read(&path).unwrap();
+    let db = Database::open_read_only(&path).unwrap();
     let rows = db
-        .query("MATCH (n) RETURN n", &BTreeMap::new())
-        .unwrap_or_else(|err| {
-            eprintln!("{err}");
-            std::process::exit(1);
-        });
-    let file = db.read_file_node("file:drawing").unwrap_or_else(|err| {
-        eprintln!("{err}");
-        std::process::exit(1);
-    });
-    let inspection = db.inspect().unwrap_or_else(|err| {
-        eprintln!("{err}");
-        std::process::exit(1);
-    });
-    let part = rows
-        .rows
-        .iter()
-        .find(|row| row[0]["id"] == "part:bolt")
-        .expect("part row");
+        .query("MATCH (p:Part) RETURN p", &BTreeMap::new())
+        .unwrap();
+    let history = db.engine().pin_graph_history().unwrap();
+    let original = Hash::parse_prefixed(&env::var("RR_ROUNDTRIP_FIRST_COMMIT").unwrap()).unwrap();
+    let old = history
+        .revision(original)
+        .unwrap()
+        .get_node("part:bolt")
+        .unwrap()
+        .unwrap();
+    let part = db.engine().get_node("part:bolt").unwrap().unwrap();
     let report = json!({
-        "nodes": inspection.nodes,
-        "file_len": file.len(),
-        "part_id": part[0]["id"],
-        "vector_dimension": part[0]["properties"]["embedding"]["dimension"],
-        "listed": rows.rows.iter().map(|row| row[0].clone()).collect::<Vec<_>>(),
+        "parts": rows.rows.len(),
+        "file_bytes": db.read_file_node("file:drawing").unwrap(),
+        "current_name": part.properties["name"],
+        "historical_name": old.properties["name"],
+        "edge": db.engine().get_edge("supplies:bolt").unwrap().unwrap(),
+        "nearest": db.engine().vector_search(Some("Part"), "embedding", &[1.0, 0.0, 0.0], 2).unwrap(),
+        "verified": db.verify().unwrap().ok,
     });
+    drop(history);
+    drop(db);
+    assert_eq!(fs::read(path).unwrap(), before);
     println!("{report}");
 }
 

@@ -6366,6 +6366,13 @@ impl RedisGraphStore {
                 let version = current_version + 1;
                 let mut next_edge = edge.clone();
                 next_edge.version = version;
+                if let Err(error) = crate::graph::linked_to::stamp_first_version(
+                    &mut next_edge,
+                    existing.as_ref(),
+                    version,
+                ) {
+                    return Ok(Some(Err(error)));
+                }
                 let content_hash = match next_edge.checksum() {
                     Ok(hash) => hash,
                     Err(error) => return Ok(Some(Err(error))),
@@ -7470,7 +7477,9 @@ impl RedCoreGraphStore {
             .chunk_store_handle()
             .expect("the v4 layout fixture needs a durable journal");
         let catalog = crate::chunk_store::RootCatalog::from_bytes(
-            &journal.get(journal.read_root()?.expect("catalog"))?.unwrap(),
+            &journal
+                .get(journal.read_root()?.expect("catalog"))?
+                .unwrap(),
         )?;
         let bytes = journal
             .get(catalog.get(ROOT_NAME_REDCORE).expect("redcore root"))?
@@ -7497,4 +7506,165 @@ impl RedCoreGraphStore {
         )?;
         Ok(())
     }
+}
+
+impl RedCoreGraphStore {
+    /// Compact versioned head descriptor for bounded logical exchange. Complete
+    /// canonical chunks travel separately under the exact committed catalog.
+    pub fn compiled_graph_head_for_exchange(&self) -> GraphStoreResult<CompiledGraphPack> {
+        let pack = self.current_pack.as_ref().ok_or_else(|| {
+            GraphStoreError::new(
+                "exchange_source_uncommitted",
+                "source has no committed compiled graph head",
+            )
+        })?;
+        let history = self.pin_graph_history()?;
+        let descriptor = CompiledGraphPack {
+            chunk_format_version: pack.chunk_format_version,
+            protocol_version: pack.protocol_version.clone(),
+            compiler_version: pack.compiler_version.clone(),
+            manifest: pack.manifest.clone(),
+            commit: history.entry(history.head_roots().logical_commit)?.commit,
+            tree: pack.tree.clone(),
+            tree_transport_complete: false,
+            tree_chunks: vec![],
+            capabilities: pack.capabilities.clone(),
+            objects: vec![],
+            archive_objects: vec![],
+            historical_node_ids: BTreeSet::new(),
+            historical_node_history_complete: history.head_roots().historical_node_history_complete,
+        };
+        crate::versioned_graph::retarget_graph_pack_version(descriptor, pack.commit.graph_version)
+    }
+}
+
+/// Validate the head descriptor against actual retained state and canonical
+/// history, without hydrating the graph or making a destination publication.
+pub(crate) fn validate_compiled_graph_head_for_exchange(
+    store: Arc<dyn UnifiedChunkStore>,
+    pack: &CompiledGraphPack,
+) -> GraphStoreResult<PinnedGraphHistory> {
+    let root = store.read_root()?.ok_or_else(|| {
+        GraphStoreError::new("exchange_catalog_missing", "archive has no catalog")
+    })?;
+    let catalog_bytes = store
+        .get(root)?
+        .ok_or_else(|| GraphStoreError::new("exchange_catalog_missing", "catalog bytes absent"))?;
+    let catalog = crate::chunk_store::RootCatalog::from_bytes(&catalog_bytes)?;
+    let state_address = catalog
+        .get(crate::chunk_store::ROOT_NAME_REDCORE)
+        .ok_or_else(|| {
+            GraphStoreError::new(
+                "exchange_retained_state_missing",
+                "archive requires retained RedCore state",
+            )
+        })?;
+    let bytes = store.get(state_address)?.ok_or_else(|| {
+        GraphStoreError::new(
+            "exchange_retained_state_missing",
+            "retained state bytes absent",
+        )
+    })?;
+    if Hash::of(&bytes) != state_address {
+        return Err(GraphStoreError::new(
+            "exchange_state_hash",
+            "retained state address mismatch",
+        ));
+    }
+    let state = RedCoreJournalState::from_bytes(&bytes)?;
+    if catalog.get(crate::chunk_store::ROOT_NAME_GRAPH) != Some(pack.tree.root)
+        || state.logical_tree != pack.tree
+        || state.logical_commit != pack.commit.commit_hash
+        || state.pack_graph_version != pack.manifest.graph_version
+        || state.nodes_total != pack.manifest.nodes_total
+        || state.edges_total != pack.manifest.edges_total
+        || state.historical_node_history_complete != pack.historical_node_history_complete
+    {
+        return Err(GraphStoreError::new(
+            "exchange_head_binding_mismatch",
+            "compiled head differs from its accepted catalog and full-record state",
+        ));
+    }
+    let roots = GraphRevisionRoots {
+        transaction: state.txn_id,
+        graph_version: state.pack_graph_version,
+        logical_commit: state.logical_commit,
+        logical_tree: state.logical_tree,
+        payload_tree: state.payload_tree,
+        historical_node_tree: state.historical_node_tree,
+        historical_node_history_complete: state.historical_node_history_complete,
+        vector_designations: state.vector_designations,
+        ordered_designations: state.ordered_designations,
+    };
+    let history = PinnedGraphHistory::new(store, state.history_root, roots)?;
+    if history.entry(pack.commit.commit_hash)?.commit != pack.commit {
+        return Err(GraphStoreError::new(
+            "exchange_history_binding_mismatch",
+            "compiled commit differs from canonical retained history",
+        ));
+    }
+    Ok(history)
+}
+
+/// Compact canonical head read exclusively through the caller's bounded,
+/// immutable catalog view. No graph facade recovery or record hydration occurs.
+pub(crate) fn compiled_graph_head_from_store_for_exchange(
+    store: Arc<dyn UnifiedChunkStore>,
+) -> GraphStoreResult<CompiledGraphPack> {
+    let root = store.read_root()?.ok_or_else(|| {
+        GraphStoreError::new("exchange_catalog_missing", "source has no accepted catalog")
+    })?;
+    let catalog_bytes = store
+        .get(root)?
+        .ok_or_else(|| GraphStoreError::new("exchange_catalog_missing", "catalog bytes absent"))?;
+    if Hash::of(&catalog_bytes) != root {
+        return Err(GraphStoreError::new(
+            "exchange_catalog_hash",
+            "catalog bytes differ from accepted address",
+        ));
+    }
+    let catalog = crate::chunk_store::RootCatalog::from_bytes(&catalog_bytes)?;
+    let address = catalog
+        .get(crate::chunk_store::ROOT_NAME_REDCORE)
+        .ok_or_else(|| {
+            GraphStoreError::new(
+                "exchange_retained_state_missing",
+                "source requires retained RedCore state",
+            )
+        })?;
+    let bytes = store.get(address)?.ok_or_else(|| {
+        GraphStoreError::new(
+            "exchange_retained_state_missing",
+            "retained state bytes absent",
+        )
+    })?;
+    if Hash::of(&bytes) != address {
+        return Err(GraphStoreError::new(
+            "exchange_state_hash",
+            "retained state address mismatch",
+        ));
+    }
+    let state = RedCoreJournalState::from_bytes(&bytes)?;
+    let roots = GraphRevisionRoots {
+        transaction: state.txn_id,
+        graph_version: state.pack_graph_version,
+        logical_commit: state.logical_commit,
+        logical_tree: state.logical_tree.clone(),
+        payload_tree: state.payload_tree,
+        historical_node_tree: state.historical_node_tree,
+        historical_node_history_complete: state.historical_node_history_complete,
+        vector_designations: state.vector_designations,
+        ordered_designations: state.ordered_designations,
+    };
+    let history = PinnedGraphHistory::new(store, state.history_root, roots)?;
+    let mut pack = recovered_graph_pack_descriptor(
+        state.logical_tree,
+        state.pack_graph_version,
+        state.nodes_total,
+        state.edges_total,
+        state.logical_commit,
+    )?;
+    pack.commit = history.entry(state.logical_commit)?.commit;
+    pack.historical_node_history_complete = state.historical_node_history_complete;
+    retarget_graph_pack_version(pack, state.pack_graph_version)
 }

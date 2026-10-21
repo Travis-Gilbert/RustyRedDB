@@ -12,16 +12,50 @@ members = [
     "crates/rustyred-derivation",
     "crates/rustyred-contracts",
     "crates/rustyred-scope",
+    "crates/rustyred-query-saturate",
+    "crates/rustyred-graphblas",
     "examples/parts-catalog",
-]
-exclude = [
     "vendor/egg-0.10.0",
     "vendor/turbovec-1.0.0-wasm32",
+]
+default-members = [
+    "crates/rustyred",
+    "crates/rustyred-cli",
+    "crates/rustyred-engine",
+    "crates/rustyred-query",
+    "crates/rustyred-log",
+    "crates/rustyred-bayes",
+    "crates/rustyred-datalog",
+    "crates/rustyred-egraph",
+    "crates/rustyred-derivation",
+    "crates/rustyred-contracts",
+    "crates/rustyred-scope",
+    "crates/rustyred-query-saturate",
+    "examples/parts-catalog",
+    "vendor/egg-0.10.0",
+    "vendor/turbovec-1.0.0-wasm32",
+]
+exclude = [
     "tests/external-consumer",
 ]
 
 [workspace.package]
-version = "0.1.0-beta.1"
+version = "0.1.0-beta.2"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/Travis-Gilbert/RustyRedDB"
+
+# Preserve the source workspace's optimization mix for the integration
+# scaling oracles (9ee2a2798c / d6a7062c): local code at 0, dependencies at 2.
+# Run the complete engine integration targets with --profile dev.
+[profile.dev]
+opt-level = 0
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+opt-level = 2
+
+# The separate memory-query latency unit oracle was calibrated at local level 1.
+# test inherits dev's dependency optimization; neither oracle ceiling changes.
+[profile.test]
+opt-level = 1

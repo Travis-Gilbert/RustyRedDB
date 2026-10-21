@@ -10,7 +10,7 @@
       "action": "move",
       "package": "rustyred-engine",
       "rust_lib": "rustyred_thg_core",
-      "notes": "GraphBLAS feature and its path dependency were removed from the manifest. cfg(feature = \"graphblas\") code stays unbuilt. theorem-harness-core dev-dependency was removed."
+      "notes": "One canonical engine with all original public feature names, including optional GraphBLAS. Harness-only gate assertion relocated downstream; generic behavior assertions retained."
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-query",
@@ -25,7 +25,7 @@
       "action": "move",
       "package": "rustyred-log",
       "rust_lib": "theorem_oplog",
-      "notes": "Crate root remains src/physical_lib.rs. RedCore commits do not go through PhysicalLog. Both owners are present. They are not unified."
+      "notes": "Physical crate root remains src/physical_lib.rs. RedCore journal and FoldGraphStore/PhysicalLog are distinct preserved source owners; no graph snapshot replacement of the log. See storage-owners.md."
     },
     {
       "source": "rustyredcore_THG/crates/theorem-bayes",
@@ -64,12 +64,12 @@
       "notes": "The engine uses browser::OpaqueGrantTable. The small crate moved whole."
     },
     {
-      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/{article,article_links,desktop,link,link_api,sync}.rs",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/{article,article_links,desktop,link,link_api,sync,wiki}.rs",
       "destination": "crates/rustyred-contracts",
       "action": "move",
       "package": "rustyred-contracts",
       "rust_lib": "theorem_surface_contracts",
-      "notes": "UI, shell, and registry modules were not copied. PluginId and AgpuiSurfaceId are local newtypes with the same serde shape as the product protocol. WikiRefusal was copied as its own enum because link_api names it."
+      "notes": "Shared article/link/sync contracts and only database writer/browser-storage identities from desktop.rs plus the unchanged WikiRefusal enum required by link_api.rs are canonical. Product plugin/window/workspace policies, wiki requests/responses and application registries remain downstream; no look-alike protocol IDs. See storage-evidence/contracts-source-coverage-984.json and actual downstream type-identity checks."
     },
     {
       "source": "rustyredcore_THG/vendor/egg-0.10.0",
@@ -106,15 +106,17 @@
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-graphblas",
-      "destination": null,
-      "action": "excluded-with-reason",
-      "notes": "Optional SuiteSparse accelerator. Not in the default closure. The feature was removed so the public tree has no missing path dependency."
+      "destination": "crates/rustyred-graphblas",
+      "action": "move",
+      "notes": "Preserved optional extension and engine feature; experimental, requires SuiteSparse GraphBLAS/LAGraph and its pinned build prerequisites. Not a default dependency.",
+      "package": "rustyred-graphblas"
     },
     {
       "source": "rustyredcore_THG/crates/rustyred-thg-query-saturate",
-      "destination": null,
-      "action": "downstream-only",
-      "notes": "Used by server surfaces, not by rustyred-thg-query's library."
+      "destination": "crates/rustyred-query-saturate",
+      "action": "move",
+      "notes": "Preserved generic optional query optimization library, downstream source identity shared.",
+      "package": "rustyred-query-saturate"
     },
     {
       "source": "theorem-harness-core",
@@ -133,6 +135,18 @@
       "destination": null,
       "action": "downstream-only",
       "notes": "Stay in Theorem."
+    },
+    {
+      "source": "rustyredcore_THG/crates/theorem-oplog/src/lib.rs",
+      "destination": "Theorem theorem-oplog-graph-compat/src/lib.rs",
+      "action": "downstream-only",
+      "notes": "Older product TheoremOp graph projection; not reachable from physical_lib.rs. Removed from the OSS source/archive (not merely feature-disabled); preserved in downstream compatibility crate. Existing published history/tag is immutable."
+    },
+    {
+      "source": "rustyredcore_THG/crates/theorem-bayes/src/bin/theorem-prior-pack.rs",
+      "destination": "Theorem theorem-bayes/src/bin/theorem-prior-pack.rs",
+      "action": "downstream-only",
+      "notes": "Product environment/configuration CLI stays downstream and uses canonical SignedPriorPack numerical library. No public generic library capability removed."
     }
   ]
 }

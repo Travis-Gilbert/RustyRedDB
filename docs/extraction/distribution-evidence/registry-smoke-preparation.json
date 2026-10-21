@@ -1,0 +1,11 @@
+{
+  "live_gate": "G12",
+  "status": "NOT RUN; candidate not published",
+  "preparation_checks": {
+    "python_syntax": "PASS",
+    "unset_opt_in_refuses_before_output_or_network": "PASS"
+  },
+  "helper_sha256": "1b7e474b7983f16c713b6095dbfa36b09fc57355903700fa4ed7191ff7f602b5",
+  "live_command": "RUSTYRED_RUN_REGISTRY_SMOKE=1 python3 scripts/registry_smoke.py --version 0.1.0-beta.2 --output /absolute/new-registry-smoke-evidence",
+  "limits": "No registry installation runtime has run; actualpublicationavailability is required. No Git/archive substitution."
+}

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -19,6 +20,31 @@ FORBIDDEN = (
     "commonplace",
     "apps/theorem",
 )
+
+
+PRIVATE_SOURCE_NAMES = (
+    "theorem_harness", "theorem_blocks", "theorem_doc_store", "agpui", "theoremweb", "commonplace",
+)
+
+
+def source_problems(root: Path) -> list[str]:
+    """Reject private crate imports/resources, including unreferenced .rs files.
+
+    This bounded boundary rule supplements Cargo compilation; it does not try
+    to parse arbitrary Rust or infer whether a module is reachable.
+    """
+    names = "|".join(PRIVATE_SOURCE_NAMES)
+    imports = re.compile(r"^\s*(?:pub(?:\([^)]*\))?\s+)?(?:use|extern\s+crate)\s+(?:" + names + r")(?:_|::|\s|;)", re.M)
+    paths = re.compile(r'"[^"\n]*(?:theorem[-_]harness|theorem[-_]blocks|theorem[-_]doc[-_]store|apps/theoremweb|agpui)[^"\n]*"')
+    problems = []
+    for path in sorted(root.rglob("*.rs")):
+        relative = path.relative_to(root)
+        if any(part in {"target", ".git"} for part in relative.parts):
+            continue
+        code = "\n".join(line for line in path.read_text(errors="replace").splitlines() if not line.lstrip().startswith("//"))
+        if imports.search(code) or paths.search(code):
+            problems.append(f"private source import/resource in {relative}")
+    return problems
 
 
 def main() -> int:
@@ -33,7 +59,7 @@ def main() -> int:
             text=True,
         )
     )
-    problems = []
+    problems = source_problems(root)
     for package in metadata["packages"]:
         manifest_path = Path(package["manifest_path"])
         try:

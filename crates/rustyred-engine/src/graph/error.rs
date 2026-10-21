@@ -87,8 +87,16 @@ pub(crate) fn vector_pin_cleanup_error(
     publish_error: GraphStoreError,
     release_error: GraphStoreError,
 ) -> GraphStoreError {
+    // Failed cleanup must never hide an indeterminate durable publication.
+    let code = if publish_error.code == "chunk_store_journal_poisoned"
+        || release_error.code == "chunk_store_journal_poisoned"
+    {
+        "chunk_store_journal_poisoned"
+    } else {
+        "vector_payload_publication_and_unpin_failed"
+    };
     GraphStoreError::new(
-        "vector_payload_publication_and_unpin_failed",
+        code,
         format!(
             "{context} failed ({}: {}); releasing its vector payload pins also failed ({}: {})",
             publish_error.code, publish_error.message, release_error.code, release_error.message

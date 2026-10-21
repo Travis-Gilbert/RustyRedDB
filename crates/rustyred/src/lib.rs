@@ -19,6 +19,9 @@ pub use error::{Error, ErrorBody, ErrorKind};
 pub use options::OpenOptions;
 pub use query::QueryResult;
 
+/// Existing engine modules and primitives, without a second dependency identity.
+pub use rustyred_thg_core as engine;
+
 pub use rustyred_thg_core::{
     EdgeRecord, GraphMutation, GraphMutationBatch, GraphStats, GraphStoreError, GraphTransaction,
     NodeRecord, RedCoreDurability, RedCoreGraphStore, RedCoreOptions, VerifyReport,

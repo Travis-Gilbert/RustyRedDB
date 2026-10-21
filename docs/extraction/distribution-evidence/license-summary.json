@@ -1,0 +1,12 @@
+{
+  "tool": "cargo-about 0.9.2",
+  "command": "cargo about generate --locked --offline --workspace --all-features --fail about.hbs --output-file THIRD_PARTY_LICENSES.html",
+  "output": "third-party-licenses.html",
+  "sha256": "2e40cb2f9f94234d28f1e8ca937063b1ece91508524ac9688d2e691fe806b451",
+  "bytes": 512593,
+  "scope": "All-feature production/build dependency notice bundle; actual SPDX selection in about.toml. Includes exact crate-version source archive links. Does not establish ownership of extracted first-party code or replace source review.",
+  "canonicalization": "Universal text newline decoding to LF; remove trailing spaces/tabs on lines and retain one final newline. License words and leading indentation preserved.",
+  "dependency_graph_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "generated_checkout_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "source_state": "Generated from clean frozen984 with all-feature metadata and pinned tool; no ownership/legal approval inferred. FinalCI artifact bytes require separate binding."
+}

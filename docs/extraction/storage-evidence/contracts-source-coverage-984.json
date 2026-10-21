@@ -1,0 +1,132 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "pins": [
+    "d6a7062c14c11c6838362bda307e267b2297c684",
+    "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de"
+  ],
+  "audit_author": "/root",
+  "scope": "Separate8-file contracts audit; braced partial source-map entry is excluded by source_parity.py and main non-braced reverse audit. Five files are exact and desktop/wiki/lib are intentional documented boundary selections.",
+  "exact_files": [
+    "article.rs",
+    "article_links.rs",
+    "link.rs",
+    "link_api.rs",
+    "sync.rs"
+  ],
+  "intentional_boundary_files": {
+    "desktop.rs": "Retains neutral IDs and database/browser storage policy; product window/workspace request/response types stay downstream.",
+    "wiki.rs": "Retains exact WikiRefusal required by link API; product request/response shapes remain downstream.",
+    "lib.rs": "Public extraction root exports selected shared contracts and intentionally omits downstream product types."
+  },
+  "files": [
+    {
+      "candidate": "crates/rustyred-contracts/src/article.rs",
+      "sha256": "433ee8eca9c8f9bbb9a43445ac463ede87e384cb61a2a5230d3aa18a9b09f946",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/article.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": true
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": true
+      }
+    },
+    {
+      "candidate": "crates/rustyred-contracts/src/article_links.rs",
+      "sha256": "4f487e8043ae1f0e1499800e1e763229b57fe63ee605b1ce5da5c38c86e43fb9",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/article_links.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": true
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": true
+      }
+    },
+    {
+      "candidate": "crates/rustyred-contracts/src/desktop.rs",
+      "sha256": "3ae5d25169af85e722e87a5b830eb78f2fae100e7d018010c4601325ef75d4f3",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/desktop.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": false
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": false
+      }
+    },
+    {
+      "candidate": "crates/rustyred-contracts/src/lib.rs",
+      "sha256": "f7221ce58dd107ca3804e7934777c10aa9905b28252ff526778b16b547e85fd6",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/lib.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": false
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": false
+      }
+    },
+    {
+      "candidate": "crates/rustyred-contracts/src/link.rs",
+      "sha256": "39a7dc748d5ff720caaf6b959210f14a3818aeb71f236c94f3c1085b0dc317d5",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/link.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": true
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": true
+      }
+    },
+    {
+      "candidate": "crates/rustyred-contracts/src/link_api.rs",
+      "sha256": "cd6bfc6f21dc8acbd5d8849b2047425be86d08640cca1e0d256c18df8704ea6e",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/link_api.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": true
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": true
+      }
+    },
+    {
+      "candidate": "crates/rustyred-contracts/src/sync.rs",
+      "sha256": "a3f74fe7b62217acbc8e6c1c9ce337b37a99c53346a625e07c76b516f0056fc8",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/sync.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": true
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": true
+      }
+    },
+    {
+      "candidate": "crates/rustyred-contracts/src/wiki.rs",
+      "sha256": "2308ff77c759a5f923bed7caf388509d37a9269379beed0a28f5d1cb7ce39f58",
+      "source": "rustyredcore_THG/crates/theorem-surface-contracts/src/wiki.rs",
+      "plan_pin": {
+        "source_exists": true,
+        "matches": false
+      },
+      "extraction_source": {
+        "source_exists": true,
+        "matches": false
+      }
+    }
+  ],
+  "raw_receipt": {
+    "path": "/tmp/rustyred-contracts-source-coverage-984.json",
+    "sha256": "c8cfa7aa5d7de32cdfbac719ab3876a8e4ffd84e1bdc93fce48033095bd213d8"
+  },
+  "runtime_claim": false
+}

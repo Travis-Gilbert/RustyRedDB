@@ -1,6 +1,6 @@
 use std::process::ExitCode;
 
-use rustyred::Error;
+use rustyred::{Error, ErrorKind};
 
 pub fn fail(err: &Error, status: u8) -> ExitCode {
     eprintln!("{err}");
@@ -8,5 +8,10 @@ pub fn fail(err: &Error, status: u8) -> ExitCode {
         "{}",
         serde_json::to_string(&err.body()).expect("error body")
     );
-    ExitCode::from(status)
+    if err.kind == ErrorKind::CommitOutcomeUnknown {
+        eprintln!("commit outcome is unknown; close and reopen the database, then reconcile before retrying");
+        ExitCode::from(6)
+    } else {
+        ExitCode::from(status)
+    }
 }

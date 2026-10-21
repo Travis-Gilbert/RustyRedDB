@@ -1,0 +1,164 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "artifact_provenance_dirty": false,
+  "binary_source": "actual optimized copied review artifact",
+  "binary_sha256": "e6a502d70cea56643cf966548662e2e1eba0a441d1b0d55e5fa48989d95e2d30",
+  "result": "PASS",
+  "runtime_network_denial": "macOS sandbox deny network*",
+  "fresh_home": true,
+  "operations": [
+    {
+      "operation": "help",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "160192f5bdb043d842b7ef580d690c2095be5faba22ef6ee042e0506f14e51b1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "database_before_sha256": null,
+      "database_after_sha256": null
+    },
+    {
+      "operation": "version",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "9d94572908da907b4f952780f0bb48d07b871ad24ed3da99cd4c49af73505b12",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "database_before_sha256": null,
+      "database_after_sha256": null
+    },
+    {
+      "operation": "reject-create",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "create",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos-delivered-cli/rejected.rr",
+        "--unknown"
+      ],
+      "exit_code": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8ac85284493abe6c1a3f0e3207737fc76014123c4055f49d572435d3c11c37ad",
+      "database_before_sha256": null,
+      "database_after_sha256": null
+    },
+    {
+      "operation": "create",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "create",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos-delivered-cli/synthetic.rr"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "3de17b195536b811c1ff6562fdca66c26128b4fa7305be7529de7a8376884848",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "database_before_sha256": null,
+      "database_after_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2"
+    },
+    {
+      "operation": "inspect",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "inspect",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos-delivered-cli/synthetic.rr",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "6f8cfd21646aa613f78f5c333ce0fadd49a0d6836ea46c0da1fae62188e0eaa9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "database_before_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2",
+      "database_after_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2"
+    },
+    {
+      "operation": "verify",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "verify",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos-delivered-cli/synthetic.rr",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "04a0085874dc31c7319520c4c072dd9b16eb2059677126143bee3de4c4713c2a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "database_before_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2",
+      "database_after_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2"
+    },
+    {
+      "operation": "query",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "query",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos-delivered-cli/synthetic.rr",
+        "--cypher",
+        "MATCH (n) RETURN n"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "7ae133181a138f700084179fe0a68d8538ac838c65938d2af761b6122357b51b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "database_before_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2",
+      "database_after_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2"
+    },
+    {
+      "operation": "reject-inspect",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "inspect",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos-delivered-cli/synthetic.rr",
+        "--json",
+        "--unknown"
+      ],
+      "exit_code": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "084d218e81947e6170964b08da53002d5515d3c8a78f42dc20b05ef346247abf",
+      "database_before_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2",
+      "database_after_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2"
+    },
+    {
+      "operation": "reject-query",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-p",
+        "(version 1)(allow default)(deny network*)",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos/rustyred",
+        "query",
+        "/Volumes/SSD Samsung/rustyred-release-qualification-9844533/macos-delivered-cli/synthetic.rr",
+        "--cypher",
+        "MATCH (n) RETURN n",
+        "--unknown"
+      ],
+      "exit_code": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "89c9480d3668117871ec28e61c2e51676884851e08956598b912ae0ca2421699",
+      "database_before_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2",
+      "database_after_sha256": "e3a1069a983ec3d528eddf9fbaf5fa8f4e40940a337fa1be428ce5ff917903d2"
+    }
+  ],
+  "limits": "Executed only delivered artifact bytes after exactsource provenance/checksum verification; no workingtree build attribution. Synthetic database contains no application bootstrap rows. Executable permission restored after artifact download; binary bytes verified against original SHA256SUMS."
+}

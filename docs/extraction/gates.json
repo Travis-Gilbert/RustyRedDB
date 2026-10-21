@@ -1,0 +1,230 @@
+{
+  "plan": "release-plan.md",
+  "candidate_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "items": [
+    {
+      "id": "G01",
+      "title": "Dependency independence",
+      "status": "verified",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "integration",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "python3 scripts/dependency_boundary.py && python3 scripts/package_rehearsal.py --output /absolute/new-evidence",
+      "validation": [
+        "python3 scripts/dependency_boundary.py && python3 scripts/package_rehearsal.py --output /absolute/new-evidence"
+      ],
+      "note": "Exact984 public Git and normalized-package consumers passed; all14 portable normalized archive target checks and actual packaged CLI installation passed in both native CI jobs. Native GraphBLAS archive separately passed15 real library tests on Mac with installed prerequisites. All15 ordinary-lock package and publication-dry-run archives prepared without uploads.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G02",
+      "title": "Generic startup",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --test embedded_api new_database_has_no_application_bootstrap",
+      "validation": [
+        "cargo test --locked -p rustyred --test embedded_api new_database_has_no_application_bootstrap"
+      ],
+      "note": "Exact984 native startup and facade gates passed on both targets. Creation checks storage metadata without application bootstrap; unrelated Git and packaged runtime consumers passed under OS network denial.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G03",
+      "title": "Query/mutation baseline parity",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-query && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --lib --features test-fault-injection && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test '*' --features test-fault-injection",
+      "validation": [
+        "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-query && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --lib --features test-fault-injection && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test '*' --features test-fault-injection"
+      ],
+      "note": "Actual d6 plan-pin source golden passed and repeated capture is byte-identical. Exact984 query tests/golden, engine unit suites and all27 integration targets passed on both native targets. Historical baseline failures remain explicit. Source and reverse-coverage receipts are provenance, not replacements for runtime tests.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G04",
+      "title": "Multimodal preservation",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --manifest-path /absolute/outside-consumer/Cargo.toml",
+      "validation": [
+        "cargo test --manifest-path /absolute/outside-consumer/Cargo.toml"
+      ],
+      "note": "Exact984 public Git and packaged consumers passed their two runtime tests covering graph, supplied vectors, payloads, time/history and explicit BM25/H3 primitives. The actual source golden captures these operations; no automatic indexing claim.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G05",
+      "title": "Durable single-file copy/reopen",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --test rr_roundtrip",
+      "validation": [
+        "cargo test --locked -p rustyred --test rr_roundtrip"
+      ],
+      "note": "Exact984 public facade cross-process close/copy/reopen tests passed on both supported native targets; only the closed .RR file is copied, including authoritative graph, vectors, payloads and retained history.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G06",
+      "title": "Writer/read-only boundaries",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "cargo test --locked -p rustyred --test embedded_api --test rr_roundtrip",
+      "validation": [
+        "cargo test --locked -p rustyred --test embedded_api --test rr_roundtrip"
+      ],
+      "note": "Exact984 native boundary gates passed on both supported targets, including second writers, writable clones, path aliases and byte-unchanged read-only access through reachable handles.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G07",
+      "title": "Failure and recovery",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --features test-fault-injection --test rr_failures && RUST_TEST_THREADS=1 THEOREM_RUN_CRASH_MATRIX=1 cargo +1.96.1 test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome",
+      "validation": [
+        "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --features test-fault-injection --test rr_failures && RUST_TEST_THREADS=1 THEOREM_RUN_CRASH_MATRIX=1 cargo +1.96.1 test --locked -p rustyred-log --test crash_reopen crash_matrix -- --ignored && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --features test-fault-injection --test fold_commit_outcome"
+      ],
+      "note": "Exact984 facade native injected failure/public reopen, physical-log subprocess crash/mixed-version matrices and committed fold-maintenance failure gates passed on both targets. Explicit outcomes distinguish rejection, unknown publication and already-committed maintenance failure.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G08",
+      "title": "Maintenance compatibility",
+      "status": "verified",
+      "oracle_class": "db_backed",
+      "implementation_mode": "db_backed",
+      "evidence_class": "db_backed",
+      "substitution_allowed": false,
+      "live_oracle_required": false,
+      "live_test_command": "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --test embedded_api && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test rr_migration",
+      "validation": [
+        "RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred --test embedded_api && RUST_TEST_THREADS=1 cargo +1.96.1 test --locked -p rustyred-engine --profile dev --test rr_migration"
+      ],
+      "note": "Exact984 migration, payload/history retention and unfamiliar named-root compaction refusal passed on both native targets. Source and refused target state are preserved; THEORRDB/format1/header4096 unchanged.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G09",
+      "title": "External Git and package consumers",
+      "status": "verified",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "integration",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "cargo test --locked --manifest-path /absolute/outside-git-consumer/Cargo.toml && python3 scripts/package_rehearsal.py --output /absolute/new-package-evidence",
+      "validation": [
+        "cargo test --locked --manifest-path /absolute/outside-git-consumer/Cargo.toml && python3 scripts/package_rehearsal.py --output /absolute/new-package-evidence"
+      ],
+      "note": "Exact984 public Git consumer passed2 actual runtime tests under OS network denial. Actual normalized package consumers, example reopen and installed CLI passed in both native CI lanes using isolated credential-free HOME/CARGO_HOME and package-only dependency resolution. This does not satisfy registry G12.",
+      "evidence": [
+        "storage-evidence.json",
+        "distribution-review.md"
+      ]
+    },
+    {
+      "id": "G10",
+      "title": "Theorem canonical source cutover",
+      "status": "pending",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "python3 scripts/check-rustyred-source.py",
+      "validation": [
+        "python3 scripts/check-rustyred-source.py"
+      ],
+      "note": "Separate integration branch pins final984 in16 direct manifest edges and27 affected lock roots. Actual23-oracle native and standalone consumer batches are compiling; generic bodies remain until runtime gates pass.",
+      "evidence": []
+    },
+    {
+      "id": "G11",
+      "title": "Publication safety",
+      "status": "verified",
+      "oracle_class": "integration",
+      "implementation_mode": "integration",
+      "evidence_class": "integration",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "scripts/release-check --output /absolute/new-review-artifacts",
+      "validation": [
+        "scripts/release-check --output /absolute/new-review-artifacts"
+      ],
+      "note": "Exact984 clean source/optimized CLI/notice/checksum and15 ordinary-lock crate bundles passed both native release-check jobs. All19checksums,602 exact Git source files,15registry-only archives and14portable standalone target checks were verified per target. Delivered Mac optimized CLI executed under OS network denial; Linux optimized binary was inspected, while its packaged CLI/consumer runtime ran in native CI. Actual source/history seven heuristic matches are verified source digests; all15 actual crate contents scan0, unresolved0. This is reviewed release preparation, not publication authorization. Later documentation attestation receives a separate scan.",
+      "evidence": [
+        "distribution-review.md",
+        "storage-evidence.json"
+      ]
+    },
+    {
+      "id": "G12",
+      "title": "Public registry installation",
+      "status": "awaiting_publication_authorization",
+      "oracle_class": "production",
+      "implementation_mode": "production",
+      "evidence_class": "not_run",
+      "substitution_allowed": false,
+      "live_oracle_required": true,
+      "live_test_command": "RUSTYRED_RUN_REGISTRY_SMOKE=1 python3 scripts/registry_smoke.py --version 0.1.0-beta.2 --output /absolute/new-registry-evidence",
+      "validation": [
+        "RUSTYRED_RUN_REGISTRY_SMOKE=1 python3 scripts/registry_smoke.py --version 0.1.0-beta.2 --output /absolute/new-registry-evidence"
+      ],
+      "note": "Requires separately authorized publication. Prepared env-gated live smoke uses actual public-registry packages, independent consumer/example and installed CLI; no Git/archive substitution.",
+      "evidence": []
+    }
+  ],
+  "native_ci_run": "https://github.com/Travis-Gilbert/RustyRedDB/actions/runs/39509130713",
+  "qualification_scope": "Exact immutable984 OSS native/runtime/package/artifact qualification passed on Linux x86_64 and macOS aarch64. Separate final-pin Theorem native acceptance remains required. G12 public-registry installation is unrun and requires separately authorized publication."
+}

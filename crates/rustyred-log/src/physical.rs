@@ -86,6 +86,7 @@ pub struct PhysicalLog {
     records: Vec<LogRecord>,
     digest_positions: BTreeMap<OpDigest, usize>,
     options: PhysicalLogOptions,
+    poisoned_append: Option<(LogPosition, OpDigest, String)>,
 }
 
 impl PhysicalLog {
@@ -158,7 +159,21 @@ impl PhysicalLog {
             records,
             digest_positions,
             options,
+            poisoned_append: None,
         })
+    }
+
+    /// A failed append whose rollback was not durably confirmed blocks all
+    /// later proposals until an independent reopen reconciles the ledger.
+    pub(crate) fn ensure_writable(&self) -> Result<(), PhysicalLogError> {
+        match &self.poisoned_append {
+            Some((position, op_digest, cause)) => Err(PhysicalLogError::CommitOutcomeUnknown {
+                position: *position,
+                op_digest: op_digest.clone(),
+                cause: cause.clone(),
+            }),
+            None => Ok(()),
+        }
     }
 
     pub fn log_id(&self) -> LogId {
@@ -222,6 +237,7 @@ impl PhysicalLog {
         op_digest: OpDigest,
         provenance: EntryProvenance,
     ) -> Result<AppendReceipt, PhysicalLogError> {
+        self.ensure_writable()?;
         intent.validate()?;
         validate_v3_provenance(&provenance)?;
         if let Some(existing) = self.record_for_digest(&op_digest) {
@@ -259,15 +275,36 @@ impl PhysicalLog {
         }
         let checksum = blake3::hash(&payload);
 
-        self.maybe_crash(CrashInjection::BeforeWrite);
-        self.file.append(&(payload.len() as u32).to_le_bytes())?;
-        self.maybe_crash(CrashInjection::AfterLength);
-        self.file.append(&payload)?;
-        self.maybe_crash(CrashInjection::AfterPayload);
-        self.file.append(checksum.as_bytes())?;
-        self.maybe_crash(CrashInjection::AfterChecksumBeforeSync);
-        self.file.sync()?;
-        self.maybe_crash(CrashInjection::AfterSync);
+        let checkpoint = self.file.len()?;
+        let append = (|| {
+            self.maybe_crash(CrashInjection::BeforeWrite);
+            self.file.append(&(payload.len() as u32).to_le_bytes())?;
+            self.maybe_crash(CrashInjection::AfterLength);
+            self.file.append(&payload)?;
+            self.maybe_crash(CrashInjection::AfterPayload);
+            self.file.append(checksum.as_bytes())?;
+            self.maybe_crash(CrashInjection::AfterChecksumBeforeSync);
+            self.file.sync()?;
+            self.maybe_crash(CrashInjection::AfterSync);
+            Ok::<(), PhysicalLogError>(())
+        })();
+        if let Err(original) = append {
+            if let Err(rollback) = self
+                .file
+                .truncate(checkpoint)
+                .and_then(|()| self.file.sync())
+            {
+                let cause =
+                    format!("append failed ({original}); durable rollback failed ({rollback})");
+                self.poisoned_append = Some((position, op_digest.clone(), cause.clone()));
+                return Err(PhysicalLogError::CommitOutcomeUnknown {
+                    position,
+                    op_digest,
+                    cause,
+                });
+            }
+            return Err(original);
+        }
 
         let receipt = receipt_for_record(&record, false);
         self.digest_positions.insert(op_digest, self.records.len());
@@ -296,6 +333,7 @@ impl PhysicalLog {
     }
 
     pub fn verify(&self) -> Result<VerifyReport, PhysicalLogError> {
+        self.ensure_writable()?;
         let mut previous = None;
         for (index, record) in self.records.iter().enumerate() {
             validate_record(
@@ -338,6 +376,13 @@ impl PhysicalLog {
 
 #[derive(Debug)]
 pub enum PhysicalLogError {
+    /// The append or its rollback could not be durably confirmed. Reopen and
+    /// reconcile this exact digest/position before considering any retry.
+    CommitOutcomeUnknown {
+        position: LogPosition,
+        op_digest: OpDigest,
+        cause: String,
+    },
     Io(std::io::Error),
     Json(serde_json::Error),
     Format(FormatError),
@@ -368,6 +413,10 @@ pub enum PhysicalLogError {
 impl fmt::Display for PhysicalLogError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::CommitOutcomeUnknown { position, op_digest, cause } => write!(
+                formatter,
+                "physical log append outcome unknown at position {position} for digest {op_digest}: {cause}; reopen and reconcile before retrying",
+            ),
             Self::Io(error) => write!(formatter, "physical log I/O failed: {error}"),
             Self::Json(error) => write!(formatter, "physical log JSON failed: {error}"),
             Self::Format(error) => write!(formatter, "physical log intent refused: {error}"),
@@ -736,5 +785,254 @@ fn receipt_for_record(record: &LogRecord, replayed: bool) -> AppendReceipt {
         record_id: record.record_id,
         record_hash: record.record_hash.clone(),
         replayed,
+    }
+}
+
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod append_failure_tests {
+    use super::*;
+    use crate::{AccessPath, IntentKind, Proposal, ProposalCommitter, ReadSet};
+    use std::sync::{Arc, Mutex};
+
+    #[derive(Debug, Default)]
+    struct FaultPlan {
+        append_call: Option<usize>,
+        append_calls: usize,
+        sync_failure: Option<bool>,
+        refuse_rollback: bool,
+        refuse_rollback_sync: bool,
+        rollback_started: bool,
+    }
+
+    /// Every successful operation reaches the real locked native file. Only
+    /// the selected syscall result or partial append is interrupted.
+    #[derive(Debug)]
+    struct FaultInjectingLogFile {
+        native: NativeLogFile,
+        plan: Arc<Mutex<FaultPlan>>,
+    }
+
+    fn injected() -> PhysicalLogError {
+        std::io::Error::other("injected physical log I/O failure").into()
+    }
+
+    impl LogFile for FaultInjectingLogFile {
+        fn len(&self) -> Result<u64, PhysicalLogError> {
+            self.native.len()
+        }
+        fn read_exact_at(
+            &mut self,
+            offset: u64,
+            buffer: &mut [u8],
+        ) -> Result<(), PhysicalLogError> {
+            self.native.read_exact_at(offset, buffer)
+        }
+        fn append(&mut self, bytes: &[u8]) -> Result<(), PhysicalLogError> {
+            let fail = {
+                let mut plan = self.plan.lock().unwrap();
+                let call = plan.append_calls;
+                plan.append_calls += 1;
+                if plan.append_call == Some(call) {
+                    plan.append_call = None;
+                    true
+                } else {
+                    false
+                }
+            };
+            if fail {
+                self.native.append(&bytes[..bytes.len() / 2])?;
+                return Err(injected());
+            }
+            self.native.append(bytes)
+        }
+        fn truncate(&mut self, length: u64) -> Result<(), PhysicalLogError> {
+            let mut plan = self.plan.lock().unwrap();
+            plan.rollback_started = true;
+            if plan.refuse_rollback {
+                return Err(injected());
+            }
+            self.native.truncate(length)
+        }
+        fn sync(&mut self) -> Result<(), PhysicalLogError> {
+            let mut plan = self.plan.lock().unwrap();
+            if plan.rollback_started && plan.refuse_rollback_sync {
+                return Err(injected());
+            }
+            if let Some(after_sync) = plan.sync_failure.take() {
+                if after_sync {
+                    self.native.sync()?;
+                }
+                return Err(injected());
+            }
+            self.native.sync()
+        }
+        fn sync_directory(&mut self) -> Result<(), PhysicalLogError> {
+            self.native.sync_directory()
+        }
+    }
+
+    fn append(log: &mut PhysicalLog, name: &str) -> Result<AppendReceipt, PhysicalLogError> {
+        log.append(
+            LogIntent::new(
+                IntentKind::new("theorem", "failure_probe", 1).unwrap(),
+                serde_json::json!({"name": name}),
+            )
+            .unwrap(),
+            WriteSet::new([AccessPath::Entity {
+                entity: name.into(),
+            }])
+            .unwrap(),
+            OpDigest::from_bytes(name),
+        )
+    }
+
+    fn real_log(dir: &Path, deployment: &DeploymentId) -> (PhysicalLog, Arc<Mutex<FaultPlan>>) {
+        let plan = Arc::new(Mutex::new(FaultPlan::default()));
+        let file = FaultInjectingLogFile {
+            native: NativeLogFile::create_or_open(dir).unwrap(),
+            plan: Arc::clone(&plan),
+        };
+        let mut log = PhysicalLog::open_with_storage(
+            dir.to_path_buf(),
+            deployment.clone(),
+            PhysicalLogOptions::default(),
+            Box::new(file),
+        )
+        .unwrap();
+        append(&mut log, "durable").unwrap();
+        *plan.lock().unwrap() = FaultPlan::default();
+        (log, plan)
+    }
+
+    #[test]
+    fn partial_length_payload_checksum_and_failed_sync_roll_back_durably() {
+        for stage in 0..5 {
+            let dir = tempfile::tempdir().unwrap();
+            let deployment = DeploymentId::new("test:physical-rollback").unwrap();
+            let (mut log, plan) = real_log(dir.path(), &deployment);
+            let before = std::fs::read(dir.path().join(LOG_FILENAME)).unwrap();
+            {
+                let mut plan = plan.lock().unwrap();
+                if stage < 3 {
+                    plan.append_call = Some(stage);
+                } else {
+                    plan.sync_failure = Some(stage == 4);
+                }
+            }
+            assert!(matches!(
+                append(&mut log, "refused"),
+                Err(PhysicalLogError::Io(_))
+            ));
+            assert_eq!(
+                std::fs::read(dir.path().join(LOG_FILENAME)).unwrap(),
+                before
+            );
+            assert_eq!(log.latest_position(), LogPosition(1));
+            assert_eq!(
+                append(&mut log, "subsequent").unwrap().position,
+                LogPosition(2)
+            );
+            drop(log);
+            let reopened = PhysicalLog::open(dir.path(), deployment).unwrap();
+            assert_eq!(reopened.latest_position(), LogPosition(2));
+            assert!(reopened
+                .record_for_digest(&OpDigest::from_bytes("refused"))
+                .is_none());
+            assert!(reopened
+                .record_for_digest(&OpDigest::from_bytes("subsequent"))
+                .is_some());
+            reopened.verify().unwrap();
+        }
+    }
+
+    #[test]
+    fn failed_rollback_poison_retains_exact_candidate_and_refuses_later_proposals() {
+        for stage in 0..5 {
+            let dir = tempfile::tempdir().unwrap();
+            let deployment = DeploymentId::new("test:physical-indeterminate").unwrap();
+            let (mut log, plan) = real_log(dir.path(), &deployment);
+            {
+                let mut plan = plan.lock().unwrap();
+                if stage < 3 {
+                    plan.append_call = Some(stage);
+                } else {
+                    plan.sync_failure = Some(true);
+                }
+                if stage == 4 {
+                    plan.refuse_rollback_sync = true;
+                } else {
+                    plan.refuse_rollback = true;
+                }
+            }
+            let error = append(&mut log, "uncertain").unwrap_err();
+            assert!(
+                matches!(error, PhysicalLogError::CommitOutcomeUnknown { position: LogPosition(2), ref op_digest, .. } if *op_digest == OpDigest::from_bytes("uncertain"))
+            );
+            let bytes = std::fs::read(dir.path().join(LOG_FILENAME)).unwrap();
+            assert!(matches!(
+                log.verify(),
+                Err(PhysicalLogError::CommitOutcomeUnknown { .. })
+            ));
+            assert!(matches!(
+                append(&mut log, "later"),
+                Err(PhysicalLogError::CommitOutcomeUnknown { .. })
+            ));
+            // Even replaying a preexisting digest through ProposalCommitter is
+            // refused while the physical handle has an indeterminate append.
+            let mut committer = ProposalCommitter::new(log);
+            let proposal = Proposal::new(
+                LogPosition(1),
+                ReadSet::new([]).unwrap(),
+                WriteSet::new([]).unwrap(),
+                OpDigest::from_bytes("durable"),
+                LogIntent::new(
+                    IntentKind::new("theorem", "failure_probe", 1).unwrap(),
+                    serde_json::json!({"name": "durable"}),
+                )
+                .unwrap(),
+            );
+            assert!(matches!(
+                committer.commit(proposal),
+                Err(crate::CommitError::Physical(
+                    PhysicalLogError::CommitOutcomeUnknown { .. }
+                ))
+            ));
+            drop(committer);
+            assert_eq!(std::fs::read(dir.path().join(LOG_FILENAME)).unwrap(), bytes);
+            let mut reopened = PhysicalLog::open(dir.path(), deployment).unwrap();
+            assert!(reopened
+                .record_for_digest(&OpDigest::from_bytes("durable"))
+                .is_some());
+            assert!(reopened
+                .record_for_digest(&OpDigest::from_bytes("later"))
+                .is_none());
+            if stage == 3 {
+                assert!(
+                    reopened
+                        .record_for_digest(&OpDigest::from_bytes("uncertain"))
+                        .is_some(),
+                    "actual sync completed before acknowledgement and rollback failed"
+                );
+            }
+            if stage < 3 || stage == 4 {
+                assert!(reopened
+                    .record_for_digest(&OpDigest::from_bytes("uncertain"))
+                    .is_none());
+            }
+            reopened.verify().unwrap();
+            let was_committed = reopened
+                .record_for_digest(&OpDigest::from_bytes("uncertain"))
+                .is_some();
+            let reconciled = append(&mut reopened, "uncertain").unwrap();
+            assert_eq!(reconciled.position, LogPosition(2));
+            assert_eq!(reconciled.replayed, was_committed);
+            let bytes = std::fs::read(dir.path().join(LOG_FILENAME)).unwrap();
+            let replayed = append(&mut reopened, "uncertain").unwrap();
+            assert!(replayed.replayed);
+            assert_eq!(replayed.position, reconciled.position);
+            assert_eq!(reopened.len(), 2);
+            assert_eq!(std::fs::read(dir.path().join(LOG_FILENAME)).unwrap(), bytes);
+            reopened.verify().unwrap();
+        }
     }
 }

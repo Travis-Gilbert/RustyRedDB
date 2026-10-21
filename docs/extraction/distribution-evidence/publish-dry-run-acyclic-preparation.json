@@ -1,0 +1,20 @@
+{
+  "source_head": "0bc679df1653ed85d1afb33093c830e27e634f35",
+  "dirty_snapshot": true,
+  "snapshot_sha256": "466f5f545e6c1fb0e9c45400d14429fac243d72ef875d91f997d7009ab5f4499",
+  "command": [
+    "cargo",
+    "+1.96.1",
+    "publish",
+    "--workspace",
+    "--exclude",
+    "parts-catalog",
+    "--dry-run",
+    "--no-verify",
+    "--locked"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 16.997717750000447,
+  "uploads": "none; mandatory dry-run",
+  "limits": "Package/publish preparation only, not compile verification or upload rights or actualregistryinstallation. Isolated uncommitted development snapshot; clean finalcandidate rerun required."
+}

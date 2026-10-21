@@ -1,0 +1,76 @@
+    Updating crates.io index
+   Packaging rustyred-contracts v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-contracts)
+    Updating crates.io index
+    Packaged 14 files, 55.0KiB (15.3KiB compressed)
+   Packaging rustyred-bayes v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-bayes)
+    Updating crates.io index
+    Packaged 8 files, 65.3KiB (16.3KiB compressed)
+   Packaging rustyred-egraph v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-egraph)
+    Updating crates.io index
+    Packaged 20 files, 144.5KiB (36.0KiB compressed)
+   Packaging rustyred-datalog v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-datalog)
+    Updating crates.io index
+    Packaged 16 files, 562.7KiB (46.6KiB compressed)
+   Packaging rustyred-derivation v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-derivation)
+    Updating crates.io index
+    Packaged 17 files, 269.3KiB (64.5KiB compressed)
+   Packaging rustyred-egg v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/vendor/egg-0.10.0)
+    Updating crates.io index
+    Packaged 33 files, 413.5KiB (113.8KiB compressed)
+   Packaging rustyred-graphblas v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-graphblas)
+    Updating crates.io index
+    Packaged 18 files, 68.4KiB (19.7KiB compressed)
+   Packaging rustyred-log v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-log)
+    Updating crates.io index
+    Packaged 22 files, 182.6KiB (42.6KiB compressed)
+   Packaging rustyred-scope v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-scope)
+    Updating crates.io index
+    Packaged 8 files, 21.6KiB (7.1KiB compressed)
+   Packaging rustyred-turbovec v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/vendor/turbovec-1.0.0-wasm32)
+    Updating crates.io index
+    Packaged 76 files, 1.5MiB (419.1KiB compressed)
+   Packaging rustyred-engine v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-engine)
+    Updating crates.io index
+    Packaged 246 files, 5.6MiB (1.1MiB compressed)
+   Packaging rustyred-query v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-query)
+    Updating crates.io index
+    Packaged 21 files, 296.6KiB (65.1KiB compressed)
+   Packaging rustyred v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred)
+    Updating crates.io index
+    Packaged 14 files, 151.7KiB (38.6KiB compressed)
+   Packaging rustyred-cli v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-cli)
+    Updating crates.io index
+    Packaged 10 files, 112.8KiB (30.2KiB compressed)
+   Packaging rustyred-query-saturate v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-query-saturate)
+    Updating crates.io index
+    Packaged 20 files, 304.1KiB (65.6KiB compressed)
+   Uploading rustyred-bayes v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-bayes)
+warning: aborting upload due to dry run
+   Uploading rustyred-contracts v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-contracts)
+warning: aborting upload due to dry run
+   Uploading rustyred-egg v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/vendor/egg-0.10.0)
+warning: aborting upload due to dry run
+   Uploading rustyred-egraph v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-egraph)
+warning: aborting upload due to dry run
+   Uploading rustyred-graphblas v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-graphblas)
+warning: aborting upload due to dry run
+   Uploading rustyred-log v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-log)
+warning: aborting upload due to dry run
+   Uploading rustyred-scope v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-scope)
+warning: aborting upload due to dry run
+   Uploading rustyred-turbovec v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/vendor/turbovec-1.0.0-wasm32)
+warning: aborting upload due to dry run
+   Uploading rustyred-datalog v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-datalog)
+warning: aborting upload due to dry run
+   Uploading rustyred-derivation v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-derivation)
+warning: aborting upload due to dry run
+   Uploading rustyred-engine v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-engine)
+warning: aborting upload due to dry run
+   Uploading rustyred-query v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-query)
+warning: aborting upload due to dry run
+   Uploading rustyred-query-saturate v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-query-saturate)
+warning: aborting upload due to dry run
+   Uploading rustyred v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred)
+warning: aborting upload due to dry run
+   Uploading rustyred-cli v0.1.0-beta.2 (/private/tmp/rustyred-publish-dry-run-acyclic-prep/source/crates/rustyred-cli)
+warning: aborting upload due to dry run

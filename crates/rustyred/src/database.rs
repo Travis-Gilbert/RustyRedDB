@@ -324,6 +324,17 @@ impl Database {
         read_file_payload(store.as_chunk_store(), &reference).map_err(Error::from_storage)
     }
 
+    /// Diagnostics for crash-safety tests; absent from normal library builds.
+    #[cfg(feature = "test-fault-injection")]
+    #[doc(hidden)]
+    pub fn journal_for_test(&self) -> &rustyred_thg_core::JournalChunkStore {
+        self.file
+            .as_ref()
+            .expect("fault injection requires a native .RR database")
+            .store()
+            .as_ref()
+    }
+
     fn require_writable(&self) -> Result<(), Error> {
         if self.writable {
             Ok(())

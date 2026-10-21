@@ -1,0 +1,88 @@
+{
+  "source_revision": "984453329f99ae41a5d40e0297218b242ff5075a",
+  "captured_utc": "2026-10-20T23:25:54.161199+00:00",
+  "audit_author": "/root",
+  "review_and_curation": "/root/storage_oracles",
+  "scope": "Reverse mapped-source/resource audit is separate from source_parity.py candidate-driven433 comparisons. The braced contracts selection is excluded by that script and is covered explicitly below. These are provenance/source-boundary checks, not runtime acceptance.",
+  "pins": [
+    "d6a7062c14c11c6838362bda307e267b2297c684",
+    "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de"
+  ],
+  "parent_reverse_audit_report": "Parent compared every mapped source .rs/.pest/.json/.term/.h/.sh at both exact committed trees against candidate presence; only below downstream-only owner paths were absent. No missing generic source/resource path was reported.",
+  "missing_mapped_paths": [
+    {
+      "revision": "d6a7062c14c11c6838362bda307e267b2297c684",
+      "source": "rustyredcore_THG/crates/theorem-oplog/src/lib.rs",
+      "mapped_candidate": "crates/rustyred-log/src/lib.rs"
+    },
+    {
+      "revision": "d6a7062c14c11c6838362bda307e267b2297c684",
+      "source": "rustyredcore_THG/crates/theorem-bayes/src/bin/theorem-prior-pack.rs",
+      "mapped_candidate": "crates/rustyred-bayes/src/bin/theorem-prior-pack.rs"
+    },
+    {
+      "revision": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de",
+      "source": "rustyredcore_THG/crates/theorem-oplog/src/lib.rs",
+      "mapped_candidate": "crates/rustyred-log/src/lib.rs"
+    },
+    {
+      "revision": "1acf012c3d2ffbc5f3e9a559fe9e282aa9ed46de",
+      "source": "rustyredcore_THG/crates/theorem-bayes/src/bin/theorem-prior-pack.rs",
+      "mapped_candidate": "crates/rustyred-bayes/src/bin/theorem-prior-pack.rs"
+    }
+  ],
+  "explicit_source_map_dispositions": [
+    {
+      "source": "rustyredcore_THG/crates/theorem-oplog/src/lib.rs",
+      "destination": "Theorem theorem-oplog-graph-compat/src/lib.rs",
+      "action": "downstream-only",
+      "notes": "Older product TheoremOp graph projection; not reachable from physical_lib.rs. Removed from the OSS source/archive (not merely feature-disabled); preserved in downstream compatibility crate. Existing published history/tag is immutable."
+    },
+    {
+      "source": "rustyredcore_THG/crates/theorem-bayes/src/bin/theorem-prior-pack.rs",
+      "destination": "Theorem theorem-bayes/src/bin/theorem-prior-pack.rs",
+      "action": "downstream-only",
+      "notes": "Product environment/configuration CLI stays downstream and uses canonical SignedPriorPack numerical library. No public generic library capability removed."
+    }
+  ],
+  "contracts": {
+    "coverage": "All8contract source files compared at both pins; brace mapping is a partial boundary selection, not a whole-crate byte-identity claim.",
+    "exact_files": [
+      "article.rs",
+      "article_links.rs",
+      "link.rs",
+      "link_api.rs",
+      "sync.rs"
+    ],
+    "intentional_boundary_files": {
+      "desktop.rs": "Retains neutral IDs and database/browser storage policy; product window/workspace request/response types stay downstream.",
+      "wiki.rs": "Retains exact WikiRefusal required by link API; product request/response shapes remain downstream.",
+      "lib.rs": "Public extraction root exports selected shared contracts and intentionally omits downstream product types."
+    },
+    "receipt": "docs/extraction/storage-evidence/contracts-source-coverage-984.json"
+  },
+  "input_receipts": [
+    {
+      "path": "/tmp/rustyred-source-coverage-missing-984.json",
+      "sha256": "469981b300189106aa18ce627f95f1f1a2b3f8b564cda93562676ecff2bfb1df"
+    },
+    {
+      "path": "/tmp/rustyred-contracts-source-coverage-984.json",
+      "sha256": "c8cfa7aa5d7de32cdfbac719ab3876a8e4ffd84e1bdc93fce48033095bd213d8"
+    }
+  ],
+  "runtime_claim": false,
+  "main_reverse_scope": {
+    "selection": "Whole-directory/non-braced source-map entries with canonical crates/vendor destinations; source coverage is evaluated from the two exact source trees toward candidate presence.",
+    "extensions": [
+      ".rs",
+      ".pest",
+      ".json",
+      ".term",
+      ".h",
+      ".sh"
+    ],
+    "separate_partial_selection": "Braced surface-contract entry is excluded by the source-parity algorithm and separately audited in contracts-source-coverage-984.json.",
+    "not_claimed": "This is not deletion coverage for every downstream Theorem application source."
+  }
+}
