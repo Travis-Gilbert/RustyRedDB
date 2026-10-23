@@ -23,7 +23,11 @@ pub use query::QueryResult;
 pub use rustyred_thg_core as engine;
 
 pub use rustyred_thg_core::{
-    EdgeRecord, GraphMutation, GraphMutationBatch, GraphStats, GraphStoreError, GraphTransaction,
-    NodeRecord, RedCoreDurability, RedCoreGraphStore, RedCoreOptions, VerifyReport,
+    CompactionReport, EdgeRecord, GraphMutation, GraphMutationBatch, GraphStats, GraphStoreError,
+    GraphTransaction, NodeRecord, RedCoreDurability, RedCoreGraphStore, RedCoreOptions,
+    VerifyReport,
 };
 pub use rustyred_thg_query::{execute_read, parse_cypher_pest, CypherError, CypherGraph};
+
+#[cfg(feature = "fulltext")]
+pub use rustyred_thg_core::fulltext_store::FullTextHit;

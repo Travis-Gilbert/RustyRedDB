@@ -72,6 +72,11 @@ jobs:
         run: python3 scripts/check-format --base "$FORMAT_BASE"
       - name: Embedded facade, CLI, example and failure oracles
         run: cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection
+      - name: Full-text index kept in the file
+        if: ${{ !cancelled() }}
+        run: |
+          cargo test --locked -p rustyred --features fulltext --test fulltext
+          cargo test --locked -p rustyred-engine --lib --features tantivy graph_fulltext_tests
       - name: Engine unit suite (calibrated latency profile)
         if: ${{ !cancelled() }}
         run: cargo test --locked --no-fail-fast -p rustyred-engine --lib --features test-fault-injection

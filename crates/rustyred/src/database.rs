@@ -5,11 +5,15 @@ use rustyred_thg_core::file_payload::{
     install_file_manifest_reference, read_file_payload, stage_file_payload, FileManifestRef,
     FILE_CONTENT_MANIFEST_PROPERTY,
 };
+#[cfg(feature = "fulltext")]
+use rustyred_thg_core::fulltext_store::FullTextHit;
+use rustyred_thg_core::reachability::{compact_committed_reachable, CoreReachabilityCodec};
 use rustyred_thg_core::rr_file::RustyRed;
 use rustyred_thg_core::rr_migrate::migrate_journal_to_rr;
 use rustyred_thg_core::{
-    GraphMutationBatch, GraphStats, GraphTransaction, NodeRecord, RedCoreDurability,
-    RedCoreGraphStore, RedCoreOptions, UnifiedChunkStore, VerifyReport, REDCORE_JOURNAL_FILE,
+    CompactionReport, GraphMutationBatch, GraphStats, GraphTransaction, NodeRecord,
+    RedCoreDurability, RedCoreGraphStore, RedCoreOptions, UnifiedChunkStore, VerifyReport,
+    REDCORE_JOURNAL_FILE,
 };
 use serde::Serialize;
 use theorem_surface_contracts::desktop::DeviceId;
@@ -72,7 +76,7 @@ impl Database {
         }
         let device = DeviceId::new(&options.device_name);
         let file = RustyRed::create(path, &device).map_err(Error::from_storage)?;
-        let graph = open_graph(file.store().clone())?;
+        let graph = open_graph(file.store().clone(), options)?;
         Ok(Self {
             graph,
             file: Some(file),
@@ -93,7 +97,10 @@ impl Database {
         require_existing(path)?;
         let device = DeviceId::new(&options.device_name);
         let file = RustyRed::open(path, &device).map_err(Error::from_storage)?;
-        let graph = open_graph(file.store().clone())?;
+        let mut graph = open_graph(file.store().clone(), options)?;
+        graph
+            .publish_rebuilt_fulltext()
+            .map_err(Error::from_storage)?;
         Ok(Self {
             graph,
             file: Some(file),
@@ -111,7 +118,7 @@ impl Database {
         let path = path.as_ref();
         require_existing(path)?;
         let file = RustyRed::open_read_only(path).map_err(Error::from_storage)?;
-        let graph = open_graph(file.store().clone())?;
+        let graph = open_graph(file.store().clone(), &OpenOptions::default())?;
         Ok(Self {
             graph,
             file: Some(file),
@@ -139,7 +146,7 @@ impl Database {
 
     pub fn create_directory_with(
         path: impl AsRef<Path>,
-        _options: &OpenOptions,
+        options: &OpenOptions,
     ) -> Result<Self, Error> {
         let path = path.as_ref();
         let journal = path.join(REDCORE_JOURNAL_FILE);
@@ -150,8 +157,10 @@ impl Database {
                 format!("{} already exists", journal.display()),
             ));
         }
-        let graph =
+        let mut graph =
             RedCoreGraphStore::open(path, directory_options()).map_err(Error::from_storage)?;
+        graph.set_control_events(options.control_events);
+        graph.set_keep_history(options.keep_history);
         Ok(Self {
             graph,
             file: None,
@@ -171,8 +180,11 @@ impl Database {
                 format!("{} does not exist", journal.display()),
             ));
         }
-        let graph =
+        let mut graph =
             RedCoreGraphStore::open(path, directory_options()).map_err(Error::from_storage)?;
+        graph
+            .publish_rebuilt_fulltext()
+            .map_err(Error::from_storage)?;
         Ok(Self {
             graph,
             file: None,
@@ -257,6 +269,37 @@ impl Database {
             .map_err(Error::from_storage)
     }
 
+    /// Keep a full-text index of `fields` of every node labelled `label`, each
+    /// field's score scaled by its boost. The index is saved in the database
+    /// with each commit and read back on open; it is rebuilt from the nodes
+    /// only when a commit it missed is found, and a writable open then saves
+    /// the rebuilt index. Designating the same fields again changes nothing.
+    #[cfg(feature = "fulltext")]
+    pub fn designate_fulltext(&mut self, label: &str, fields: &[(&str, f32)]) -> Result<(), Error> {
+        self.require_writable()?;
+        self.graph
+            .designate_fulltext(label, fields)
+            .map_err(Error::from_storage)
+    }
+
+    /// Rank `label` nodes by BM25 over the designated fields. Every word of
+    /// `query` must match one field, the last word also as the start of a
+    /// longer word, and a word that splits into several terms matches as a
+    /// phrase. `within` keeps only the given node ids. Each hit carries an
+    /// HTML-escaped snippet with its matches in `<mark>`.
+    #[cfg(feature = "fulltext")]
+    pub fn fulltext_search(
+        &self,
+        label: &str,
+        query: &str,
+        limit: usize,
+        within: Option<&[String]>,
+    ) -> Result<Vec<FullTextHit>, Error> {
+        self.graph
+            .fulltext_search(label, query, limit, within)
+            .map_err(Error::from_storage)
+    }
+
     pub fn mutate(&mut self, batch: GraphMutationBatch) -> Result<GraphTransaction, Error> {
         self.require_writable()?;
         self.graph.commit_batch(batch).map_err(Error::from_storage)
@@ -324,6 +367,27 @@ impl Database {
         read_file_payload(store.as_chunk_store(), &reference).map_err(Error::from_storage)
     }
 
+    /// Rewrite the `.RR` file without the chunks no committed root reaches,
+    /// such as superseded catalog roots, journal frames and payloads nothing
+    /// names any more. Every recorded revision stays readable.
+    ///
+    /// The walk and the rewrite happen under the file's writer claim, and the
+    /// rewrite is refused, leaving the file as it was, if a commit lands in
+    /// between. A directory database or read-only handle is refused.
+    pub fn compact(&mut self) -> Result<CompactionReport, Error> {
+        self.require_writable()?;
+        let file = self.file.as_ref().ok_or_else(|| {
+            Error::new(
+                ErrorKind::Storage,
+                "compaction_unsupported",
+                "only a native .RR file can be compacted",
+            )
+        })?;
+        compact_committed_reachable(file.store().as_ref(), &CoreReachabilityCodec)
+            .map(|report| report.compaction)
+            .map_err(Error::from_storage)
+    }
+
     /// Diagnostics for crash-safety tests; absent from normal library builds.
     #[cfg(feature = "test-fault-injection")]
     #[doc(hidden)]
@@ -372,7 +436,14 @@ fn directory_options() -> RedCoreOptions {
     file_options()
 }
 
-fn open_graph(store: Arc<impl UnifiedChunkStore + 'static>) -> Result<RedCoreGraphStore, Error> {
+fn open_graph(
+    store: Arc<impl UnifiedChunkStore + 'static>,
+    options: &OpenOptions,
+) -> Result<RedCoreGraphStore, Error> {
     let store: Arc<dyn UnifiedChunkStore> = store;
-    RedCoreGraphStore::open_with_chunk_store(store, file_options()).map_err(Error::from_storage)
+    let mut graph = RedCoreGraphStore::open_with_chunk_store(store, file_options())
+        .map_err(Error::from_storage)?;
+    graph.set_control_events(options.control_events);
+    graph.set_keep_history(options.keep_history);
+    Ok(graph)
 }
