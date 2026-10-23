@@ -92,8 +92,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-android-arm64')
-        const bindingPackageVersion = require('@rustyred/node-android-arm64/package.json').version
+        const binding = require('@rustyreddb/node-android-arm64')
+        const bindingPackageVersion = require('@rustyreddb/node-android-arm64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -108,8 +108,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-android-arm-eabi')
-        const bindingPackageVersion = require('@rustyred/node-android-arm-eabi/package.json').version
+        const binding = require('@rustyreddb/node-android-arm-eabi')
+        const bindingPackageVersion = require('@rustyreddb/node-android-arm-eabi/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -129,8 +129,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-win32-x64-gnu')
-          const bindingPackageVersion = require('@rustyred/node-win32-x64-gnu/package.json').version
+          const binding = require('@rustyreddb/node-win32-x64-gnu')
+          const bindingPackageVersion = require('@rustyreddb/node-win32-x64-gnu/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -145,8 +145,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-win32-x64-msvc')
-          const bindingPackageVersion = require('@rustyred/node-win32-x64-msvc/package.json').version
+          const binding = require('@rustyreddb/node-win32-x64-msvc')
+          const bindingPackageVersion = require('@rustyreddb/node-win32-x64-msvc/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -162,8 +162,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-win32-ia32-msvc')
-        const bindingPackageVersion = require('@rustyred/node-win32-ia32-msvc/package.json').version
+        const binding = require('@rustyreddb/node-win32-ia32-msvc')
+        const bindingPackageVersion = require('@rustyreddb/node-win32-ia32-msvc/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -178,8 +178,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-win32-arm64-msvc')
-        const bindingPackageVersion = require('@rustyred/node-win32-arm64-msvc/package.json').version
+        const binding = require('@rustyreddb/node-win32-arm64-msvc')
+        const bindingPackageVersion = require('@rustyreddb/node-win32-arm64-msvc/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -197,8 +197,8 @@ function requireNative() {
       loadErrors.push(e)
     }
     try {
-      const binding = require('@rustyred/node-darwin-universal')
-      const bindingPackageVersion = require('@rustyred/node-darwin-universal/package.json').version
+      const binding = require('@rustyreddb/node-darwin-universal')
+      const bindingPackageVersion = require('@rustyreddb/node-darwin-universal/package.json').version
       if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
         throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
       }
@@ -213,8 +213,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-darwin-x64')
-        const bindingPackageVersion = require('@rustyred/node-darwin-x64/package.json').version
+        const binding = require('@rustyreddb/node-darwin-x64')
+        const bindingPackageVersion = require('@rustyreddb/node-darwin-x64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -229,8 +229,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-darwin-arm64')
-        const bindingPackageVersion = require('@rustyred/node-darwin-arm64/package.json').version
+        const binding = require('@rustyreddb/node-darwin-arm64')
+        const bindingPackageVersion = require('@rustyreddb/node-darwin-arm64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -249,8 +249,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-freebsd-x64')
-        const bindingPackageVersion = require('@rustyred/node-freebsd-x64/package.json').version
+        const binding = require('@rustyreddb/node-freebsd-x64')
+        const bindingPackageVersion = require('@rustyreddb/node-freebsd-x64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -265,8 +265,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-freebsd-arm64')
-        const bindingPackageVersion = require('@rustyred/node-freebsd-arm64/package.json').version
+        const binding = require('@rustyreddb/node-freebsd-arm64')
+        const bindingPackageVersion = require('@rustyreddb/node-freebsd-arm64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -281,8 +281,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-freebsd-ppc64')
-        const bindingPackageVersion = require('@rustyred/node-freebsd-ppc64/package.json').version
+        const binding = require('@rustyreddb/node-freebsd-ppc64')
+        const bindingPackageVersion = require('@rustyreddb/node-freebsd-ppc64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -302,8 +302,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-x64-musl')
-          const bindingPackageVersion = require('@rustyred/node-linux-x64-musl/package.json').version
+          const binding = require('@rustyreddb/node-linux-x64-musl')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-x64-musl/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -318,8 +318,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-x64-gnu')
-          const bindingPackageVersion = require('@rustyred/node-linux-x64-gnu/package.json').version
+          const binding = require('@rustyreddb/node-linux-x64-gnu')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-x64-gnu/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -336,8 +336,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-arm64-musl')
-          const bindingPackageVersion = require('@rustyred/node-linux-arm64-musl/package.json').version
+          const binding = require('@rustyreddb/node-linux-arm64-musl')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-arm64-musl/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -352,8 +352,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-arm64-gnu')
-          const bindingPackageVersion = require('@rustyred/node-linux-arm64-gnu/package.json').version
+          const binding = require('@rustyreddb/node-linux-arm64-gnu')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-arm64-gnu/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -370,8 +370,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-arm-musleabihf')
-          const bindingPackageVersion = require('@rustyred/node-linux-arm-musleabihf/package.json').version
+          const binding = require('@rustyreddb/node-linux-arm-musleabihf')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-arm-musleabihf/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -386,8 +386,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-arm-gnueabihf')
-          const bindingPackageVersion = require('@rustyred/node-linux-arm-gnueabihf/package.json').version
+          const binding = require('@rustyreddb/node-linux-arm-gnueabihf')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-arm-gnueabihf/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -404,8 +404,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-loong64-musl')
-          const bindingPackageVersion = require('@rustyred/node-linux-loong64-musl/package.json').version
+          const binding = require('@rustyreddb/node-linux-loong64-musl')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-loong64-musl/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -420,8 +420,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-loong64-gnu')
-          const bindingPackageVersion = require('@rustyred/node-linux-loong64-gnu/package.json').version
+          const binding = require('@rustyreddb/node-linux-loong64-gnu')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-loong64-gnu/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -438,8 +438,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-riscv64-musl')
-          const bindingPackageVersion = require('@rustyred/node-linux-riscv64-musl/package.json').version
+          const binding = require('@rustyreddb/node-linux-riscv64-musl')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-riscv64-musl/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -454,8 +454,8 @@ function requireNative() {
           loadErrors.push(e)
         }
         try {
-          const binding = require('@rustyred/node-linux-riscv64-gnu')
-          const bindingPackageVersion = require('@rustyred/node-linux-riscv64-gnu/package.json').version
+          const binding = require('@rustyreddb/node-linux-riscv64-gnu')
+          const bindingPackageVersion = require('@rustyreddb/node-linux-riscv64-gnu/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
             throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
@@ -471,8 +471,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-linux-ppc64-gnu')
-        const bindingPackageVersion = require('@rustyred/node-linux-ppc64-gnu/package.json').version
+        const binding = require('@rustyreddb/node-linux-ppc64-gnu')
+        const bindingPackageVersion = require('@rustyreddb/node-linux-ppc64-gnu/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -487,8 +487,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-linux-s390x-gnu')
-        const bindingPackageVersion = require('@rustyred/node-linux-s390x-gnu/package.json').version
+        const binding = require('@rustyreddb/node-linux-s390x-gnu')
+        const bindingPackageVersion = require('@rustyreddb/node-linux-s390x-gnu/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -507,8 +507,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-openharmony-arm64')
-        const bindingPackageVersion = require('@rustyred/node-openharmony-arm64/package.json').version
+        const binding = require('@rustyreddb/node-openharmony-arm64')
+        const bindingPackageVersion = require('@rustyreddb/node-openharmony-arm64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -523,8 +523,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-openharmony-x64')
-        const bindingPackageVersion = require('@rustyred/node-openharmony-x64/package.json').version
+        const binding = require('@rustyreddb/node-openharmony-x64')
+        const bindingPackageVersion = require('@rustyreddb/node-openharmony-x64/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -539,8 +539,8 @@ function requireNative() {
         loadErrors.push(e)
       }
       try {
-        const binding = require('@rustyred/node-openharmony-arm')
-        const bindingPackageVersion = require('@rustyred/node-openharmony-arm/package.json').version
+        const binding = require('@rustyreddb/node-openharmony-arm')
+        const bindingPackageVersion = require('@rustyreddb/node-openharmony-arm/package.json').version
         if (bindingPackageVersion !== '0.1.0-beta.2' && process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
           throw new Error(`Native binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
         }
@@ -678,16 +678,16 @@ if (!nativeBinding || forceWasi) {
     let candidateError = null
     let candidateFailed = false
     try {
-      candidateError = __napiWasiResolveCandidate('@rustyred/node-wasm32-wasi', true, undefined)
+      candidateError = __napiWasiResolveCandidate('@rustyreddb/node-wasm32-wasi', true, undefined)
       candidateFailed = candidateError !== null
       if (!candidateFailed) {
         if (process.env.NAPI_RS_ENFORCE_VERSION_CHECK && process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== '0') {
-          const bindingPackageVersion = require('@rustyred/node-wasm32-wasi/package.json').version
+          const bindingPackageVersion = require('@rustyreddb/node-wasm32-wasi/package.json').version
           if (bindingPackageVersion !== '0.1.0-beta.2') {
             throw new Error(`WASI binding package version mismatch, expected 0.1.0-beta.2 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`)
           }
         }
-        wasiBinding = require('@rustyred/node-wasm32-wasi')
+        wasiBinding = require('@rustyreddb/node-wasm32-wasi')
         nativeBinding = wasiBinding
         __napiLoadedBindingTarget = 'wasm32-wasi'
         wasiBindingLoaded = true
