@@ -1,0 +1,38 @@
+{
+  "name": "@rustyred/node",
+  "version": "0.1.0-beta.2",
+  "description": "Embedded Rusty Red for Node.js and Bun: a native .rr graph file with full-text search.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Travis-Gilbert/RustyRedDB",
+    "directory": "crates/rustyred-node"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "*.node",
+    "README.md"
+  ],
+  "napi": {
+    "binaryName": "rustyred",
+    "targets": [
+      "aarch64-apple-darwin",
+      "x86_64-unknown-linux-gnu"
+    ],
+    "constEnum": false
+  },
+  "engines": {
+    "node": ">= 18"
+  },
+  "scripts": {
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "3.10.9"
+  }
+}
