@@ -14,13 +14,17 @@ use web_time::{Instant, SystemTime, UNIX_EPOCH};
 use crate::chunk_store::ChunkStoreCompaction;
 use crate::chunk_store::{
     validate_catalog_root, ChunkPublicationWindow, ChunkStore, ChunkStoreCatalog, CommitMeta,
-    MemChunkStore, ROOT_NAME_GRAPH, ROOT_NAME_REDCORE,
+    MemChunkStore, ROOT_NAME_FULLTEXT, ROOT_NAME_GRAPH, ROOT_NAME_REDCORE,
 };
 use crate::events::{control_events_from_projections, NodeMutationProjection, CONTROL_EVENT_LABEL};
 use crate::file_lock::FileExt;
+#[cfg(feature = "tantivy")]
+use crate::fulltext_store::FullTextHit;
+use crate::fulltext_store::FullTextStore;
 use crate::graph_history::{
-    append_history, load_history_root, GraphCommitMetadata, GraphCommitPublication,
-    GraphCommitReceipt, GraphHistoryEntry, GraphRevisionRoots, PinnedGraphHistory,
+    append_history, load_history_root, restart_history, GraphCommitMetadata,
+    GraphCommitPublication, GraphCommitReceipt, GraphHistoryEntry, GraphRevisionRoots,
+    PinnedGraphHistory,
 };
 use crate::hash::Hash;
 use crate::hooks::{
@@ -1277,6 +1281,14 @@ pub struct RedCoreGraphStore {
     // Optional actor/principal stamped onto control-plane events (CP1).
     hook_actor: String,
     hook_principal: String,
+    // Whether labelled-node writes also commit ControlEvent nodes (CP1). On by
+    // default; a store that holds only derived data can turn it off.
+    control_events: bool,
+    // Whether commits extend the recorded revision history and the change log
+    // `changes_since` reads. On by default; see `set_keep_history`.
+    keep_history: bool,
+    // Full-text indexes of designated labels, published with each commit.
+    fulltext: FullTextStore,
     // Optional recorder used by embedders that maintain an external read mirror.
     // When enabled around a hook batch, committed node/edge records are copied
     // here after durable publication so the embedder can refresh incrementally.
@@ -1571,6 +1583,9 @@ impl RedCoreGraphStore {
             hook_tenant: String::new(),
             hook_actor: String::new(),
             hook_principal: String::new(),
+            control_events: true,
+            keep_history: true,
+            fulltext: FullTextStore::default(),
             recorded_committed_mutations: None,
             recorded_redcore_mutations: None,
             mutation_log: MutationLog::genesis(),
@@ -2174,6 +2189,129 @@ impl RedCoreGraphStore {
         &self.hook_principal
     }
 
+    /// Turn ControlEvent nodes on or off for later commits. They are on by
+    /// default. A store whose contents are derived and rebuilt from elsewhere,
+    /// such as a search index, has no use for the change log they form, and
+    /// without them a write adds only the records it names. Queued hook events
+    /// are unaffected.
+    pub fn set_control_events(&mut self, enabled: bool) {
+        self.control_events = enabled;
+    }
+
+    pub fn control_events(&self) -> bool {
+        self.control_events
+    }
+
+    /// Keep or drop past revisions for later commits. History is kept by
+    /// default. With it off, each durable commit records only itself: the
+    /// recorded history starts again at that transaction, `changes_since`
+    /// reports any earlier cursor as truncated, and the revisions it replaced
+    /// become unreachable, so compaction can reclaim them. For stores whose
+    /// contents are derived from elsewhere.
+    pub fn set_keep_history(&mut self, keep: bool) {
+        self.keep_history = keep;
+    }
+
+    pub fn keep_history(&self) -> bool {
+        self.keep_history
+    }
+
+    /// Keep a full-text index of `fields` of every node labelled `label`, each
+    /// field's score scaled by its boost. The index is written with every
+    /// commit and read back on open. Designating the same fields again changes
+    /// nothing.
+    #[cfg(feature = "tantivy")]
+    pub fn designate_fulltext(
+        &mut self,
+        label: &str,
+        fields: &[(&str, f32)],
+    ) -> GraphStoreResult<()> {
+        if self.fulltext.designate(label, fields, &self.store.nodes)? {
+            self.publish_fulltext()?;
+        }
+        Ok(())
+    }
+
+    /// Search the full-text index of `label`. Every word must match, the last
+    /// one also as the start of a longer word. `within` keeps only those ids.
+    #[cfg(feature = "tantivy")]
+    pub fn fulltext_search(
+        &self,
+        label: &str,
+        query: &str,
+        limit: usize,
+        within: Option<&[String]>,
+    ) -> GraphStoreResult<Vec<FullTextHit>> {
+        self.fulltext
+            .search(label, query, limit, within, &self.store.nodes)
+    }
+
+    /// Publish a full-text index that opening had to rebuild, so the next open
+    /// reads it back instead. Does nothing when the committed index was
+    /// current.
+    pub fn publish_rebuilt_fulltext(&mut self) -> GraphStoreResult<()> {
+        if self.fulltext.unpublished() {
+            self.publish_fulltext()?;
+        }
+        Ok(())
+    }
+
+    /// Commit the full-text root alone, at the current graph transaction.
+    fn publish_fulltext(&mut self) -> GraphStoreResult<()> {
+        let txn_id = self.last_txn_id;
+        let backend = self.chunk_store.get();
+        let publication = ChunkPublicationWindow::new(
+            Arc::clone(&backend),
+            &format!("redcore-fulltext:{txn_id}"),
+        );
+        let staged = self
+            .fulltext
+            .stage(&publication, backend.as_ref(), txn_id)?;
+        let mut roots = BTreeMap::from([(ROOT_NAME_FULLTEXT.to_string(), Some(staged.root))]);
+        if backend.read_root()?.is_none() {
+            // Every catalog names a graph root. Before the first transaction it
+            // is the canonical empty tree, which recovery accepts.
+            let empty_graph = canonical_leaf_preimage(&[])?;
+            let empty_graph_root = Hash::of(&empty_graph);
+            publication.write(&[(empty_graph_root, empty_graph.as_slice())])?;
+            roots.insert(ROOT_NAME_GRAPH.to_string(), Some(empty_graph_root));
+        }
+        backend.commit_catalog_updates(
+            &roots,
+            CommitMeta {
+                parents: Vec::new(),
+                author: "rustyred".to_string(),
+                message: format!("publish full-text index at transaction {txn_id}"),
+                timestamp_unix_ms: unix_ms(),
+                graph_version: self.store.version,
+            },
+        )?;
+        publication.finish_after_publication();
+        self.fulltext.published(staged);
+        Ok(())
+    }
+
+    /// Read the committed full-text root back after the graph is recovered.
+    fn recover_fulltext(&mut self) -> GraphStoreResult<()> {
+        if !self.recovers_from_catalog() {
+            return Ok(());
+        }
+        let backend = self.unified_chunk_store();
+        let Some(catalog_address) = backend.read_root()? else {
+            return Ok(());
+        };
+        let catalog = validate_catalog_root(backend.as_chunk_store(), catalog_address)?;
+        let Some(root) = catalog.get(ROOT_NAME_FULLTEXT) else {
+            return Ok(());
+        };
+        self.fulltext.recover(
+            backend.as_chunk_store(),
+            root,
+            self.last_txn_id,
+            &self.store.nodes,
+        )
+    }
+
     fn append_control_event_mutations(
         &self,
         staged: &mut InMemoryGraphStore,
@@ -2182,7 +2320,7 @@ impl RedCoreGraphStore {
         graph_version_before: u64,
         txn_id: u64,
     ) -> GraphStoreResult<()> {
-        if projections.is_empty() {
+        if !self.control_events || projections.is_empty() {
             return Ok(());
         }
         let committed_at_ms = now_ms().max(0) as u64;
@@ -2348,6 +2486,9 @@ impl RedCoreGraphStore {
         txn_id: u64,
         root: Hash,
     ) -> MutationLog {
+        if !self.keep_history {
+            return MutationLog::empty_after(root, txn_id);
+        }
         let mut preview = self.mutation_log.clone();
         if !pending.is_empty() && !preview.contains_txn(txn_id) {
             preview.append_entries(self.log_entries_from_pending(pending, txn_id, root));
@@ -2368,7 +2509,9 @@ impl RedCoreGraphStore {
             .as_ref()
             .map(|pack| pack.tree.root)
             .unwrap_or_else(|| mutation_log::memory_sync_root(self.sync_root, txn_id));
-        if !self.mutation_log.contains_txn(txn_id) {
+        if !self.keep_history {
+            self.mutation_log = MutationLog::empty_after(root, txn_id);
+        } else if !self.mutation_log.contains_txn(txn_id) {
             let entries = self.log_entries_from_pending(pending, txn_id, root);
             self.mutation_log.append_entries(entries);
         }
@@ -3479,16 +3622,20 @@ impl RedCoreGraphStore {
         let actor = (!self.hook_actor.trim().is_empty()).then_some(self.hook_actor.as_str());
         let principal =
             (!self.hook_principal.trim().is_empty()).then_some(self.hook_principal.as_str());
-        let control_events = control_events_from_projections(
-            tenant,
-            actor,
-            principal,
-            graph_version_before,
-            graph_version,
-            committed_at_ms,
-            self.last_txn_id + 1,
-            &control_projections,
-        );
+        let control_events = if self.control_events {
+            control_events_from_projections(
+                tenant,
+                actor,
+                principal,
+                graph_version_before,
+                graph_version,
+                committed_at_ms,
+                self.last_txn_id + 1,
+                &control_projections,
+            )
+        } else {
+            Vec::new()
+        };
         for event in control_events {
             let mut node = event.to_node();
             graph_version += 1;
@@ -5339,15 +5486,17 @@ impl RedCoreGraphStore {
                     prior_roots.as_ref(),
                 )?);
             }
-            Some(
+            Some(if self.keep_history {
                 append_history(
                     &publication,
                     prior_history.as_ref(),
                     prior_roots.as_ref(),
                     &entry,
                 )?
-                .0,
-            )
+                .0
+            } else {
+                restart_history(&publication, &entry)?.0
+            })
         };
 
         let preview = self.preview_mutation_log(pending_events, txn_id, next_pack.tree.root);
@@ -5387,11 +5536,33 @@ impl RedCoreGraphStore {
                 Some(journal.compact_reachable(expected_catalog_root, &reachable)?);
         }
 
-        backend.commit_catalog_updates(
-            &BTreeMap::from([
-                (ROOT_NAME_GRAPH.to_string(), Some(next_pack.tree.root)),
-                (ROOT_NAME_REDCORE.to_string(), Some(state_address)),
-            ]),
+        // The full-text index takes the batch last, so a failure before this
+        // point leaves it untouched. `self.store` still holds the graph the
+        // batch applies to, which is what a failed commit rebuilds it from.
+        let fulltext = if self.fulltext.has_indexes() {
+            let staged = self
+                .fulltext
+                .apply(&batch.mutations, &self.store.nodes)
+                .and_then(|()| self.fulltext.stage(&publication, backend.as_ref(), txn_id));
+            match staged {
+                Ok(staged) => Some(staged),
+                Err(error) => {
+                    let _ = self.fulltext.rebuild(&self.store.nodes);
+                    return Err(error);
+                }
+            }
+        } else {
+            None
+        };
+        let mut roots = BTreeMap::from([
+            (ROOT_NAME_GRAPH.to_string(), Some(next_pack.tree.root)),
+            (ROOT_NAME_REDCORE.to_string(), Some(state_address)),
+        ]);
+        if let Some(staged) = &fulltext {
+            roots.insert(ROOT_NAME_FULLTEXT.to_string(), Some(staged.root));
+        }
+        if let Err(error) = backend.commit_catalog_updates(
+            &roots,
             CommitMeta {
                 // The catalog implementation derives the physical parent
                 // while holding the same lock used for the named-root merge.
@@ -5401,8 +5572,16 @@ impl RedCoreGraphStore {
                 timestamp_unix_ms: unix_ms(),
                 graph_version,
             },
-        )?;
+        ) {
+            if fulltext.is_some() {
+                let _ = self.fulltext.rebuild(&self.store.nodes);
+            }
+            return Err(error);
+        }
         publication.finish_after_publication();
+        if let Some(staged) = fulltext {
+            self.fulltext.published(staged);
+        }
 
         self.durable_nodes_total = next_pack.manifest.nodes_total;
         self.durable_edges_total = next_pack.manifest.edges_total;
@@ -5579,6 +5758,9 @@ impl RedCoreGraphStore {
             hook_tenant: String::new(),
             hook_actor: String::new(),
             hook_principal: String::new(),
+            control_events: true,
+            keep_history: true,
+            fulltext: FullTextStore::default(),
             recorded_committed_mutations: None,
             recorded_redcore_mutations: None,
             mutation_log: MutationLog::genesis(),
@@ -5618,6 +5800,7 @@ impl RedCoreGraphStore {
         engine.store.set_vector_payload_store(payload_store);
         let recovery_started = Instant::now();
         engine.recover()?;
+        engine.recover_fulltext()?;
         if migrate_legacy_vectors {
             engine.migrate_legacy_vector_arrays()?;
         }
@@ -7466,6 +7649,10 @@ mod graph_history_tests;
 #[cfg(test)]
 #[path = "graph_preparation_tests.rs"]
 mod graph_preparation_tests;
+
+#[cfg(all(test, feature = "tantivy"))]
+#[path = "graph_fulltext_tests.rs"]
+mod graph_fulltext_tests;
 
 #[cfg(test)]
 impl RedCoreGraphStore {

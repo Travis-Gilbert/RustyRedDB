@@ -350,23 +350,61 @@ pub(crate) fn append_history(
                 Ok::<_, GraphStoreError>(address)
             })
             .transpose()?;
-        GraphHistoryRoot {
-            by_commit: build_prolly_tree_from_entries(store, vec![by_commit_entry])?,
-            by_transaction: build_prolly_tree_from_entries(store, vec![by_txn_entry])?,
-            retained_indexes: build_prolly_tree_from_entries(store, vec![])?,
-            head_commit: entry.commit.commit_hash,
-            head_transaction: entry.roots.transaction,
-            coverage: if legacy.is_some() {
-                GraphHistoryCoverage::Since {
-                    first_transaction: entry.roots.transaction,
-                    prior_history_unavailable: true,
-                }
-            } else {
-                GraphHistoryCoverage::Complete
-            },
-            legacy_boundary,
-        }
+        let coverage = if legacy.is_some() {
+            GraphHistoryCoverage::Since {
+                first_transaction: entry.roots.transaction,
+                prior_history_unavailable: true,
+            }
+        } else {
+            GraphHistoryCoverage::Complete
+        };
+        single_entry_root(store, entry, address, coverage, legacy_boundary)?
     };
+    write_history_root(store, root)
+}
+
+/// Stage a history that starts again at `entry`. Earlier revisions are no
+/// longer reachable from it, so compaction can reclaim them; readers see the
+/// recorded history begin at this transaction.
+pub(crate) fn restart_history(
+    store: &dyn ChunkStore,
+    entry: &GraphHistoryEntry,
+) -> GraphStoreResult<(Hash, GraphHistoryRoot)> {
+    let bytes = entry.to_bytes()?;
+    let address = Hash::of(&bytes);
+    store.write(&[(address, &bytes)])?;
+    let coverage = GraphHistoryCoverage::Since {
+        first_transaction: entry.roots.transaction,
+        prior_history_unavailable: true,
+    };
+    let root = single_entry_root(store, entry, address, coverage, None)?;
+    write_history_root(store, root)
+}
+
+fn single_entry_root(
+    store: &dyn ChunkStore,
+    entry: &GraphHistoryEntry,
+    address: Hash,
+    coverage: GraphHistoryCoverage,
+    legacy_boundary: Option<Hash>,
+) -> GraphStoreResult<GraphHistoryRoot> {
+    let commit_key = entry.commit.commit_hash.to_string();
+    let txn_key = transaction_key(entry.roots.transaction);
+    Ok(GraphHistoryRoot {
+        by_commit: build_prolly_tree_from_entries(store, vec![index_entry(commit_key, address)])?,
+        by_transaction: build_prolly_tree_from_entries(store, vec![index_entry(txn_key, address)])?,
+        retained_indexes: build_prolly_tree_from_entries(store, vec![])?,
+        head_commit: entry.commit.commit_hash,
+        head_transaction: entry.roots.transaction,
+        coverage,
+        legacy_boundary,
+    })
+}
+
+fn write_history_root(
+    store: &dyn ChunkStore,
+    root: GraphHistoryRoot,
+) -> GraphStoreResult<(Hash, GraphHistoryRoot)> {
     let bytes = root.to_bytes()?;
     let address = Hash::of(&bytes);
     store.write(&[(address, &bytes)])?;

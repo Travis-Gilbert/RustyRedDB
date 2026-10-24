@@ -5,14 +5,17 @@ Frozen against the engine types in this extract.
 | Method | Behavior |
 | --- | --- |
 | `Database::create` / `create_with` | Creates a `.RR` file and a writer claim. Existing path: `ErrorKind::AlreadyExists` (`rr_already_exists`). |
+| `OpenOptions` | `device_name` is the claim's writer identity. `control_events(false)` stops the `ControlEvent` node a write would add. `keep_history(false)` keeps only the current state, with no revision history or `changes_since` log. The choices belong to the handle and are not stored in the file. |
 | `Database::open` / `open_with` | Opens an existing file for write. Missing path: `ErrorKind::NotFound` (`not_found`), and no file is created. Second writer: `rr_writer_held`. |
 | `Database::open_read_only` | No claim. Mutations return `read_only`. Verify and query do not publish. |
 | `Database::in_memory` | Empty graph, no file. |
 | `Database::create_directory` / `open_directory` | Directory journal. Same already-exists and not-found rules, applied to `redcore.journal`. |
 | `Database::query` | `parse_cypher_pest`, read classification, `execute_read`. Parameters are a `BTreeMap`, not interpolated text. Write clauses return `cypher_write_unsupported`. |
-| `Database::mutate` / `upsert_node` | `RedCoreGraphStore::commit_batch` / `upsert_node`. A created record also stores a `ControlEvent` node. A fresh database has none. |
+| `Database::mutate` / `upsert_node` | `RedCoreGraphStore::commit_batch` / `upsert_node`. A created record also stores a `ControlEvent` node unless the handle was opened with `control_events(false)`. A fresh database has none. |
 | `Database::put_file_node` / `read_file_node` | Existing file-manifest payload path. |
 | `Database::designate_vector` | Existing designation. A later write of the wrong width is `dimension_mismatch`. Nothing is designated at create. A designated value is stored as a content-addressed payload reference (`content_id`, `dimension`), not left as the original JSON array. |
+| `Database::designate_fulltext` / `fulltext_search` | `fulltext` feature. A BM25 index over the given fields of one label, each with a boost. The index is saved in the file with each commit and read back on open. It is rebuilt from the nodes only when it missed a commit, and a writable open then saves the rebuilt index. A search with no designation is `fulltext_not_designated`. |
+| `Database::compact` | Rewrites the `.RR` file without the chunks no committed root reaches. Every recorded revision stays readable. A commit that lands during the walk makes it refuse and leave the file as it was. Directory and read-only handles are refused. |
 | `Database::verify` | `RedCoreGraphStore::verify`. It does not call `rebuild_indexes`. |
 | `Database::migrate_journal` | `migrate_journal_to_rr`. Source bytes stay put. |
 | `Database::engine` | The `RedCoreGraphStore`. This is the advanced API, not a second database. |
@@ -21,7 +24,7 @@ Frozen against the engine types in this extract.
 
 Cypher here is the existing read dialect: `MATCH`, `WHERE`, `RETURN`, path patterns, and the unsupported-construct list from `rustyred-thg-query`. It is not full openCypher, SQL, or GraphQL. `RETURN n.id` reads a property named `id`. The node identity is on the node value (`RETURN n`, field `id`).
 
-Full-text and spatial indexes are explicit engine APIs (`tantivy` and `s2` features, H3 by default). They are not built just because a string or a coordinate was stored.
+Full-text and spatial indexes are explicit (`fulltext` on the facade, `tantivy` and `s2` on the engine, H3 by default). They are not built just because a string or a coordinate was stored.
 
 Package version `0.1.0-beta.2` is not the file format version. The file format is version 1.
 
