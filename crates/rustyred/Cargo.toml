@@ -27,3 +27,5 @@ harness = false
 [features]
 # Explicit diagnostic hooks for release failure oracles; absent in normal builds.
 test-fault-injection = ["rustyred-engine/test-fault-injection"]
+# Full-text indexes kept in the database, built with Tantivy.
+fulltext = ["rustyred-engine/tantivy"]

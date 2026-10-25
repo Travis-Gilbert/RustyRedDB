@@ -72,6 +72,21 @@ jobs:
         run: python3 scripts/check-format --base "$FORMAT_BASE"
       - name: Embedded facade, CLI, example and failure oracles
         run: cargo test --locked -p rustyred -p rustyred-cli -p parts-catalog --features rustyred/test-fault-injection
+      - name: Full-text index kept in the file
+        if: ${{ !cancelled() }}
+        run: |
+          cargo test --locked -p rustyred --features fulltext --test fulltext
+          cargo test --locked -p rustyred-engine --lib --features tantivy graph_fulltext_tests
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Node-API binding
+        if: ${{ !cancelled() }}
+        working-directory: crates/rustyred-node
+        run: |
+          npm ci
+          npx napi build --platform
+          npm test
       - name: Engine unit suite (calibrated latency profile)
         if: ${{ !cancelled() }}
         run: cargo test --locked --no-fail-fast -p rustyred-engine --lib --features test-fault-injection
@@ -104,7 +119,7 @@ jobs:
         run: cargo test --locked --doc -p rustyred -p rustyred-engine -p rustyred-query -p rustyred-log -p rustyred-derivation
       - name: Clippy (default supported native closure)
         if: ${{ !cancelled() }}
-        run: cargo clippy --locked -p rustyred -p rustyred-cli -p rustyred-engine -p rustyred-query --all-targets
+        run: cargo clippy --locked -p rustyred -p rustyred-cli -p rustyred-engine -p rustyred-query -p rustyred-node --all-targets
       - name: Optional pure Rust feature matrix
         if: ${{ !cancelled() }}
         shell: bash

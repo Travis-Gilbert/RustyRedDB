@@ -16,7 +16,7 @@ use crate::browser_storage::{
 };
 use crate::chunk_store::{
     ChunkStore, ChunkStoreCompaction, CompactionReport, RootCatalog, ROOT_NAME_DOCUMENTS,
-    ROOT_NAME_GRAPH, ROOT_NAME_OBJECTS, ROOT_NAME_REDCORE,
+    ROOT_NAME_FULLTEXT, ROOT_NAME_GRAPH, ROOT_NAME_OBJECTS, ROOT_NAME_REDCORE,
 };
 use crate::doc_tree::{decode_doc_reachability, DocReachability};
 use crate::file_payload::{
@@ -24,6 +24,7 @@ use crate::file_payload::{
     FILE_HISTORY_ELIDED_COUNT_PROPERTY, FILE_PREVIOUS_CONTENT_MANIFESTS_PROPERTY,
     MAX_PREVIOUS_FILE_MANIFESTS,
 };
+use crate::fulltext_store::decode_fulltext_root;
 use crate::graph::error::{GraphStoreError, GraphStoreResult};
 use crate::graph::record::NodeRecord;
 use crate::graph::vector_index::VectorDesignation;
@@ -71,6 +72,7 @@ pub enum ReachabilityKind {
     PackEnvelope,
     PrivateManifestEnvelope,
     FileManifest,
+    FullTextRoot,
     Terminal,
 }
 
@@ -861,6 +863,8 @@ fn decode_children(
         ReachabilityKind::FileManifest => codec
             .decode_file_manifest(address, bytes)
             .map(|chunks| typed_children(chunks, ReachabilityKind::Terminal)),
+        ReachabilityKind::FullTextRoot => decode_fulltext_root(address, bytes)
+            .map(|manifests| typed_children(manifests, ReachabilityKind::FileManifest)),
         ReachabilityKind::Terminal => Ok(Vec::new()),
     }
 }
@@ -904,6 +908,7 @@ const REGISTERED_ROOT_DECODERS: &[(&str, ReachabilityKind)] = &[
     (ROOT_NAME_DOCUMENTS, ReachabilityKind::DocRoot),
     (ROOT_NAME_OBJECTS, ReachabilityKind::ObjectIndex),
     (ROOT_NAME_BROWSER, ReachabilityKind::BrowserRoot),
+    (ROOT_NAME_FULLTEXT, ReachabilityKind::FullTextRoot),
 ];
 
 fn registered_root_decoder(name: &str) -> Option<ReachabilityKind> {

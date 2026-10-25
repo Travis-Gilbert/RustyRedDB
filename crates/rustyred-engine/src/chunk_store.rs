@@ -22,6 +22,8 @@ pub const ROOT_NAME_REDCORE: &str = "redcore";
 pub const ROOT_NAME_DOCUMENTS: &str = "documents";
 /// Stable name of the cold object/pack semantic-to-physical index.
 pub const ROOT_NAME_OBJECTS: &str = "objects";
+/// Stable name of RedCore's full-text index root.
+pub const ROOT_NAME_FULLTEXT: &str = "fulltext";
 
 /// Metadata which participates in the durable commit address.
 #[derive(Clone, Debug, Eq, PartialEq)]

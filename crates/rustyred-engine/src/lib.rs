@@ -40,6 +40,7 @@ pub mod fold;
 pub mod fold_quarantine;
 pub mod fold_storage;
 pub mod fulltext;
+pub mod fulltext_store;
 #[cfg(feature = "tantivy")]
 pub mod fulltext_tantivy;
 pub mod graph;

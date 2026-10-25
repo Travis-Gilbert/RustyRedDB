@@ -1,0 +1,30 @@
+{
+  "name": "@rustyreddb/node-linux-x64-gnu",
+  "version": "0.1.0-beta.2",
+  "cpu": [
+    "x64"
+  ],
+  "main": "rustyred.linux-x64-gnu.node",
+  "files": [
+    "rustyred.linux-x64-gnu.node"
+  ],
+  "description": "Embedded Rusty Red for Node.js and Bun: a native .rr graph file with full-text search.",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Travis-Gilbert/RustyRedDB.git",
+    "directory": "crates/rustyred-node"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "os": [
+    "linux"
+  ],
+  "libc": [
+    "glibc"
+  ]
+}
