@@ -15,6 +15,7 @@ pub struct Runtime {
     engine: RelationalEngine,
     rule_pack: ContentHash,
     max_iterations: usize,
+    max_work: u64,
 }
 impl Runtime {
     pub fn new(rules: impl Into<String>) -> Result<Self, Error> {
@@ -25,6 +26,7 @@ impl Runtime {
             engine,
             rule_pack,
             max_iterations: 10_000,
+            max_work: u64::MAX,
         })
     }
     pub fn with_iteration_limit(mut self, limit: usize) -> Result<Self, Error> {
@@ -32,6 +34,18 @@ impl Runtime {
             return Err(Error("Runtime iteration limit must be positive".into()));
         }
         self.max_iterations = limit;
+        Ok(self)
+    }
+    /// Refuse a derivation whose work passes `limit`, as
+    /// `RelationalEngine::derive_within` counts it: each binding of a rule
+    /// body's relation atoms costs one plus the values its provenance records,
+    /// and a string one more for every 64 bytes recorded or built. There is no
+    /// budget by default.
+    pub fn with_work_limit(mut self, limit: u64) -> Result<Self, Error> {
+        if limit == 0 {
+            return Err(Error("Runtime work limit must be positive".into()));
+        }
+        self.max_work = limit;
         Ok(self)
     }
     fn evaluate(&self, facts: &FactPack) -> Result<DerivationReceipt, Error> {
@@ -49,7 +63,7 @@ impl Runtime {
             .collect::<Result<_, Error>>()?;
         let evaluated = self
             .engine
-            .derive(&input, self.max_iterations)
+            .derive_within(&input, self.max_iterations, self.max_work)
             .map_err(|error| Error(error.to_string()))?;
         let base_ids: BTreeSet<_> = facts
             .relations

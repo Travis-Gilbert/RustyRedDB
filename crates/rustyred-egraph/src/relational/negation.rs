@@ -405,6 +405,7 @@ impl Plan {
         &self,
         engine: &mut Engine,
         limit: usize,
+        meter: &budget::Meter,
     ) -> Result<(SaturationReceipt, BTreeMap<usize, ContentHash>), Error> {
         let start = Instant::now();
         let mut total = engine.saturate(Schedule::Run {
@@ -442,7 +443,8 @@ impl Plan {
                     rulesets: vec![freeze_name(*level)],
                     max_iterations: limit - total.iterations,
                 })?;
-                let complete = step.stop_reason == crate::StopReason::FixedPoint;
+                let complete =
+                    step.stop_reason == crate::StopReason::FixedPoint && !meter.exhausted();
                 accumulate(&mut total, step);
                 if !complete {
                     break;
@@ -455,7 +457,7 @@ impl Plan {
                 rulesets: vec![stratum_name(*level)],
                 max_iterations: limit - total.iterations,
             })?;
-            let complete = step.stop_reason == crate::StopReason::FixedPoint;
+            let complete = step.stop_reason == crate::StopReason::FixedPoint && !meter.exhausted();
             accumulate(&mut total, step);
             if !complete {
                 break;
