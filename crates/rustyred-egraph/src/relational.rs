@@ -2,9 +2,11 @@ use crate::{Atom, ContentHash, Engine, Error, RulePack, SaturationReceipt, Sched
 use egglog::ast::{Action, Command, Expr, Fact, Literal, RustSpan, Span};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
+use std::sync::{Arc, Mutex, PoisonError};
 
 const RESERVED_PREFIX: &str = "__theorem_relational_";
 const WITNESS_PREFIX: &str = "__theorem_relational_witness_";
+mod budget;
 mod negation;
 type Relations = BTreeMap<String, Vec<String>>;
 
@@ -58,6 +60,9 @@ pub struct RelationalEngine {
     negation: negation::Plan,
     witnesses: Vec<Witness>,
     program_facts: Vec<RelationalFact>,
+    /// Shared by every clone of the baseline, so derives take turns on it.
+    meter: Arc<budget::Meter>,
+    turns: Mutex<()>,
 }
 impl RelationalEngine {
     pub fn new(pack: RulePack) -> Result<Self, Error> {
@@ -143,6 +148,8 @@ impl RelationalEngine {
                         }
                     }
                     let mut additions = Vec::new();
+                    let mut cost = 1 + budget::blocks(rule.name.len());
+                    let mut strings = Vec::new();
                     for (head_index, action) in rule.head.0.iter().enumerate() {
                         let Action::Expr(_, Expr::Call(_, output, args)) = action else {
                             return Err(refuse(
@@ -154,16 +161,32 @@ impl RelationalEngine {
                         let mut inputs = relations[output].clone();
                         let mut values = args.clone();
                         let mut proof_premises = Vec::new();
+                        cost += budget::blocks(output.len());
                         for (relation, args) in &premises {
                             inputs.extend(relations[relation].clone());
                             values.extend(args.clone());
                             proof_premises.push((relation.clone(), args.len()));
+                            cost += budget::blocks(relation.len());
                         }
                         let mut negatives = Vec::new();
                         for negative in &negative_witnesses {
-                            inputs.extend(negation.negatives[negative.id].sorts.clone());
+                            let spec = &negation.negatives[negative.id];
+                            inputs.extend(spec.sorts.clone());
                             values.extend(negative.values.clone());
                             negatives.push(negative.id);
+                            cost += budget::blocks(spec.relation.len());
+                        }
+                        cost += inputs.len();
+                        // A literal's bytes are known now; a variable's are
+                        // charged per binding, and a built string by `+`.
+                        for (sort, value) in inputs.iter().zip(&values) {
+                            match value {
+                                Expr::Lit(_, Literal::String(text)) => {
+                                    cost += budget::blocks(text.len())
+                                }
+                                Expr::Var(..) if sort == "String" => strings.push(value.clone()),
+                                _ => {}
+                            }
                         }
                         definitions.push(Command::Relation {
                             span: egglog::span!(),
@@ -190,6 +213,36 @@ impl RelationalEngine {
                         return Err(refuse("empty relational rule head"));
                     }
                     rule.head.0.extend(additions);
+                    for fact in &mut rule.body {
+                        match fact {
+                            Fact::Fact(expr) => budget::meter_plus(expr),
+                            Fact::Eq(_, left, right) => {
+                                budget::meter_plus(left);
+                                budget::meter_plus(right);
+                            }
+                        }
+                    }
+                    for action in &mut rule.head.0 {
+                        if let Action::Expr(_, expr) = action {
+                            budget::meter_plus(expr);
+                        }
+                    }
+                    // First in the body, so a binding the rule's conditions
+                    // reject still spends the budget.
+                    let cost = Expr::Lit(egglog::span!(), Literal::Int(cost as i64));
+                    let mut charges = vec![Fact::Fact(Expr::Call(
+                        egglog::span!(),
+                        budget::BUDGET.into(),
+                        vec![cost],
+                    ))];
+                    if !strings.is_empty() {
+                        charges.push(Fact::Fact(Expr::Call(
+                            egglog::span!(),
+                            budget::BYTES.into(),
+                            strings,
+                        )));
+                    }
+                    rule.body.splice(0..0, charges);
                     executable.push(Command::Rule { rule });
                 }
                 Command::Action(action) => {
@@ -223,6 +276,8 @@ impl RelationalEngine {
         }
         definitions.extend(negation.definitions()?);
         let mut engine = Engine::with_commands(pack, definitions)?;
+        let meter = Arc::new(budget::Meter::default());
+        budget::install(&mut engine.inner, &meter);
         executable.extend(negation.install(&mut engine, &relations)?);
         engine.execute_commands(executable)?;
         program_facts.sort_by_cached_key(canonical);
@@ -233,6 +288,8 @@ impl RelationalEngine {
             negation,
             witnesses,
             program_facts,
+            meter,
+            turns: Mutex::new(()),
         })
     }
 
@@ -242,6 +299,24 @@ impl RelationalEngine {
         &self,
         facts: &BTreeMap<String, Vec<Vec<Atom>>>,
         max_iterations: usize,
+    ) -> Result<RelationalReceipt, Error> {
+        self.derive_within(facts, max_iterations, u64::MAX)
+    }
+
+    /// [`Self::derive`] within a work budget, shared by every rule and stratum.
+    /// Each binding of a rule body's relation atoms costs one, plus one for
+    /// each value the rule's witness rows record (its head tuples and matched
+    /// premise tuples), charged before the rule's scalar conditions. A string
+    /// costs one more for every 64 bytes, whether recorded, written as a
+    /// literal, recorded as a rule or relation name, or built by `+` (charged
+    /// before it is built). Passing the budget stops the evaluator mid-round
+    /// and refuses the derivation with [`Error::WorkBudget`], before any
+    /// relation is read back.
+    pub fn derive_within(
+        &self,
+        facts: &BTreeMap<String, Vec<Vec<Atom>>>,
+        max_iterations: usize,
+        max_work: u64,
     ) -> Result<RelationalReceipt, Error> {
         // Validate the entire pack before executing even its first insertion.
         let mut insertions = Vec::new();
@@ -274,9 +349,17 @@ impl RelationalEngine {
                 )));
             }
         }
+        let _turn = self.turns.lock().unwrap_or_else(PoisonError::into_inner);
+        self.meter.reset(max_work);
         let mut engine = self.engine.clone_baseline();
         engine.execute_commands(insertions)?;
-        let (saturation, closed_hashes) = self.negation.run(&mut engine, max_iterations)?;
+        let run = self.negation.run(&mut engine, max_iterations, &self.meter);
+        // A charge that passes the limit fails its call: in a rule head that
+        // is an evaluator error, which the spent budget explains.
+        if self.meter.exhausted() {
+            return Err(Error::WorkBudget(max_work));
+        }
+        let (saturation, closed_hashes) = run?;
         let mut canonical_input = facts.clone();
         for rows in canonical_input.values_mut() {
             rows.sort_by_cached_key(canonical);

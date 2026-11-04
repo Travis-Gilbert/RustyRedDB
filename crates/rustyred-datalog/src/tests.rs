@@ -103,6 +103,27 @@ fn incomplete_and_malformed_runs_are_not_successful_empty_results() {
 }
 
 #[test]
+fn a_spent_work_budget_is_a_refusal_with_no_partial_tuples() {
+    let spent = Runtime::new(REACH)
+        .unwrap()
+        .with_work_limit(1)
+        .unwrap()
+        .derive(&chain());
+    assert!(spent.derived.is_empty() && spent.provenance.is_empty());
+    let refusal = spent.ensure_complete().unwrap_err().to_string();
+    assert!(refusal.contains("work budget of 1"), "{refusal}");
+    // The positive control: the same chain within a budget.
+    let within = Runtime::new(REACH)
+        .unwrap()
+        .with_work_limit(1_000)
+        .unwrap()
+        .derive(&chain());
+    within.ensure_complete().unwrap();
+    assert_eq!(within.derived.len(), 6);
+    assert!(Runtime::new(REACH).unwrap().with_work_limit(0).is_err());
+}
+
+#[test]
 fn both_engines_refuse_tampered_fact_identity() {
     let mut facts = chain();
     facts.relations.clear();

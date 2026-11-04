@@ -29,6 +29,9 @@ pub enum Error {
     Invalid(String),
     #[error("relational program refused: {0}")]
     Relational(String),
+    /// A relational derivation did more work than its budget allows.
+    #[error("derivation exceeded its work budget of {0}")]
+    WorkBudget(u64),
 }
 
 impl From<egglog::Error> for Error {
