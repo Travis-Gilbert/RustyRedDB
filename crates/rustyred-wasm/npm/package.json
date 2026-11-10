@@ -29,7 +29,10 @@
     "worker.d.ts",
     "README.md"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "./src/worker.js",
+    "./pkg/rustyred_wasm.js"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "oracle": "node oracle/oracle.mjs"
