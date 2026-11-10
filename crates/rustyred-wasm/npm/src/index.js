@@ -1,4 +1,5 @@
 // The asynchronous client for a database held by a dedicated worker.
+import { openShared } from './shared.js'
 
 /** A failed call. `code` is stable for programs, such as `cypher_write_unsupported`. */
 export class RustyRedError extends Error {
@@ -59,8 +60,13 @@ export class Database {
     })
   }
 
-  #call(method, args) {
+  /** @internal One method by name, as the shared client relays it. */
+  _call(method, args) {
     return this._send({ op: 'call', method, args })
+  }
+
+  #call(method, args) {
+    return this._call(method, args)
   }
 
   inspect() {
@@ -107,6 +113,11 @@ export class Database {
     }
   }
 
+  /** Whether this page holds the database's file: it does, unless it was opened shared. */
+  get owner() {
+    return true
+  }
+
   /** Release the database and stop its worker. Later calls reject with `database_closed`. */
   async close() {
     if (this.#closed) return
@@ -121,7 +132,8 @@ export class Database {
 }
 
 async function start(message, settings = {}) {
-  const worker = settings.worker ?? defaultWorker()
+  const worker =
+    typeof settings.worker === 'function' ? settings.worker() : (settings.worker ?? defaultWorker())
   const database = new Database(worker)
   try {
     await database._send({ ...message, wasm: settings.wasm })
@@ -134,11 +146,18 @@ async function start(message, settings = {}) {
 
 /**
  * Open, creating when absent, the database named `name` in this origin's
- * private file system. One page holds a database at a time.
+ * private file system.
+ *
+ * The browser gives one handle to a database's file. Without `shared`, this
+ * page holds it and a second `open` of the same name is refused until it is
+ * closed. With `shared: true`, every page of the origin that opens the name
+ * this way uses one database: one of them holds the file and the others
+ * reach it through that page, and another takes over when it goes.
  */
 export function open(name, settings = {}) {
-  const { worker, wasm, ...options } = settings
-  return start({ op: 'open', name, options }, { worker, wasm })
+  const { worker, wasm, shared, ...options } = settings
+  const exclusive = () => start({ op: 'open', name, options }, { worker, wasm })
+  return shared ? openShared(name, exclusive) : exclusive()
 }
 
 /** An empty graph with no file and no durability. */

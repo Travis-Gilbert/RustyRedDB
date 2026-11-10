@@ -94,8 +94,12 @@ export interface OpenOptions {
 }
 
 export interface WorkerSettings {
-  /** A worker running `@rustyreddb/browser/worker`, for a bundler that needs to make it itself. */
-  worker?: Worker
+  /**
+   * A worker running `@rustyreddb/browser/worker`, or a function that makes
+   * one, for a bundler that needs to make it itself. A shared database makes
+   * its worker only when this page comes to hold the file, so give it the function.
+   */
+  worker?: Worker | (() => Worker)
   /** Where the wasm module is, when it is not beside the package's own glue. */
   wasm?: string | URL
 }
@@ -117,15 +121,34 @@ export declare class Database {
    * commit that changes it. Returns the function that stops it.
    */
   subscribe(read: Read, next: (value: any) => void, error?: (error: RustyRedError) => void): () => void
-  /** Release the database and stop its worker. Later calls reject with `database_closed`. */
+  /** Whether this page holds the database's file. Always true unless it was opened shared. */
+  readonly owner: boolean
+  /**
+   * Release the database and stop its worker. Later calls reject with
+   * `database_closed`. A shared database stays open for the other pages.
+   */
   close(): Promise<void>
+}
+
+export interface SharedSettings {
+  /**
+   * Use one database with every page of the origin that opens this name the
+   * same way. One page holds the file and the others reach it through that
+   * page; another takes over when it closes or its tab goes. A call the last
+   * holder committed but did not answer is made again by the next.
+   */
+  shared?: boolean
 }
 
 /**
  * Open, creating when absent, the database named `name` in this origin's
- * private file system. One page holds a database at a time.
+ * private file system. Without `shared`, one page holds a database at a time
+ * and a second `open` is refused.
  */
-export declare function open(name: string, settings?: OpenOptions & WorkerSettings): Promise<Database>
+export declare function open(
+  name: string,
+  settings?: OpenOptions & WorkerSettings & SharedSettings,
+): Promise<Database>
 
 /** An empty graph with no file and no durability. */
 export declare function inMemory(settings?: WorkerSettings): Promise<Database>

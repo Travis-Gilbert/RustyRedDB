@@ -34,7 +34,8 @@ const check = (name, pass, detail) => {
 }
 
 const browser = await chromium.launch()
-const page = await browser.newPage()
+const context = await browser.newContext()
+const page = await context.newPage()
 page.on('console', (message) => console.log(`  [page] ${message.text()}`))
 page.on('pageerror', (error) => console.log(`  [page error] ${error.message}`))
 
@@ -145,6 +146,69 @@ try {
   check('an in-memory database works', memory?.id === 'n')
 
   await page.evaluate(() => window.rr.remove('oracle'))
+
+  // A shared database: three pages of one origin, one file.
+  const pages = [page, await context.newPage(), await context.newPage()]
+  for (const tab of pages) {
+    tab.on('pageerror', (error) => console.log(`  [page error] ${error.message}`))
+    await tab.goto(origin)
+    await tab.evaluate(async () => {
+      window.rr = await import('/src/index.js')
+      window.seen = []
+      window.db = await window.rr.open('shared-oracle', { shared: true })
+      window.db.subscribe({ method: 'queryNodes', args: { label: 'Org' } }, (nodes) =>
+        window.seen.push(nodes.map((node) => node.properties.name).sort().join()),
+      )
+    })
+  }
+  const [tabA, tabB, tabC] = pages
+  const add = (tab, id, name) =>
+    tab.evaluate(
+      ([i, n]) => window.db.mutate({ upsertNodes: [{ id: i, labels: ['Org'], properties: { name: n } }] }),
+      [id, name],
+    )
+  const last = (tab, wanted) =>
+    tab
+      .waitForFunction((value) => window.seen.at(-1) === value, wanted, { timeout: 10_000 })
+      .then(() => true, () => false)
+  const owners = async () => {
+    const held = []
+    for (const tab of pages) if (!tab.isClosed()) held.push(await tab.evaluate(() => window.db.owner))
+    return held
+  }
+
+  check('three pages open one shared database, and one holds the file',
+    (await owners()).filter(Boolean).length === 1, await owners())
+  await add(tabB, 'org:a', 'Alder')
+  await add(tabC, 'org:b', 'Birch')
+  check('a write from any page reaches every page\'s subscription',
+    (await last(tabA, "Alder,Birch")) && (await last(tabB, "Alder,Birch")) && (await last(tabC, "Alder,Birch")))
+  const sharedRefused = await tabB.evaluate(() =>
+    window.db.query("CREATE (o:Org {name: 'x'})").then(() => null, (error) => error.code))
+  check("a failure keeps its code across pages", sharedRefused === "cypher_write_unsupported", sharedRefused)
+
+  // The page that holds the file goes away, with its tab.
+  const holder = pages[(await owners()).indexOf(true)]
+  const others = pages.filter((tab) => tab !== holder)
+  await holder.close()
+  await add(others[0], 'org:c', 'Cedar')
+  check('when the holding page goes, another takes over with the records',
+    (await last(others[0], 'Alder,Birch,Cedar')) && (await last(others[1], 'Alder,Birch,Cedar')),
+    await owners())
+  check('and exactly one of the others now holds the file', (await owners()).filter(Boolean).length === 1)
+
+  // The page that holds it now closes the database, without going away.
+  const next = others[(await owners()).indexOf(true)]
+  const remaining = others.find((tab) => tab !== next)
+  await next.evaluate(() => window.db.close())
+  await add(remaining, 'org:d', 'Dogwood')
+  check('closing hands it on too', await last(remaining, 'Alder,Birch,Cedar,Dogwood'))
+  const afterClose = await next.evaluate(() => window.db.inspect().then(() => null, (error) => error.code))
+  check("and the page that closed is refused", afterClose === "database_closed", afterClose)
+  await remaining.evaluate(async () => {
+    await window.db.close()
+    await window.rr.remove('shared-oracle')
+  })
 } finally {
   await browser.close()
   server.close()
