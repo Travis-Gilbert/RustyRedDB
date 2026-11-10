@@ -15,6 +15,7 @@ members = [
     "crates/rustyred-query-saturate",
     "crates/rustyred-graphblas",
     "crates/rustyred-node",
+    "crates/rustyred-wasm",
     "examples/parts-catalog",
     "vendor/egg-0.10.0",
     "vendor/turbovec-1.0.0-wasm32",

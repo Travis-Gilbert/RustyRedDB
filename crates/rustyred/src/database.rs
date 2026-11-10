@@ -137,6 +137,33 @@ impl Database {
         }
     }
 
+    /// A database over a chunk store the caller opened, with no `.RR` file.
+    ///
+    /// This is how a host that has no path to give opens a database: a
+    /// browser hands in the OPFS projection store, and a test hands in a
+    /// memory store. The store's own commit protocol is the durability; this
+    /// handle takes no writer claim of its own, so the caller keeps to one
+    /// handle per store. [`Self::compact`] is refused, as it is for every
+    /// database that is not a native file.
+    pub fn with_chunk_store(
+        store: Arc<dyn UnifiedChunkStore>,
+        options: &OpenOptions,
+    ) -> Result<Self, Error> {
+        let mut graph = RedCoreGraphStore::open_with_chunk_store(store, file_options())
+            .map_err(Error::from_storage)?;
+        graph.set_control_events(options.control_events);
+        graph.set_keep_history(options.keep_history);
+        graph
+            .publish_rebuilt_fulltext()
+            .map_err(Error::from_storage)?;
+        Ok(Self {
+            graph,
+            file: None,
+            writable: true,
+            path: None,
+        })
+    }
+
     /// Create a directory-backed database, the deployment shape that stores
     /// `redcore.journal` beside its payloads. Refuses when that journal is
     /// already present. This is not the single-file format.

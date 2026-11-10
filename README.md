@@ -32,4 +32,6 @@ See `docs/getting-started.md`, `docs/api-contract.md`, and `docs/storage-format.
 
 Node.js and Bun use the same database through `@rustyreddb/node`, a Node-API binding in `crates/rustyred-node` built with napi-rs. It covers the facade, including full-text search and compaction; see its README.
 
+Browsers use it through `@rustyreddb/browser`, a wasm-bindgen binding in `crates/rustyred-wasm`. The graph lives in the origin private file system and is held by a dedicated worker; calls are asynchronous and a read can be subscribed to. It has no full-text search or compaction yet; see its README.
+
 The engine crates (`rustyred-engine` and its siblings) are the database implementation. `rustyred` is the supported entry point. Generic GraphBLAS and query-saturation sources are retained as optional extension crates. GraphBLAS requires native libraries and remains experimental. HTTP and MCP server products are outside this embedded beta. See [release preparation](docs/releasing.md) for the tested feature matrix and package route.

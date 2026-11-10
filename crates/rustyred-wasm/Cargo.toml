@@ -1,0 +1,26 @@
+[package]
+name = "rustyred-wasm"
+version = "0.1.0-beta.2"
+edition = "2021"
+license = "MIT"
+rust-version = "1.96.1"
+description = "Browser binding for embedded Rusty Red: a graph in a dedicated worker, stored in OPFS."
+repository = "https://github.com/Travis-Gilbert/RustyRedDB"
+# Shipped as the npm package @rustyreddb/browser, not as a crate.
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+rustyred = { path = "../rustyred" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# The glue is wasm-only so a native `cargo test -p rustyred-wasm` exercises the
+# same call table without a JavaScript host. The version is the one
+# rustyred-log pins for its OPFS handle; two versions would not link.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "=0.2.127"
+wasm-bindgen-futures = "0.4"
+js-sys = "0.3"
