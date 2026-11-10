@@ -154,6 +154,45 @@ jobs:
             ${{ runner.temp }}/rustyred-release-review/package-evidence/consumer-tree.txt
             ${{ runner.temp }}/rustyred-release-review/package-evidence/archives/*.crate
 
+  browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require immutable source on manual dispatch
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+        run: test "${#REVIEWED_SHA}" = 40 && [[ "$REVIEWED_SHA" =~ ^[0-9a-f]+$ ]]
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.reviewed_sha || '' }}
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@1.96.1
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Browser binding call table (native)
+        run: cargo test --locked -p rustyred-wasm
+      - name: Database over a caller's chunk store
+        run: cargo test --locked -p rustyred --test chunk_store_database
+      - name: Clippy (browser binding, wasm32)
+        run: cargo clippy --locked -p rustyred-wasm --target wasm32-unknown-unknown
+      # The version rustyred-log pins for its OPFS handle: the generated glue
+      # and the crate must agree.
+      - name: Install pinned wasm-bindgen
+        run: cargo install --locked --version 0.2.127 wasm-bindgen-cli
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build @rustyreddb/browser
+        working-directory: crates/rustyred-wasm/npm
+        run: npm run build
+      - name: Browser oracle (Chromium, OPFS, three pages)
+        working-directory: crates/rustyred-wasm/npm
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+          npm run oracle
+
   clean-candidate-measurement:
     runs-on: ubuntu-24.04
     steps:
