@@ -16,13 +16,17 @@
       "types": "./index.d.ts",
       "default": "./src/index.js"
     },
-    "./worker": "./src/worker.js",
+    "./worker": {
+      "types": "./worker.d.ts",
+      "default": "./src/worker.js"
+    },
     "./rustyred.wasm": "./pkg/rustyred_wasm_bg.wasm"
   },
   "files": [
     "src",
     "pkg",
     "index.d.ts",
+    "worker.d.ts",
     "README.md"
   ],
   "sideEffects": false,

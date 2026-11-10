@@ -32,14 +32,17 @@ function publish(id) {
   postMessage({ subscription: id, value: JSON.parse(text) })
 }
 
+// Without a location the glue fetches the module from beside itself.
+const load = (wasm) => (wasm === undefined ? init() : init({ module_or_path: wasm }))
+
 async function handle(message) {
   switch (message.op) {
     case 'open':
-      await init(message.wasm)
+      await load(message.wasm)
       database = await Database.open(message.name, JSON.stringify(message.options ?? {}))
       return null
     case 'inMemory':
-      await init(message.wasm)
+      await load(message.wasm)
       database = Database.inMemory()
       return null
     case 'call': {
