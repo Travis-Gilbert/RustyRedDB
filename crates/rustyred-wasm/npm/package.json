@@ -1,0 +1,40 @@
+{
+  "name": "@rustyreddb/browser",
+  "version": "0.1.0-beta.2",
+  "description": "Embedded Rusty Red for the browser: a graph database in a dedicated worker, stored in OPFS.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Travis-Gilbert/RustyRedDB.git",
+    "directory": "crates/rustyred-wasm/npm"
+  },
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./worker": {
+      "types": "./worker.d.ts",
+      "default": "./src/worker.js"
+    },
+    "./rustyred.wasm": "./pkg/rustyred_wasm_bg.wasm"
+  },
+  "files": [
+    "src",
+    "pkg",
+    "index.d.ts",
+    "worker.d.ts",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./src/worker.js",
+    "./pkg/rustyred_wasm.js"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "oracle": "node oracle/oracle.mjs"
+  }
+}

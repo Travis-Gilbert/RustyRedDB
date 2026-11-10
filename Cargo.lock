@@ -3700,6 +3700,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustyred-wasm"
+version = "0.1.0-beta.2"
+dependencies = [
+ "js-sys",
+ "rustyred",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
