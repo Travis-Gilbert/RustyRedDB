@@ -31,7 +31,7 @@ The names and shapes are those of `@rustyreddb/node`, made asynchronous.
 
 - **One page holds the file.** The browser gives one exclusive handle to a database's file, so a second plain `open` of the same name, in this tab or another, rejects with `chunk_store_browser_storage` until the first is closed. Open with `shared: true` to use one database from several pages; see below.
 - **No full-text search.** `designateFulltext` and `fulltextSearch` are the Node binding's. The engine's index is built with Tantivy, whose default features do not build for `wasm32-unknown-unknown`.
-- **No `compact()`.** Compaction rewrites a native `.rr` file.
+- **No `compact()`, so the file only grows.** The engine's browser store refuses reclamation: OPFS has no atomic rename to replace the file with. Measured in Chromium over 200 small nodes, each one-node commit added about 7 KB with `controlEvents` and `keepHistory` off, and about 100 KB with both on. Open with both off for data that is rewritten often.
 - **Not a `.rr` file.** The OPFS store is the engine's browser projection. A database made here cannot be opened by the native library, or the reverse.
 
 It needs a browser with OPFS synchronous access handles in workers.
